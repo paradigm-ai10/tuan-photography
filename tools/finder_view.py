@@ -20,7 +20,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 HIDE = ['CLAUDE.md', 'DESIGN.md', 'PRODUCT.md', 'PROGRESS.md', 'IDEAS.md', 'TODO.md',
-        'content', 'data', 'tools', 'design 1', 'design 2', 'design 3', 'elements']
+        'index.html', 'content', 'data', 'tools', 'design 1', 'design 2', 'design 3', 'elements']
 # His, but only worth seeing while a trial is open.
 HIDE_WHEN_EMPTY = ['experiments']
 
