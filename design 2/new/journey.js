@@ -467,6 +467,8 @@
     const t = reading(line);
     beside(t);
     map.trip(t);
+    // the trip the globe is showing is marked in the list as well
+    for (const el of main.querySelectorAll('.jr-trip')) el.classList.toggle('is-reading', !!t && el.dataset.trip === t.id);
     let next = 'now';
     // the return plays when the closing words reach the reading line, not when the close's
     // empty top does: the first trip keeps its near-empty map for a whole screen before it

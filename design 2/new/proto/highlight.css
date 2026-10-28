@@ -1,0 +1,19 @@
+/* Prototype, 2026-10-28: how the trip the globe is showing is marked in the list, on the frosted
+   page with a slightly more see-through panel. Three directions, one class on <body> each. */
+@media (min-width: 64rem) {
+  .proto .jr-panel { background: color-mix(in oklch, var(--paper) 64%, transparent); }
+  /* the same box for every direction, so switching never moves the list */
+  .proto .jr-trip { margin-inline: -1rem; padding-inline: 1rem; transition: background-color 240ms var(--ease), opacity 240ms var(--ease), box-shadow 240ms var(--ease); }
+
+  /* 1. Wash: a band of paper behind it, a shade more solid than the panel */
+  .hl-wash .jr-trip.is-reading { background: color-mix(in oklch, var(--paper) 72%, transparent); }
+
+  /* 2. Fade: it keeps full strength while the other trips step back */
+  .hl-fade .jr-years:has(.is-reading) .jr-trip:not(.is-reading) { opacity: 0.42; }
+
+  /* 3. Margin: a thin route-red rule beside it, like a mark in a notebook */
+  .hl-margin .jr-trip.is-reading { box-shadow: inset 2px 0 0 var(--route); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .proto .jr-trip { transition-duration: 1ms; }
+}
