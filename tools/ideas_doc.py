@@ -3,7 +3,8 @@
 
 IDEAS.md is the running list and the only place entries are typed. This turns it into a Word
 file that can be scanned at a glance: one table per 類型, one row per entry, showing only
-名稱, 重點, 狀態 and a link. Everything else stays in IDEAS.md. Saved images follow the table of
+名稱, 重點, 狀態 and a link. An entry that belongs to two types names both, split by " / "
+(類型: 網站靈感 / UI 介面靈感), and appears in both tables; it is still counted once. Everything else stays in IDEAS.md. Saved images follow the table of
 the type they belong to. The Word file lives in ideas/, which is gitignored: it carries other
 people's images and the repo is public.
 
@@ -49,7 +50,7 @@ IMAGE_W = CONTENT_W * EMU_PER_DXA
 
 UNSORTED = '未分類'
 # The order the tables appear in. A type not listed here follows, in the order it first appears.
-ORDER = ['設計 Skill', '工具與連接', '找靈感的地方', '攝影師網站', '攻略網站', '教學影片',
+ORDER = ['設計 Skill', '工具與連接', '網站靈感', 'UI 介面靈感', '攝影師網站', '攻略網站', '教學影片',
          '做法筆記', '互動效果',
          # the weekly report's own types
          'Skill 與外掛', 'AI 設計工具', '本週新聞', '靈感與資源']
@@ -82,10 +83,16 @@ def parse(text):
     return entries
 
 
+def kinds(entry):
+    """The types an entry belongs to: one, or several split by ' / '."""
+    return [k.strip() for k in entry['fields'].get('類型', UNSORTED).split(' / ') if k.strip()]
+
+
 def by_type(entries):
     found = {}
     for entry in entries:
-        found.setdefault(entry['fields'].get('類型', UNSORTED), []).append(entry)
+        for kind in kinds(entry):
+            found.setdefault(kind, []).append(entry)
     return {kind: found[kind] for kind in ORDER + list(found) if kind in found}
 
 
@@ -328,7 +335,8 @@ def build(entries, title='靈感整理', source='IDEAS.md', progress=False):
         doc.table(rows, widths, header=True)
         for entry in found:
             picture = IDEAS / entry['fields'].get('圖片', '')
-            if picture.is_file():
+            # a saved image follows the first table its entry appears in, not every one
+            if picture.is_file() and kinds(entry)[0] == kind:
                 doc.add(entry['title'], 'Label')
                 doc.image(picture, entry['title'], scale=0.6)
     return doc
