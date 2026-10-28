@@ -25,6 +25,7 @@
   --route: var(--sc-accent);
   --link: oklch(45% 0.15 28);
   --been: oklch(89.5% 0.03 70);
+  --been-on: oklch(84% 0.055 60);
   font-feature-settings: "tnum" 1;
 }
 :focus-visible { border-radius: 0; }
@@ -68,13 +69,26 @@
 .jr-map .plane { fill: var(--ink); stroke: var(--paper); stroke-width: 1.6px; paint-order: stroke; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
 .jr-map .ring { fill: none; stroke: var(--route); stroke-width: 1; vector-effect: non-scaling-stroke; }
 .jr-map .home { fill: var(--ink); }
+/* the globe the map folds into: its edge and lines of latitude come in as it closes round */
+.jr-map .sphere { fill: var(--paper); stroke: var(--ink-3); stroke-width: 0.9; }
+.jr-map .grat { fill: none; stroke: var(--hair); stroke-width: 0.6; }
+/* the trip being read: its own legs drawn strong over the year's, its stops marked */
+.jr-map svg.is-rewound .leg.is-here { stroke-opacity: 0.4; stroke-width: 1.2; }
+.jr-map svg.is-rewound .leg.is-now { stroke: var(--route); stroke-opacity: 1; stroke-width: 2; }
+.jr-map .stop { fill: var(--paper); stroke: var(--route); stroke-width: 1.3; vector-effect: non-scaling-stroke; }
+.jr-map svg:not(.is-rewound) .stop { display: none; }
+/* a country he has been to opens its latest trip */
+.jr-map .visited.has-trip { cursor: pointer; }
+@media (hover: hover) and (pointer: fine) {
+  .jr-map .visited.has-trip:hover { fill: var(--been-on); transition-duration: 0.15s; }
+}
 /* the return: his countries and flights come back in the order he first went */
 .jr-map svg.is-forward :is(.visited, .fly, .end) { transition-delay: calc(var(--i, 0) * 110ms); }
 
 /* the arrival: the whole of it, under the grand map */
 .jr-hero { height: calc(100svh - 4.5rem); display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 1rem 3rem; padding: 0 var(--edge) 2.25rem; pointer-events: none; }
 .jr-hero > * { pointer-events: auto; }
-.jr-hero__words { display: grid; gap: 0.6rem; }
+.jr-hero__words { display: grid; gap: 0.6rem; opacity: clamp(0, 1 - var(--dock) * 1.6, 1); }   /* gives way as the globe docks beneath it */
 .jr-hero__title { font-size: clamp(3rem, 1.6rem + 4vw, 5.4rem); font-weight: 500; letter-spacing: -0.045em; line-height: 0.92; }
 :lang(zh-Hant) .jr-hero__title { letter-spacing: 0.04em; line-height: 1.15; }
 .jr-hero__intro { color: var(--ink-2); max-width: 40ch; font-size: 1.05rem; }
