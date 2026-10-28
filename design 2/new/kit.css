@@ -1,0 +1,87 @@
+/* The Journey redesign's shared frame (experiment `journey`, 2026-10-16): reset, the site's
+   top bar, the viewer. Each direction sets the tokens below in its own stylesheet. */
+
+:root {
+  color-scheme: light;
+  --paper: oklch(97.6% 0.006 85);
+  --paper-2: oklch(94.2% 0.008 85);
+  --ink: oklch(22% 0.01 60);
+  --ink-2: oklch(44% 0.012 60);
+  --ink-3: oklch(64% 0.012 60);
+  --hair: oklch(87% 0.01 80);
+  --route: oklch(55% 0.17 33);
+  --link: oklch(42% 0.11 38);
+  --f-name: "Geist", "Noto Sans TC", sans-serif;
+  --f-text: "Geist", "Noto Sans TC", sans-serif;
+  --f-zh-name: "Noto Sans TC", sans-serif;
+  --edge: clamp(1rem, 3.2vw, 2.5rem);
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+html.is-viewing { overflow: hidden; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--f-text); font-size: 1rem; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+:lang(zh-Hant) body { line-height: 1.75; }
+h1, h2, h3, p, figure, ul, ol { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--link); outline-offset: 3px; }
+::selection { background: oklch(90% 0.04 40); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* small spaced capitals: labels, the menu, every word that is a control */
+.caps, .top__nav a, .top__lang button, .viewer__words button, .word {
+  font-family: var(--f-text); font-size: 0.72rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase;
+}
+:lang(zh-Hant) :is(.caps, .top__nav a, .top__lang button, .viewer__words button, .word) { font-size: 0.82rem; letter-spacing: 0.2em; text-transform: none; }
+.word { display: inline-flex; align-items: center; min-height: 2.75rem; text-decoration: none; color: var(--ink-2); }
+.word:hover { color: var(--link); }
+
+/* the site's top bar: name, the four tabs, the language */
+.top { display: flex; align-items: center; gap: 1.5rem; padding: 0 var(--edge); min-height: 4.5rem; }
+.top__name { font-family: var(--f-name); font-size: 1.05rem; text-decoration: none; white-space: nowrap; }
+.top__name span { font-family: "Noto Sans TC", sans-serif; font-size: 0.8rem; letter-spacing: 0.2em; color: var(--ink-2); margin-left: 0.35rem; }
+.top__nav { margin-left: auto; }
+.top__nav ul { display: flex; gap: clamp(1rem, 2.4vw, 2rem); }
+.top__nav a { display: inline-flex; min-height: 2.75rem; align-items: center; text-decoration: none; color: var(--ink-2); border-bottom: 1px solid transparent; }
+.top__nav a:hover { color: var(--ink); }
+.top__nav a[aria-current="page"] { color: var(--ink); border-bottom-color: currentColor; }
+.top__lang { display: flex; gap: 0.25rem; }
+.top__lang button { min-width: 2.75rem; min-height: 2.75rem; color: var(--ink-2); }
+.top__lang button[aria-pressed="true"] { color: var(--ink); }
+@media (max-width: 47.99rem) {
+  .top { flex-wrap: wrap; gap: 0 1rem; padding-top: 0.5rem; }
+  .top__nav { order: 3; margin-left: 0; width: 100%; }
+  .top__nav ul { justify-content: space-between; }
+  .top__lang { margin-left: auto; }
+}
+
+/* the viewer: a sheet of paper, the photograph contained, its name beneath */
+.viewer { position: fixed; inset: 0; z-index: 50; background: var(--paper); display: grid; grid-template-rows: 1fr auto; padding: clamp(1rem, 3vw, 2.5rem); gap: 1rem; }
+.viewer[hidden] { display: none; }
+.viewer__fig { display: grid; grid-template-rows: 1fr auto; min-height: 0; gap: 0.9rem; }
+.viewer__img { width: 100%; height: 100%; min-height: 0; object-fit: contain; }
+.viewer__cap { display: flex; flex-wrap: wrap; gap: 0.2rem 1rem; align-items: baseline; justify-content: center; text-align: center; }
+.viewer__name { font-family: var(--f-name); font-size: 1.1rem; }
+.viewer__where, .viewer__count { color: var(--ink-2); font-size: 0.9rem; font-variant-numeric: tabular-nums; }
+.viewer__words { display: flex; justify-content: center; gap: 2rem; }
+.viewer__words button { min-height: 2.75rem; color: var(--ink-2); }
+.viewer__words button:hover { color: var(--link); }
+
+/* the map, drawn as lines (every direction that draws one) */
+.map path { vector-effect: non-scaling-stroke; }
+.map .land { fill: var(--paper-2); stroke: none; }
+.map .border { fill: none; stroke: var(--hair); stroke-width: 0.6; }
+.map .coast { fill: none; stroke: var(--ink-3); stroke-width: 0.7; }
+.map .visited { fill: var(--been, var(--paper-2)); stroke: none; }
+.map .leg { fill: none; stroke: var(--ink-2); stroke-width: 0.8; stroke-linecap: round; }
+.map .leg--ground { stroke-dasharray: 2 3; }
+.map .dot { fill: var(--paper); stroke: var(--ink); stroke-width: 1; }
+.map .home { fill: var(--ink); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 1ms !important; animation-duration: 1ms !important; scroll-behavior: auto !important; }
+}

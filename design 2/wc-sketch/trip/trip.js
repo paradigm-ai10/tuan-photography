@@ -45,6 +45,7 @@
       then: ', then ',
       tally: (p, n) => `${p} places, ${n} photographs`,
       back: 'Back to Flights',
+      log: 'All trips',
     },
     zh: {
       blank: '還沒有照片',
@@ -55,6 +56,7 @@
       then: '，再',
       tally: (p, n) => `${p} 個地方，${n} 張照片`,
       back: '回到飛過的航線',
+      log: '所有旅程',
     },
   };
   // the language is the Journey page's own choice, remembered on the browser
@@ -111,7 +113,7 @@
   const ours = (id) => {
     const s = S.slides[id];
     if (!s) return false;
-    if (s.taken) return !from || (s.taken.slice(0, 7) >= from && s.taken.slice(0, 7) <= till);
+    if (s.taken) return from ? (s.taken.slice(0, 7) >= from && s.taken.slice(0, 7) <= till) : s.taken.slice(0, 4) === J.id.slice(0, 4); // no months: its year
     return S.journeys.filter((j) => (j.countries || []).includes(s.country)).length === 1;
   };
   // each goes to the stop it was made nearest to
@@ -144,7 +146,10 @@
     const names = countries.map((c) => c.name[lang]);
     const title = names.length > 2 ? names.slice(0, -1).join(w.list) + w.and + names[names.length - 1] : names.join(w.and);
     document.title = `${title} · tuan photography 陳亮元`;
-    $('#back').textContent = w.back;
+    // opened from the Journey page (design 2/new), it leads back there
+    const from = /^[a-z][a-z-]*$/.test(ask.get('from') || '') ? ask.get('from') : null;
+    if (from) $('#back').href = `../../new/${from}.html#t=${encodeURIComponent(J.id)}`;   // back to the entry it was opened from
+    $('#back').textContent = from ? w.log : w.back;
     let html = `<section class="intro" data-i="-1">
       <p class="intro__when caps">${esc((J.date || J.label)[lang])}</p>
       <h1 class="intro__title">${esc(title)}</h1>

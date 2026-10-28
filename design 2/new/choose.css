@@ -1,0 +1,29 @@
+/* The review page of experiment `journey`: the three directions and the current Journey. */
+.choose { --col: min(60rem, 100% - 2 * var(--edge)); }
+.cz { width: var(--col); margin: 0 auto; padding-block: clamp(2.5rem, 7vw, 5rem) 6rem; }
+.cz__title { font-size: clamp(2rem, 1.4rem + 2.6vw, 3.4rem); font-weight: 500; letter-spacing: -0.03em; line-height: 1; }
+:lang(zh-Hant) .cz__title { letter-spacing: 0.04em; line-height: 1.2; }
+.cz__intro { color: var(--ink-2); margin-top: 1rem; max-width: 46ch; }
+.cz__list { margin-top: 2.5rem; border-top: 1px solid var(--ink); }
+.cz__item { display: grid; grid-template-columns: 3.5rem minmax(0, 1fr); gap: 0.25rem 1rem; padding-block: 1.5rem; border-bottom: 1px solid var(--hair); }
+.cz__mark { font-size: 1.4rem; font-weight: 500; grid-row: span 3; }
+.cz__name { font-size: 1.4rem; font-weight: 500; letter-spacing: -0.01em; }
+.cz__say { color: var(--ink-2); max-width: 56ch; }
+.cz__go { display: flex; flex-wrap: wrap; gap: 0 2rem; }
+.cz__go a { color: var(--link); text-underline-offset: 0.25em; text-decoration-thickness: 1px; display: inline-flex; align-items: center; min-height: 2.75rem; }
+.cz__how { color: var(--ink-2); margin-top: 0.75rem; max-width: 52ch; font-size: 0.95rem; }
+.cz__mine { grid-column: 2; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 0.5rem 1.25rem; align-items: start; margin-top: 0.75rem; }
+.cz__verdict { display: flex; justify-self: start; border: 1px solid var(--hair); }
+.cz__v { min-height: 2.75rem; padding: 0 1rem; font-size: 0.85rem; color: var(--ink-2); }
+.cz__v + .cz__v { border-left: 1px solid var(--hair); }
+.cz__v:hover { color: var(--ink); }
+.cz__v[data-v="good"][aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.cz__v[data-v="bad"][aria-pressed="true"] { background: var(--paper-2); color: var(--ink); text-decoration: line-through; }
+.cz__note { width: 100%; font: inherit; font-size: 0.95rem; color: var(--ink); background: var(--paper); border: 1px solid var(--hair); border-radius: 0; padding: 0.6rem 0.75rem; resize: vertical; min-height: 2.75rem; }
+.cz__note::placeholder { color: var(--ink-3); }
+.cz__note:focus { outline: 2px solid var(--link); outline-offset: 1px; border-color: transparent; }
+.cz__general { display: grid; gap: 0.5rem; margin-top: 2rem; }
+.cz__general-head { font-size: 1.1rem; font-weight: 500; }
+.cz__state { color: var(--ink-2); font-size: 0.85rem; min-height: 1.4rem; margin-top: 0.75rem; }
+@media (max-width: 47.99rem) { .cz__mine { grid-column: 1 / -1; grid-template-columns: 1fr; } }
+.cz__away { color: var(--ink-2); font-size: 0.9rem; margin-top: 1.25rem; display: flex; flex-wrap: wrap; align-items: center; gap: 0 1rem; }

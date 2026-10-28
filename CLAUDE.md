@@ -105,11 +105,27 @@ Arranged on 2026-09-28 at his request, so the top level reads at a glance. Keep 
 - **Design 2 is "Pen and wash"**, `design 2/wc-sketch/` (his choice, 2026-10-02, after four rounds
   of variants). Its own design system is `design 2/wc-sketch/DESIGN.md` (the root `DESIGN.md` is
   design 1). It passed the Impeccable finish review (ship). `localhost:8642/journey/` opens it
-  (`design 2/index.html` forwards to `wc-sketch/`); the Journey item in design 1's menu points there. The other 18 versions were removed on 2026-10-03 at his
+  (until 2026-10-29 `design 2/index.html` forwarded there; now it forwards to `new/journey.html`). The other 18 versions were removed on 2026-10-03 at his
   word; they are at the tag `design2-all-versions-2026-10-03`. `?opening` replays the opening.
   `start.command` starts the one server, 8642. Port 8645 was retired on 2026-10-13 at his word:
   `tools/check_site.py` judges "inside the site" by the address, not the resolved file, so pages
   reached through the `journey` link count as the site's own.
+- **The Journey tab is `design 2/new/journey.html`** (his call, 2026-10-29: "close 8644 entirely,
+  make this the new main"; the experiment `journey` was merged and closed). `design 2/index.html`
+  forwards `localhost:8642/journey/` there. The page: the full flat map on arrival with every flight
+  from Taiwan, and a country you click opens its latest trip; scrolling folds the map into a globe
+  (one d3 projection blending Natural Earth into orthographic, plain JS, no GSAP) that turns to the
+  trip being read; the trip's photograph fills the screen behind; the trips are read on a frosted
+  panel where the one the globe shows stays clear and the others fade ("Fade"). Files: `journey.js`,
+  `journey.css`, `kit.js`, `kit.css`, the scroll-craft engine (`scrollcraft.js`, `.css`, copied
+  unedited; brief in `scrollcraft/`). `design 2/new/` (the review list, `index.html`) keeps a Good /
+  Not for me and notes line for it, saved to `ideas/reviews/journey.json`. A trip opens on
+  `design 2/wc-sketch/trip/?trip=<id>&from=journey`, whose back word returns to that entry. The
+  pen-and-wash Journey is still at `/journey/wc-sketch/` (before the merge: tag
+  `before-journey-merge-2026-10-29`); the trial's other versions are at the tags
+  `journey-looks-and-highlights-2026-10-29`, `journey-five-versions-2026-10-18`,
+  `journey-versions-trimmed-2026-10-18`. Design 2's pen-and-wash rules do not bind `design 2/new/`;
+  light only, nothing written on photographs, both languages and no long dashes do.
 - **Inside `design 2/wc-sketch/`, the opening and the map are kept apart** (his call, 2026-10-04,
   so he can collect opening candidates and choose later): `opening/` holds one file per candidate
   (`globe.js`, the globe that unrolls into the map, and `photoball.js`, its photo-ball look),
@@ -309,7 +325,7 @@ reviews it, then says keep or drop (set up 2026-09-28). The real site is never t
 - Ask for a verdict while an experiment is fresh: the longer it sits while `main` moves on, the
   harder it is to merge. List the open ones under 等你決定 in `PROGRESS.md`.
 
-Open now: `journey` (8644, the Journey tab: he kept the Logbook alone on 2026-10-18 and work goes on from it, `design 2/new/logbook.html`; the other versions are at tag `journey-versions-trimmed-2026-10-18`).
+Open now: none.
 
 Decided experiments. Rejected ideas are not proposed again; the tags hold the code.
 
@@ -330,6 +346,7 @@ Decided experiments. Rejected ideas are not proposed again; the tags hold the co
 | `taste-trip` (Taste skill audit-first on the trip page `elements/trip/`: one wash for both countries with vermilion for the route only, smaller blank frames, no coordinates, no scroll hint, even title lines; then the place name under the phone map and country names kept off the route) | kept | 2026-10-15 | merged into `main` |
 | `trip-link` (the trip story page moved into `design 2/wc-sketch/trip/` (`?trip=<journey id>`), one link per journey in Flights, "The trip, along its route / 沿著路線看這趟"; `tools/build2.py` writes each photo's `taken` day so a trip shows only its own photos; "Flights" keeps its name) | kept | 2026-10-15 | merged into `main` |
 | `destinations-map` (the Journey map moved onto Destinations, a book's dive ending on the country page, Journey as the Flights list) | dropped: the map means "where I've been", which is Journey's job | 2026-10-15 | tag `exp-destinations-map-dropped-2026-10-15`; the dive into the country page may come back as the Journey to Guides link |
+| `journey` (the Journey tab rebuilt: Logbook, then scroll-craft's rewinding atlas, the print beside the map, then the map folding into a globe over the trip's photograph, a frosted panel with Fade) | kept, now the Journey tab; 8644 closed | 2026-10-29 | merged into `main`; before it at `before-journey-merge-2026-10-29`; versions at `journey-looks-and-highlights-2026-10-29` |
 | `opening` (home-page openings for design 1; three left: aperture, contact sheet 2, letters 4) and `opening-graph` (openings from his agent graph; ridgeline left) | dropped, both | 2026-10-15 | tags `exp-opening-dropped-2026-10-15`, `exp-opening-graph-dropped-2026-10-15` |
 | `about` (About rewritten from facts he gave and approved word for word: his name as the heading, three paragraphs on who he is, what he shoots and leaves out, why the guides hold; a contact line with Instagram and email; home base, countries, camera and lenses beside it) | kept | 2026-10-16 | merged into `main`; before it at `before-about-2026-10-16` |
 | `gallery` (the Gallery as the photo wall alone: no title, no words, no hover name, no bars, no Dark word) | dropped: the old Gallery stays for now | 2026-10-16 | tag `exp-gallery-dropped-2026-10-16`; the Gallery before it at `gallery-wall-with-controls-2026-10-16` |

@@ -1,0 +1,182 @@
+/* Journey, built with scroll-craft (2026-10-18). Light paper, one face (Geist), the stamp red
+   for routes only. The engine's tokens are set for a light canvas: halved shadows, no inset
+   edge, square corners. */
+
+:root {
+  --sc-canvas: oklch(97% 0.004 95);
+  --sc-surface: oklch(93.6% 0.006 95);
+  --sc-ink: oklch(19% 0.006 60);
+  --sc-ink-soft: oklch(43% 0.008 60);
+  --sc-accent: oklch(52% 0.17 28);
+  --sc-accent-ink: oklch(98% 0.004 95);
+  --sc-font-display: "Geist", "Noto Sans TC", sans-serif;
+  --sc-font-text: "Geist", "Noto Sans TC", sans-serif;
+  --sc-r-sm: 0; --sc-r-md: 0; --sc-r-lg: 0;
+  --sc-edge: none;
+  --sc-shadow-color: 60 10% 30%;
+
+  /* the kit's names, from the same values */
+  --paper: var(--sc-canvas);
+  --paper-2: var(--sc-surface);
+  --ink: var(--sc-ink);
+  --ink-2: var(--sc-ink-soft);
+  --ink-3: oklch(63% 0.008 60);
+  --hair: oklch(88% 0.006 80);
+  --route: var(--sc-accent);
+  --link: oklch(45% 0.15 28);
+  --been: oklch(89.5% 0.03 70);
+  --been-on: oklch(84% 0.055 60);
+  font-feature-settings: "tnum" 1;
+}
+:focus-visible { border-radius: 0; }
+
+/* the frame: the whole world fills the screen on arrival, then glides aside to sit beside the
+   years. The map is one fixed drawing scaled to fit its box, so it is never cropped. --dock (0 to 1)
+   is set by journey.js as the arrival scrolls away. */
+.jr { --mapw: 50vw; --dock: 0; position: relative; }
+#top { position: relative; z-index: 3; }
+.jr-map {
+  position: fixed; left: 0; top: 0; z-index: 0; margin: 0; background: var(--paper);
+  height: 100svh;
+  width: calc(100vw - var(--dock) * (100vw - var(--mapw)));
+  padding: calc(4.75rem * (1 - var(--dock)) + 1rem * var(--dock)) calc(var(--edge) * (1 - var(--dock))) calc(12.5rem * (1 - var(--dock)) + 1rem * var(--dock)) 0;
+  border-right: 1px solid oklch(88% 0.006 80 / var(--dock));
+}
+.jr-map svg { display: block; width: 100%; height: 100%; }
+.jr-text { position: relative; z-index: 1; }
+.jr-years, .jr-close { margin-left: var(--mapw); padding: 0 var(--edge) 0 clamp(1.5rem, 3.5vw, 3.5rem); background: var(--paper); }
+.jr-years { padding-top: 0.5rem; }
+
+/* the year folio: counts back as the chapters pass */
+.jr-folio { position: absolute; left: clamp(1rem, 2.5vw, 2.25rem); bottom: clamp(1rem, 3vh, 2rem); display: grid; gap: 0.2rem; pointer-events: none; opacity: 0; transform: translateY(0.5rem); transition: opacity 0.6s var(--ease), transform 0.6s var(--ease); }
+.jr-map.has-year .jr-folio { opacity: 1; transform: none; }
+.jr-folio__year { font-size: clamp(3rem, 1.5rem + 4vw, 5.5rem); font-weight: 400; letter-spacing: -0.06em; line-height: 0.82; font-variant-numeric: tabular-nums; }
+.jr-folio__by { color: var(--ink-2); font-size: 0.95rem; }
+
+/* the map's states */
+.jr-map .visited { fill: var(--been); transition: fill 0.7s var(--ease); }
+.jr-map .visited.is-later { fill: var(--paper-2); }
+.jr-map .leg { stroke: var(--ink-2); stroke-opacity: 0; stroke-width: 0.8; transition: stroke-opacity 0.6s var(--ease), stroke 0.6s var(--ease); }
+.jr-map svg.is-rewound .leg { stroke-opacity: 0.32; }
+.jr-map svg.is-rewound .leg.is-later { stroke-opacity: 0; }
+.jr-map svg.is-rewound .leg.is-here { stroke: var(--route); stroke-opacity: 1; stroke-width: 1.7; }
+.jr-map .fly { fill: none; stroke: var(--route); stroke-width: 1.3; stroke-linecap: round; vector-effect: non-scaling-stroke; transition: opacity 0.7s var(--ease), stroke-opacity 0.6s var(--ease); }
+.jr-map svg.is-rewound .fly { stroke-opacity: 0; }   /* the fan is the arrival's; beside the reading only the real legs show */
+.jr-map .fly.is-later, .jr-map .end.is-later { opacity: 0; }
+.jr-map .end { fill: var(--paper); stroke: var(--route); stroke-width: 1.2; vector-effect: non-scaling-stroke; opacity: 0; transition: opacity 0.6s var(--ease); }
+.jr-map .end.is-in { opacity: 1; }
+.jr-map .end.is-in.is-later { opacity: 0; }
+.jr-map .plane { fill: var(--ink); stroke: var(--paper); stroke-width: 1.6px; paint-order: stroke; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.jr-map .ring { fill: none; stroke: var(--route); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.jr-map .home { fill: var(--ink); }
+/* the globe the map folds into: its edge and lines of latitude come in as it closes round */
+.jr-map .sphere { fill: var(--paper); stroke: var(--ink-3); stroke-width: 0.9; }
+.jr-map .grat { fill: none; stroke: var(--hair); stroke-width: 0.6; }
+/* the trip being read: its own legs drawn strong over the year's, its stops marked */
+.jr-map svg.is-rewound .leg.is-here { stroke-opacity: 0.4; stroke-width: 1.2; }
+.jr-map svg.is-rewound .leg.is-now { stroke: var(--route); stroke-opacity: 1; stroke-width: 2; }
+.jr-map .stop { fill: var(--paper); stroke: var(--route); stroke-width: 1.3; vector-effect: non-scaling-stroke; }
+.jr-map svg:not(.is-rewound) .stop { display: none; }
+/* a country he has been to opens its latest trip */
+.jr-map .visited.has-trip { cursor: pointer; }
+@media (hover: hover) and (pointer: fine) {
+  .jr-map .visited.has-trip:hover { fill: var(--been-on); transition-duration: 0.15s; }
+}
+/* the return: his countries and flights come back in the order he first went */
+.jr-map svg.is-forward :is(.visited, .fly, .end) { transition-delay: calc(var(--i, 0) * 110ms); }
+
+/* the arrival: the whole of it, under the grand map */
+.jr-hero { height: calc(100svh - 4.5rem); display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 1rem 3rem; padding: 0 var(--edge) 2.25rem; pointer-events: none; }
+.jr-hero > * { pointer-events: auto; }
+.jr-hero__words { display: grid; gap: 0.6rem; opacity: clamp(0, 1 - var(--dock) * 1.6, 1); }   /* gives way as the globe docks beneath it */
+.jr-hero__title { font-size: clamp(3rem, 1.6rem + 4vw, 5.4rem); font-weight: 500; letter-spacing: -0.045em; line-height: 0.92; }
+:lang(zh-Hant) .jr-hero__title { letter-spacing: 0.04em; line-height: 1.15; }
+.jr-hero__intro { color: var(--ink-2); max-width: 40ch; font-size: 1.05rem; }
+.jr-totals { display: grid; grid-template-columns: repeat(3, auto); justify-content: end; gap: 0.5rem clamp(1.5rem, 3vw, 3rem); margin: 0; }
+.jr-totals div { display: flex; flex-direction: column-reverse; gap: 0.35rem; }
+.jr-totals dd { margin: 0; font-size: clamp(2.6rem, 1.6rem + 2.6vw, 4.4rem); font-weight: 400; letter-spacing: -0.05em; line-height: 0.9; }
+.jr-totals dt { color: var(--ink-2); font-size: 0.85rem; }
+
+/* a year: a hard rule and its number, then its trips */
+.jr-year { border-top: 1px solid var(--ink); padding: 1.1rem 0 2.5rem; }
+.jr-year__head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
+.jr-year__n { font-size: 1.4rem; font-weight: 500; letter-spacing: -0.02em; line-height: 1.1; padding-block: 0.1em; }
+.jr-year__count { color: var(--ink-2); font-size: 0.85rem; }
+.jr-trip { padding-block: 1.1rem; }
+.jr-trip__link { display: grid; gap: 0.15rem; text-decoration: none; }
+.jr-trip__when { color: var(--ink-2); }
+.jr-trip__title { font-size: clamp(1.3rem, 1.1rem + 0.6vw, 1.7rem); font-weight: 500; letter-spacing: -0.02em; line-height: 1.15; margin-top: 0.15rem; transition: color 0.2s var(--ease); }
+.jr-trip__when + .jr-trip__title { margin-top: 0.15rem; }
+.jr-trip__link > .jr-trip__title:first-child { margin-top: 0.35rem; }
+a.jr-trip__link:hover .jr-trip__title { color: var(--link); }
+.jr-trip__route { color: var(--ink-2); font-size: 0.9rem; line-height: 1.45; }
+/* the print under the docked map: the photograph of the trip being read, its name beneath.
+   As --dock goes 0 to 1 the drawing gives up the lower half of its column */
+.jr-beside { position: absolute; left: clamp(1rem, 2.5vw, 2.25rem); right: 1.5rem; bottom: 1.25rem; height: calc(52% - 2rem); display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: 0.5rem; opacity: 0; transition: opacity 0.6s var(--ease); }
+.jr-beside.has-print { opacity: var(--dock); }
+.jr-beside__frame { position: relative; min-height: 0; }
+.jr-beside__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: left bottom; opacity: 0; transition: opacity 0.7s var(--ease); }
+.jr-beside__img.is-on { opacity: 1; }
+.jr-beside__cap { display: flex; gap: 0 1rem; flex-wrap: wrap; font-size: 0.85rem; }
+.jr-beside__where { color: var(--ink-2); }
+/* on the phone the lead print sits in the entry instead; a photograph opens the viewer */
+.jr-shot { display: block; width: 100%; cursor: zoom-in; }
+.jr-shot__img { width: 100%; height: auto; }
+.jr-lead { display: none; }
+.jr-print { margin: 0; display: grid; gap: 0.45rem; }
+.jr-print__cap { color: var(--ink-2); font-size: 0.85rem; }
+
+/* the close: where it began, then the map comes back to now and holds */
+.jr-year:last-of-type { min-height: 55svh; }
+.jr-close { min-height: 85svh; display: grid; align-content: end; border-top: 1px solid var(--ink); padding-block: 4rem 30svh; }
+.jr-close__kicker { color: var(--ink-2); }
+.jr-close__first { font-size: clamp(2rem, 1.3rem + 2.4vw, 3.4rem); font-weight: 500; letter-spacing: -0.035em; line-height: 1.02; margin-top: 0.6rem; text-wrap: balance; }
+.jr-close__since { color: var(--ink-2); max-width: 36ch; margin-top: 1.2rem; }
+.jr-close__go { margin-top: 1.4rem; max-width: 40ch; color: var(--ink-2); }
+.jr-close__go a { color: var(--link); text-decoration: underline; text-underline-offset: 0.22em; text-decoration-thickness: 1px; }
+.jr-close__go a:hover { text-decoration-thickness: 2px; }
+
+@media (max-width: 63.99rem) {
+  .jr-map { position: sticky; top: 0; z-index: 5; width: 100%; height: auto; padding: 0.5rem 0 0; border-right: 0; border-bottom: 1px solid var(--hair); }
+  .jr-map svg { height: auto; }
+  .jr-beside { display: none; }
+  .jr-lead { display: grid; margin-top: 1.1rem; }
+  .jr-trip { padding-block: 1.4rem 2.2rem; }
+  .jr-folio { position: static; display: flex; align-items: baseline; gap: 0.6rem; min-height: 2.3rem; padding: 0.1rem var(--edge) 0.4rem; transform: none; }
+  .jr-years, .jr-close { margin-left: 0; padding-inline: var(--edge); }
+  .jr-hero { height: auto; grid-template-columns: 1fr; padding-block: 1.5rem 2.5rem; }
+  .jr-totals { justify-content: start; }
+  .jr-folio__year { font-size: 1.5rem; letter-spacing: -0.03em; line-height: 1; }
+  .jr-folio__by { font-size: 0.78rem; }
+  .jr-totals dd { font-size: 2.4rem; }
+}
+@media (min-width: 64rem) and (max-width: 80rem) {
+  .jr { --mapw: 46vw; }   /* a laptop: the reading column keeps its measure */
+}
+
+/* ------------------------------------------------------------ the reading (2026-10-29, his pick)
+   Once it scrolls, as on the old 8642 Flights page: the photograph of the trip being read fills
+   the screen, the globe sits large on its left half, and the trips are read on a slightly
+   see-through frosted panel on the right, where the trip the globe shows stays clear and the
+   others step back ("Fade"). The other layouts and marks are at tag journey-looks-and-highlights-2026-10-29. */
+.jr-panel { display: none; }
+@media (min-width: 64rem) {
+  .jr-map { background: transparent; }
+  .jr-map svg { height: 100%; }
+  .jr-map .sphere { stroke: var(--ink-2); }
+  /* the photograph: behind the globe, fading in as the map docks */
+  .jr-beside { position: fixed; inset: 0; height: auto; z-index: -1; display: block; }
+  .jr-beside__frame { position: absolute; inset: 0; }
+  .jr-beside__img { object-fit: cover; object-position: center; }
+  .jr-beside.has-print { opacity: calc(var(--dock) * var(--dock)); }
+  /* the year and the photograph's name: small paper labels at the foot of the left column */
+  .jr-folio { bottom: 1.25rem; background: var(--paper); padding: 0.7rem 0.9rem 0.6rem; }
+  .jr-folio__year { font-size: clamp(2.2rem, 1.2rem + 2.4vw, 3.4rem); }
+  .jr-beside__cap { position: fixed; bottom: 1.25rem; right: calc(100vw - var(--mapw) + 1.25rem); background: var(--paper); padding: 0.45rem 0.7rem; }
+  /* the panel the trips are read on, frosted paper the photograph shows through */
+  .jr-panel { display: block; position: fixed; top: 0; right: 0; bottom: 0; width: calc(100vw - var(--mapw)); z-index: 0; opacity: var(--dock); pointer-events: none; background: color-mix(in oklch, var(--paper) 64%, transparent); backdrop-filter: blur(22px) saturate(1.05); -webkit-backdrop-filter: blur(22px) saturate(1.05); }
+  .jr-years, .jr-close { background: transparent; }
+  /* the trip the globe shows stays clear; the others step back */
+  .jr-trip { transition: opacity 240ms var(--ease); }
+  .jr-years:has(.is-reading) .jr-trip:not(.is-reading) { opacity: 0.42; }
+}
