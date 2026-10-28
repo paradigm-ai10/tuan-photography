@@ -360,6 +360,16 @@
 - 安裝紀錄: 2026-10-11 裝好並試過。ffmpeg（brew）；Whisper 是 mlx-whisper，裝在 ~/.local/share/motion/whisper-venv，模型 whisper-large-v3-turbo，中文試過，數字和逐字時間都對（輸出是簡體，要轉繁體）。HyperFrames 外掛 0.8.147，從讀過的那份程式裝（~/.local/share/motion/hyperframes，更新要手動），遙測已關（HYPERFRAMES_NO_TELEMETRY=1）。試做 4 秒直式片段「Aoraki 0→3,724 m 加山稜線」，6.5 秒輸出完成。外掛裡要付費金鑰的（HeyGen、Gemini、ElevenLabs 配音和音樂）都不用。
 
 
+### Hallmark（Nutlope）
+- 類型: 設計 Skill
+- 日期: 2026-10-28
+- 重點: 反 AI 味的設計檢查加 50 種風格
+- 網址: https://github.com/Nutlope/hallmark
+- 狀態: 收集中
+- 這是什麼: Together AI 的 Nutlope 做的「anti-AI-slop」設計 skill，給 Claude Code 用，MIT 授權，約 4 萬顆星。三層檢查（Floor 絕不能出的錯：對比、無障礙、編造事實；Reflex 模型的慣性毛病，說得出理由才能破；Finish 收尾細節），50 種「材質」主題各一張參考圖，做完在瀏覽器用八種寬度檢查，再由另一個乾淨的子代理審一次。另有 redesign 和 audit 指令、照片用 Wikimedia Commons 的開放授權圖庫。示範站 https://www.usehallmark.com
+- Claude 備註: 和已裝的 Taste skill、Impeccable 是同一類（規則加審查），重疊多；新的是 50 種主題圖和八種寬度的自動檢查。它的風格多偏產品頁（銀行、API、香水品牌），不是攝影網站。要裝的話，Mac 和帳號兩邊一起。
+- 喜歡它什麼: 待問
+
 ### Motion (motionin.design)
 - 類型: 找靈感的地方
 - 日期: 2026-10-06
