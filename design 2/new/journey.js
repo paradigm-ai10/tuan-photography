@@ -129,6 +129,8 @@
       .attr('preserveAspectRatio', 'xMidYMid meet');
     const k0 = proj.scale(), tr0 = proj.translate();
     const k1 = vb.h * 0.49, tr1 = [vb.x + vb.w / 2, vb.y + vb.h / 2];   // the globe fills the frame's height
+    const side = k1 * 2.3, vb1 = { x: tr1[0] - side / 2, y: tr1[1] - side / 2, w: side, h: side };
+    let unit = 1;   // the size of the frame against the flat map's, so the marks keep their size
     const path = d3.geoPath(proj);
 
     // two drawings of the world: the fine one for the still arrival, the light one while it moves
@@ -192,6 +194,10 @@
     function pose() {
       const a = fold;
       proj.alpha(a).scale(k0 + (k1 - k0) * a).translate([tr0[0] + (tr1[0] - tr0[0]) * a, tr0[1] + (tr1[1] - tr0[1]) * a]).rotate(facing());
+      // the frame closes in round the globe as it forms, so the globe fills its column
+      const v = [vb.x + (vb1.x - vb.x) * a, vb.y + (vb1.y - vb.y) * a, vb.w + (vb1.w - vb.w) * a, vb.h + (vb1.h - vb.h) * a];
+      svg.attr('viewBox', v.map((n) => n.toFixed(1)).join(' '));
+      unit = v[2] / vb.w;
       // the far side goes as the map closes round: a cap behind the globe that grows to a hemisphere
       if (a <= 0.001) proj.preclip(d3.geoClipAntimeridian);
       else if (a >= 0.999) proj.preclip(d3.geoClipCircle(Math.PI / 2));   // radians, as d3 takes it here
@@ -199,7 +205,13 @@
     }
     // a point on the side of the globe that faces us
     const seen = (p) => fold < 0.5 || d3.geoDistance(p, [-facing()[0], -facing()[1]]) < (Math.PI / 180) * (180 - 90 * fold) - 0.02;
-    const at2 = (sel, p) => { const xy = proj(p); sel.setAttribute('cx', xy[0].toFixed(1)); sel.setAttribute('cy', xy[1].toFixed(1)); sel.setAttribute('visibility', seen(p) ? 'visible' : 'hidden'); };
+    const at2 = (sel, p) => {
+      const xy = proj(p);
+      sel.setAttribute('cx', xy[0].toFixed(1)); sel.setAttribute('cy', xy[1].toFixed(1));
+      sel.setAttribute('visibility', seen(p) ? 'visible' : 'hidden');
+      if (!sel.r0) sel.r0 = +sel.getAttribute('r') || 3;
+      if (!sel.classList.contains('ring')) sel.setAttribute('r', (sel.r0 * unit).toFixed(2));
+    };
 
     function drawSky() {
       lines.attr('d', (f) => (f.p > 0 ? path({ type: 'LineString', coordinates: [home, f.go(f.p)] }) : null));
@@ -338,6 +350,7 @@
             <p class="jr-beside__cap"><span class="jr-beside__name"></span><span class="jr-beside__where"></span></p>
           </div>
         </figure>
+        <div class="jr-panel" aria-hidden="true"></div>
         <div class="jr-text">
           <header class="jr-hero">
             <div class="jr-hero__words">

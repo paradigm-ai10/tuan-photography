@@ -155,3 +155,44 @@ a.jr-trip__link:hover .jr-trip__title { color: var(--link); }
 @media (min-width: 64rem) and (max-width: 80rem) {
   .jr { --mapw: 46vw; }   /* a laptop: the reading column keeps its measure */
 }
+
+/* ------------------------------------------------------------ the reading layouts (2026-10-28)
+   His note: once it scrolls, more like the 8642 Flights page: a large globe on the left over the
+   photograph of the trip being read, the trips in a panel on the right. Four ways to do it, one
+   class on <body> each (journey-<look>.html); journey.html keeps the print under the globe. */
+.jr-panel { display: none; }
+@media (min-width: 64rem) {
+  .look .jr-map { background: transparent; }
+  .look .jr-map svg { height: 100%; }
+  .look .jr-map .sphere { stroke: var(--ink-2); }
+  /* the photograph: behind the globe, fading in as the map docks */
+  .look .jr-beside { position: fixed; inset: 0; height: auto; z-index: -1; display: block; }
+  .look .jr-beside__frame { position: absolute; inset: 0; }
+  .look .jr-beside__img { object-fit: cover; object-position: center; }
+  .look .jr-beside.has-print { opacity: calc(var(--dock) * var(--dock)); }
+  /* the year and the photograph's name: small paper labels at the foot of the left column */
+  .look .jr-folio { bottom: 1.25rem; background: var(--paper); padding: 0.7rem 0.9rem 0.6rem; }
+  .look .jr-folio__year { font-size: clamp(2.2rem, 1.2rem + 2.4vw, 3.4rem); }
+  .look .jr-beside__cap { position: fixed; bottom: 1.25rem; right: calc(100vw - var(--mapw) + 1.25rem); background: var(--paper); padding: 0.45rem 0.7rem; }
+  /* the panel the trips are read on; the years themselves lose their own ground */
+  .look .jr-panel { display: block; position: fixed; top: 0; right: 0; bottom: 0; width: calc(100vw - var(--mapw)); z-index: 0; opacity: var(--dock); pointer-events: none; }
+  .look .jr-years, .look .jr-close { background: transparent; }
+
+  /* 1. frosted: the photograph runs under everything; the panel is frosted paper (closest to 8642) */
+  .look--frosted .jr-panel { background: color-mix(in oklch, var(--paper) 74%, transparent); backdrop-filter: blur(22px) saturate(1.05); -webkit-backdrop-filter: blur(22px) saturate(1.05); }
+
+  /* 2. half: the photograph fills the globe's half only; the panel is plain paper */
+  .look--half .jr-beside { right: calc(100vw - var(--mapw)); }
+  .look--half .jr-panel { background: var(--paper); }
+
+  /* 3. veil: the photograph runs under everything, washed with paper so it stays quiet */
+  .look--veil .jr-beside__frame::after { content: ""; position: absolute; inset: 0; background: color-mix(in oklch, var(--paper) 42%, transparent); }
+  .look--veil .jr-panel { background: color-mix(in oklch, var(--paper) 86%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+
+  /* 4. window: paper all round; the photograph is a large print set in the left column, the globe over it */
+  .look--window .jr-beside { inset: clamp(1rem, 2.5vw, 2.25rem); right: calc(100vw - var(--mapw) + clamp(1rem, 2.5vw, 2.25rem)); }
+  .look--window .jr-beside__cap { bottom: calc(clamp(1rem, 2.5vw, 2.25rem) + 0.75rem); right: calc(100vw - var(--mapw) + clamp(1rem, 2.5vw, 2.25rem) + 0.75rem); }
+  .look--window .jr-folio { left: calc(clamp(1rem, 2.5vw, 2.25rem) + 0.75rem); bottom: calc(clamp(1rem, 2.5vw, 2.25rem) + 0.75rem); }
+  .look--window .jr-panel { background: var(--paper); }
+  .look--window .jr-map { border-right-color: transparent; }
+}

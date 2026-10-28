@@ -15,6 +15,10 @@
       saved: 'Saved. Claude can read it.', local: 'Saved in this browser only', how: 'Mark each one and write a note. It saves as you go, and Claude reads it straight away.',
       items: [
         ['S', 'Journey, built with scroll-craft', 'The Journey as it stands: the grand map on arrival and every plane leaving Taiwan at once; the years, newest first, while the map rewinds; and, once the map has docked, the photograph of the trip you are reading under it, changing as you move on (your pick, S3, of the three ways of showing photographs). Back from a trip returns to that trip.', 'journey.html'],
+        ['L1', 'Frosted', 'Once it scrolls: the photograph of the trip you are reading runs under the whole screen, the globe sits large on its left half, and the trips are read on a frosted paper panel on the right. Closest to the 8642 Flights page.', 'journey-frosted.html'],
+        ['L2', 'Half', 'The photograph fills only the globe\'s half; the trips sit on plain paper on the right.', 'journey-half.html'],
+        ['L3', 'Veil', 'The photograph runs under the whole screen, washed with paper so it stays quiet; the panel is lightly frosted.', 'journey-veil.html'],
+        ['L4', 'Window', 'Paper all round. The photograph is a large print set in the left column with the globe over it; the trips on plain paper.', 'journey-window.html'],
       ],
     },
     zh: {
@@ -26,6 +30,10 @@
       saved: '已存，Claude 讀得到。', local: '只存在這個瀏覽器', how: '每一版按喜歡或不要，寫一句筆記。打字就會存，Claude 直接讀得到。',
       items: [
         ['S', '旅程，用 scroll-craft 做的', '目前的旅程頁：一進來整張地圖佔滿畫面，所有飛機同時從台灣起飛；接著按年份往下，地圖跟著回到過去；地圖滑到旁邊後，下面放著你正在讀的那一趟的照片，往下讀會跟著換（三種放照片的方式裡你選的 S3）。從一趟旅行回來會回到那一趟。', 'journey.html'],
+        ['L1', '霧面', '往下捲之後：正在讀的那一趟的照片鋪滿整個畫面，地球大大地放在左半邊，右邊是一片霧面的紙，旅程寫在上面。最像 8642 的 Flights 頁。', 'journey-frosted.html'],
+        ['L2', '半邊', '照片只鋪在地球那半邊，右邊的旅程放在白紙上。', 'journey-half.html'],
+        ['L3', '薄紗', '照片鋪滿整個畫面，但蓋上一層紙色，讓它安靜一點；右邊的紙稍微霧面。', 'journey-veil.html'],
+        ['L4', '窗口', '四周都是紙。照片像一張大照片放在左欄，地球疊在上面；右邊的旅程放在白紙上。', 'journey-window.html'],
       ],
     },
   };
