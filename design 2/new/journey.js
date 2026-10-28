@@ -7,10 +7,10 @@
    countries he had not yet seen go pale, later routes lift off. At 2010 the map is almost empty;
    past it, the map plays forward to the present and holds.
 
-   Once the map has docked it gives up the lower half of its column to one photograph, the trip
-   being read, which changes as the reading moves on; the right column is words only. On the phone
-   the photograph sits in the entry instead. (His pick, 2026-10-18, from three "prints lead"
-   variations after the Impeccable critique; the others are at tag journey-five-versions-2026-10-18.)
+   As the arrival scrolls away the map folds into a globe (2026-10-28, his call): the globe turns
+   to the trip being read, over that trip's photograph, and the trips are read on a frosted panel
+   where the one in view stays clear. A country on the map opens its latest trip. On the phone the
+   globe sits across the top and the photograph in the entry instead.
 
    The scroll-craft engine (scrollcraft.js, unedited) drives the entries and the year wipes; the
    map, the planes, the totals, the rewind and the print are this page's own code. */

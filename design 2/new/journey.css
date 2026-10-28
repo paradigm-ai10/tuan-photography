@@ -112,8 +112,6 @@ a.jr-trip__link:hover .jr-trip__title { color: var(--link); }
 .jr-trip__route { color: var(--ink-2); font-size: 0.9rem; line-height: 1.45; }
 /* the print under the docked map: the photograph of the trip being read, its name beneath.
    As --dock goes 0 to 1 the drawing gives up the lower half of its column */
-.jr-map svg { height: calc(100% - var(--dock) * 52%); }
-.jr-folio { bottom: calc(52% + 0.75rem); }
 .jr-beside { position: absolute; left: clamp(1rem, 2.5vw, 2.25rem); right: 1.5rem; bottom: 1.25rem; height: calc(52% - 2rem); display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: 0.5rem; opacity: 0; transition: opacity 0.6s var(--ease); }
 .jr-beside.has-print { opacity: var(--dock); }
 .jr-beside__frame { position: relative; min-height: 0; }
@@ -156,43 +154,29 @@ a.jr-trip__link:hover .jr-trip__title { color: var(--link); }
   .jr { --mapw: 46vw; }   /* a laptop: the reading column keeps its measure */
 }
 
-/* ------------------------------------------------------------ the reading layouts (2026-10-28)
-   His note: once it scrolls, more like the 8642 Flights page: a large globe on the left over the
-   photograph of the trip being read, the trips in a panel on the right. Four ways to do it, one
-   class on <body> each (journey-<look>.html); journey.html keeps the print under the globe. */
+/* ------------------------------------------------------------ the reading (2026-10-29, his pick)
+   Once it scrolls, as on the old 8642 Flights page: the photograph of the trip being read fills
+   the screen, the globe sits large on its left half, and the trips are read on a slightly
+   see-through frosted panel on the right, where the trip the globe shows stays clear and the
+   others step back ("Fade"). The other layouts and marks are at tag journey-looks-and-highlights-2026-10-29. */
 .jr-panel { display: none; }
 @media (min-width: 64rem) {
-  .look .jr-map { background: transparent; }
-  .look .jr-map svg { height: 100%; }
-  .look .jr-map .sphere { stroke: var(--ink-2); }
+  .jr-map { background: transparent; }
+  .jr-map svg { height: 100%; }
+  .jr-map .sphere { stroke: var(--ink-2); }
   /* the photograph: behind the globe, fading in as the map docks */
-  .look .jr-beside { position: fixed; inset: 0; height: auto; z-index: -1; display: block; }
-  .look .jr-beside__frame { position: absolute; inset: 0; }
-  .look .jr-beside__img { object-fit: cover; object-position: center; }
-  .look .jr-beside.has-print { opacity: calc(var(--dock) * var(--dock)); }
+  .jr-beside { position: fixed; inset: 0; height: auto; z-index: -1; display: block; }
+  .jr-beside__frame { position: absolute; inset: 0; }
+  .jr-beside__img { object-fit: cover; object-position: center; }
+  .jr-beside.has-print { opacity: calc(var(--dock) * var(--dock)); }
   /* the year and the photograph's name: small paper labels at the foot of the left column */
-  .look .jr-folio { bottom: 1.25rem; background: var(--paper); padding: 0.7rem 0.9rem 0.6rem; }
-  .look .jr-folio__year { font-size: clamp(2.2rem, 1.2rem + 2.4vw, 3.4rem); }
-  .look .jr-beside__cap { position: fixed; bottom: 1.25rem; right: calc(100vw - var(--mapw) + 1.25rem); background: var(--paper); padding: 0.45rem 0.7rem; }
-  /* the panel the trips are read on; the years themselves lose their own ground */
-  .look .jr-panel { display: block; position: fixed; top: 0; right: 0; bottom: 0; width: calc(100vw - var(--mapw)); z-index: 0; opacity: var(--dock); pointer-events: none; }
-  .look .jr-years, .look .jr-close { background: transparent; }
-
-  /* 1. frosted: the photograph runs under everything; the panel is frosted paper (closest to 8642) */
-  .look--frosted .jr-panel { background: color-mix(in oklch, var(--paper) 74%, transparent); backdrop-filter: blur(22px) saturate(1.05); -webkit-backdrop-filter: blur(22px) saturate(1.05); }
-
-  /* 2. half: the photograph fills the globe's half only; the panel is plain paper */
-  .look--half .jr-beside { right: calc(100vw - var(--mapw)); }
-  .look--half .jr-panel { background: var(--paper); }
-
-  /* 3. veil: the photograph runs under everything, washed with paper so it stays quiet */
-  .look--veil .jr-beside__frame::after { content: ""; position: absolute; inset: 0; background: color-mix(in oklch, var(--paper) 42%, transparent); }
-  .look--veil .jr-panel { background: color-mix(in oklch, var(--paper) 86%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
-
-  /* 4. window: paper all round; the photograph is a large print set in the left column, the globe over it */
-  .look--window .jr-beside { inset: clamp(1rem, 2.5vw, 2.25rem); right: calc(100vw - var(--mapw) + clamp(1rem, 2.5vw, 2.25rem)); }
-  .look--window .jr-beside__cap { bottom: calc(clamp(1rem, 2.5vw, 2.25rem) + 0.75rem); right: calc(100vw - var(--mapw) + clamp(1rem, 2.5vw, 2.25rem) + 0.75rem); }
-  .look--window .jr-folio { left: calc(clamp(1rem, 2.5vw, 2.25rem) + 0.75rem); bottom: calc(clamp(1rem, 2.5vw, 2.25rem) + 0.75rem); }
-  .look--window .jr-panel { background: var(--paper); }
-  .look--window .jr-map { border-right-color: transparent; }
+  .jr-folio { bottom: 1.25rem; background: var(--paper); padding: 0.7rem 0.9rem 0.6rem; }
+  .jr-folio__year { font-size: clamp(2.2rem, 1.2rem + 2.4vw, 3.4rem); }
+  .jr-beside__cap { position: fixed; bottom: 1.25rem; right: calc(100vw - var(--mapw) + 1.25rem); background: var(--paper); padding: 0.45rem 0.7rem; }
+  /* the panel the trips are read on, frosted paper the photograph shows through */
+  .jr-panel { display: block; position: fixed; top: 0; right: 0; bottom: 0; width: calc(100vw - var(--mapw)); z-index: 0; opacity: var(--dock); pointer-events: none; background: color-mix(in oklch, var(--paper) 64%, transparent); backdrop-filter: blur(22px) saturate(1.05); -webkit-backdrop-filter: blur(22px) saturate(1.05); }
+  .jr-years, .jr-close { background: transparent; }
+  /* the trip the globe shows stays clear; the others step back */
+  .jr-trip { transition: opacity 240ms var(--ease); }
+  .jr-years:has(.is-reading) .jr-trip:not(.is-reading) { opacity: 0.42; }
 }
