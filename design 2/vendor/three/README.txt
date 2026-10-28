@@ -1,0 +1,1 @@
+three.js r186.1 (npm three@0.186.1), MIT, build/three.module.js + three.core.js and examples/jsm/lines (LineSegments2, LineSegmentsGeometry, LineMaterial), copied unedited 2026-10-29 for the 3D globe trial.

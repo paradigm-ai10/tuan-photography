@@ -1,0 +1,15 @@
+/* The 3D globe trial (globe3d.js): the drawing is a canvas in place of the SVG map. On a wide
+   screen it covers the window behind the reading and the globe is placed in the map's column by
+   the camera; on the phone it sits in the pinned strip at the top, as the SVG did. */
+.jr-map #jr-svg { display: none; }
+.jr-map .g3 { position: fixed; inset: 0; z-index: 0; }
+.jr-map .g3 canvas { display: block; width: 100%; height: 100%; touch-action: pan-y; }
+@media (max-width: 63.99rem) {
+  .jr-map .g3 { position: relative; inset: auto; width: 100%; aspect-ratio: 1.9; }
+}
+/* the reading layer lets the globe under it be clicked and turned: only the years and the close
+   (beside the map's column) and the arrival's own words catch the pointer */
+@media (min-width: 64rem) {
+  .jr-text { pointer-events: none; }
+  .jr-years, .jr-close { pointer-events: auto; }
+}

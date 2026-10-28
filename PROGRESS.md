@@ -30,6 +30,12 @@ Idea list additions were the candidates). He moves and deletes them himself.
 
 ## 等你決定 Waiting on you
 
+- **3D globe, five versions** (2026-10-29, built while you were away): the Journey page with the map
+  as a real 3D object (three.js), beside the live one, which is unchanged. Review them on
+  http://localhost:8642/journey/new/index.html (Good / Not for me and a note each; saved to
+  `ideas/reviews/journey.json`). Pages: `design 2/new/globe-{paper,relief,high,raised,roll}.html`,
+  code `globe3d.js` + `globe3d.css`; before it at tag `before-globe3d-2026-10-29`.
+
 - **Sea photograph** on the old Journey map: which photographs besides Aoraki, if any?
 - **Camera data for the 22 US photographs:** re-export from Lightroom with metadata, or drop the
   raw files in.

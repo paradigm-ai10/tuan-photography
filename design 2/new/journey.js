@@ -505,7 +505,8 @@
     if (engine && engine.destroy) engine.destroy();
     render();
     engine = window.ScrollCraft.mount(document.body);
-    map = await makeMap($('#jr-svg'));
+    // a page may bring its own map (the 3D globe trial, globe3d.js) that answers the same six words
+    map = await (window.JourneyMap || makeMap)($('#jr-svg'));
     state = null; folioYear = null; shown = null;
     if (returnTo()) map.settled(totals); else map.flyOut(totals);
     let raf = 0;

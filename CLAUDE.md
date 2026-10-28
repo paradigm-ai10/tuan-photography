@@ -124,7 +124,7 @@ Arranged on 2026-09-28 at his request, so the top level reads at a glance. Keep 
   pen-and-wash Journey is still at `/journey/wc-sketch/` (before the merge: tag
   `before-journey-merge-2026-10-29`); the trial's other versions are at the tags
   `journey-looks-and-highlights-2026-10-29`, `journey-five-versions-2026-10-18`,
-  `journey-versions-trimmed-2026-10-18`. Design 2's pen-and-wash rules do not bind `design 2/new/`;
+  `journey-versions-trimmed-2026-10-18`. A 3D globe trial (2026-10-29) sits beside it: `globe-paper`, `globe-relief`, `globe-high`, `globe-raised`, `globe-roll` (.html), one module `globe3d.js` (three.js r186 in `design 2/vendor/three/`, MIT) that journey.js uses through `window.JourneyMap` in place of its SVG map; listed on the review page. Design 2's pen-and-wash rules do not bind `design 2/new/`;
   light only, nothing written on photographs, both languages and no long dashes do.
 - **Inside `design 2/wc-sketch/`, the opening and the map are kept apart** (his call, 2026-10-04,
   so he can collect opening candidates and choose later): `opening/` holds one file per candidate
