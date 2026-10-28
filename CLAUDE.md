@@ -3,84 +3,13 @@
 Personal travel-photography site for Thomas Chen (陳亮元). Plain HTML/CSS/JS, no framework.
 Bilingual EN / 繁體中文. Owner is not a developer — explain in plain English, handle all tech.
 
-## Design 3, "One day of light" (his call, 2026-10-19). Read this first
+## Design 3 was dropped (his call, 2026-10-28)
 
-He asked to **ignore everything built before and every rule set before**, and to redesign the whole
-site from his Drive travel folder, choosing skills, tools, fonts and components freely. The result is
-`design 3/`, served on **8650** (`design-3` in launch.json; `start.command` now starts and opens it).
-**The rules in the rest of this file describe design 1 and 2. They do not bind design 3.**
-
-- **Two home pages stand side by side, his to choose between** (2026-10-19). `index.html` is the
-  one-camera home below, which he then found too much: "the landing page gives me AI slop, and the
-  homepage effect is too much, I feel like the viewers might get overwhelmed". `still.html` is the
-  calm answer, built beside it at his word: the photograph first. Aoraki bare with its name beneath
-  (nothing written on it), the record as one sentence, the dotted globe with the flights that turns
-  only while you scroll past it, one bare photograph per continent with the name and countries
-  beneath (fading in as reached), the country list with a print on hover, the Matterhorn close.
-  Three motions in all, no viewfinder, no count, no coordinates, no marquee; type at normal width,
-  orange only on links and the globe; no GSAP or Lenis on that page. `js/still.js`, styles in the
-  "still home" block at the end of `css/site.css`. The busy home as it stood is at the tag
-  `home-film-2026-10-19`. His call later that day: "keep http://localhost:8650/ for now", so `index.html` stays the
-  home and `still.html` stays beside it, reachable only by its address.
-- **The home page is one camera** (his call, 2026-10-19, after the Impeccable critique scored the
-  four-device version 20/32 and both reviewers said "fewer devices, held longer"). Dark, full-bleed:
-  an opening count of the countries in the order he reached them, landing on home; Aoraki held as
-  the one hero photograph while the coordinates travel from Taipei to the place and a faint globe
-  turns behind it; the record lit word by word; then the film (`#globe-sec`, 14 screens): for each
-  continent the dotted globe turns to it and the flights draw out of Taipei, the continent's name
-  rises with its lead photograph inside the letters, the camera pushes through into the photograph,
-  holds (countries listed, Oceania's hold longest, ending on the aurora), and pulls back to the
-  globe; then every country as an index; then the close on the Matterhorn with the empty continents
-  running across its sky. `index.html` + `js/film.js`, styles in the "film" block of `css/site.css`.
-  Earlier versions kept, not in the menu: `passport.html` (`js/places.js`), `day.html` (`js/home.js`);
-  the four-device version is `js/cine.js` (its markup only in git history). The old versions' first
-  version "One day of light" ordered photos by the hour; the Passport was "less dramatic".
-  **The viewfinder** (his "lacks creativity" note, 2026-10-19): the page is seen through his camera.
-  Corner marks, a focus square that follows the pointer and locks orange when it rests (fine
-  pointers only), and an exposure line at the foot with the photograph's real camera data (focal
-  length, aperture, shutter, ISO from the EXIF; hidden when a file has none, as for the US photos)
-  while a photograph fills the screen: Aoraki, each continent's held place, the Matterhorn close.
-  Off over the globe and the index. A shutter blink as the camera lands in each place; the index
-  opens with a contact sheet of every country's lead print that tips flat as it arrives (the
-  21st.dev hero-parallax mechanic). Motion kit runtime audit after this: B, 70/100 (was C 47,
-  originally -40); animation quality S; the rest is the full-screen photographs' GPU weight.
-  **Six openings to choose from** (his "give me variations", 2026-10-19): `index.html?hero=<name>`,
-  built in `js/heroes.js` (loaded before film.js): `film` the held Aoraki (current), `strip` ten
-  frames rushing past and stopping on Aoraki which grows to the screen, `unfold` the Matterhorn in six
-  blades, `shutter` an iris opening on the aurora with its 20 s exposure counting, `contact` every
-  photograph rushing past the camera, `letters` TUAN cut out of Fuji with a scroll push-through.
-  **The opening count is cities and countries side by side** (his choice, 2026-10-19): `js/intros.js`
-  (`window.INTRO.run`, called by film.js). Two numbers from one count in the order he reached the
-  places, every trip oldest first and every flight's destination once: a country ticks the moment its
-  first city arrives; 60 cities, 21 countries (Myanmar and the Netherlands take their place in the
-  order though no flight leg names a city there; a city belongs to the nearest of its trip's
-  countries). Behind the numbers the names fill the screen as a wall of type, country names wide and
-  orange. He got there in two rounds: ten ways to count (countries in order, flights, kilometres,
-  photographs, cities, years, light, shutter, home, dial) at the tag `counting-openings-ten-2026-10-19`,
-  he kept the cities wall and asked for cities and countries together; then cities alone, pair and
-  stack at `counting-openings-three-2026-10-19`, he kept pair. The six openings after the count are
-  still his to choose on `heroes.html` (Good / Not for me / notes, saved to `ideas/reviews/openings.json`
-  through the site server; read that file before asking what he thought). The opening plays once per
-  session; a `?hero=` link always replays it.
-  Audited 2026-10-19 with the taste skill, UI UX Pro Max, redesign-existing-projects, the Motion
-  kit's runtime audit, and Impeccable's dual-agent critique (`.impeccable/critique/`); the critique's
-  five issues are fixed in this version. Every page has sharing tags; `404.html` exists.
-- `python3 tools/build3.py` reads `data/site.json`, corrects each photo's camera clock to local time
-  (the zone is in the EXIF), works out the sun's height and each country's visits, and writes
-  `design 3/data.js` and `design 3/guides/barcelona.body.js`. Rerun it after any change to the data.
-- Pages: `index.html` (Places), `journeys.html` (globe of his routes, by time: that is Journeys' job),
-  `photos.html` (every photograph, by place first; `#place=<id>` and `#trip=<id>` preselect),
-  `guides/barcelona.html`, `about.html`, and the kept `passport.html` and `day.html`. Plain HTML/CSS/JS: `css/site.css`, `js/core.js`
-  plus one script per page. Hand-written, not built.
-- Libraries kept in `design 3/vendor/`: GSAP 3.13 (ScrollTrigger, Flip), Lenis, d3, topojson.
-  Fonts in `design 3/fonts/`: Archivo (variable width), Geist Mono; Noto Sans TC links to design 1's.
-  `design 3/images` links to design 1's photographs. Method: the scroll-craft skill's brief and taste
-  floor, without its engine.
-- Only his 93 confirmed photographs. The Drive trip folders' "pic" and "sample images" folders are
-  other people's reference shots and are not used. Friends' names, emails and addresses in the
-  itineraries stay out. 22 US photographs have no time and are not on the dial; on Journeys they are
-  counted with the 2025 US trip, an assumption.
-- Waiting on him: whether design 3 becomes the site; committing and pushing it.
+Design 3 ("One day of light", the dark one-camera site on 8650, built 2026-10-19) was removed at his
+word: "drop 8650 entirely". The whole folder, `tools/build3.py` and its server entry are gone; the code
+is at the tag `design3-dropped-2026-10-28` (earlier home versions at `home-film-2026-10-19`,
+`counting-openings-ten-2026-10-19`, `counting-openings-three-2026-10-19`). Do not propose it again.
+Design 1 on 8642 is the site, and the rules below are in force.
 
 ## The brief (owner-decided — these win over any generic guidance)
 
