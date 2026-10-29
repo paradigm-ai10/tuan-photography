@@ -41,18 +41,18 @@ trials; what he said that decides the next step:
 
 ## 接下來 Next up
 
-Open http://localhost:8642/journey/new/index.html: five versions, two marked **Claude's pick**
-(4 Paper, the whole page wraps; 5 Ink and paper). He scores them, then **brings 2 or 3 references**
+Open http://localhost:8642/journey/new/index.html: the three he gave 5 stars (the live page, marked
+Main; 2 Sea chart, scroll-craft; 3 Paper, the whole page wraps). Next he **brings 2 or 3 references**
 (or asks for an Awwwards shortlist), and the globe is designed from those. Code: `design 2/new/`
 `globe3d.js` (configs `paperwrap`, `ink`, `earth`, `chart`), `earth.css`, `craft.css`, `journey.js`
 (`dockCraft`).
 
 ## 等你決定 Waiting on you
 
-- **Journey globe** (2026-10-30): score the five on the review page and choose the main one(s);
-  references for the globe's look, the wrap and the arrival. Removed trials are at tags
+- **Journey globe** (2026-10-30): kept the three with 5 stars, the live one as main; next, references
+  for the globe's look, the wrap and the arrival. Front-end research report written the same night. Removed trials are at tags
   `globe3d-five-versions-2026-10-29`, `journey-panels-three-2026-10-29`, `journey-artists-a1-a3-2026-10-29`,
-  `journey-photo-countries-2026-10-30`.
+  `journey-photo-countries-2026-10-30`, `journey-earth-ink-2026-10-30`.
 
 - **Sea photograph** on the old Journey map: which photographs besides Aoraki, if any?
 - **Camera data for the 22 US photographs:** re-export from Lightroom with metadata, or drop the
