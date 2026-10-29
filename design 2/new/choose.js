@@ -19,11 +19,6 @@
       short: { '6': 'Combined globe', '6A': 'Right panel: contents page', '6B': 'Right panel: prints', '6C': 'Right panel: one line', S: 'The live page: the drawn globe', 1: 'Matte paper globe', 2: 'Mountains in shaded relief', 3: 'Flights in tall arcs', 4: 'Visited countries stand up', 5: 'The map rolls up, then closes' },
       items: [
         ['S', 'Journey, built with scroll-craft', 'The Journey as it stands: the grand map on arrival and every plane leaving Taiwan at once; the years, newest first, while the map rewinds; then the map folds into a globe that turns to the trip you are reading, over that trip\'s photograph, with the trips on a frosted panel where the one in view stays clear (your picks, 2026-10-28). A country on the map opens its latest trip. Back from a trip returns to that trip.', 'journey.html'],
-        ['1', '3D globe: paper', 'The same page with the map made a real 3D object (three.js). The flat map bends round evenly into a matte paper globe, lit softly from the upper left; flights lift a little off its surface. Drag the globe to turn it; a country still opens its latest trip.', 'globe-paper.html'],
-        ['2', '3D globe: relief', 'The paper globe with the land in shaded relief: mountains and ranges catch the light as the globe turns.', 'globe-relief.html'],
-        ['3', '3D globe: high routes', 'The flights rise in tall arcs above the globe, and the globe is seen a little from above, so the routes stand out in the air.', 'globe-high.html'],
-        ['4', '3D globe: raised countries', 'The countries you have been to stand up from the globe like cut paper. Read back in time and the ones you had not yet seen sink back down.', 'globe-raised.html'],
-        ['5', '3D globe: rolled map', 'The flat map first rolls up like a paper chart, its plain back showing, then closes at the poles into the globe.', 'globe-roll.html'],
         ['6', 'Combined globe', 'Raised countries with flight arcs at half the height of high routes, the globe at the size of high routes (your picks, 2026-10-29).', 'globe-mix.html'],
         ['6A', 'Panel: contents page', 'The combined globe, with the right panel as a contents page: the year large in the margin, trips as ruled lines, only the trip being read opens its route.', 'globe-mix-index.html'],
         ['6B', 'Panel: prints', 'The combined globe, where the trip being read opens a strip of its own photographs in the panel; a print opens the viewer.', 'globe-mix-prints.html'],
@@ -43,11 +38,6 @@
       short: { '6': '合併版地球', '6A': '右側：目錄頁', '6B': '右側：照片條', '6C': '右側：一條線', S: '目前的版本：畫出來的地球', 1: '霧面紙質地球', 2: '山脈有地形陰影', 3: '航線拉成高弧', 4: '去過的國家浮起來', 5: '地圖先捲起再合起' },
       items: [
         ['S', '旅程，用 scroll-craft 做的', '目前的旅程頁：一進來整張地圖佔滿畫面，所有飛機同時從台灣起飛；接著按年份往下，地圖跟著回到過去；接著地圖折成地球，轉向你正在讀的那一趟，背後鋪著那一趟的照片，右邊霧面紙上的旅程只有正在讀的那一趟是清楚的（你 2026-10-28 選的）。點地圖上的國家會打開最近一趟。從一趟旅行回來會回到那一趟。', 'journey.html'],
-        ['1', '立體地球：紙', '同一頁，地圖變成真正的立體物件（three.js）。平面地圖均勻彎起來，合成一顆霧面紙質的地球，光從左上方柔和打下；航線稍微浮在表面上。可以用滑鼠拖著轉；點國家一樣會打開最近一趟。', 'globe-paper.html'],
-        ['2', '立體地球：地形', '紙質地球，陸地加上地形陰影：地球轉動時，山脈會受光。', 'globe-relief.html'],
-        ['3', '立體地球：高航線', '航線在地球上方拉成高高的弧線，地球稍微從上往下看，路線像浮在空中。', 'globe-high.html'],
-        ['4', '立體地球：國家浮起', '你去過的國家像剪紙一樣從地球上浮起來。往回讀到過去，那時還沒去過的國家會沉回去。', 'globe-raised.html'],
-        ['5', '立體地球：捲起的地圖', '平面地圖先像紙地圖一樣捲成筒狀，看得到紙的背面，再從南北兩極合起來變成地球。', 'globe-roll.html'],
         ['6', '合併版地球', '國家浮起，航線高度是高航線的一半，地球大小和高航線一樣（你 2026-10-29 選的）。', 'globe-mix.html'],
         ['6A', '右側：目錄頁', '合併版地球，右側像雜誌目錄：年份大大放在邊上，每趟一行，只有正在讀的那趟展開路線。', 'globe-mix-index.html'],
         ['6B', '右側：照片條', '合併版地球，正在讀的那趟在右側展開一排自己的照片；點照片會放大。', 'globe-mix-prints.html'],
