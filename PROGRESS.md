@@ -50,7 +50,7 @@ Main; 2 Sea chart, scroll-craft; 3 Paper, the whole page wraps). Next he **bring
 ## 等你決定 Waiting on you
 
 - **Journey globe** (2026-10-30): kept the three with 5 stars, the live one as main; next, references
-  for the globe's look, the wrap and the arrival. Front-end research report written the same night. Removed trials are at tags
+  for the globe's look, the wrap and the arrival. Front-end research report (skills, fonts, techniques, workflow, reference sites), 2026-10-30: https://claude.ai/artifact/9HiVVp4ySh6ih3izJeJXG3 Removed trials are at tags
   `globe3d-five-versions-2026-10-29`, `journey-panels-three-2026-10-29`, `journey-artists-a1-a3-2026-10-29`,
   `journey-photo-countries-2026-10-30`, `journey-earth-ink-2026-10-30`.
 
