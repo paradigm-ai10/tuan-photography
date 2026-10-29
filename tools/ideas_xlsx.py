@@ -2,17 +2,18 @@
 """靈感整理 Excel — rebuilds ideas/靈感整理.xlsx from IDEAS.md (his call, 2026-10-29: "it's a list").
 
 IDEAS.md is still the only place entries are typed; this reads it with the same parser as
-tools/ideas_doc.py. The layout follows how people keep a design swipe file (one row per
-reference, a type to filter by, a link, a note on why it was kept) and Excel's own conventions
-for a list: a real Excel table, so sorting and filtering work from the header row.
+tools/ideas_doc.py. Laid out as he asked after two tries the same day: one tab per type, so
+each list can be sorted and updated on its own.
 
-  總覽  what is in the list: each type and its count (click to jump), the states, and how many
-        entries still lack 喜歡它什麼. Numbers are worked out at each rebuild, counting an entry
-        once even when it sits under two types.
-  靈感  one row per entry: 名稱 (click it to open the site), 類型, 重點, 喜歡它什麼, 狀態, 日期.
-        Grouped by type in the usual order, newest first inside a type. An entry with two types
-        (類型: 網站靈感 / UI 介面靈感) gets a row under each, so filtering by either finds it.
-        Entries set aside (已移除, 已放棄) are greyed; a missing 喜歡它什麼 shows as a grey 待補.
+  總覽        each type with its count (click to open its tab), the states, how many entries
+              still lack 喜歡它什麼, and how many moved to the Paradigm tool list.
+  one tab per type  a real Excel table (filter and sort from the header, banded rows): 名稱 (click
+              it to open the site), 重點, 喜歡它什麼, 狀態, 日期, newest first. An entry with two
+              types (類型: A / B) appears on both tabs. Set-aside entries (已移除, 已放棄) are
+              greyed; a missing 喜歡它什麼 shows as a grey 待補.
+
+Tools and general web-design resources moved to the Paradigm tool list (a Google Sheet, his
+call 2026-10-29); their entries stay in IDEAS.md with a `搬到` line and are left out here.
 
 Run from anywhere:  python3 tools/ideas_xlsx.py   (python3 tools/ideas_doc.py with no arguments
 does the same). Safe to rerun: the file is overwritten, so it is read-only in practice; changes
@@ -34,8 +35,9 @@ from ideas_doc import (EMPTY, FRAME, HEAD, IDEAS, INK, KODAK_RED, MUTED, SOURCE,
 OUT = IDEAS / '靈感整理.xlsx'
 FONT = 'Arial'
 GREY = 'A39A8F'
+MOVED = '搬到'
 # column title and width; 喜歡它什麼 is the only column that wraps
-COLUMNS = [('名稱', 30), ('類型', 15), ('重點', 34), ('喜歡它什麼', 48), ('狀態', 10), ('日期', 12)]
+COLUMNS = [('名稱', 32), ('重點', 36), ('喜歡它什麼', 52), ('狀態', 10), ('日期', 12)]
 WRAP = {'喜歡它什麼'}
 SET_ASIDE = {'已移除', '已放棄'}
 # a light fill on the 狀態 cell, so the states can be told apart at a glance
@@ -56,53 +58,42 @@ def newest_first(entry):
     return (0, -int(found.group(0).replace('-', ''))) if found else (1, 0)
 
 
-def list_sheet(ws, groups):
-    """The 靈感 sheet. Returns the first row of each type, for the links on 總覽."""
+def type_sheet(ws, n, found):
+    """One tab: a filterable Excel table of the entries of one type."""
     for col, (title, width) in enumerate(COLUMNS, 1):
-        cell = ws.cell(1, col, title)
-        cell.font = font(bold=True)
-        cell.alignment = Alignment(vertical='center')
+        ws.cell(1, col, title).font = font(bold=True)
         ws.column_dimensions[get_column_letter(col)].width = width
     ws.row_dimensions[1].height = 22
-
-    first_row, row = {}, 2
-    for kind, found in groups.items():
-        first_row[kind] = row
-        for entry in sorted(found, key=newest_first):
-            fields = entry['fields']
-            state = fields.get('狀態', '')
-            liked = fields.get('喜歡它什麼', '')
-            values = [entry['title'], kind, point(fields), liked or '待補', state,
-                      fields.get('日期', '')]
-            faded = state in SET_ASIDE
-            for col, value in enumerate(values, 1):
-                cell = ws.cell(row, col, value)
-                cell.font = font(color=GREY if faded else INK)
-                cell.alignment = Alignment(vertical='top', wrap_text=COLUMNS[col - 1][0] in WRAP)
+    row = 2
+    for entry in sorted(found, key=newest_first):
+        fields = entry['fields']
+        state = fields.get('狀態', '')
+        liked = fields.get('喜歡它什麼', '')
+        faded = state in SET_ASIDE
+        values = [entry['title'], point(fields), liked or '待補', state, fields.get('日期', '')]
+        for col, value in enumerate(values, 1):
+            cell = ws.cell(row, col, value)
+            cell.font = font(color=GREY if faded else INK)
+            cell.alignment = Alignment(vertical='top', wrap_text=COLUMNS[col - 1][0] in WRAP)
+        if url(fields):
             name = ws.cell(row, 1)
-            if url(fields):
-                name.hyperlink = url(fields)
-                name.font = font(color=GREY if faded else KODAK_RED, underline='single')
-            ws.cell(row, 2).font = font(color=GREY if faded else MUTED)
-            if liked in EMPTY:
-                ws.cell(row, 4).value = '待補'
-                ws.cell(row, 4).font = font(color=GREY, italic=True)
-            if state in STATE_FILL and not faded:
-                ws.cell(row, 5).fill = PatternFill('solid', fgColor=STATE_FILL[state])
-            row += 1
-
-    last = get_column_letter(len(COLUMNS))
-    table = Table(displayName='Ideas', ref=f'A1:{last}{row - 1}')
-    # banded rows in a quiet grey, filter buttons on the header
+            name.hyperlink = url(fields)
+            name.font = font(color=GREY if faded else KODAK_RED, underline='single')
+        if liked in EMPTY:
+            ws.cell(row, 3).value = '待補'
+            ws.cell(row, 3).font = font(color=GREY, italic=True)
+        if state in STATE_FILL and not faded:
+            ws.cell(row, 4).fill = PatternFill('solid', fgColor=STATE_FILL[state])
+        row += 1
+    table = Table(displayName=f'T{n}', ref=f'A1:{get_column_letter(len(COLUMNS))}{row - 1}')
     table.tableStyleInfo = TableStyleInfo(name='TableStyleLight1', showRowStripes=True)
     ws.add_table(table)
     ws.freeze_panes = 'B2'
     ws.sheet_view.zoomScale = 120
-    return first_row
 
 
-def overview_sheet(ws, entries, groups, first_row, source):
-    ws.column_dimensions['A'].width = 22
+def overview_sheet(ws, entries, moved, groups, source):
+    ws.column_dimensions['A'].width = 24
     ws.column_dimensions['B'].width = 8
     ws.sheet_view.showGridLines = False
     ws.sheet_view.zoomScale = 120
@@ -110,12 +101,13 @@ def overview_sheet(ws, entries, groups, first_row, source):
     ws['A1'] = '靈感整理'
     ws['A1'].font = font(size=18, bold=True)
     both = sum(len(kinds(e)) > 1 for e in entries)
-    ws['A2'] = (f'{len(entries)} 項，{len(groups)} 個類型'
+    ws['A2'] = (f'{len(entries)} 項，{len(groups)} 類，一類一個分頁'
                 + (f'（{both} 項同時屬兩類，兩邊都列）' if both else '')
                 + f'  ·  最後更新 {date.today().isoformat()}')
     ws['A3'] = (f'這份是從 {source.name} 自動產生的，在這裡改的內容下次重做時會被蓋掉。'
                 '要加或改，跟 Claude 說。')
-    ws['A4'] = '在「靈感」表：點名稱打開網站；標題列的箭頭可以篩類型、狀態，或排序。'
+    ws['A4'] = ('每個分頁：點名稱打開網站；標題列的箭頭可以篩選或排序。'
+                f'工具和通用的網頁設計資源（{len(moved)} 項）已搬到 Paradigm 工具清單。')
     for ref in ('A2', 'A3', 'A4'):
         ws[ref].font = font(color=MUTED)
 
@@ -130,11 +122,11 @@ def overview_sheet(ws, entries, groups, first_row, source):
             name.font = number.font = font()
             name.border = number.border = UNDER
             if link:
-                name.hyperlink = Hyperlink(ref=name.coordinate, location=f'靈感!A{first_row[label]}')
+                name.hyperlink = Hyperlink(ref=name.coordinate, location=f"'{label}'!A1")
                 name.font = font(color=KODAK_RED, underline='single')
         return top + len(rows) + 2
 
-    top = block(6, '類型（點了跳過去）', [(k, len(f)) for k, f in groups.items()], link=True)
+    top = block(6, '類型（點了打開分頁）', [(k, len(f)) for k, f in groups.items()], link=True)
     states = Counter(e['fields'].get('狀態') or '（沒寫）' for e in entries)
     top = block(top, '狀態', states.most_common())
     missing = sum(e['fields'].get('喜歡它什麼', '') in EMPTY for e in entries)
@@ -142,16 +134,19 @@ def overview_sheet(ws, entries, groups, first_row, source):
 
 
 def main(source=SOURCE, out=OUT):
-    entries = parse(source.read_text(encoding='utf-8'))
+    every = parse(source.read_text(encoding='utf-8'))
+    moved = [e for e in every if MOVED in e['fields']]
+    entries = [e for e in every if MOVED not in e['fields']]
     groups = by_type(entries)
     wb = Workbook()
     overview = wb.active
     overview.title = '總覽'
-    first_row = list_sheet(wb.create_sheet('靈感'), groups)
-    overview_sheet(overview, entries, groups, first_row, source)
+    for n, (kind, found) in enumerate(groups.items(), 1):
+        type_sheet(wb.create_sheet(kind), n, found)
+    overview_sheet(overview, entries, moved, groups, source)
     out.parent.mkdir(parents=True, exist_ok=True)
     wb.save(out)
-    print(f'{out} — {len(entries)} 項, {len(groups)} 個類型')
+    print(f'{out} — {len(entries)} 項, {len(groups)} 個類型（另有 {len(moved)} 項已搬走）')
 
 
 if __name__ == '__main__':

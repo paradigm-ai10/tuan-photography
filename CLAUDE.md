@@ -267,12 +267,23 @@ heading followed by `- 欄位: 內容` lines; `類型` sets the group and `圖�
 counts once. The inspiration sites are split that way: 網站靈感 (whole sites) and UI 介面靈感
 (components, screens, motion).
 
-The file has two sheets (redesigned the same day after he found the first one impractical,
-following how people keep a design swipe file): **總覽**, each type and its count linked to its rows,
-the states, and how many entries still lack 喜歡它什麼; and **靈感**, a real Excel table (filter and
-sort from the header, banded rows, frozen header and name column), one row per entry per type:
-名稱 (the link itself), 類型, 重點, 喜歡它什麼, 狀態, 日期, newest first inside each type. Set-aside
-entries (已移除, 已放棄) are greyed and a missing 喜歡它什麼 shows as a grey 待補. It must stay **readable at a glance**
+The file has **one tab per type** (his call, the third try on 2026-10-29: "keep each type having its own
+tab so that it's more easily updated and sorted"), each a real Excel table (filter and sort from the
+header): 名稱 (the link itself), 重點, 喜歡它什麼, 狀態, 日期, newest first; set-aside entries greyed, a
+missing 喜歡它什麼 shown as a grey 待補. A **總覽** tab comes first: each type and its count linked to its
+tab, the states, how many lack 喜歡它什麼.
+
+**Tools and general web-design resources live in the Paradigm tool list** (his call, 2026-10-29: Paradigm
+AI is a brand he is building and will design websites for). It is the Google Sheet 「工具清單」 in the shared
+`paradigm_mainshare` folder, used by his team: one tab per area (影片製作, 設計與品牌, 內容與社群, 會議與協作,
+開發與網站, 靈感來源, AI 服務與帳號) plus 首頁 (counts) and 工具筆記 (longer notes, one section per tool,
+linked from each tab's 筆記 column). Its rules are on its 首頁: one tool in one tab only, the name as
+`=HYPERLINK`, 狀態 from the dropdown (已在用, 已裝未試, 用別的代替, 沒有, 收藏參考 for reference sites), same
+小類 kept together and grouped so it folds. Write it in neutral team wording, not his private comments.
+A design skill, a component library, a font source or an inspiration site he collects goes there; only what
+is about the travel site (photographers, guide sites, effects and ideas for this site) goes in IDEAS.md.
+The 29 entries that moved stay in IDEAS.md with a `搬到` line and are left out of the Excel file.
+It must stay **readable at a glance**
 (he asked for that on 2026-09-28), so every entry needs a `重點`
 line, written as **one short phrase** (about 15 characters), and `狀態` is one or two words
 (已安裝, 已存檔, 已移除, 未註冊, 收集中). Longer explanation goes in other fields, which stay
