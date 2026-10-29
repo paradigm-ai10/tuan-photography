@@ -1,0 +1,6 @@
+/* The opening photograph (open.js): the paper holds the screen until the photograph is ready, then
+   the photograph alone, nothing written on it. Desktop only. */
+.op { position: fixed; inset: 0; z-index: 60; background: var(--paper); pointer-events: none; will-change: transform, opacity; }
+.op__img { width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.9s cubic-bezier(0.23, 1, 0.32, 1); }
+.op.is-in .op__img { opacity: 1; }
+@media (max-width: 63.99rem), (prefers-reduced-motion: reduce) { .op { display: none; } }

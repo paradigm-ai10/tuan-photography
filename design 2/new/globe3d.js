@@ -39,7 +39,7 @@ const CFG = {
   motion: { lift: 0.08, seg: [720, 360], raise: 0.03, frame1: 3.05, look: 0.3, wave: true, rise: true, plate: true },
   // the photographic round (2026-10-29): every country he has been to is filled with his own
   // photograph from there, and develops from blank paper into it as its plane lands
-  photo: { lift: 0.08, seg: [720, 360], raise: 0.014, soft: 2.5, frame1: 3.05, look: 0.3, paint: 'photo', wave: true, rise: true, develop: true, unlit: true },
+  photo: { lift: 0.08, seg: [720, 360], raise: 0.014, soft: 4, frame1: 3.05, look: 0.3, paint: 'photo', wave: true, rise: true, develop: true, unlit: true },
 }[V];
 const HOME_LL = [S.flightsFrom[1], S.flightsFrom[0]];
 const CRAFT = 'craft' in document.body.dataset;
@@ -103,7 +103,7 @@ function place(lon, lat, h, st, out = new THREE.Vector3()) {
   return out;
 }
 const MORPH = /* glsl */`
-  uniform float uKx, uKy, uR, uCenter, uRaise, uMix, uWave, uFold, uRise, uReveal;
+  uniform float uKx, uKy, uR, uCenter, uRaise, uMix, uWave, uFold, uRise, uReveal, uSoft;
   uniform vec2 uHome;
   uniform sampler2D uMask, uMaskPrev;
   varying vec2 vQ;
@@ -129,6 +129,12 @@ const MORPH = /* glsl */`
     if (uRaise <= 0.0) return 0.0;
     vec2 m = vec2(q.x + uCenter / 6.2831853, q.y);
     float g = mix(texture2D(uMaskPrev, m).r, texture2D(uMask, m).r, uMix);
+    // thin prints: the height is read from a few points around, so the print's edge is gentle
+    if (uSoft > 0.0) {
+      vec2 dx = vec2(uSoft / 2048.0, 0.0), dy = vec2(0.0, uSoft / 1024.0);
+      g = (g + mix(texture2D(uMaskPrev, m + dx).r, texture2D(uMask, m + dx).r, uMix) + mix(texture2D(uMaskPrev, m - dx).r, texture2D(uMask, m - dx).r, uMix)
+             + mix(texture2D(uMaskPrev, m + dy).r, texture2D(uMask, m + dy).r, uMix) + mix(texture2D(uMaskPrev, m - dy).r, texture2D(uMask, m - dy).r, uMix)) / 5.0;
+    }
     // with the rise, the mask's grey is the order he first went: each country stands up in its turn
     if (uRise > 0.5) return g > 0.02 ? uRaise * smoothstep(g - 0.07, g, uReveal * 1.08) : 0.0;
     return uRaise * g;
@@ -158,13 +164,10 @@ function painter(world, colours, photos) {
       const k = cv.width / TW;
       c.setTransform(k, 0, 0, k, 0, 0);
       c.fillStyle = '#000'; c.fillRect(0, 0, TW, TH);
-      // thin prints: a softened mask gives them a gentle edge instead of stepped walls
-      if (CFG.soft) c.filter = `blur(${CFG.soft / k}px)`;
       for (const f of visited) if (firstOf[f.id] <= y) {
         const g = CFG.rise ? Math.round(order[f.id] * 255) : 255;
         c.fillStyle = `rgb(${g}, ${g}, ${g})`; c.beginPath(); path(f); c.fill();
       }
-      c.filter = 'none';
       return;
     }
     if (CFG.paint === 'chart') return paintChart(c, path, world, visited, colours, firstOf, y, hover);
@@ -363,7 +366,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     uRaise: { value: CFG.raise || 0 }, uMix: { value: 1 }, uLit: { value: 0 },
     uPrev: { value: texes[1] }, uBack: { value: new THREE.Color(colours.land) },
     uWave: { value: CFG.wave ? 1 : 0 }, uFold: { value: 0 }, uHome: { value: new THREE.Vector2(HOME_LL[0] * RAD, HOME_LL[1] * RAD) },
-    uRise: { value: CFG.rise ? 1 : 0 }, uReveal: { value: CFG.rise && !K.reduced ? 0 : 1 },
+    uRise: { value: CFG.rise ? 1 : 0 }, uSoft: { value: CFG.soft || 0 }, uReveal: { value: CFG.rise && !K.reduced ? 0 : 1 },
     uPlate: { value: CFG.plate ? 1 : 0 }, uWalls: { value: CFG.walls ? 1 : 0 }, uEdge: { value: new THREE.Color(colours.edge) },
     uDevelop: { value: CFG.develop ? 1 : 0 }, uDevTint: { value: new THREE.Color(rgb('oklch(78% 0.07 70)')) },
     uMask: { value: maskTex ? maskTex[0] : texes[0] }, uMaskPrev: { value: maskTex ? maskTex[1] : texes[0] },
@@ -394,6 +397,10 @@ window.JourneyMap = async function makeGlobe(svgEl) {
           float g = mix(texture2D(uMaskPrev, mq).r, texture2D(uMask, mq).r, uMix);
           if (g > 0.02) {
             float dv = smoothstep(g - 0.07, g, uReveal * 1.08);
+            // grain by grain, like a silver print coming up in the tray: each grain has its own threshold
+            vec2 gp = floor(vQ * vec2(2600.0, 1300.0));
+            float n = fract(sin(dot(gp, vec2(127.1, 311.7))) * 43758.5453);
+            dv = smoothstep(n * 0.8, n * 0.8 + 0.2, dv);
             diffuseColor.rgb = mix(mix(uBack, diffuseColor.rgb, dv), uDevTint, 1.2 * dv * (1.0 - dv));
           }
         }
@@ -741,6 +748,19 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     });
   }
 
+  // where a country's main piece sits on the screen right now (for the opening photograph)
+  window.JourneyMapScreen = (iso) => {
+    const f = visitedF.find((g) => g.id === iso);
+    if (!f) return null;
+    const polys = f.geometry.type === 'MultiPolygon' ? f.geometry.coordinates.map((c) => ({ type: 'Polygon', coordinates: c })) : [f.geometry];
+    const main = polys.reduce((a, b) => (d3.geoArea(b) > d3.geoArea(a) ? b : a));
+    const [[lo0, la0], [lo1, la1]] = d3.geoBounds(main);
+    const r = renderer.domElement.getBoundingClientRect();
+    const scr = (lon, lat) => { const v = place(lon, lat, 0, { ...st, fold: 0 }, new THREE.Vector3()).applyMatrix4(group.matrixWorld).project(camera); return [r.left + (v.x + 1) / 2 * r.width, r.top + (1 - v.y) / 2 * r.height]; };
+    const a = scr(lo0, la1), b = scr(lo1, la0), c = scr(...d3.geoCentroid(main));
+    return { x: c[0], y: c[1], w: Math.abs(b[0] - a[0]), h: Math.abs(b[1] - a[1]) };
+  };
+
   /* the six words journey.js speaks */
   function setFold(a) {
     a = K.reduced ? (a < 0.5 ? 0 : 1) : a;
@@ -784,16 +804,27 @@ window.JourneyMap = async function makeGlobe(svgEl) {
   function settled(onLand) {
     flights.forEach((f) => { f.p = 1; f.end.on = true; });
     U.uReveal.value = 1; st.drop = 0;
+    if (window.JourneyOpening) window.JourneyOpening.skip();
     linesDirty = true; kick();
     onLand(flights.length, true, 1);
   }
   function flyOut(onLand) {
     if (K.reduced) { settled(onLand); return; }
+    // an opening photograph may be on screen first (open.js): the map waits for it to land
+    if (window.JourneyOpening && !window.JourneyOpening.done) { st.drop = 0; window.JourneyOpening.ready.then(() => flyOut(onLand)); return; }
     flying = true;
     const planes = flights.map((f) => { const m = new THREE.Mesh(planeGeo, basic(colours.ink, { opacity: 1 })); m.visible = false; group.add(m); return m; });
     const rings = flights.map(() => { const m = new THREE.Mesh(ring, basic(colours.route, { opacity: 0 })); m.visible = false; group.add(m); return m; });
     // the plate is laid down on the table first, then the planes leave
     const lay0 = st.drop > 0 ? 650 : 0;
+    // the opening photograph's country comes up at once, under the photograph as it lands
+    let openFloor = 0;
+    const oiso = window.JourneyOpening && window.JourneyOpening.iso;
+    if (CFG.rise && oiso && isoFirst[oiso]) {
+      const ys = [...new Set(visitedF.map((f) => isoFirst[f.id]))].sort((a, b) => a - b);
+      const target = (0.12 + 0.86 * (ys.indexOf(isoFirst[oiso]) + 1) / ys.length) / 1.08 + 0.004;
+      tween(900, (k) => { openFloor = target * easeOut(k); U.uReveal.value = Math.max(U.uReveal.value, openFloor); });
+    }
     if (st.drop > 0) tween(1100, (k) => { st.drop = 1 - easeOut(k); });
     const t0 = performance.now() + lay0;
     let landed = -1;
@@ -820,7 +851,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
       });
       linesDirty = true;
       const p = clamp(el / longest, 0, 1);
-      if (CFG.rise) U.uReveal.value = p;
+      if (CFG.rise) U.uReveal.value = Math.max(p, openFloor);
       if (n !== landed || p < 1) { landed = n; onLand(n, false, p); }
       if (!busy) {
         planes.concat(rings).forEach((m) => { group.remove(m); m.material.dispose(); });
