@@ -30,6 +30,11 @@ into the globe", "the latest trip", the 8642 Flights layout (photo behind, see-t
 of three marks for the trip in view he chose Fade. "Close 8644 entirely and make this the new 8642".
 Then the five 3D globe versions, built beside it. Then the sidebar plan was settled (see 現在狀態).
 
+Ideas desk, same day: the ideas list became an Excel file, `ideas/靈感整理.xlsx`, one tab per type
+(`tools/ideas_xlsx.py`). The tools and general web-design resources (29 entries: design skills,
+inspiration sites split into websites and UI, fonts) moved to the Paradigm 「工具清單」 Google Sheet,
+new tabs 靈感來源 and 工具筆記; they keep a `搬到` line in IDEAS.md. Rules in CLAUDE.md, Ideas inbox.
+
 ## 接下來 Next up
 
 **Review the five 3D globes** on http://localhost:8642/journey/new/index.html (see below), or start the
