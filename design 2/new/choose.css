@@ -6,14 +6,19 @@
 .cz__how { color: var(--ink-2); margin-top: 0.9rem; max-width: 52ch; }
 .cz__list { margin-top: 2.5rem; border-top: 1px solid var(--ink); }
 .cz__row { border-bottom: 1px solid var(--hair); }
+.cz__row { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 1rem; }
 .cz__link { display: grid; grid-template-columns: 3rem minmax(0, 1fr) auto; align-items: center; gap: 1rem; min-height: 5rem; text-decoration: none; transition: background 0.15s; padding-inline: 0.5rem; }
 .cz__link:hover { background: var(--paper-2); }
 .cz__mark { font-size: 1.4rem; font-weight: 500; color: var(--ink-3); }
 .cz__name { font-size: clamp(1.2rem, 1rem + 0.8vw, 1.6rem); font-weight: 500; letter-spacing: -0.01em; }
 .cz__link:hover .cz__name { color: var(--link); }
-.cz__got { display: flex; align-items: center; gap: 1rem; }
 .cz__pins-n { font-size: 0.85rem; color: var(--ink-2); }
-.cz__s { display: grid; place-items: center; width: 3rem; height: 3rem; font-size: 1.5rem; font-weight: 500; background: var(--ink); color: var(--paper); font-variant-numeric: tabular-nums; }
-.cz__s.is-none { background: none; color: var(--ink-3); border: 1px solid var(--hair); }
-.cz__row.is-liked .cz__s { background: var(--route); }
+.cz__score { display: grid; grid-template-columns: repeat(5, 2.9rem); border: 1px solid var(--ink); }
+.cz__n { height: 2.9rem; font-size: 1.15rem; font-weight: 500; color: var(--ink-2); font-variant-numeric: tabular-nums; transition: background 0.15s, color 0.15s; }
+.cz__n + .cz__n { border-left: 1px solid var(--hair); }
+.cz__n:hover { background: var(--paper-2); color: var(--ink); }
+.cz__n[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.cz__row.is-liked .cz__n[aria-pressed="true"] { background: var(--route); }
+@media (max-width: 40rem) { .cz__row { grid-template-columns: 1fr; gap: 0; padding-bottom: 1rem; } .cz__score { justify-self: start; margin-left: 4rem; } }
+.cz__row.is-low .cz__link { opacity: 0.45; }
 .cz__away { color: var(--ink-2); font-size: 0.9rem; margin-top: 1.5rem; display: flex; flex-wrap: wrap; align-items: center; gap: 0 1rem; }

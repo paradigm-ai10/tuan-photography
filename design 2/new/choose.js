@@ -12,10 +12,10 @@
       list: 'All trips', trip: 'One trip: Vietnam', trip2: 'One trip: Australia and New Zealand',
       good: 'Good', bad: 'Not for me', note: 'A note for Claude: what you like, what to change', general: 'Anything else', generalHint: 'Anything about Journey in general',
       hidden: (n) => `${n} you marked Not for me are put away.`, showThem: 'Show them', hideThem: 'Put them away',
-      saved: 'Saved. Claude can read it.', local: 'Saved in this browser only', how: 'Open one. On the page, the Notes bar on the left (or the N key) scores it and pins what you notice.',
+      saved: 'Saved. Claude can read it.', local: 'Saved in this browser only', how: 'Open one to look; on the page the Notes bar (or the N key) scores it and pins what you notice. Or score them here, after seeing them all.',
       ranking: 'Your ranking', unscored: (n) => `${n} not scored yet`, noneYet: 'Nothing scored yet. Score a version and it lands here.',
       open: 'Open', more: 'What it is', moments: 'Moments', noMoments: 'No moments yet', go: 'Go there', note: 'Overall note',
-      scores: ['', 'Not for me', 'Weak', 'Fine', 'Good', 'Love it'], pinned: (n) => `${n} pinned`,
+      scores: ['', 'Not for me', 'Weak', 'Fine', 'Good', 'Love it'], pinned: (n) => `${n} pinned`, scoreOf: (x) => `Score ${x}`,
       short: { S: 'The live page: the drawn globe', 1: 'Matte paper globe', 2: 'Mountains in shaded relief', 3: 'Flights in tall arcs', 4: 'Visited countries stand up', 5: 'The map rolls up, then closes' },
       items: [
         ['S', 'Journey, built with scroll-craft', 'The Journey as it stands: the grand map on arrival and every plane leaving Taiwan at once; the years, newest first, while the map rewinds; then the map folds into a globe that turns to the trip you are reading, over that trip\'s photograph, with the trips on a frosted panel where the one in view stays clear (your picks, 2026-10-28). A country on the map opens its latest trip. Back from a trip returns to that trip.', 'journey.html'],
@@ -32,10 +32,10 @@
       list: '所有旅程', trip: '一趟：越南', trip2: '一趟：澳洲與紐西蘭',
       good: '喜歡', bad: '不要', note: '給 Claude 的筆記：喜歡什麼、要改什麼', general: '其他想法', generalHint: '對整個旅程頁的想法',
       hidden: (n) => `${n} 個標了「不要」的已收起。`, showThem: '顯示', hideThem: '收起',
-      saved: '已存，Claude 讀得到。', local: '只存在這個瀏覽器', how: '打開一版。在頁面上，左邊的「筆記」小條（或按 N）打分數、把看到的寫一句釘上。',
+      saved: '已存，Claude 讀得到。', local: '只存在這個瀏覽器', how: '打開一版看看；在頁面上用「筆記」小條（或按 N）打分數、把看到的寫一句釘上。也可以全部看完再回這裡打分。',
       ranking: '你的排名', unscored: (n) => `還有 ${n} 個沒打分`, noneYet: '還沒打分。給一版打分，它就會排到這裡。',
       open: '打開', more: '這版是什麼', moments: '片刻', noMoments: '還沒有片刻', go: '回到那裡', note: '整體筆記',
-      scores: ['', '不要', '普通偏弱', '還可以', '喜歡', '超喜歡'], pinned: (n) => `釘了 ${n} 句`,
+      scores: ['', '不要', '普通偏弱', '還可以', '喜歡', '超喜歡'], pinned: (n) => `釘了 ${n} 句`, scoreOf: (x) => `給「${x}」打分`,
       short: { S: '目前的版本：畫出來的地球', 1: '霧面紙質地球', 2: '山脈有地形陰影', 3: '航線拉成高弧', 4: '去過的國家浮起來', 5: '地圖先捲起再合起' },
       items: [
         ['S', '旅程，用 scroll-craft 做的', '目前的旅程頁：一進來整張地圖佔滿畫面，所有飛機同時從台灣起飛；接著按年份往下，地圖跟著回到過去；接著地圖折成地球，轉向你正在讀的那一趟，背後鋪著那一趟的照片，右邊霧面紙上的旅程只有正在讀的那一趟是清楚的（你 2026-10-28 選的）。點地圖上的國家會打開最近一趟。從一趟旅行回來會回到那一趟。', 'journey.html'],
@@ -53,27 +53,29 @@
   WORDS.en.items.forEach(([, name, , href]) => R.name(idOf(href), name));
   const scoreOf = (id) => (R.data.items[id] || {}).stars || 0;
 
-  // the ones he scored low are put away (still in git, and one word brings them back)
   let showAll = false;
   const rejected = (id) => { const it = R.data.items[id] || {}; return it.stars ? it.stars <= 2 : it.verdict === 'bad'; };
 
-  // one line per version: the number, the name, what he gave it; the scoring is done on the page itself
+  // one line per version: the number and name open it; the five squares score it here or on the page
   function row([m, name, , href], w) {
     const id = idOf(href), my = R.data.items[id] || {}, s = my.stars || 0, n = (my.pins || []).length;
     return `
-    <li class="cz__row${s >= 4 ? ' is-liked' : ''}" id="v-${id}">
+    <li class="cz__row${s >= 4 ? ' is-liked' : ''}${rejected(id) ? ' is-low' : ''}" id="v-${id}" data-id="${id}">
       <a class="cz__link" href="${href}">
         <span class="cz__mark">${esc(m)}</span>
         <span class="cz__name">${esc(w.short[m] || name)}</span>
-        <span class="cz__got">${n ? `<span class="cz__pins-n">${esc(w.pinned(n))}</span>` : ''}<span class="cz__s${s ? '' : ' is-none'}" title="${esc(w.scores[s] || '')}">${s || '·'}</span></span>
+        ${n ? `<span class="cz__pins-n">${esc(w.pinned(n))}</span>` : ''}
       </a>
+      <div class="cz__score" role="group" aria-label="${esc(w.scoreOf(w.short[m] || name))}">
+        ${[1, 2, 3, 4, 5].map((k) => `<button type="button" class="cz__n" data-n="${k}" aria-pressed="${s === k}" title="${esc(w.scores[k])}">${k}</button>`).join('')}
+      </div>
     </li>`;
   }
 
   function render() {
     const w = WORDS[K.lang];
-    const kept = w.items.filter(([, , , href]) => showAll || !rejected(idOf(href)));
-    const away = w.items.length - w.items.filter(([, , , href]) => !rejected(idOf(href))).length;
+    // a low score dims the line instead of hiding it, so a score given here never makes a line vanish
+    const kept = w.items, away = 0;
     $('#top').innerHTML = K.topbar('journey');
     document.title = `${w.title} · tuan photography 陳亮元`;
     $('#main').innerHTML = `<div class="cz">
@@ -85,7 +87,14 @@
   }
 
   document.addEventListener('click', (e) => {
-    if (e.target.closest('#cz-all')) { showAll = !showAll; render(); }
+    if (e.target.closest('#cz-all')) { showAll = !showAll; render(); return; }
+    const b = e.target.closest('.cz__n');
+    if (b) {
+      R.setScore(b.closest('.cz__row').dataset.id, +b.dataset.n);
+      const y = scrollY; render(); scrollTo(0, y);
+      const again = document.querySelector(`#${b.closest('.cz__row').id} .cz__n[data-n="${b.dataset.n}"]`);
+      if (again) again.focus();
+    }
   });
   R.on((k) => { if (k === 'pulled') render(); });
   // back from a version page (or another tab): read the file again, it may hold new moments
