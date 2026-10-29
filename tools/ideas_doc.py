@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""靈感整理產生器 — rebuilds ideas/靈感整理.docx from IDEAS.md.
+"""靈感整理產生器 — turns a list in IDEAS.md format into a Word file.
+
+Since 2026-10-29 IDEAS.md itself becomes an Excel file (tools/ideas_xlsx.py, which reuses the
+parser below); run with no arguments, this script now does that. Word stays for the build
+list and the weekly reports. What follows describes the Word layout.
 
 IDEAS.md is the running list and the only place entries are typed. This turns it into a Word
 file that can be scanned at a glance: one table per 類型, one row per entry, showing only
@@ -387,6 +391,8 @@ if __name__ == '__main__':
     if len(args) == 2:
         main(Path(args[0]).resolve(), Path(args[1]).resolve(), progress)
     elif not args:
-        main(progress=progress)
+        # IDEAS.md itself is an Excel list since 2026-10-29 (tools/ideas_xlsx.py)
+        import ideas_xlsx
+        ideas_xlsx.main()
     else:
         sys.exit('usage: python3 tools/ideas_doc.py [list.md output.docx] [--progress]')

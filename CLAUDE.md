@@ -255,18 +255,23 @@ saved references are usually other people's work, so they stay on his Mac. Only 
 `IDEAS.md` are pushed. Videos can't be watched by Claude: record the link and ask him which
 moment he liked.
 
-He reads the list as a Word file, `ideas/靈感整理.docx`. It is generated:
-**after every change to `IDEAS.md`, rerun `python3 tools/ideas_doc.py`** and never edit the
-Word file by hand. Each entry is a `###` heading followed by `- 欄位: 內容` lines; `類型` sets
-the group and `圖片` names a file in `ideas/`.
+He reads the list as an **Excel file**, `ideas/靈感整理.xlsx` (his call, 2026-10-29: "it's a list";
+it was a Word file before). It is generated:
+**after every change to `IDEAS.md`, rerun `python3 tools/ideas_xlsx.py`** (`tools/ideas_doc.py`
+with no arguments does the same) and never edit the Excel file by hand. Each entry is a `###`
+heading followed by `- 欄位: 內容` lines; `類型` sets the group and `圖片` names a file in `ideas/`
+(images are not shown in Excel). An entry that belongs to two types names both, split by
+`" / "` (`類型: 網站靈感 / UI 介面靈感`, his call 2026-10-29), and is listed under each; it still
+counts once. The inspiration sites are split that way: 網站靈感 (whole sites) and UI 介面靈感
+(components, screens, motion).
 
-He asked (2026-09-28) for the Word file to be **readable at a glance**: one table per 類型,
-one row per entry, showing only 名稱, 重點, 狀態 and a link. He also wants it **dense**
-(about 20 rows a page: single line spacing, small type), tables with a **full drawn frame**,
-and the contents table at the top **linked** to each type's table. So every entry needs a `重點`
+The file has two sheets: **目錄**, each type and its count, linked to its rows, and **靈感**, one row
+per entry per type (類型, 名稱, 重點, 狀態, 喜歡它什麼, 日期, 連結), grouped in the usual order, with
+a frozen, filterable header and a drawn frame. It must stay **readable at a glance**
+(he asked for that on 2026-09-28), so every entry needs a `重點`
 line, written as **one short phrase** (about 15 characters), and `狀態` is one or two words
 (已安裝, 已存檔, 已移除, 未註冊, 收集中). Longer explanation goes in other fields, which stay
-in `IDEAS.md` and are not shown in Word. Don't add the same thing twice: check the list first
+in `IDEAS.md` and are not shown in Excel. Don't add the same thing twice: check the list first
 and merge into the existing entry.
 
 ## Build list 建置進度 — TODO.md
