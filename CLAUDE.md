@@ -265,9 +265,12 @@ heading followed by `- 欄位: 內容` lines; `類型` sets the group and `圖�
 counts once. The inspiration sites are split that way: 網站靈感 (whole sites) and UI 介面靈感
 (components, screens, motion).
 
-The file has two sheets: **目錄**, each type and its count, linked to its rows, and **靈感**, one row
-per entry per type (類型, 名稱, 重點, 狀態, 喜歡它什麼, 日期, 連結), grouped in the usual order, with
-a frozen, filterable header and a drawn frame. It must stay **readable at a glance**
+The file has two sheets (redesigned the same day after he found the first one impractical,
+following how people keep a design swipe file): **總覽**, each type and its count linked to its rows,
+the states, and how many entries still lack 喜歡它什麼; and **靈感**, a real Excel table (filter and
+sort from the header, banded rows, frozen header and name column), one row per entry per type:
+名稱 (the link itself), 類型, 重點, 喜歡它什麼, 狀態, 日期, newest first inside each type. Set-aside
+entries (已移除, 已放棄) are greyed and a missing 喜歡它什麼 shows as a grey 待補. It must stay **readable at a glance**
 (he asked for that on 2026-09-28), so every entry needs a `重點`
 line, written as **one short phrase** (about 15 characters), and `狀態` is one or two words
 (已安裝, 已存檔, 已移除, 未註冊, 收集中). Longer explanation goes in other fields, which stay
