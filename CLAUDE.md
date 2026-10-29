@@ -118,9 +118,8 @@ Arranged on 2026-09-28 at his request, so the top level reads at a glance. Keep 
   trip being read; the trip's photograph fills the screen behind; the trips are read on a frosted
   panel where the one the globe shows stays clear and the others fade ("Fade"). Files: `journey.js`,
   `journey.css`, `kit.js`, `kit.css`, the scroll-craft engine (`scrollcraft.js`, `.css`, copied
-  unedited; brief in `scrollcraft/`). `design 2/new/` (the review list, `index.html`) shows each version as pictures (frames taken by
-  `node tools/review_shots.mjs`, rerun after a visible change) with a 1 to 5 score, a ranking on top and a
-  note; every version page carries a Note tab on its left edge (or the N key) where he scores it and pins a
+  unedited; brief in `scrollcraft/`). `design 2/new/` (the review list, `index.html`) is only for getting around (his call, 2026-10-29): one
+  line per version with its score and how many moments he pinned, no pictures; every version page carries a Note tab on its left edge (or the N key) where he scores it and pins a
   line to the spot he is looking at (his request 2026-10-29: he looks, he does not read). `review.js` is the
   store and the tab, shown on localhost only; all of it saves to `ideas/reviews/journey.json`. A trip opens on
   `design 2/wc-sketch/trip/?trip=<id>&from=journey`, whose back word returns to that entry. The
