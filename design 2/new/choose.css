@@ -1,29 +1,66 @@
-/* The review page of experiment `journey`: the three directions and the current Journey. */
-.choose { --col: min(60rem, 100% - 2 * var(--edge)); }
-.cz { width: var(--col); margin: 0 auto; padding-block: clamp(2.5rem, 7vw, 5rem) 6rem; }
+/* The Journey review page (pictures first, 2026-10-29): the ranking, then one card per version. */
+.choose { --col: min(84rem, 100% - 2 * var(--edge)); }
+.cz { width: var(--col); margin: 0 auto; padding-block: clamp(2rem, 5vw, 3.5rem) 6rem; }
 .cz__title { font-size: clamp(2rem, 1.4rem + 2.6vw, 3.4rem); font-weight: 500; letter-spacing: -0.03em; line-height: 1; }
 :lang(zh-Hant) .cz__title { letter-spacing: 0.04em; line-height: 1.2; }
-.cz__intro { color: var(--ink-2); margin-top: 1rem; max-width: 46ch; }
-.cz__list { margin-top: 2.5rem; border-top: 1px solid var(--ink); }
-.cz__item { display: grid; grid-template-columns: 3.5rem minmax(0, 1fr); gap: 0.25rem 1rem; padding-block: 1.5rem; border-bottom: 1px solid var(--hair); }
-.cz__mark { font-size: 1.4rem; font-weight: 500; grid-row: span 3; }
-.cz__name { font-size: 1.4rem; font-weight: 500; letter-spacing: -0.01em; }
-.cz__say { color: var(--ink-2); max-width: 56ch; }
-.cz__go { display: flex; flex-wrap: wrap; gap: 0 2rem; }
-.cz__go a { color: var(--link); text-underline-offset: 0.25em; text-decoration-thickness: 1px; display: inline-flex; align-items: center; min-height: 2.75rem; }
-.cz__how { color: var(--ink-2); margin-top: 0.75rem; max-width: 52ch; font-size: 0.95rem; }
-.cz__mine { grid-column: 2; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 0.5rem 1.25rem; align-items: start; margin-top: 0.75rem; }
-.cz__verdict { display: flex; justify-self: start; border: 1px solid var(--hair); }
-.cz__v { min-height: 2.75rem; padding: 0 1rem; font-size: 0.85rem; color: var(--ink-2); }
-.cz__v + .cz__v { border-left: 1px solid var(--hair); }
-.cz__v:hover { color: var(--ink); }
-.cz__v[data-v="good"][aria-pressed="true"] { background: var(--ink); color: var(--paper); }
-.cz__v[data-v="bad"][aria-pressed="true"] { background: var(--paper-2); color: var(--ink); text-decoration: line-through; }
-.cz__note { width: 100%; font: inherit; font-size: 0.95rem; color: var(--ink); background: var(--paper); border: 1px solid var(--hair); border-radius: 0; padding: 0.6rem 0.75rem; resize: vertical; min-height: 2.75rem; }
+.cz__how { color: var(--ink-2); margin-top: 0.9rem; max-width: 60ch; }
+
+/* the ranking: what he scored, best first */
+.cz__rank { margin-top: 2rem; padding-block: 1.25rem 1.5rem; border-block: 1px solid var(--ink); }
+.cz__rank-h { color: var(--ink-2); }
+.cz__rank-none, .cz__rank-left { color: var(--ink-3); font-size: 0.9rem; margin-top: 0.6rem; }
+.cz__podium { display: flex; gap: 1rem; margin-top: 0.9rem; overflow-x: auto; padding-bottom: 0.25rem; }
+.cz__pod a { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: end; gap: 0.2rem 0.6rem; text-decoration: none; width: 13rem; }
+.cz__pod img { grid-column: 1 / -1; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; border: 1px solid var(--hair); }
+.cz__pod.is-top a { width: 18rem; }
+.cz__pod.is-top img { border: 2px solid var(--route); }
+.cz__pod-s { font-size: 2.4rem; font-weight: 500; line-height: 1; font-variant-numeric: tabular-nums; }
+.cz__pod.is-top .cz__pod-s { color: var(--route); font-size: 3rem; }
+.cz__pod-n { font-size: 0.85rem; color: var(--ink-2); padding-bottom: 0.3rem; }
+.cz__pod a:hover .cz__pod-n { color: var(--link); }
+
+/* the cards */
+.cz__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 34rem), 1fr)); gap: 3rem 2.5rem; margin-top: 2.5rem; }
+.cz__card { display: grid; gap: 0.5rem; align-content: start; scroll-margin-top: 1.5rem; }
+.cz__pic { position: relative; display: block; aspect-ratio: 16 / 10; background: var(--paper-2); border: 1px solid var(--hair); overflow: hidden; }
+.cz__card.is-liked .cz__pic { border: 2px solid var(--route); }
+.cz__pic img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--ease); }
+.cz__pic:hover img { transform: scale(1.02); }
+.cz__open { position: absolute; right: 0; bottom: 0; background: var(--ink); color: var(--paper); padding: 0.55rem 0.9rem; opacity: 0; transition: opacity 0.2s; }
+.cz__pic:hover .cz__open, .cz__pic:focus-visible .cz__open, .cz__pic.is-empty .cz__open { opacity: 1; }
+.cz__frames { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+.cz__frames a { display: block; aspect-ratio: 16 / 10; border: 1px solid var(--hair); overflow: hidden; }
+.cz__frames a:hover { border-color: var(--link); }
+.cz__frames img { width: 100%; height: 100%; object-fit: cover; }
+.cz__body { display: grid; gap: 0.5rem; margin-top: 0.4rem; }
+.cz__name { font-size: 1.35rem; font-weight: 500; letter-spacing: -0.01em; }
+.cz__mark { color: var(--ink-3); margin-right: 0.3rem; }
+
+/* the score: five big squares */
+.cz__score { display: grid; grid-template-columns: repeat(5, 1fr); border: 1px solid var(--ink); margin-top: 0.25rem; }
+.cz__n { min-height: 3.6rem; font-size: 1.7rem; font-weight: 500; color: var(--ink-2); font-variant-numeric: tabular-nums; transition: background 0.15s, color 0.15s; }
+.cz__n + .cz__n { border-left: 1px solid var(--hair); }
+.cz__n:hover { background: var(--paper-2); color: var(--ink); }
+.cz__n[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.cz__card.is-liked .cz__n[aria-pressed="true"] { background: var(--route); }
+.cz__said { font-size: 0.85rem; color: var(--ink-2); min-height: 1.3rem; margin-top: -0.2rem; }
+
+.cz__label { color: var(--ink-2); margin-top: 0.25rem; }
+.cz__pins { display: grid; gap: 0.15rem; }
+.cz__pins li { border-left: 2px solid var(--route); padding-left: 0.6rem; }
+.cz__pins a { text-decoration: none; }
+.cz__pins a:hover { color: var(--link); text-decoration: underline; text-underline-offset: 0.2em; }
+.cz__pins .cz__nopin { border-left-color: var(--hair); color: var(--ink-3); font-size: 0.9rem; }
+.cz__note { width: 100%; font: inherit; font-size: 0.95rem; color: var(--ink); background: var(--paper); border: 1px solid var(--hair); border-radius: 0; padding: 0.6rem 0.75rem; resize: vertical; min-height: 2.75rem; margin-top: 0.25rem; }
 .cz__note::placeholder { color: var(--ink-3); }
 .cz__note:focus { outline: 2px solid var(--link); outline-offset: 1px; border-color: transparent; }
-.cz__general { display: grid; gap: 0.5rem; margin-top: 2rem; }
+.cz__more summary { color: var(--ink-3); cursor: pointer; min-height: 2.5rem; display: flex; align-items: center; }
+.cz__more summary:hover { color: var(--ink); }
+.cz__say { color: var(--ink-2); font-size: 0.92rem; }
+.cz__go { display: flex; flex-wrap: wrap; gap: 0 2rem; }
+.cz__go a { color: var(--link); text-underline-offset: 0.25em; text-decoration-thickness: 1px; display: inline-flex; align-items: center; min-height: 2.75rem; }
+
+.cz__away { color: var(--ink-2); font-size: 0.9rem; margin-top: 2rem; display: flex; flex-wrap: wrap; align-items: center; gap: 0 1rem; }
+.cz__general { display: grid; gap: 0.5rem; margin-top: 2.5rem; max-width: 50rem; }
 .cz__general-head { font-size: 1.1rem; font-weight: 500; }
 .cz__state { color: var(--ink-2); font-size: 0.85rem; min-height: 1.4rem; margin-top: 0.75rem; }
-@media (max-width: 47.99rem) { .cz__mine { grid-column: 1 / -1; grid-template-columns: 1fr; } }
-.cz__away { color: var(--ink-2); font-size: 0.9rem; margin-top: 1.25rem; display: flex; flex-wrap: wrap; align-items: center; gap: 0 1rem; }
