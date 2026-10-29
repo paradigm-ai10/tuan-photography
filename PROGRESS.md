@@ -1,6 +1,6 @@
 # tuan photography 陳亮元 — Project Memo 專案備忘錄
 
-*Last updated: 2026-10-29, handoff note. Read this first, then check the files to confirm.*
+*Last updated: 2026-10-30, handoff note. Read this first, then check the files to confirm.*
 
 ## 現在狀態 Where things stand
 
@@ -25,28 +25,34 @@
 
 ## 上次做到哪 Where we left off
 
-2026-10-29: the Journey tab rebuilt in the 8644 trial and made the real one: "the map should fold
-into the globe", "the latest trip", the 8642 Flights layout (photo behind, see-through panel), and
-of three marks for the trip in view he chose Fade. "Close 8644 entirely and make this the new 8642".
-Then the five 3D globe versions, built beside it. Then the sidebar plan was settled (see 現在狀態).
-
-Ideas desk, same day: the ideas list became an Excel file, `ideas/靈感整理.xlsx`, one tab per type
-(`tools/ideas_xlsx.py`). The tools and general web-design resources (29 entries: design skills,
-inspiration sites split into websites and UI, fonts) moved to the Paradigm 「工具清單」 Google Sheet,
-new tabs 靈感來源 and 工具筆記; they keep a `搬到` line in IDEAS.md. Rules in CLAUDE.md, Ideas inbox.
+2026-10-29 to 10-30, all on the Journey globe (live page unchanged except "polish only", which went
+live: arcs closer to the globe, "Read the trip", easier faded trips). Round after round of globe
+trials; what he said that decides the next step:
+- He likes **the wrap**: the flat map closing into the globe around Taiwan (A4's movement).
+- He dislikes: a blue map "pasted" on white; **a rectangle lifting off the background** (fixed by the
+  whole-page wrap: the map fills the page and its edges fade into the paper); his photographs inside
+  the countries ("weird", dropped); the globe being "plain, boring".
+- "Realistic" did **not** mean a real earth: he meant the design factor is missing. He proposed giving
+  references; I agreed (one per problem: globe look, transition, arrival, each with what he likes).
+- Review mechanism rebuilt: a Notes box on every version page (drag, minimize, N key, 1 to 5 score,
+  pins), the review page a plain list with scores.
+- Skills installed both places at his word: top-design, editorial-portfolio-chapters, shader-glsl
+  (and the 13 three.js ones the day before). Skills list page: 48.
 
 ## 接下來 Next up
 
-**Review the five 3D globes** on http://localhost:8642/journey/new/index.html (see below), or start the
-next tab's work. The sidebar tidy-up is decided and he is doing it himself (see 現在狀態).
+Open http://localhost:8642/journey/new/index.html: five versions, two marked **Claude's pick**
+(4 Paper, the whole page wraps; 5 Ink and paper). He scores them, then **brings 2 or 3 references**
+(or asks for an Awwwards shortlist), and the globe is designed from those. Code: `design 2/new/`
+`globe3d.js` (configs `paperwrap`, `ink`, `earth`, `chart`), `earth.css`, `craft.css`, `journey.js`
+(`dockCraft`).
 
 ## 等你決定 Waiting on you
 
-- **3D globe, five versions** (2026-10-29, built while you were away): the Journey page with the map
-  as a real 3D object (three.js), beside the live one, which is unchanged. Review them on
-  http://localhost:8642/journey/new/index.html (Good / Not for me and a note each; saved to
-  `ideas/reviews/journey.json`). Pages: `design 2/new/globe-{paper,relief,high,raised,roll}.html`,
-  code `globe3d.js` + `globe3d.css`; before it at tag `before-globe3d-2026-10-29`.
+- **Journey globe** (2026-10-30): score the five on the review page and choose the main one(s);
+  references for the globe's look, the wrap and the arrival. Removed trials are at tags
+  `globe3d-five-versions-2026-10-29`, `journey-panels-three-2026-10-29`, `journey-artists-a1-a3-2026-10-29`,
+  `journey-photo-countries-2026-10-30`.
 
 - **Sea photograph** on the old Journey map: which photographs besides Aoraki, if any?
 - **Camera data for the 22 US photographs:** re-export from Lightroom with metadata, or drop the

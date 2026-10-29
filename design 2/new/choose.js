@@ -15,12 +15,14 @@
       saved: 'Saved. Claude can read it.', local: 'Saved in this browser only', how: 'Open one to look; on the page the Notes bar (or the N key) scores it and pins what you notice. Or score them here, after seeing them all.',
       ranking: 'Your ranking', unscored: (n) => `${n} not scored yet`, noneYet: 'Nothing scored yet. Score a version and it lands here.',
       open: 'Open', more: 'What it is', moments: 'Moments', noMoments: 'No moments yet', go: 'Go there', note: 'Overall note',
-      scores: ['', 'Not for me', 'Weak', 'Fine', 'Good', 'Love it'], pinned: (n) => `${n} pinned`, scoreOf: (x) => `Score ${x}`,
-      short: { A7: 'Real earth', A4: 'Sea chart, scroll-craft', A1: 'Sea chart', A2: 'Cut paper', A3: 'New motion, old look', V1: 'Globe in the corner', V2: 'See-through globe', V3: 'Polish only', '6': 'Combined globe', '6A': 'Right panel: contents page', '6B': 'Right panel: prints', '6C': 'The live page: globe and one line', S: 'The live page: the drawn globe', 1: 'Matte paper globe', 2: 'Mountains in shaded relief', 3: 'Flights in tall arcs', 4: 'Visited countries stand up', 5: 'The map rolls up, then closes' },
+      scores: ['', 'Not for me', 'Weak', 'Fine', 'Good', 'Love it'], pinned: (n) => `${n} pinned`, pickWord: 'Claude\'s pick', scoreOf: (x) => `Score ${x}`,
+      short: {},
       items: [
-        ['6C', 'Panel: one line', 'The live Journey page since 2026-10-29, with the Impeccable polish (arcs closer to the globe, "Read the trip", easier faded trips): the combined globe, with the trips hung on one line down the panel: read ones filled, the one being read in vermilion, the years as tabs on the line.', 'journey.html'],
-        ['A4', 'Sea chart, scroll-craft', 'The sea chart, choreographed with the scroll-craft and animate skills: the arrival leaves in three layers at three speeds (words, counters, map), then the fold becomes the page\'s one peak: the map holds the whole screen and closes into a large globe there, with the most scroll of any part; home answers with one ring when the world has closed; then the reading panel slides in from the right and pushes the globe aside.', 'journey-craft.html'],
-        ['A7', 'Real earth', 'The globe redesigned to look real and alive: terrain relief, land coloured by climate (forests, deserts, tundra, ice), a deep sea with shallows near the coasts and sun glinting on it, drifting clouds, a soft blue atmosphere; your countries in a warm wash and your flights in red, with a point of light running along the trip being read. The map now fills the whole page edge to edge and its edges fade into the paper, so it is the page itself that wraps up into the globe. A4\'s choreography.', 'journey-earth.html'],
+        ['1', 'The live page', 'The Journey tab as it is now: the paper globe, the trips on one line, the Impeccable polish. Kept as the baseline.', 'journey.html'],
+        ['2', 'Sea chart, scroll-craft', 'A4: the flat map closes into a large globe on the whole screen, home sends out a ring, the panel slides in. A pale blue chart surface.', 'journey-craft.html'],
+        ['3', 'Real earth', 'A7: a real-looking earth (terrain, climate colours, sea glint, clouds, atmosphere) and the whole page wrapping into it.', 'journey-earth.html'],
+        ['4', 'Paper, the whole page wraps', 'New: the live page\'s quiet paper globe, with A4\'s movement and the whole page wrapping up into it, so no rectangle lifts off the background. The smallest step from what is live.', 'journey-paperwrap.html', 'pick'],
+        ['5', 'Ink and paper', 'New: a designed globe in the site\'s own two inks: a deep ink-blue sea with lighter shallows and faint waterlines, the land the page\'s paper with its mountains printed in warm grey, your countries in vermilion. The whole page wraps into it. Graphic rather than realistic.', 'journey-ink.html', 'pick'],
       ],
     },
     zh: {
@@ -32,12 +34,14 @@
       saved: '已存，Claude 讀得到。', local: '只存在這個瀏覽器', how: '打開一版看看；在頁面上用「筆記」小條（或按 N）打分數、把看到的寫一句釘上。也可以全部看完再回這裡打分。',
       ranking: '你的排名', unscored: (n) => `還有 ${n} 個沒打分`, noneYet: '還沒打分。給一版打分，它就會排到這裡。',
       open: '打開', more: '這版是什麼', moments: '片刻', noMoments: '還沒有片刻', go: '回到那裡', note: '整體筆記',
-      scores: ['', '不要', '普通偏弱', '還可以', '喜歡', '超喜歡'], pinned: (n) => `釘了 ${n} 句`, scoreOf: (x) => `給「${x}」打分`,
-      short: { A7: '真實的地球', A4: '海圖，scroll-craft 版', A1: '海圖', A2: '剪紙', A3: '新動態、舊樣子', V1: '地球移到角落', V2: '透明的地球', V3: '只做小修', '6': '合併版地球', '6A': '右側：目錄頁', '6B': '右側：照片條', '6C': '正式版：地球加一條線', S: '目前的版本：畫出來的地球', 1: '霧面紙質地球', 2: '山脈有地形陰影', 3: '航線拉成高弧', 4: '去過的國家浮起來', 5: '地圖先捲起再合起' },
+      scores: ['', '不要', '普通偏弱', '還可以', '喜歡', '超喜歡'], pinned: (n) => `釘了 ${n} 句`, pickWord: 'Claude 推薦', scoreOf: (x) => `給「${x}」打分`,
+      short: {},
       items: [
-        ['6C', '右側：一條線', '2026-10-29 起的正式旅程頁，加上 Impeccable 小修（航線貼近地球、「看這一趟」、變淡的旅程比較好讀）：合併版地球，所有旅程掛在右側一條線上：讀過的填滿，正在讀的是朱紅色，年份是線上的小標籤。', 'journey.html'],
-        ['A4', '海圖，scroll-craft 版', '海圖版用 scroll-craft 和 animate 兩個技能重新編排捲動：開場分三層用三種速度離開（字、數字、地圖），接著折成地球是整頁唯一的高潮：地圖佔滿整個畫面，在那裡合成一顆大地球，佔最多的捲動距離；世界合起來時台灣亮起一圈；然後右邊的旅程面板從右滑進來，把地球推到左邊。', 'journey-craft.html'],
-        ['A7', '真實的地球', '地球重新設計成真實、有生命的樣子：地形起伏、依氣候上色的陸地（森林、沙漠、凍原、冰）、近海較淺的深藍海洋和海面反光、飄動的雲、淡藍色的大氣；你去過的國家是暖色，航線是紅色，正在讀的那趟沿著航線有一點光在跑。地圖現在佔滿整個頁面，邊緣淡進紙色裡，所以是整個頁面包成地球，而不是一塊長方形翹起來。動態沿用 A4。', 'journey-earth.html'],
+        ['1', '目前的正式版', '現在的旅程頁：紙質地球、所有旅程掛在一條線上、Impeccable 小修。留著當比較基準。', 'journey.html'],
+        ['2', '海圖，scroll-craft 版', 'A4：平面地圖在整個畫面上合成大地球，台灣亮一圈，面板滑進來。表面是淡藍色海圖。', 'journey-craft.html'],
+        ['3', '真實的地球', 'A7：看起來真實的地球（地形、依氣候上色、海面反光、雲、大氣），整個頁面包成地球。', 'journey-earth.html'],
+        ['4', '紙，整頁包起來', '新的：正式版安靜的紙質地球，加上 A4 的動態，而且是整個頁面包成地球，不會有一塊長方形從背景翹起來。和正式版差最少的一步。', 'journey-paperwrap.html', 'pick'],
+        ['5', '墨與紙', '新的：用網站自己的兩種墨色設計的地球：深墨藍的海、較淺的近海和淡淡的水紋，陸地是頁面的紙色、山脈用暖灰印出來，你去過的國家是朱紅色。整個頁面包成地球。是設計感，不是寫實。', 'journey-ink.html', 'pick'],
       ],
     },
   };
@@ -51,16 +55,16 @@
   const rejected = (id) => { const it = R.data.items[id] || {}; return it.stars ? it.stars <= 2 : it.verdict === 'bad'; };
 
   // one line per version: the number and name open it; the five squares score it here or on the page
-  function row([m, name, , href], w) {
+  function row([m, name, , href, pick], w) {
     const id = idOf(href), my = R.data.items[id] || {}, s = my.stars || 0, n = (my.pins || []).length;
     return `
     <li class="cz__row${s >= 4 ? ' is-liked' : ''}${rejected(id) ? ' is-low' : ''}" id="v-${id}" data-id="${id}">
       <a class="cz__link" href="${href}">
         <span class="cz__mark">${esc(m)}</span>
-        <span class="cz__name">${esc(w.short[m] || name)}</span>
+        <span class="cz__name">${esc(name)}</span>${pick ? `<span class="cz__pick caps">${esc(w.pickWord)}</span>` : ''}
         ${n ? `<span class="cz__pins-n">${esc(w.pinned(n))}</span>` : ''}
       </a>
-      <div class="cz__score" role="group" aria-label="${esc(w.scoreOf(w.short[m] || name))}">
+      <div class="cz__score" role="group" aria-label="${esc(w.scoreOf(name))}">
         ${[1, 2, 3, 4, 5].map((k) => `<button type="button" class="cz__n" data-n="${k}" aria-pressed="${s === k}" title="${esc(w.scores[k])}">${k}</button>`).join('')}
       </div>
     </li>`;

@@ -43,6 +43,10 @@ const CFG = {
   // deep sea with shallows and sun glint, ice, drifting clouds, a blue atmosphere); the map fills
   // the whole page edge to edge and its edges fade into the paper, so the page itself wraps up
   earth: { lift: 0.09, seg: [720, 360], raise: 0.01, soft: 4, frame1: 3.05, look: 0.3, paint: 'earth', wave: true, rise: true, unlit: true, earth: true, bleed: true },
+  // the night-before-review round (2026-10-30): the live paper globe with A4's movement and the
+  // whole page wrapping; and a designed globe in the site's own inks (deep ink sea, paper land)
+  paperwrap: { lift: 0.08, seg: [720, 360], raise: 0.018, soft: 4, frame1: 3.05, look: 0.3, wave: true, rise: true, unlit: true, bleed: true },
+  ink: { lift: 0.09, seg: [720, 360], raise: 0.012, soft: 4, frame1: 3.05, look: 0.3, paint: 'ink', wave: true, rise: true, unlit: true, earth: true, bleed: true, noClouds: true },
   photo: { lift: 0.08, seg: [720, 360], raise: 0.014, soft: 4, frame1: 3.05, look: 0.3, paint: 'photo', wave: true, rise: true, develop: true, unlit: true },
 }[V];
 const HOME_LL = [S.flightsFrom[1], S.flightsFrom[0]];
@@ -176,6 +180,7 @@ function painter(world, colours, photos) {
     }
     if (CFG.paint === 'chart') return paintChart(c, path, world, visited, colours, firstOf, y, hover);
     if (CFG.paint === 'cut') return paintCut(c, path, world, visited, colours, firstOf, y, hover);
+    if (CFG.paint === 'ink') return paintInk(c, path, world, visited, colours, firstOf, y, hover);
     if (CFG.paint === 'earth') return paintEarth(c, path, world, visited, colours, firstOf, y, hover);
     if (CFG.paint === 'photo') return paintPhoto(c, path, world, visited, colours, firstOf, y, hover, photos);
     c.fillStyle = colours.sea; c.fillRect(0, 0, TW, TH);
@@ -346,6 +351,40 @@ function paintEarth(c, path, world, visited, col, firstOf, y, hover) {
   c.strokeStyle = 'rgba(255, 255, 255, 0.22)'; c.lineWidth = 1.2; c.beginPath(); path(world.borders); c.stroke();
 }
 
+/* ---- the ink globe: a printed two-ink earth in the site's own colours ---- */
+// deep ink sea, lighter where it is shallow; the land the page's paper with its mountains printed
+// in a warm grey from the relief; a thin ink coast; his countries in a vermilion wash
+let INK = null;
+function inkBase(world, relief) {
+  if (INK) return INK;
+  const mk = (w, h) => Object.assign(document.createElement('canvas'), { width: w, height: h });
+  const big = mk(TW, TH), c = big.getContext('2d'), path = d3.geoPath(eq, c);
+  c.fillStyle = rgb('oklch(36% 0.075 248)'); c.fillRect(0, 0, TW, TH);
+  // the shallows: the coast drawn wide and soft in a lighter ink
+  c.save(); c.filter = 'blur(18px)'; c.strokeStyle = rgb('oklch(52% 0.08 238)'); c.lineWidth = 34; c.lineJoin = 'round'; c.beginPath(); path(world.land); c.stroke(); c.restore();
+  c.save(); c.filter = 'blur(5px)'; c.strokeStyle = rgb('oklch(62% 0.07 230)'); c.lineWidth = 9; c.beginPath(); path(world.land); c.stroke(); c.restore();
+  // fine waterlines every 15 degrees, barely there
+  c.strokeStyle = 'rgba(255, 255, 255, 0.07)'; c.lineWidth = 1.4; c.beginPath(); path(d3.geoGraticule().step([15, 15])()); c.stroke();
+  // the land: paper, its mountains printed from the relief
+  c.fillStyle = rgb('--paper'); c.beginPath(); path(world.land); c.fill();
+  if (relief) { c.save(); c.beginPath(); path(world.land); c.clip(); c.globalCompositeOperation = 'multiply'; c.globalAlpha = 0.55; c.drawImage(relief, 0, 0, TW, TH); c.restore(); }
+  c.strokeStyle = rgb('oklch(30% 0.04 248)'); c.lineWidth = 1.6; c.beginPath(); path(world.land); c.stroke();
+  const spec = mk(1024, 512), sc = spec.getContext('2d');
+  sc.fillStyle = '#fff'; sc.fillRect(0, 0, 1024, 512);
+  sc.fillStyle = '#000'; sc.beginPath(); d3.geoPath(d3.geoEquirectangular().scale(1024 / TAU).translate([512, 256]), sc)(world.land); sc.fill();
+  return (INK = { big, spec });
+}
+function paintInk(c, path, world, visited, col, firstOf, y, hover) {
+  c.drawImage(INK.big, 0, 0, TW, TH);
+  for (const f of visited) {
+    if (firstOf[f.id] > y) continue;
+    c.beginPath(); path(f);
+    c.fillStyle = f.id === hover ? 'rgba(214, 74, 46, 0.5)' : 'rgba(214, 74, 46, 0.26)'; c.fill();
+    c.strokeStyle = f.id === hover ? rgb('oklch(50% 0.17 33)') : 'rgba(190, 64, 40, 0.8)'; c.lineWidth = f.id === hover ? 3 : 1.6; c.stroke();
+  }
+  c.strokeStyle = 'rgba(60, 50, 40, 0.18)'; c.lineWidth = 1.1; c.beginPath(); path(world.borders); c.stroke();
+}
+
 // "Developed": the world drawn quietly on the page's own paper, and every country he has been to
 // filled with his photograph from there. Each piece of a country (an island, a mainland) gets the
 // photograph fitted to its own outline, cropped like a print, never stretched.
@@ -435,7 +474,8 @@ window.JourneyMap = async function makeGlobe(svgEl) {
   });
   const [world] = await Promise.all([K.world(), reliefP]);
   const photos = CFG.paint === 'photo' ? await countryPhotos() : {};
-  if (CFG.earth) earthBase(world, reliefImg);
+  if (CFG.paint === 'earth') earthBase(world, reliefImg);
+  if (CFG.paint === 'ink') inkBase(world, reliefImg);
   const paint = painter(world, colours, photos);
 
   // the facts, as journey.js has them
@@ -498,7 +538,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     mat.bumpMap = bump; mat.bumpScale = CFG.earth ? 0.9 : 1.4;
   }
   if (CFG.earth) {
-    const spec = new THREE.CanvasTexture(EARTH.spec); spec.wrapS = THREE.RepeatWrapping;
+    const spec = new THREE.CanvasTexture((EARTH || INK).spec); spec.wrapS = THREE.RepeatWrapping;
     mat.specularMap = spec; mat.specular = new THREE.Color(0x5d6f82); mat.shininess = 22;
   }
   mat.onBeforeCompile = (sh) => {
@@ -552,7 +592,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
   /* the earth's air: clouds a little above the ground, and a blue rim of atmosphere */
   let clouds = null, air = null;
   if (CFG.earth) {
-    const ct = new THREE.CanvasTexture(EARTH.clouds); ct.wrapS = THREE.RepeatWrapping; ct.colorSpace = THREE.SRGBColorSpace;
+    const ct = new THREE.CanvasTexture(EARTH ? EARTH.clouds : document.createElement('canvas')); ct.wrapS = THREE.RepeatWrapping; ct.colorSpace = THREE.SRGBColorSpace;
     clouds = new THREE.Mesh(new THREE.SphereGeometry(R * 1.024, 128, 64), new THREE.MeshLambertMaterial({ map: ct, transparent: true, depthWrite: false, opacity: 0 }));
     clouds.rotation.y = -Math.PI / 2; clouds.visible = false; clouds.renderOrder = 6;
     group.add(clouds);
@@ -773,7 +813,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
       const f = st.fold, ss = (a, b, x) => { const t = clamp((x - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); };
       U.uAlive.value = ss(0.05, 0.8, f);
       const co = ss(0.82, 1, f), ao = ss(0.6, 1, f);
-      clouds.visible = co > 0.01; clouds.material.opacity = 0.7 * co;
+      clouds.visible = !CFG.noClouds && co > 0.01; clouds.material.opacity = 0.7 * co;
       clouds.material.map.offset.x = -c / 360 + (K.reduced ? 0 : now / 900000);
       air.visible = ao > 0.01; air.material.uniforms.uOp.value = 0.6 * ao;
       comets(now);
