@@ -37,6 +37,9 @@ const CFG = {
   chart: { lift: 0.08, seg: [720, 360], raise: 0.03, frame1: 3.05, look: 0.3, paint: 'chart', wave: true, rise: true, plate: true, walls: true },
   cut: { lift: 0.08, seg: [720, 360], raise: 0.035, frame1: 3.05, look: 0.3, paint: 'cut', wave: true, rise: true, plate: true, walls: true },
   motion: { lift: 0.08, seg: [720, 360], raise: 0.03, frame1: 3.05, look: 0.3, wave: true, rise: true, plate: true },
+  // the photographic round (2026-10-29): every country he has been to is filled with his own
+  // photograph from there, and develops from blank paper into it as its plane lands
+  photo: { lift: 0.08, seg: [720, 360], raise: 0.014, soft: 2.5, frame1: 3.05, look: 0.3, paint: 'photo', wave: true, rise: true, develop: true, unlit: true },
 }[V];
 const HOME_LL = [S.flightsFrom[1], S.flightsFrom[0]];
 const CRAFT = 'craft' in document.body.dataset;
@@ -140,7 +143,7 @@ const eq = d3.geoEquirectangular().scale(TW / TAU).translate([TW / 2, TH / 2]).p
 let reliefImg = null;
 const reliefP = CFG.relief ? new Promise((ok) => { const i = new Image(); i.onload = () => ok(reliefImg = i); i.onerror = () => ok(null); i.src = '../vendor/relief/SR_50M-4096.jpg'; }) : Promise.resolve(null);
 
-function painter(world, colours) {
+function painter(world, colours, photos) {
   const visited = world.countries.filter((f) => K.visitedIso.has(f.id));
   let order = null;   // the grey each visited country gets in the mask: earlier trips darker
   return (cv, firstOf, y, hover, mask) => {
@@ -155,14 +158,18 @@ function painter(world, colours) {
       const k = cv.width / TW;
       c.setTransform(k, 0, 0, k, 0, 0);
       c.fillStyle = '#000'; c.fillRect(0, 0, TW, TH);
+      // thin prints: a softened mask gives them a gentle edge instead of stepped walls
+      if (CFG.soft) c.filter = `blur(${CFG.soft / k}px)`;
       for (const f of visited) if (firstOf[f.id] <= y) {
         const g = CFG.rise ? Math.round(order[f.id] * 255) : 255;
         c.fillStyle = `rgb(${g}, ${g}, ${g})`; c.beginPath(); path(f); c.fill();
       }
+      c.filter = 'none';
       return;
     }
     if (CFG.paint === 'chart') return paintChart(c, path, world, visited, colours, firstOf, y, hover);
     if (CFG.paint === 'cut') return paintCut(c, path, world, visited, colours, firstOf, y, hover);
+    if (CFG.paint === 'photo') return paintPhoto(c, path, world, visited, colours, firstOf, y, hover, photos);
     c.fillStyle = colours.sea; c.fillRect(0, 0, TW, TH);
     c.fillStyle = colours.land; c.beginPath(); path(world.land); c.fill();
     if (reliefImg) {
@@ -220,6 +227,34 @@ function paintCut(c, path, world, visited, col, firstOf, y, hover) {
   c.strokeStyle = col.score; c.lineWidth = 1.2; c.beginPath(); path(world.borders); c.stroke();
 }
 
+// "Developed": the world drawn quietly on the page's own paper, and every country he has been to
+// filled with his photograph from there. Each piece of a country (an island, a mainland) gets the
+// photograph fitted to its own outline, cropped like a print, never stretched.
+function paintPhoto(c, path, world, visited, col, firstOf, y, hover, photos) {
+  c.fillStyle = col.sea; c.fillRect(0, 0, TW, TH);
+  c.fillStyle = col.land; c.beginPath(); path(world.land); c.fill();
+  for (const f of visited) {
+    if (firstOf[f.id] > y) continue;
+    const img = photos[f.id];
+    const parts = f.geometry.type === 'MultiPolygon' ? f.geometry.coordinates.map((co) => ({ type: 'Polygon', coordinates: co })) : [f.geometry];
+    for (const g of parts) {
+      const [[x0, y0], [x1, y1]] = path.bounds(g);
+      if (!(x1 - x0 > 0.5)) continue;
+      c.save(); c.beginPath(); path(g); c.clip();
+      if (img) {
+        const bw = x1 - x0, bh = y1 - y0, k = Math.max(bw / img.naturalWidth, bh / img.naturalHeight);
+        const w = img.naturalWidth * k, h = img.naturalHeight * k;
+        c.drawImage(img, x0 + (bw - w) / 2, y0 + (bh - h) / 2, w, h);
+      } else { c.fillStyle = col.been; c.fillRect(x0, y0, x1 - x0, y1 - y0); }
+      c.restore();
+    }
+    c.beginPath(); path(f);
+    c.strokeStyle = f.id === hover ? col.route : col.edge; c.lineWidth = f.id === hover ? 3.2 : 1.2; c.stroke();
+  }
+  c.strokeStyle = col.hair; c.lineWidth = 1.3; c.beginPath(); path(world.borders); c.stroke();
+  c.strokeStyle = col.coast; c.lineWidth = 1.8; c.beginPath(); path(world.land); c.stroke();
+}
+
 /* ------------------------------------------------------------ the plane, a small paper cut-out */
 
 function planeShape() {
@@ -230,6 +265,27 @@ function planeShape() {
 }
 
 /* ------------------------------------------------------------ the map */
+
+// one photograph per country he has been to: the lead of his latest trip there when it was taken in
+// that country, else his first landscape-shaped one from there; keyed by the map's country number
+function countryPhotos() {
+  const pick = {};
+  for (const [id, s] of Object.entries(S.slides)) (pick[s.country] = pick[s.country] || []).push(id);
+  const jobs = Object.entries(pick).map(([cid, ids]) => {
+    const iso = K.ISO[cid];
+    if (!iso) return null;
+    const trip = K.trips.find((t) => t.countries.some((c) => c.id === cid) && t.lead && S.slides[t.lead]?.country === cid);
+    const id = trip ? trip.lead : ids.find((i) => S.slides[i].w > S.slides[i].h) || ids[0];
+    return new Promise((ok) => {
+      const img = new Image();
+      img.decoding = 'async';
+      img.onload = () => ok([iso, img]);
+      img.onerror = () => ok(null);
+      img.src = K.src(S.slides[id].file, 1280);
+    });
+  }).filter(Boolean);
+  return Promise.all(jobs).then((r) => Object.fromEntries(r.filter(Boolean)));
+}
 
 let live = null;   // the one globe on the page (a language switch builds the page again)
 
@@ -250,12 +306,17 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     land: rgb('--paper'), been: rgb('oklch(87% 0.045 55)'), beenOn: rgb('oklch(83% 0.06 50)'), edge: rgb('oklch(74% 0.05 50)'),
     hair: rgb('oklch(70% 0.02 240)'),
   });
+  if (CFG.paint === 'photo') Object.assign(colours, {
+    sea: rgb('--paper'), land: rgb('--paper-2'), been: rgb('--been'), edge: rgb('oklch(84% 0.012 80)'),
+    hair: rgb('--hair'), coast: rgb('--ink-3'),
+  });
   if (CFG.paint === 'cut') Object.assign(colours, {
     sea: rgb('oklch(90% 0.015 75)'), land: rgb('oklch(97% 0.005 85)'), been: rgb('oklch(80% 0.07 45)'),
     beenOn: rgb('oklch(75% 0.09 42)'), edge: rgb('oklch(66% 0.08 42)'), score: rgb('oklch(88% 0.012 75)'),
   });
   const [world] = await Promise.all([K.world(), reliefP]);
-  const paint = painter(world, colours);
+  const photos = CFG.paint === 'photo' ? await countryPhotos() : {};
+  const paint = painter(world, colours, photos);
 
   // the facts, as journey.js has them
   const HOME_ID = S.countries.find((c) => K.km(c.ll, S.flightsFrom) < 80)?.id || 'taiwan';
@@ -304,10 +365,11 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     uWave: { value: CFG.wave ? 1 : 0 }, uFold: { value: 0 }, uHome: { value: new THREE.Vector2(HOME_LL[0] * RAD, HOME_LL[1] * RAD) },
     uRise: { value: CFG.rise ? 1 : 0 }, uReveal: { value: CFG.rise && !K.reduced ? 0 : 1 },
     uPlate: { value: CFG.plate ? 1 : 0 }, uWalls: { value: CFG.walls ? 1 : 0 }, uEdge: { value: new THREE.Color(colours.edge) },
+    uDevelop: { value: CFG.develop ? 1 : 0 }, uDevTint: { value: new THREE.Color(rgb('oklch(78% 0.07 70)')) },
     uMask: { value: maskTex ? maskTex[0] : texes[0] }, uMaskPrev: { value: maskTex ? maskTex[1] : texes[0] },
   };
   const mat = new THREE.MeshLambertMaterial({
-    map: texes[0], side: THREE.DoubleSide, flatShading: !!CFG.raise,
+    map: texes[0], side: THREE.DoubleSide, flatShading: !!CFG.raise && !CFG.soft,
     polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1,
   });
   if (CFG.relief) {
@@ -321,11 +383,20 @@ window.JourneyMap = async function makeGlobe(svgEl) {
       .replace('#include <beginnormal_vertex>', 'vec3 nrm; float rz = raiseAt(uv); vQ = uv; vRz = uRaise > 0.0 ? rz / uRaise : 0.0;\nvec3 morphed = sheet(uv, rz, nrm);\nvec3 objectNormal = nrm;')
       .replace('#include <begin_vertex>', 'vec3 transformed = morphed;');
     sh.fragmentShader = sh.fragmentShader
-      .replace('#include <common>', '#include <common>\nuniform sampler2D uPrev; uniform float uMix, uLit, uPlate, uFold, uWalls; uniform vec3 uBack, uEdge; varying vec2 vQ; varying float vRz;')
+      .replace('#include <common>', '#include <common>\nuniform sampler2D uPrev, uMask, uMaskPrev; uniform float uMix, uLit, uPlate, uFold, uWalls, uDevelop, uCenter, uReveal; uniform vec3 uBack, uEdge, uDevTint; varying vec2 vQ; varying float vRz;')
       .replace('#include <map_fragment>', `#include <map_fragment>
         #ifdef USE_MAP
           diffuseColor.rgb = mix(texture2D(uPrev, vMapUv).rgb, diffuseColor.rgb, uMix);
         #endif
+        // a country develops like a print, blank paper to his photograph, in the order he first went
+        if (uDevelop > 0.5) {
+          vec2 mq = vec2(vQ.x + uCenter / 6.2831853, vQ.y);
+          float g = mix(texture2D(uMaskPrev, mq).r, texture2D(uMask, mq).r, uMix);
+          if (g > 0.02) {
+            float dv = smoothstep(g - 0.07, g, uReveal * 1.08);
+            diffuseColor.rgb = mix(mix(uBack, diffuseColor.rgb, dv), uDevTint, 1.2 * dv * (1.0 - dv));
+          }
+        }
         // the printed plate: on arrival the map is trimmed to its band, 80N to 56S
         if (uPlate > 0.5) { float la = (vQ.y - 0.5) * 180.0, o = smoothstep(0.15, 0.6, uFold); if (la > mix(80.0, 91.0, o) || la < mix(-56.0, -91.0, o)) discard; }
         // the cut sides of a raised country, a deeper clay than its top
@@ -541,7 +612,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     if (kx !== st.kx || ky !== st.ky || c !== st.center || tl !== st.tilt) linesDirty = true;
     st.kx = kx; st.ky = ky; st.center = c; st.tilt = tl;
     U.uKx.value = kx; U.uKy.value = ky; U.uCenter.value = c * RAD;
-    U.uLit.value = CFG.rise ? Math.max(st.fold, 0.7) : st.fold;
+    U.uLit.value = CFG.rise && !CFG.unlit ? Math.max(st.fold, 0.7) : st.fold;
     const off = c / 360;
     for (const t of texes) t.offset.x = off;
     if (mat.bumpMap) mat.bumpMap.offset.x = off;
