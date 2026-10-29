@@ -30,6 +30,8 @@ const CFG = {
   roll: { lift: 0.07, seg: [360, 180], roll: true },
   // his pick (2026-10-29): raised countries, arcs lower than high's, the globe at high's size
   mix: { lift: 0.15, seg: [720, 360], raise: 0.03, frame1: 3.05, look: 0.3 },
+  // the Impeccable variations (2026-10-29): the same globe, arcs held closer to it
+  mixlow: { lift: 0.08, seg: [720, 360], raise: 0.03, frame1: 3.05, look: 0.3 },
 }[V];
 
 const R = 1;
@@ -390,6 +392,12 @@ window.JourneyMap = async function makeGlobe(svgEl) {
   const tweens = new Set();
   let raf = 0, linesDirty = true;
   function kick() { if (!raf) raf = requestAnimationFrame(frame); }
+  // while the map's own box is changing size in CSS (a variation moves the globe aside), keep drawing
+  let moving = 0;
+  fig.addEventListener('transitionrun', (e) => { if (e.target === fig) { moving++; kick(); } });
+  const still = (e) => { if (e.target === fig) moving = Math.max(0, moving - 1); };
+  fig.addEventListener('transitionend', still);
+  fig.addEventListener('transitioncancel', still);
   function frame(now) {
     raf = 0;
     for (const tw of [...tweens]) if (tw(now) === false) tweens.delete(tw);
@@ -417,7 +425,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     renderer.setScissorTest(true);
     renderer.setScissor(r.x, H - r.y - r.h, r.w, r.h);
     renderer.render(scene, camera);
-    if (tweens.size || Object.keys(ops).some((k) => opsNow[k] !== ops[k])) kick();
+    if (moving || tweens.size || Object.keys(ops).some((k) => opsNow[k] !== ops[k])) kick();
   }
   const tween = (dur, step) => new Promise((done) => {
     const t0 = performance.now();
