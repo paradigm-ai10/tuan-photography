@@ -9,6 +9,14 @@
 .rv__tab-s { display: inline-block; rotate: 180deg; writing-mode: horizontal-tb; margin-block: 0.4rem; font-size: 0.95rem; letter-spacing: 0; }
 .rv__tab-n { letter-spacing: 0.1em; }
 .rv.is-open .rv__tab { order: 2; }
+/* moved by hand: it floats where he left it */
+.rv.is-moved { left: var(--rv-x); top: var(--rv-y); translate: none; }
+.rv.is-moved .rv__panel { border-left: 1px solid var(--ink); }
+.rv__tab, .rv__head { cursor: grab; touch-action: none; user-select: none; }
+.rv.is-dragging, .rv.is-dragging * { cursor: grabbing; }
+.rv.is-dragging .rv__panel { box-shadow: 0 1rem 3rem oklch(22% 0.01 60 / 0.22); }
+.rv__grip { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); }
+:lang(zh-Hant) .rv__grip { text-transform: none; font-size: 0.78rem; }
 .rv__panel {
   width: min(22rem, 100vw - 3.5rem); max-height: min(44rem, 100vh - 2rem); overflow-y: auto;
   background: var(--paper); border: 1px solid var(--ink); border-left: 0;

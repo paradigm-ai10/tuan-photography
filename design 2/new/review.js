@@ -82,14 +82,14 @@
       moment: 'Like something? Say what, it pins to this spot', pin: 'Pin it', moments: 'Moments', none: 'No moments yet. Scroll to something you notice and pin a line.',
       note: 'Overall', noteHint: 'What to keep, what to change', go: 'Go there', del: 'Remove', close: 'Close',
       saved: 'Saved. Claude can read it.', local: 'Saved in this browser only', saving: 'Saving', back: 'All versions',
-      at: (p) => `${p}% down`,
+      at: (p) => `${p}% down`, move: 'Drag', drag: 'Drag here to move the notes',
     },
     zh: {
       tab: '筆記', title: '你的筆記', score: '分數', scores: ['', '不要', '普通偏弱', '還可以', '喜歡', '超喜歡'],
       moment: '看到喜歡的？寫一句，會釘在這個位置', pin: '釘上', moments: '片刻', none: '還沒有。捲到你注意到的地方，寫一句釘上。',
       note: '整體', noteHint: '要留什麼、要改什麼', go: '回到那裡', del: '刪掉', close: '關上',
       saved: '已存，Claude 讀得到。', local: '只存在這個瀏覽器', saving: '存檔中', back: '所有版本',
-      at: (p) => `往下 ${p}%`,
+      at: (p) => `往下 ${p}%`, move: '拖曳', drag: '拖這裡可以移動筆記',
     },
   };
   const lang = () => (window.Kit && window.Kit.lang) || (document.documentElement.lang === 'zh-Hant' ? 'zh' : 'en');
@@ -114,7 +114,7 @@
     box.innerHTML = `
       <button type="button" class="rv__tab" aria-expanded="${open}" aria-controls="rv-panel">${esc(w.tab)}${s ? ` <span class="rv__tab-s">${s}</span>` : ''}${pins.length ? ` <span class="rv__tab-n">· ${pins.length}</span>` : ''}</button>
       <div class="rv__panel" id="rv-panel" ${open ? '' : 'hidden'}>
-        <div class="rv__head"><span class="rv__h">${esc(w.title)}</span><a class="rv__back" href="index.html#v-${ID}">${esc(w.back)}</a><button type="button" class="rv__x" data-rv="close">${esc(w.close)}</button></div>
+        <div class="rv__head" title="${esc(w.drag)}"><span class="rv__h">${esc(w.title)}</span><span class="rv__grip" aria-hidden="true">${esc(w.move)}</span><a class="rv__back" href="index.html#v-${ID}">${esc(w.back)}</a><button type="button" class="rv__x" data-rv="close">${esc(w.close)}</button></div>
         <div class="rv__score" role="group" aria-label="${esc(w.score)}">
           ${[1, 2, 3, 4, 5].map((n) => `<button type="button" class="rv__n" data-rv="score" data-n="${n}" aria-pressed="${s === n}" title="${esc(w.scores[n])}">${n}</button>`).join('')}
         </div>
@@ -133,6 +133,7 @@
         <textarea class="rv__in" id="rv-note" rows="3" placeholder="${esc(w.noteHint)}">${esc(it.note || '')}</textarea>
         <p class="rv__state" role="status" aria-live="polite"></p>
       </div>`;
+    place();
   }
   const state = (k) => { const el = box.querySelector('.rv__state'); if (el) el.textContent = WORDS[lang()][k] || ''; };
   const goTo = (at) => { const h = document.documentElement.scrollHeight - innerHeight; scrollTo({ top: at * h, behavior: 'smooth' }); };
@@ -154,9 +155,48 @@
     box.querySelector('#rv-moment').focus();
   }
 
+  // he can drag the notes anywhere by the tab or the top line; the place is remembered for every page
+  let moved = null, drag = null, dragged = false;
+  try { moved = JSON.parse(localStorage.getItem('rv-place')); } catch (e) { /* storage blocked */ }
+  function place() {
+    if (!moved) { box.classList.remove('is-moved'); return; }
+    const r = box.getBoundingClientRect();
+    moved.x = Math.max(0, Math.min(innerWidth - Math.min(r.width, innerWidth), moved.x));
+    moved.y = Math.max(0, Math.min(innerHeight - Math.min(r.height, innerHeight), moved.y));
+    box.classList.add('is-moved');
+    box.style.setProperty('--rv-x', `${moved.x}px`);
+    box.style.setProperty('--rv-y', `${moved.y}px`);
+  }
+  box.addEventListener('pointerdown', (e) => {
+    const h = e.target.closest('.rv__tab, .rv__head');
+    if (!h || e.target.closest('a, [data-rv]') || e.button !== 0) return;
+    const r = box.getBoundingClientRect();
+    drag = { dx: e.clientX - r.left, dy: e.clientY - r.top, x0: e.clientX, y0: e.clientY };
+    dragged = false;
+    h.setPointerCapture(e.pointerId);
+  });
+  box.addEventListener('pointermove', (e) => {
+    if (!drag) return;
+    if (!dragged && Math.hypot(e.clientX - drag.x0, e.clientY - drag.y0) < 5) return;
+    dragged = true;
+    box.classList.add('is-dragging');
+    moved = { x: e.clientX - drag.dx, y: e.clientY - drag.dy };
+    place();
+  });
+  const drop = () => {
+    if (!drag) return;
+    drag = null;
+    box.classList.remove('is-dragging');
+    if (dragged) try { localStorage.setItem('rv-place', JSON.stringify(moved)); } catch (e) { /* storage blocked */ }
+  };
+  box.addEventListener('pointerup', drop);
+  box.addEventListener('pointercancel', drop);
+  addEventListener('resize', place);
+
   box.addEventListener('click', (e) => {
     const b = e.target.closest('[data-rv], .rv__tab');
     if (!b) return;
+    if (dragged) { dragged = false; return; }
     if (b.classList.contains('rv__tab')) return setOpen(!open);
     const k = b.dataset.rv, it = item(ID);
     if (k === 'close') setOpen(false);
