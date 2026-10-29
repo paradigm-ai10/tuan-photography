@@ -39,12 +39,19 @@ const CFG = {
   motion: { lift: 0.08, seg: [720, 360], raise: 0.03, frame1: 3.05, look: 0.3, wave: true, rise: true, plate: true },
 }[V];
 const HOME_LL = [S.flightsFrom[1], S.flightsFrom[0]];
+const CRAFT = 'craft' in document.body.dataset;
 
 const R = 1;
 const START = 150;                 // the flat map is centred on the Pacific, Taiwan in view (as before)
 const TAU = Math.PI * 2, RAD = Math.PI / 180;
 const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
 const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+// a CSS cubic-bezier as a function of time, for the entrances (strong ease-out, 0.23 1 0.32 1)
+function bezier(x1, y1, x2, y2) {
+  const f = (a, b, t) => ((1 - 3 * b + 3 * a) * t + (3 * b - 6 * a)) * t * t + 3 * a * t;
+  return (x) => { let lo = 0, hi = 1, t = x; for (let i = 0; i < 24; i++) { t = (lo + hi) / 2; if (f(x1, x2, t) < x) lo = t; else hi = t; } return f(y1, y2, t); };
+}
+const easeOut = bezier(0.23, 1, 0.32, 1);
 const turnBy = (from, to) => ((to - from + 540) % 360) - 180;
 const ll = (p) => [p[1], p[0]];
 
@@ -483,7 +490,9 @@ window.JourneyMap = async function makeGlobe(svgEl) {
   function frameCamera() {
     const f = st.fold, r = target();
     // the world's frame: the flat map's band (80N to 56S, all the way round) or the globe and its air
-    const s1 = CFG.frame1 || 2.3;
+    let s1 = CFG.frame1 || 2.3;
+    // scroll-craft: at the peak, before the globe docks, it is shown large on the whole screen
+    if (CRAFT) s1 = 2.05 + (s1 - 2.05) * (parseFloat(getComputedStyle(fig).getPropertyValue('--dock')) || 0);
     const fw = (2 * Math.PI * 1.01) * (1 - f) + s1 * f, fh = (136 * RAD * 1.06) * (1 - f) + s1 * f;
     const cy = 12 * RAD * (1 - f), plane = R * (1 - f) + 0.25 * f;
     const ppw = Math.min(r.w / fw, r.h / fh);
@@ -511,12 +520,18 @@ window.JourneyMap = async function makeGlobe(svgEl) {
   const still = (e) => { if (e.target === fig) moving = Math.max(0, moving - 1); };
   fig.addEventListener('transitionend', still);
   fig.addEventListener('transitioncancel', still);
+  // scroll-craft: the map's box changes with the scroll before the fold starts, so draw on scroll
+  if (CRAFT) addEventListener('scroll', kick, { passive: true });
   function frame(now) {
     raf = 0;
     for (const tw of [...tweens]) if (tw(now) === false) tweens.delete(tw);
     // the fold carries a little weight: it follows the scroll instead of jumping with it
     if (CFG.wave && st.fold !== st.want) { const d = st.want - st.fold; st.fold = Math.abs(d) < 0.0008 ? st.want : st.fold + d * 0.11; linesDirty = true; }
     U.uFold.value = st.fold;
+    if (CFG.wave && !K.reduced) {
+      if (st.fold > 0.985 && !st.closed) { st.closed = true; pulseHome(); }
+      else if (st.fold < 0.9) st.closed = false;
+    }
     for (const k of Object.keys(ops)) {
       const d = ops[k] - opsNow[k];
       if (Math.abs(d) > 0.003) { opsNow[k] += d * 0.14; linesDirty = true; } else if (opsNow[k] !== ops[k]) { opsNow[k] = ops[k]; linesDirty = true; }
@@ -642,6 +657,19 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     document.getElementById(`t-${t.id}`)?.scrollIntoView({ behavior: K.reduced ? 'auto' : 'smooth', block: 'center' });
   });
 
+  // home answers once when the world has closed round it: one ring opening out from Taiwan
+  const pulse = new THREE.Mesh(ring, basic(colours.route, { opacity: 0 }));
+  pulse.visible = false; pulse.renderOrder = 5; group.add(pulse);
+  function pulseHome() {
+    pulse.visible = true;
+    tween(1500, (k) => {
+      const e = easeOut(k);
+      pulse.material.opacity = 0.9 * (1 - k);
+      lay(pulse, ...home, base + 0.004, 0.014 + e * 0.11);
+      if (k >= 1) pulse.visible = false;
+    });
+  }
+
   /* the six words journey.js speaks */
   function setFold(a) {
     a = K.reduced ? (a < 0.5 ? 0 : 1) : a;
@@ -695,7 +723,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     const rings = flights.map(() => { const m = new THREE.Mesh(ring, basic(colours.route, { opacity: 0 })); m.visible = false; group.add(m); return m; });
     // the plate is laid down on the table first, then the planes leave
     const lay0 = st.drop > 0 ? 650 : 0;
-    if (st.drop > 0) tween(1100, (k) => { st.drop = 1 - ease(k); });
+    if (st.drop > 0) tween(1100, (k) => { st.drop = 1 - easeOut(k); });
     const t0 = performance.now() + lay0;
     let landed = -1;
     tweens.add((now) => {
@@ -737,6 +765,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
   live = {
     dispose() {
       cancelAnimationFrame(raf); fit.disconnect();
+      if (CRAFT) removeEventListener('scroll', kick);
       renderer.dispose(); box.remove();
     },
   };

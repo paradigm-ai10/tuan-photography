@@ -66,6 +66,7 @@
 
   /* ------------------------------------------------------------ the facts the map needs */
 
+  const CRAFT = 'craft' in document.body.dataset;   // the scroll-craft round, see dockCraft()
   const HOME_ID = S.countries.find((c) => K.km(c.ll, S.flightsFrom) < 80)?.id || 'taiwan';
   const years = [...new Set(K.trips.map((t) => +t.year))].sort((a, b) => b - a);
   const firstYear = {};                       // country id -> the year he first went
@@ -363,6 +364,7 @@
               <div><dt>${esc(w.photos)}</dt><dd class="sc-nums" id="jr-photos">0</dd></div>
             </dl>
           </header>
+          ${CRAFT ? '<div class="jr-hold" aria-hidden="true"></div>' : ''}
           <div class="jr-years">${byYear.map(({ y, trips }) => `
           <section class="jr-year" data-year="${y}">
             <header class="jr-year__head">
@@ -419,8 +421,22 @@
 
   // how far the map has glided aside, 0 (the whole screen) to 1 (beside the years); published as
   // a number for the stylesheet, as the engine publishes --sc-p
+  // scroll-craft round (2026-10-29), <body data-craft>: the fold is the page's one peak. After the
+  // arrival the map holds the whole screen and closes into the globe there, with the most scroll of
+  // any part of the page; only then does the globe glide aside and the trips arrive.
+  function dockCraft(frame, hold) {
+    const H = innerHeight, y = scrollY;
+    const arr = clamp(y / (H * 0.45), 0, 1);
+    const fold = clamp((y - H * 0.15) / (H * 0.85), 0, 1);
+    const d = clamp((y - H * 1.12) / (H * 0.5), 0, 1);
+    frame.style.setProperty('--arr', arr.toFixed(4));
+    frame.style.setProperty('--dock', d3.easeCubicInOut(d).toFixed(4));
+    map.setFold(d3.easeCubicInOut(fold));
+  }
   function dock() {
     const frame = $('.jr');
+    const hold = CRAFT && $('.jr-hold');
+    if (hold && hold.offsetHeight) return dockCraft(frame, hold);
     const hero = $('.jr-hero');
     const d = clamp((scrollY - hero.offsetHeight * 0.15) / (hero.offsetHeight * 0.7), 0, 1);
     frame.style.setProperty('--dock', d3.easeCubicInOut(d).toFixed(4));

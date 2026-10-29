@@ -1,0 +1,21 @@
+/* The scroll-craft round (2026-10-29), <body data-craft>: the arrival as layered planes and the
+   fold as the page's one peak. journey.js (dockCraft) writes --arr (the arrival leaving, 0 to 1)
+   and --dock; the fold itself is the globe's. Desktop only; the phone keeps the live page. */
+.jr-hold { display: none; }
+@media (min-width: 64rem) {
+  /* the held stretch where the map closes into the globe on the whole screen */
+  [data-craft] .jr-hold { display: block; height: 128svh; pointer-events: none; }
+  [data-craft] .jr { --arr: 0; }
+  /* depth: three planes leave at three speeds. The words go first and fastest, the counters a
+     little slower, the map itself barely moves, so the sheet reads as the furthest thing back */
+  [data-craft] .jr-hero__words { opacity: clamp(0, 1 - var(--arr) * 1.5, 1); transform: translateY(calc(var(--arr) * -14vh)); }
+  [data-craft] .jr-totals { opacity: clamp(0, 1 - var(--arr) * 1.15, 1); transform: translateY(calc(var(--arr) * -7vh)); }
+  [data-craft] .jr-map .g3 { transform: translateY(calc(var(--arr) * -2.5vh * (1 - var(--dock)))); }
+  /* once the words have gone, the map takes their room too, so the peak fills the screen */
+  [data-craft] .jr-map { padding-bottom: calc((12.5rem * (1 - var(--arr)) + 1.5rem * var(--arr)) * (1 - var(--dock)) + 1rem * var(--dock)); }
+  /* the reading panel slides in from the right and pushes the globe aside, instead of fading over it */
+  [data-craft] .jr-panel { opacity: 1; transform: translateX(calc((1 - var(--dock)) * 100%)); }
+}
+@media (min-width: 64rem) and (prefers-reduced-motion: reduce) {
+  [data-craft] .jr-hero__words, [data-craft] .jr-totals, [data-craft] .jr-map .g3 { transform: none; }
+}
