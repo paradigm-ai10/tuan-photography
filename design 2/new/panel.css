@@ -1,0 +1,53 @@
+/* The right panel, three step-ups (trial, 2026-10-29): see panel.js. Desktop only; the phone keeps
+   the page as it is. */
+@media (min-width: 64rem) {
+  /* shared: a calmer, slightly denser panel, the route opening only for the trip being read */
+  [data-panel] .jr-panel { background: color-mix(in oklch, var(--paper) 72%, transparent); }
+  [data-panel] .jr-trip__route { display: block; max-height: 0; opacity: 0; overflow: hidden; transition: max-height 0.45s var(--ease), opacity 0.3s var(--ease), margin 0.45s var(--ease); }
+  [data-panel] .jr-trip.is-reading .jr-trip__route { max-height: 6em; opacity: 1; }
+  [data-panel] .jr-years:has(.is-reading) .jr-trip:not(.is-reading) { opacity: 0.5; }
+  [data-panel] .jr-trip__title { transition: font-size 0.45s var(--ease), color 0.2s var(--ease); }
+
+  /* ---- index: a contents page --------------------------------------------------------------- */
+  [data-panel="index"] .jr-year { display: grid; grid-template-columns: 7.5rem minmax(0, 1fr); column-gap: 1.5rem; border-top: 1px solid var(--ink); padding: 0 0 3rem; }
+  [data-panel="index"] .jr-year__head { grid-column: 1; grid-row: 1 / span 2; display: block; align-self: start; position: sticky; top: 1.25rem; padding-top: 0.9rem; }
+  [data-panel="index"] .jr-year__n { font-size: clamp(2.4rem, 1.6rem + 1.8vw, 3.6rem); font-weight: 400; letter-spacing: -0.04em; line-height: 1; color: var(--ink); }
+  [data-panel="index"] .jr-year__count { margin-top: 0.4rem; font-size: 0.78rem; }
+  [data-panel="index"] .jr-trips { grid-column: 2; }
+  [data-panel="index"] .jr-trip { padding-block: 0; border-bottom: 1px solid var(--hair); }
+  [data-panel="index"] .jr-trip:last-child { border-bottom: 0; }
+  [data-panel="index"] .jr-trip__link { grid-template-columns: minmax(0, 1fr) auto; column-gap: 1rem; padding-block: 0.95rem; align-items: baseline; }
+  [data-panel="index"] .jr-trip__when { grid-column: 2; grid-row: 1; }
+  [data-panel="index"] .jr-trip__title { grid-column: 1; grid-row: 1; margin: 0; font-size: 1.25rem; }
+  [data-panel="index"] .jr-trip__route { grid-column: 1 / -1; }
+  [data-panel="index"] .jr-trip.is-reading .jr-trip__title { font-size: clamp(1.7rem, 1.3rem + 1vw, 2.3rem); }
+  [data-panel="index"] .jr-trip.is-reading .jr-trip__route { margin-top: 0.35rem; }
+
+  /* ---- prints: the trip being read opens its photographs ---------------------------------- */
+  [data-panel="prints"] .jr-trip { padding-block: 0.85rem; }
+  [data-panel="prints"] .jr-trip.is-reading { padding-block: 1.4rem; }
+  [data-panel="prints"] .jr-trip.is-reading .jr-trip__title { font-size: clamp(1.7rem, 1.3rem + 1vw, 2.3rem); }
+  [data-panel="prints"] .pn-strip { display: flex; align-items: flex-end; gap: 0.4rem; height: 0; opacity: 0; overflow: hidden; transition: height 0.45s var(--ease), opacity 0.3s var(--ease), margin 0.45s var(--ease); }
+  [data-panel="prints"] .jr-trip.is-reading .pn-strip { height: clamp(4.5rem, 7.5vw, 7rem); opacity: 1; margin-top: 0.9rem; }
+  .pn-strip__shot { flex: var(--ar) 1 0; height: 100%; min-width: 0; cursor: zoom-in; }
+  .pn-strip__img { width: 100%; height: 100%; object-fit: cover; }
+  .pn-strip__shot:hover .pn-strip__img { outline: 2px solid var(--link); outline-offset: 2px; }
+  .pn-strip__more { align-self: center; font-size: 0.8rem; color: var(--ink-2); padding-inline: 0.3rem; }
+
+  /* ---- line: the trips hang on one line ----------------------------------------------------- */
+  [data-panel="line"] .jr-years { position: relative; }
+  [data-panel="line"] .jr-year { border-top: 0; padding: 0.4rem 0 1.5rem 2.25rem; position: relative; }
+  [data-panel="line"] .jr-year::before { content: ""; position: absolute; left: 0.45rem; top: 0; bottom: 0; border-left: 1px solid var(--ink-3); }
+  [data-panel="line"] .jr-year__head { margin-left: -2.25rem; }
+  [data-panel="line"] .jr-year__n { display: inline-block; position: relative; background: var(--ink); color: var(--paper); font-size: 1rem; padding: 0.2rem 0.55rem; letter-spacing: 0; }
+  [data-panel="line"] .jr-year__count { font-size: 0.78rem; }
+  [data-panel="line"] .jr-trip { position: relative; padding-block: 0.85rem; }
+  [data-panel="line"] .jr-trip::before {
+    content: ""; position: absolute; left: calc(-2.25rem + 0.45rem); top: 1.55rem; width: 0.7rem; height: 0.7rem; translate: -50% 0;
+    background: var(--paper); border: 1px solid var(--ink-2); border-radius: 50%; transition: background 0.3s, border-color 0.3s, scale 0.3s var(--ease);
+  }
+  [data-panel="line"] .jr-trip.is-past::before { background: var(--ink-2); }
+  [data-panel="line"] .jr-trip.is-reading::before { background: var(--route); border-color: var(--route); scale: 1.5; box-shadow: 0 0 0 4px color-mix(in oklch, var(--route) 22%, transparent); }
+  [data-panel="line"] .jr-trip.is-reading .jr-trip__title { font-size: clamp(1.7rem, 1.3rem + 1vw, 2.3rem); }
+  [data-panel="line"] .jr-trip.is-reading .jr-trip__route { margin-top: 0.3rem; }
+}

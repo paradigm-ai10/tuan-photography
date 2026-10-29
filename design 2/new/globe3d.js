@@ -9,6 +9,7 @@
      high    flights rise in tall arcs above the globe, seen a little from above
      raised  the countries he has been to stand up from the globe like cut paper
      roll    the map rolls up like a paper chart first, then closes at the poles
+     mix     raised countries with mid-height arcs, the globe at high's size (his pick)
 
    The sheet is one grid of points; where each point sits is worked out on the graphics card from
    two curvatures (across and up and down), so the flat map, the half-rolled sheet and the globe are
@@ -27,6 +28,8 @@ const CFG = {
   high: { lift: 0.42, seg: [360, 180], frame1: 3.05, look: 0.3 },
   raised: { lift: 0.07, seg: [720, 360], raise: 0.03 },
   roll: { lift: 0.07, seg: [360, 180], roll: true },
+  // his pick (2026-10-29): raised countries, arcs lower than high's, the globe at high's size
+  mix: { lift: 0.15, seg: [720, 360], raise: 0.03, frame1: 3.05, look: 0.3 },
 }[V];
 
 const R = 1;
