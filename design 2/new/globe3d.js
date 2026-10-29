@@ -39,6 +39,10 @@ const CFG = {
   motion: { lift: 0.08, seg: [720, 360], raise: 0.03, frame1: 3.05, look: 0.3, wave: true, rise: true, plate: true },
   // the photographic round (2026-10-29): every country he has been to is filled with his own
   // photograph from there, and develops from blank paper into it as its plane lands
+  // the earth round (2026-10-30): a real-looking earth (terrain relief, land coloured by climate,
+  // deep sea with shallows and sun glint, ice, drifting clouds, a blue atmosphere); the map fills
+  // the whole page edge to edge and its edges fade into the paper, so the page itself wraps up
+  earth: { lift: 0.09, seg: [720, 360], raise: 0.01, soft: 4, frame1: 3.05, look: 0.3, paint: 'earth', wave: true, rise: true, unlit: true, earth: true, bleed: true },
   photo: { lift: 0.08, seg: [720, 360], raise: 0.014, soft: 4, frame1: 3.05, look: 0.3, paint: 'photo', wave: true, rise: true, develop: true, unlit: true },
 }[V];
 const HOME_LL = [S.flightsFrom[1], S.flightsFrom[0]];
@@ -147,7 +151,7 @@ const TW = 4096, TH = 2048;
 const eq = d3.geoEquirectangular().scale(TW / TAU).translate([TW / 2, TH / 2]).precision(0.2);
 
 let reliefImg = null;
-const reliefP = CFG.relief ? new Promise((ok) => { const i = new Image(); i.onload = () => ok(reliefImg = i); i.onerror = () => ok(null); i.src = '../vendor/relief/SR_50M-4096.jpg'; }) : Promise.resolve(null);
+const reliefP = CFG.relief || CFG.earth ? new Promise((ok) => { const i = new Image(); i.onload = () => ok(reliefImg = i); i.onerror = () => ok(null); i.src = '../vendor/relief/SR_50M-4096.jpg'; }) : Promise.resolve(null);
 
 function painter(world, colours, photos) {
   const visited = world.countries.filter((f) => K.visitedIso.has(f.id));
@@ -172,6 +176,7 @@ function painter(world, colours, photos) {
     }
     if (CFG.paint === 'chart') return paintChart(c, path, world, visited, colours, firstOf, y, hover);
     if (CFG.paint === 'cut') return paintCut(c, path, world, visited, colours, firstOf, y, hover);
+    if (CFG.paint === 'earth') return paintEarth(c, path, world, visited, colours, firstOf, y, hover);
     if (CFG.paint === 'photo') return paintPhoto(c, path, world, visited, colours, firstOf, y, hover, photos);
     c.fillStyle = colours.sea; c.fillRect(0, 0, TW, TH);
     c.fillStyle = colours.land; c.beginPath(); path(world.land); c.fill();
@@ -228,6 +233,117 @@ function paintCut(c, path, world, visited, col, firstOf, y, hover) {
   shadow(() => been.forEach((f) => path(f)), 4, 6, 6, 0.28);
   for (const f of been) { c.fillStyle = f.id === hover ? col.beenOn : col.been; c.beginPath(); path(f); c.fill(); }
   c.strokeStyle = col.score; c.lineWidth = 1.2; c.beginPath(); path(world.borders); c.stroke();
+}
+
+/* ---- the earth: painted once from the land shapes and the relief, then his countries on top ---- */
+// a small value noise for the clouds (seamless round the world: sampled on a cylinder)
+function noise3(x, y, z) {
+  const h = (i, j, k) => { const n = Math.sin(i * 127.1 + j * 311.7 + k * 74.7) * 43758.5453; return n - Math.floor(n); };
+  const xi = Math.floor(x), yi = Math.floor(y), zi = Math.floor(z), xf = x - xi, yf = y - yi, zf = z - zi;
+  const u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf), w = zf * zf * (3 - 2 * zf);
+  const l = (a, b, t) => a + (b - a) * t;
+  return l(l(l(h(xi, yi, zi), h(xi + 1, yi, zi), u), l(h(xi, yi + 1, zi), h(xi + 1, yi + 1, zi), u), v),
+           l(l(h(xi, yi, zi + 1), h(xi + 1, yi, zi + 1), u), l(h(xi, yi + 1, zi + 1), h(xi + 1, yi + 1, zi + 1), u), v), w);
+}
+// the dry places, as soft boxes [lon0, lon1, lat0, lat1, strength]: Sahara and Arabia, Iran and
+// Thar, Taklamakan and Gobi, Australia's interior, Kalahari and Namib, the American south-west,
+// Atacama, Patagonia, the Kazakh steppe
+const DRY = [[-17, 60, 14, 33, 1], [44, 75, 24, 38, 0.8], [75, 112, 36, 47, 0.85], [114, 146, -32, -19, 0.9], [12, 26, -29, -18, 0.75],
+  [-120, -103, 24, 37, 0.65], [-71.5, -68, -28, -17, 0.9], [-72, -64, -50, -38, 0.55], [50, 80, 42, 50, 0.45]];
+let EARTH = null;
+function earthBase(world, relief) {
+  if (EARTH) return EARTH;
+  const W = 2048, H = 1024;
+  const mk = (w, h) => Object.assign(document.createElement('canvas'), { width: w, height: h });
+  const eqW = d3.geoEquirectangular().scale(W / TAU).translate([W / 2, H / 2]).precision(0.3);
+  const land = (cv, blur) => {
+    const c = cv.getContext('2d', { willReadFrequently: true });
+    c.fillStyle = '#000'; c.fillRect(0, 0, W, H);
+    if (blur) c.filter = `blur(${blur}px)`;
+    c.fillStyle = '#fff'; c.beginPath(); d3.geoPath(eqW, c)(world.land); c.fill();
+    return c.getImageData(0, 0, W, H).data;
+  };
+  const L = land(mk(W, H)), inland = land(mk(W, H), 26), near = land(mk(W, H), 7);
+  const out = mk(W, H), oc = out.getContext('2d');
+  const img = oc.createImageData(W, H), d = img.data;
+  const mix = (a, b, t) => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t];
+  const ss = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+  // coarse noise fields (warp for the dry regions, mottling for the land), sampled per pixel
+  const NW = 512, NH = 256, nf = (k) => { const a = new Float32Array(NW * NH); for (let y = 0; y < NH; y++) for (let x = 0; x < NW; x++) { const th = x / NW * TAU, yy = y / NH * 6; a[y * NW + x] = noise3(Math.cos(th) * 2.2 + k, Math.sin(th) * 2.2, yy) * 0.6 + noise3(Math.cos(th) * 5 + k, Math.sin(th) * 5, yy * 2.3) * 0.4; } return a; };
+  const nX = nf(1.7), nY = nf(9.3), nM = nf(4.1);
+  const C = { rain: [38, 84, 44], green: [86, 120, 62], steppe: [150, 146, 96], sand: [214, 186, 134], boreal: [44, 74, 52], tundra: [138, 138, 118], ice: [240, 243, 246],
+    deep: [22, 60, 104], sea: [34, 86, 136], shallow: [58, 140, 168], seaIce: [214, 226, 236] };
+  for (let y = 0; y < H; y++) {
+    const lat = 90 - ((y + 0.5) / H) * 180, a = Math.abs(lat);
+    for (let x = 0; x < W; x++) {
+      const i = (y * W + x) * 4, lon = ((x + 0.5) / W) * 360 - 180;
+      const ni = (y >> 2) * NW + (x >> 2);
+      let col;
+      if (L[i] > 127) {
+        // climate by latitude, with the dry places and the far interiors drier
+        col = a < 12 ? C.rain : a < 20 ? mix(C.rain, C.green, ss(12, 20, a)) : a < 46 ? C.green : a < 52 ? mix(C.green, C.boreal, ss(46, 52, a)) : a < 62 ? C.boreal : mix(C.boreal, C.tundra, ss(62, 68, a));
+        let dry = ss(0.72, 0.95, inland[i] / 255) * Math.exp(-((a - 26) ** 2) / 120) * 0.6;
+        const wl = lon + (nX[ni] - 0.5) * 16, wa = lat + (nY[ni] - 0.5) * 11;
+        for (const [x0, x1, y0, y1, k] of DRY) {
+          const fx = ss(x0 - 7, x0 + 5, wl) * (1 - ss(x1 - 5, x1 + 7, wl)), fy = ss(y0 - 5, y0 + 4, wa) * (1 - ss(y1 - 4, y1 + 5, wa));
+          dry = Math.max(dry, k * fx * fy * (0.75 + 0.5 * nM[ni]));
+        }
+        col = mix(col, dry > 0.6 ? mix(C.steppe, C.sand, ss(0.6, 0.95, dry)) : C.steppe, Math.min(1, dry * 1.25));
+        const m = 0.9 + 0.2 * nM[ni];
+        col = [col[0] * m, col[1] * m, col[2] * m];
+        const greenland = lon > -58 && lon < -18 && lat > 59;
+        if (a > 70 || lat < -60 || greenland) col = mix(col, C.ice, greenland ? ss(59, 66, lat) : lat < -60 ? 1 : ss(70, 76, a));
+      } else {
+        // the sea: shallow near the coasts, deeper out; ice towards the poles
+        const sh = near[i] / 255;
+        col = mix(mix(C.deep, C.sea, ss(0, 0.18, sh)), C.shallow, ss(0.18, 0.55, sh));
+        if (lat > 74 || lat < -66) col = mix(col, C.seaIce, lat > 0 ? ss(74, 84, lat) : ss(66, 74, -lat));
+      }
+      d[i] = col[0]; d[i + 1] = col[1]; d[i + 2] = col[2]; d[i + 3] = 255;
+    }
+  }
+  oc.putImageData(img, 0, 0);
+  // full size, the land given the shape of its mountains from the relief
+  const big = mk(TW, TH), bc = big.getContext('2d');
+  bc.imageSmoothingQuality = 'high';
+  bc.drawImage(out, 0, 0, TW, TH);
+  if (relief) {
+    bc.save(); bc.beginPath(); d3.geoPath(eq, bc)(world.land); bc.clip();
+    bc.globalCompositeOperation = 'soft-light'; bc.globalAlpha = 0.95; bc.drawImage(relief, 0, 0, TW, TH);
+    bc.globalCompositeOperation = 'multiply'; bc.globalAlpha = 0.3; bc.drawImage(relief, 0, 0, TW, TH);
+    bc.restore();
+  }
+  // where the sun glints: the sea
+  const spec = mk(1024, 512), sc = spec.getContext('2d');
+  sc.fillStyle = '#fff'; sc.fillRect(0, 0, 1024, 512);
+  sc.fillStyle = '#000'; sc.beginPath(); d3.geoPath(d3.geoEquirectangular().scale(1024 / TAU).translate([512, 256]), sc)(world.land); sc.fill();
+  // the clouds: white where a seamless noise is high, thicker in the storm belts, thin over the deserts
+  const cw = 1024, chh = 512, cl = mk(cw, chh), cc = cl.getContext('2d'), ci = cc.createImageData(cw, chh), cd = ci.data;
+  for (let y = 0; y < chh; y++) {
+    const lat = 90 - ((y + 0.5) / chh) * 180, a = Math.abs(lat);
+    const belt = 0.55 + 0.45 * Math.max(Math.exp(-((a - 55) ** 2) / 180), Math.exp(-(a ** 2) / 60)) - 0.25 * Math.exp(-((a - 25) ** 2) / 70);
+    for (let x = 0; x < cw; x++) {
+      const th = (x / cw) * TAU, py = y / chh * 9;
+      let n = 0, amp = 0.55, f = 3.2;
+      for (let o = 0; o < 5; o++) { n += amp * noise3(Math.cos(th) * f, Math.sin(th) * f, py * f / 1.6); amp *= 0.5; f *= 2.15; }
+      const v = ss(0.52, 0.8, n * belt + 0.08);
+      const k = (y * cw + x) * 4;
+      cd[k] = cd[k + 1] = cd[k + 2] = 255; cd[k + 3] = Math.round(v * 235);
+    }
+  }
+  cc.putImageData(ci, 0, 0);
+  return (EARTH = { big, spec, clouds: cl });
+}
+function paintEarth(c, path, world, visited, col, firstOf, y, hover) {
+  c.drawImage(EARTH.big, 0, 0, TW, TH);
+  // his countries: a warm wash and a bright edge, so they read on the real earth
+  for (const f of visited) {
+    if (firstOf[f.id] > y) continue;
+    c.beginPath(); path(f);
+    c.fillStyle = f.id === hover ? 'rgba(255, 196, 120, 0.55)' : 'rgba(255, 190, 110, 0.34)'; c.fill();
+    c.strokeStyle = f.id === hover ? 'rgba(255, 240, 210, 1)' : 'rgba(255, 228, 186, 0.85)'; c.lineWidth = f.id === hover ? 3.4 : 2; c.stroke();
+  }
+  c.strokeStyle = 'rgba(255, 255, 255, 0.22)'; c.lineWidth = 1.2; c.beginPath(); path(world.borders); c.stroke();
 }
 
 // "Developed": the world drawn quietly on the page's own paper, and every country he has been to
@@ -319,6 +435,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
   });
   const [world] = await Promise.all([K.world(), reliefP]);
   const photos = CFG.paint === 'photo' ? await countryPhotos() : {};
+  if (CFG.earth) earthBase(world, reliefImg);
   const paint = painter(world, colours, photos);
 
   // the facts, as journey.js has them
@@ -342,8 +459,8 @@ window.JourneyMap = async function makeGlobe(svgEl) {
   const camera = new THREE.PerspectiveCamera(20, 1, 0.05, 100);
   scene.add(camera);
   // soft paper light: most of it even, a little from the upper left, so the globe reads as round
-  scene.add(new THREE.AmbientLight(0xffffff, Math.PI * 0.6));
-  const sun = new THREE.DirectionalLight(0xffffff, Math.PI * 0.5);
+  scene.add(new THREE.AmbientLight(0xffffff, Math.PI * (CFG.earth ? 0.36 : 0.6)));
+  const sun = new THREE.DirectionalLight(CFG.earth ? 0xfff6ea : 0xffffff, Math.PI * (CFG.earth ? 0.95 : 0.5));
   sun.position.set(-1.6, 1.4, 2.2);
   camera.add(sun);
   const group = new THREE.Group();
@@ -368,16 +485,21 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     uWave: { value: CFG.wave ? 1 : 0 }, uFold: { value: 0 }, uHome: { value: new THREE.Vector2(HOME_LL[0] * RAD, HOME_LL[1] * RAD) },
     uRise: { value: CFG.rise ? 1 : 0 }, uSoft: { value: CFG.soft || 0 }, uReveal: { value: CFG.rise && !K.reduced ? 0 : 1 },
     uPlate: { value: CFG.plate ? 1 : 0 }, uWalls: { value: CFG.walls ? 1 : 0 }, uEdge: { value: new THREE.Color(colours.edge) },
+    uEarth: { value: CFG.earth ? 1 : 0 }, uAlive: { value: 0 }, uBleed: { value: CFG.bleed ? 1 : 0 }, uPaperC: { value: new THREE.Color(rgb('--paper')) },
     uDevelop: { value: CFG.develop ? 1 : 0 }, uDevTint: { value: new THREE.Color(rgb('oklch(78% 0.07 70)')) },
     uMask: { value: maskTex ? maskTex[0] : texes[0] }, uMaskPrev: { value: maskTex ? maskTex[1] : texes[0] },
   };
-  const mat = new THREE.MeshLambertMaterial({
+  const mat = new (CFG.earth ? THREE.MeshPhongMaterial : THREE.MeshLambertMaterial)({
     map: texes[0], side: THREE.DoubleSide, flatShading: !!CFG.raise && !CFG.soft,
     polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1,
   });
-  if (CFG.relief) {
+  if ((CFG.relief || CFG.earth) && reliefImg) {
     const bump = new THREE.Texture(reliefImg); bump.needsUpdate = true; bump.wrapS = THREE.RepeatWrapping;
-    mat.bumpMap = bump; mat.bumpScale = 1.4;
+    mat.bumpMap = bump; mat.bumpScale = CFG.earth ? 0.9 : 1.4;
+  }
+  if (CFG.earth) {
+    const spec = new THREE.CanvasTexture(EARTH.spec); spec.wrapS = THREE.RepeatWrapping;
+    mat.specularMap = spec; mat.specular = new THREE.Color(0x5d6f82); mat.shininess = 22;
   }
   mat.onBeforeCompile = (sh) => {
     Object.assign(sh.uniforms, U);
@@ -386,11 +508,13 @@ window.JourneyMap = async function makeGlobe(svgEl) {
       .replace('#include <beginnormal_vertex>', 'vec3 nrm; float rz = raiseAt(uv); vQ = uv; vRz = uRaise > 0.0 ? rz / uRaise : 0.0;\nvec3 morphed = sheet(uv, rz, nrm);\nvec3 objectNormal = nrm;')
       .replace('#include <begin_vertex>', 'vec3 transformed = morphed;');
     sh.fragmentShader = sh.fragmentShader
-      .replace('#include <common>', '#include <common>\nuniform sampler2D uPrev, uMask, uMaskPrev; uniform float uMix, uLit, uPlate, uFold, uWalls, uDevelop, uCenter, uReveal; uniform vec3 uBack, uEdge, uDevTint; varying vec2 vQ; varying float vRz;')
+      .replace('#include <common>', '#include <common>\nuniform sampler2D uPrev, uMask, uMaskPrev; uniform float uMix, uLit, uPlate, uFold, uWalls, uDevelop, uCenter, uReveal, uEarth, uAlive, uBleed; uniform vec3 uBack, uEdge, uDevTint, uPaperC; varying vec2 vQ; varying float vRz;')
       .replace('#include <map_fragment>', `#include <map_fragment>
         #ifdef USE_MAP
           diffuseColor.rgb = mix(texture2D(uPrev, vMapUv).rgb, diffuseColor.rgb, uMix);
         #endif
+        // the earth: on the flat map a lighter, printed-atlas version of itself; it comes alive as it closes
+        if (uEarth > 0.5) diffuseColor.rgb = mix(diffuseColor.rgb * 1.08, diffuseColor.rgb, uAlive);
         // a country develops like a print, blank paper to his photograph, in the order he first went
         if (uDevelop > 0.5) {
           vec2 mq = vec2(vQ.x + uCenter / 6.2831853, vQ.y);
@@ -409,13 +533,38 @@ window.JourneyMap = async function makeGlobe(svgEl) {
         // the cut sides of a raised country, a deeper clay than its top
         if (uWalls > 0.5) { float wall = smoothstep(0.04, 0.25, vRz) * (1.0 - smoothstep(0.75, 0.96, vRz)); diffuseColor.rgb = mix(diffuseColor.rgb, uEdge * 0.92, wall * 0.75); }
         if (!gl_FrontFacing) diffuseColor.rgb = uBack;`)
-      .replace('#include <opaque_fragment>', 'outgoingLight = mix(diffuseColor.rgb, outgoingLight, uLit);\n#include <opaque_fragment>');
+      .replace('#include <opaque_fragment>', `outgoingLight = mix(diffuseColor.rgb, outgoingLight, uLit);
+        // the map fills the page, and its edges fade into the paper, so no sheet edge is ever seen
+        if (uBleed > 0.5) {
+          float la = (vQ.y - 0.5) * 180.0;
+          float e = max(smoothstep(64.0, 86.0, la), smoothstep(34.0, 56.0, -la));
+          e = max(e, max(1.0 - smoothstep(0.0, 0.035, vQ.x), smoothstep(0.965, 1.0, vQ.x)));
+          outgoingLight = mix(outgoingLight, uPaperC, e * (1.0 - smoothstep(0.45, 0.92, uFold)));
+        }
+        #include <opaque_fragment>`);
   };
   const sheet = new THREE.Mesh(new THREE.PlaneGeometry(1, 1, ...CFG.seg), mat);
   // the grid's own corners stand in for the uv: the shader places every point itself
   sheet.geometry.attributes.position.array.fill(0);
   sheet.frustumCulled = false;
   group.add(sheet);
+
+  /* the earth's air: clouds a little above the ground, and a blue rim of atmosphere */
+  let clouds = null, air = null;
+  if (CFG.earth) {
+    const ct = new THREE.CanvasTexture(EARTH.clouds); ct.wrapS = THREE.RepeatWrapping; ct.colorSpace = THREE.SRGBColorSpace;
+    clouds = new THREE.Mesh(new THREE.SphereGeometry(R * 1.024, 128, 64), new THREE.MeshLambertMaterial({ map: ct, transparent: true, depthWrite: false, opacity: 0 }));
+    clouds.rotation.y = -Math.PI / 2; clouds.visible = false; clouds.renderOrder = 6;
+    group.add(clouds);
+    air = new THREE.Mesh(new THREE.SphereGeometry(R * 1.065, 96, 48), new THREE.ShaderMaterial({
+      uniforms: { uOp: { value: 0 }, uCol: { value: new THREE.Color(0x7fb4ff) } },
+      vertexShader: 'varying vec3 vN; varying vec3 vV; void main(){ vec4 mv = modelViewMatrix * vec4(position, 1.0); vN = normalize(normalMatrix * normal); vV = normalize(-mv.xyz); gl_Position = projectionMatrix * mv; }',
+      fragmentShader: 'uniform float uOp; uniform vec3 uCol; varying vec3 vN; varying vec3 vV; void main(){ float r = 1.0 - abs(dot(vN, vV)); float a = pow(smoothstep(0.15, 0.72, r), 1.6) * (1.0 - smoothstep(0.7, 1.0, r)); gl_FragColor = vec4(uCol, a * uOp); }',
+      transparent: true, depthWrite: false, side: THREE.FrontSide,
+    }));
+    air.visible = false; air.renderOrder = 7;
+    group.add(air);
+  }
 
   /* lines: one fat-line set per kind, rebuilt as the sheet bends */
   const res = new THREE.Vector2(1, 1);
@@ -571,8 +720,8 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     let s1 = CFG.frame1 || 2.3;
     // scroll-craft: at the peak, before the globe docks, it is shown large on the whole screen
     if (CRAFT) s1 = 2.05 + (s1 - 2.05) * (parseFloat(getComputedStyle(fig).getPropertyValue('--dock')) || 0);
-    const fw = (2 * Math.PI * 1.01) * (1 - f) + s1 * f, fh = (136 * RAD * 1.06) * (1 - f) + s1 * f;
-    const cy = 12 * RAD * (1 - f), plane = R * (1 - f) + 0.25 * f;
+    const fw = (2 * Math.PI * (CFG.bleed ? 1 : 1.01)) * (1 - f) + s1 * f, fh = (CFG.bleed ? 0 : 136 * RAD * 1.06) * (1 - f) + s1 * f;
+    const cy = (CFG.bleed ? 8 : 12) * RAD * (1 - f), plane = R * (1 - f) + 0.25 * f;
     const ppw = Math.min(r.w / fw, r.h / fh);
     const fov = camera.fov * RAD;
     const d = (H / ppw) / (2 * Math.tan(fov / 2));
@@ -620,9 +769,19 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     st.kx = kx; st.ky = ky; st.center = c; st.tilt = tl;
     U.uKx.value = kx; U.uKy.value = ky; U.uCenter.value = c * RAD;
     U.uLit.value = CFG.rise && !CFG.unlit ? Math.max(st.fold, 0.7) : st.fold;
+    if (CFG.earth) {
+      const f = st.fold, ss = (a, b, x) => { const t = clamp((x - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); };
+      U.uAlive.value = ss(0.05, 0.8, f);
+      const co = ss(0.82, 1, f), ao = ss(0.6, 1, f);
+      clouds.visible = co > 0.01; clouds.material.opacity = 0.7 * co;
+      clouds.material.map.offset.x = -c / 360 + (K.reduced ? 0 : now / 900000);
+      air.visible = ao > 0.01; air.material.uniforms.uOp.value = 0.6 * ao;
+      comets(now);
+    }
     const off = c / 360;
     for (const t of texes) t.offset.x = off;
     if (mat.bumpMap) mat.bumpMap.offset.x = off;
+    if (mat.specularMap) mat.specularMap.offset.x = off;
     group.rotation.x = tl * RAD - 0.32 * st.drop * st.drop;
     group.position.set(0, -0.25 * st.drop, 0.5 * st.drop);
     group.updateMatrixWorld();
@@ -635,7 +794,9 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     renderer.setScissorTest(true);
     renderer.setScissor(r.x, H - r.y - r.h, r.w, r.h);
     renderer.render(scene, camera);
-    if (moving || st.fold !== st.want || tweens.size || Object.keys(ops).some((k) => opsNow[k] !== ops[k])) kick();
+    // the earth keeps living while it is a globe: the clouds drift, light runs along the trip
+    const alive = CFG.earth && !K.reduced && st.fold > 0.85 && !document.hidden;
+    if (alive || moving || st.fold !== st.want || tweens.size || Object.keys(ops).some((k) => opsNow[k] !== ops[k])) kick();
   }
   const tween = (dur, step) => new Promise((done) => {
     const t0 = performance.now();
@@ -735,6 +896,20 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     document.getElementById(`t-${t.id}`)?.scrollIntoView({ behavior: K.reduced ? 'auto' : 'smooth', block: 'center' });
   });
 
+  // light running along the trip being read: a small bright point travelling each flight, again and again
+  const cometPool = [];
+  function comets(now) {
+    const legs = CFG.earth && nowTrip && st.fold > 0.85 ? allLegs.filter((L) => L.t === nowTrip && L.flight) : [];
+    while (cometPool.length < legs.length) { const d = dot('#fff7e8', colours.route, 0.0085); d.visible = false; cometPool.push(d); }
+    cometPool.forEach((d, i) => {
+      const L = legs[i];
+      if (!L) { d.visible = false; return; }
+      const t = ((now / 2600) + i * 0.37) % 1, g = L.go(t), g2 = L.go(Math.min(1, t + 0.01));
+      d.visible = true;
+      lay(d, g[0], g[1], base + arcH(L.d, t) + 0.005, d.r * (0.7 + 0.6 * Math.sin(Math.PI * t)), [g2[0], g2[1], base + arcH(L.d, Math.min(1, t + 0.01)) + 0.005]);
+    });
+  }
+
   // home answers once when the world has closed round it: one ring opening out from Taiwan
   const pulse = new THREE.Mesh(ring, basic(colours.route, { opacity: 0 }));
   pulse.visible = false; pulse.renderOrder = 5; group.add(pulse);
@@ -766,7 +941,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     a = K.reduced ? (a < 0.5 ? 0 : 1) : a;
     if (CFG.wave && !K.reduced) { if (Math.abs(a - st.want) < 0.0005) return; st.want = a; }
     else { if (Math.abs(a - st.fold) < 0.0005) return; st.fold = a; st.want = a; }
-    ops.grat = rewound || a > 0 ? 0.55 * a : 0;
+    ops.grat = rewound || a > 0 ? (CFG.earth ? 0.16 : 0.55) * a : 0;
     kick();
   }
   function trip(t) {
