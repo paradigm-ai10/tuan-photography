@@ -18,10 +18,6 @@
       scores: ['', 'Not for me', 'Weak', 'Fine', 'Good', 'Love it'], pinned: (n) => `${n} pinned`, scoreOf: (x) => `Score ${x}`,
       short: { '6': 'Combined globe', '6A': 'Right panel: contents page', '6B': 'Right panel: prints', '6C': 'Right panel: one line', S: 'The live page: the drawn globe', 1: 'Matte paper globe', 2: 'Mountains in shaded relief', 3: 'Flights in tall arcs', 4: 'Visited countries stand up', 5: 'The map rolls up, then closes' },
       items: [
-        ['S', 'Journey, built with scroll-craft', 'The Journey as it stands: the grand map on arrival and every plane leaving Taiwan at once; the years, newest first, while the map rewinds; then the map folds into a globe that turns to the trip you are reading, over that trip\'s photograph, with the trips on a frosted panel where the one in view stays clear (your picks, 2026-10-28). A country on the map opens its latest trip. Back from a trip returns to that trip.', 'journey.html'],
-        ['6', 'Combined globe', 'Raised countries with flight arcs at half the height of high routes, the globe at the size of high routes (your picks, 2026-10-29).', 'globe-mix.html'],
-        ['6A', 'Panel: contents page', 'The combined globe, with the right panel as a contents page: the year large in the margin, trips as ruled lines, only the trip being read opens its route.', 'globe-mix-index.html'],
-        ['6B', 'Panel: prints', 'The combined globe, where the trip being read opens a strip of its own photographs in the panel; a print opens the viewer.', 'globe-mix-prints.html'],
         ['6C', 'Panel: one line', 'The combined globe, with the trips hung on one line down the panel: read ones filled, the one being read in vermilion, the years as tabs on the line.', 'globe-mix-line.html'],
       ],
     },
@@ -37,10 +33,6 @@
       scores: ['', '不要', '普通偏弱', '還可以', '喜歡', '超喜歡'], pinned: (n) => `釘了 ${n} 句`, scoreOf: (x) => `給「${x}」打分`,
       short: { '6': '合併版地球', '6A': '右側：目錄頁', '6B': '右側：照片條', '6C': '右側：一條線', S: '目前的版本：畫出來的地球', 1: '霧面紙質地球', 2: '山脈有地形陰影', 3: '航線拉成高弧', 4: '去過的國家浮起來', 5: '地圖先捲起再合起' },
       items: [
-        ['S', '旅程，用 scroll-craft 做的', '目前的旅程頁：一進來整張地圖佔滿畫面，所有飛機同時從台灣起飛；接著按年份往下，地圖跟著回到過去；接著地圖折成地球，轉向你正在讀的那一趟，背後鋪著那一趟的照片，右邊霧面紙上的旅程只有正在讀的那一趟是清楚的（你 2026-10-28 選的）。點地圖上的國家會打開最近一趟。從一趟旅行回來會回到那一趟。', 'journey.html'],
-        ['6', '合併版地球', '國家浮起，航線高度是高航線的一半，地球大小和高航線一樣（你 2026-10-29 選的）。', 'globe-mix.html'],
-        ['6A', '右側：目錄頁', '合併版地球，右側像雜誌目錄：年份大大放在邊上，每趟一行，只有正在讀的那趟展開路線。', 'globe-mix-index.html'],
-        ['6B', '右側：照片條', '合併版地球，正在讀的那趟在右側展開一排自己的照片；點照片會放大。', 'globe-mix-prints.html'],
         ['6C', '右側：一條線', '合併版地球，所有旅程掛在右側一條線上：讀過的填滿，正在讀的是朱紅色，年份是線上的小標籤。', 'globe-mix-line.html'],
       ],
     },
