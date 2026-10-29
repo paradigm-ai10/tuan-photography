@@ -18,10 +18,7 @@
       scores: ['', 'Not for me', 'Weak', 'Fine', 'Good', 'Love it'], pinned: (n) => `${n} pinned`, scoreOf: (x) => `Score ${x}`,
       short: { V1: 'Globe in the corner', V2: 'See-through globe', V3: 'Polish only', '6': 'Combined globe', '6A': 'Right panel: contents page', '6B': 'Right panel: prints', '6C': 'The live page: globe and one line', S: 'The live page: the drawn globe', 1: 'Matte paper globe', 2: 'Mountains in shaded relief', 3: 'Flights in tall arcs', 4: 'Visited countries stand up', 5: 'The map rolls up, then closes' },
       items: [
-        ['6C', 'Panel: one line', 'The live Journey page since 2026-10-29: the combined globe, with the trips hung on one line down the panel: read ones filled, the one being read in vermilion, the years as tabs on the line.', 'journey.html'],
-        ['V1', 'Globe in the corner', 'Impeccable variation of the live page: when a trip has a photograph, the globe steps aside into the top-left corner so the photograph is seen whole. With the polish below.', 'journey-corner.html'],
-        ['V2', 'See-through globe', 'Impeccable variation: when a trip has a photograph, the globe stays where it is but turns see-through, so the photograph shows through it. With the polish below.', 'journey-ghost.html'],
-        ['V3', 'Polish only', 'Impeccable variation: the live page with the critique fixes only: flight arcs held closer to the globe, a "Read the trip" word under trips that open a page, the faded trips easier to read, "1 trip" dropped.', 'journey-polish.html'],
+        ['6C', 'Panel: one line', 'The live Journey page since 2026-10-29, with the Impeccable polish (arcs closer to the globe, "Read the trip", easier faded trips): the combined globe, with the trips hung on one line down the panel: read ones filled, the one being read in vermilion, the years as tabs on the line.', 'journey.html'],
       ],
     },
     zh: {
@@ -36,10 +33,7 @@
       scores: ['', '不要', '普通偏弱', '還可以', '喜歡', '超喜歡'], pinned: (n) => `釘了 ${n} 句`, scoreOf: (x) => `給「${x}」打分`,
       short: { V1: '地球移到角落', V2: '透明的地球', V3: '只做小修', '6': '合併版地球', '6A': '右側：目錄頁', '6B': '右側：照片條', '6C': '正式版：地球加一條線', S: '目前的版本：畫出來的地球', 1: '霧面紙質地球', 2: '山脈有地形陰影', 3: '航線拉成高弧', 4: '去過的國家浮起來', 5: '地圖先捲起再合起' },
       items: [
-        ['6C', '右側：一條線', '2026-10-29 起的正式旅程頁：合併版地球，所有旅程掛在右側一條線上：讀過的填滿，正在讀的是朱紅色，年份是線上的小標籤。', 'journey.html'],
-        ['V1', '地球移到角落', 'Impeccable 變化版：這一趟有照片時，地球移到左上角，照片完整露出來。也包含下面的小修。', 'journey-corner.html'],
-        ['V2', '透明的地球', 'Impeccable 變化版：這一趟有照片時，地球留在原地但變透明，照片透過它看得到。也包含下面的小修。', 'journey-ghost.html'],
-        ['V3', '只做小修', 'Impeccable 變化版：正式版只加上檢查出來的小修：航線更貼近地球、會打開頁面的旅程下面多一個「看這一趟」、變淡的旅程比較好讀、拿掉「1 趟」。', 'journey-polish.html'],
+        ['6C', '右側：一條線', '2026-10-29 起的正式旅程頁，加上 Impeccable 小修（航線貼近地球、「看這一趟」、變淡的旅程比較好讀）：合併版地球，所有旅程掛在右側一條線上：讀過的填滿，正在讀的是朱紅色，年份是線上的小標籤。', 'journey.html'],
       ],
     },
   };

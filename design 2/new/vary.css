@@ -2,11 +2,8 @@
    <body data-vary="…"> takes one or more words:
      polish  the fixes: trips that open a page say so in the link colour, the faded trips stay
              readable, "1 trip" is dropped, the arcs held closer to the globe (data-globe="mixlow")
-     corner  when the trip has a photograph, the globe steps aside into the top-left corner so the
-             photograph is seen whole
-     ghost   when the trip has a photograph, the globe turns see-through, an outline over it
+   He chose polish only and it went live; the corner and see-through globes are in commit 86af503.
    Desktop only; the phone keeps the live page. */
-@property --aside { syntax: "<number>"; inherits: true; initial-value: 0; }
 
 @media (min-width: 64rem) {
   /* ---- polish --------------------------------------------------------------------------------- */
@@ -25,18 +22,4 @@
   [data-vary~="polish"] .jr-trip.is-reading .vy-go { max-height: 2rem; opacity: 1; margin-top: 0.55rem; }
   [data-vary~="polish"] a.jr-trip__link:hover .vy-go { text-decoration: underline; text-underline-offset: 0.25em; }
 
-  /* ---- corner: the globe steps aside for the photograph ----------------------------------------- */
-  [data-vary~="corner"] .jr-map { transition: --aside 0.9s var(--ease); }
-  [data-vary~="corner"] .jr:has(.jr-beside.has-print) .jr-map { --aside: 1; }
-  [data-vary~="corner"] .jr-map {
-    padding:
-      calc((4.75rem * (1 - var(--dock)) + 1rem * var(--dock)) * (1 - var(--aside) * var(--dock)) + 5rem * var(--aside) * var(--dock))
-      calc((var(--edge) * (1 - var(--dock))) * (1 - var(--aside) * var(--dock)) + 31vw * var(--aside) * var(--dock))
-      calc((12.5rem * (1 - var(--dock)) + 1rem * var(--dock)) * (1 - var(--aside) * var(--dock)) + 50vh * var(--aside) * var(--dock))
-      calc(1.5rem * var(--aside) * var(--dock));
-  }
-
-  /* ---- ghost: the globe turns see-through over the photograph ----------------------------------- */
-  [data-vary~="ghost"] .jr-map .g3 { transition: opacity 0.9s var(--ease); }
-  [data-vary~="ghost"] .jr:has(.jr-beside.has-print) .g3 { opacity: calc(1 - 0.45 * var(--dock)); }
 }
