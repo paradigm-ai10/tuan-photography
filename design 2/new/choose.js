@@ -16,9 +16,12 @@
       ranking: 'Your ranking', unscored: (n) => `${n} not scored yet`, noneYet: 'Nothing scored yet. Score a version and it lands here.',
       open: 'Open', more: 'What it is', moments: 'Moments', noMoments: 'No moments yet', go: 'Go there', note: 'Overall note',
       scores: ['', 'Not for me', 'Weak', 'Fine', 'Good', 'Love it'], pinned: (n) => `${n} pinned`, scoreOf: (x) => `Score ${x}`,
-      short: { V1: 'Globe in the corner', V2: 'See-through globe', V3: 'Polish only', '6': 'Combined globe', '6A': 'Right panel: contents page', '6B': 'Right panel: prints', '6C': 'The live page: globe and one line', S: 'The live page: the drawn globe', 1: 'Matte paper globe', 2: 'Mountains in shaded relief', 3: 'Flights in tall arcs', 4: 'Visited countries stand up', 5: 'The map rolls up, then closes' },
+      short: { A1: 'Sea chart', A2: 'Cut paper', A3: 'New motion, old look', V1: 'Globe in the corner', V2: 'See-through globe', V3: 'Polish only', '6': 'Combined globe', '6A': 'Right panel: contents page', '6B': 'Right panel: prints', '6C': 'The live page: globe and one line', S: 'The live page: the drawn globe', 1: 'Matte paper globe', 2: 'Mountains in shaded relief', 3: 'Flights in tall arcs', 4: 'Visited countries stand up', 5: 'The map rolls up, then closes' },
       items: [
         ['6C', 'Panel: one line', 'The live Journey page since 2026-10-29, with the Impeccable polish (arcs closer to the globe, "Read the trip", easier faded trips): the combined globe, with the trips hung on one line down the panel: read ones filled, the one being read in vermilion, the years as tabs on the line.', 'journey.html'],
+        ['A1', 'Sea chart', 'From the artists: the map is printed as a plate on arrival (a frame with ticks), laid down on the table, and your countries stand up as cut paper in the order you first went. The fold wraps the world closed around Taiwan, near places first, while the flight arcs lift like threads. The surface: colour in the sea, land the page paper, engraved waterlines round every coast, a crisp ink coast.', 'journey-chart.html'],
+        ['A2', 'Cut paper', 'The same arrival and fold, with the surface as three papers: a grey card sea, a whiter sheet of land, terracotta for where you have been, each throwing a soft shadow on the one below, the countries\' cut sides darker.', 'journey-cut.html'],
+        ['A3', 'New motion, old look', 'The new arrival and fold only, on the live page\'s surface, so you can judge the motion apart from the look.', 'journey-motion.html'],
       ],
     },
     zh: {
@@ -31,9 +34,12 @@
       ranking: '你的排名', unscored: (n) => `還有 ${n} 個沒打分`, noneYet: '還沒打分。給一版打分，它就會排到這裡。',
       open: '打開', more: '這版是什麼', moments: '片刻', noMoments: '還沒有片刻', go: '回到那裡', note: '整體筆記',
       scores: ['', '不要', '普通偏弱', '還可以', '喜歡', '超喜歡'], pinned: (n) => `釘了 ${n} 句`, scoreOf: (x) => `給「${x}」打分`,
-      short: { V1: '地球移到角落', V2: '透明的地球', V3: '只做小修', '6': '合併版地球', '6A': '右側：目錄頁', '6B': '右側：照片條', '6C': '正式版：地球加一條線', S: '目前的版本：畫出來的地球', 1: '霧面紙質地球', 2: '山脈有地形陰影', 3: '航線拉成高弧', 4: '去過的國家浮起來', 5: '地圖先捲起再合起' },
+      short: { A1: '海圖', A2: '剪紙', A3: '新動態、舊樣子', V1: '地球移到角落', V2: '透明的地球', V3: '只做小修', '6': '合併版地球', '6A': '右側：目錄頁', '6B': '右側：照片條', '6C': '正式版：地球加一條線', S: '目前的版本：畫出來的地球', 1: '霧面紙質地球', 2: '山脈有地形陰影', 3: '航線拉成高弧', 4: '去過的國家浮起來', 5: '地圖先捲起再合起' },
       items: [
         ['6C', '右側：一條線', '2026-10-29 起的正式旅程頁，加上 Impeccable 小修（航線貼近地球、「看這一趟」、變淡的旅程比較好讀）：合併版地球，所有旅程掛在右側一條線上：讀過的填滿，正在讀的是朱紅色，年份是線上的小標籤。', 'journey.html'],
+        ['A1', '海圖', '藝術家的提案：一進來地圖像印好的一張版畫（有框和刻度），放到桌上，你去過的國家照你第一次去的順序像剪紙一樣立起來。折成地球時，世界從台灣開始往外包起來，近的先合，航線像線一樣被拉高。表面：顏色在海上，陸地是紙色，每條海岸有刻線般的水紋，墨色的海岸線。', 'journey-chart.html'],
+        ['A2', '剪紙', '同樣的開場和折法，表面換成三層紙：灰卡紙的海、白紙的陸地、去過的國家是赤陶色，每層在下一層投下淡淡的影子，國家的切邊比較深。', 'journey-cut.html'],
+        ['A3', '新動態、舊樣子', '只有新的開場和折法，表面維持正式版，方便單獨判斷動態。', 'journey-motion.html'],
       ],
     },
   };

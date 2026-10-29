@@ -32,7 +32,13 @@ const CFG = {
   mix: { lift: 0.15, seg: [720, 360], raise: 0.03, frame1: 3.05, look: 0.3 },
   // the Impeccable variations (2026-10-29): the same globe, arcs held closer to it
   mixlow: { lift: 0.08, seg: [720, 360], raise: 0.03, frame1: 3.05, look: 0.3 },
+  // the artists' round (2026-10-29): a printed plate on arrival, the countries standing up in the
+  // order he first went, the world wrapping closed round Taiwan, and two new surfaces
+  chart: { lift: 0.08, seg: [720, 360], raise: 0.03, frame1: 3.05, look: 0.3, paint: 'chart', wave: true, rise: true, plate: true, walls: true },
+  cut: { lift: 0.08, seg: [720, 360], raise: 0.035, frame1: 3.05, look: 0.3, paint: 'cut', wave: true, rise: true, plate: true, walls: true },
+  motion: { lift: 0.08, seg: [720, 360], raise: 0.03, frame1: 3.05, look: 0.3, wave: true, rise: true, plate: true },
 }[V];
+const HOME_LL = [S.flightsFrom[1], S.flightsFrom[0]];
 
 const R = 1;
 const START = 150;                 // the flat map is centred on the Pacific, Taiwan in view (as before)
@@ -45,7 +51,7 @@ const ll = (p) => [p[1], p[0]];
 // the site's colours, read from the stylesheet (oklch there; three wants plain rgb)
 const probe = document.createElement('canvas').getContext('2d', { willReadFrequently: true });
 function rgb(name) {
-  const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  const v = name.startsWith('--') ? getComputedStyle(document.documentElement).getPropertyValue(name).trim() : name;
   probe.clearRect(0, 0, 1, 1); probe.fillStyle = '#000'; probe.fillStyle = v; probe.fillRect(0, 0, 1, 1);
   const d = probe.getImageData(0, 0, 1, 1).data;
   return `rgb(${d[0]}, ${d[1]}, ${d[2]})`;
@@ -59,9 +65,25 @@ function bends(f) {
   return [ease(clamp(f / 0.6, 0, 1)) / R, ease(clamp((f - 0.4) / 0.6, 0, 1)) / R];
 }
 // a place (lon, lat in degrees, h above the surface in globe radii) on the sheet as it is bent now
+// with the wave, each point closes on its own clock: the ones near home first, the far side last
+function waveW(lon, lat, f) {
+  const p = lat * RAD, hp = HOME_LL[1] * RAD, dl = (lon - HOME_LL[0]) * RAD;
+  const d = Math.acos(clamp(Math.sin(p) * Math.sin(hp) + Math.cos(p) * Math.cos(hp) * Math.cos(dl), -1, 1)) / Math.PI;
+  const x = clamp(f * 1.7 - d * 0.7, 0, 1);
+  return x * x * (3 - 2 * x);
+}
 function place(lon, lat, h, st, out = new THREE.Vector3()) {
   const lonR = (((lon - st.center) % 360) + 540) % 360 - 180;
   const u = lonR * RAD * R, v = lat * RAD * R;
+  if (CFG.wave) {
+    const a = u / R, b = v / R, w = waveW(lon, lat, st.fold);
+    const nx = Math.cos(b) * Math.sin(a), ny = Math.sin(b), nz = Math.cos(b) * Math.cos(a);
+    const fx = u, fy = v, fz = R + h * R;
+    const sx = nx * R * (1 + h), sy = ny * R * (1 + h), sz = nz * R * (1 + h);
+    out.set(fx + (sx - fx) * w, fy + (sy - fy) * w, fz + (sz - fz) * w);
+    out.lonR = lonR;
+    return out;
+  }
   const kx = Math.max(st.kx, 1e-3), ky = Math.max(st.ky, 1e-3);
   const a = u * kx, b = v * ky;
   const w = (Math.cos(b) - 1) / ky + 1 / kx;
@@ -71,10 +93,22 @@ function place(lon, lat, h, st, out = new THREE.Vector3()) {
   return out;
 }
 const MORPH = /* glsl */`
-  uniform float uKx, uKy, uR, uCenter, uRaise, uMix;
+  uniform float uKx, uKy, uR, uCenter, uRaise, uMix, uWave, uFold, uRise, uReveal;
+  uniform vec2 uHome;
   uniform sampler2D uMask, uMaskPrev;
+  varying vec2 vQ;
+  varying float vRz;
   vec3 sheet(vec2 q, float h, out vec3 n) {
     float u = (q.x - 0.5) * 6.2831853 * uR, v = (q.y - 0.5) * 3.1415927 * uR;
+    if (uWave > 0.5) {
+      float a = u / uR, b = v / uR;
+      vec3 ns = vec3(cos(b) * sin(a), sin(b), cos(b) * cos(a));
+      float lon = a + uCenter;
+      float d = acos(clamp(sin(b) * sin(uHome.y) + cos(b) * cos(uHome.y) * cos(lon - uHome.x), -1.0, 1.0)) / 3.1415927;
+      float w = smoothstep(0.0, 1.0, clamp(uFold * 1.7 - d * 0.7, 0.0, 1.0));
+      n = normalize(mix(vec3(0.0, 0.0, 1.0), ns, w));
+      return mix(vec3(u, v, uR + h * uR), ns * uR * (1.0 + h), w);
+    }
     float kx = max(uKx, 1e-3), ky = max(uKy, 1e-3);
     float a = u * kx, b = v * ky;
     float w = (cos(b) - 1.0) / ky + 1.0 / kx;
@@ -84,7 +118,10 @@ const MORPH = /* glsl */`
   float raiseAt(vec2 q) {
     if (uRaise <= 0.0) return 0.0;
     vec2 m = vec2(q.x + uCenter / 6.2831853, q.y);
-    return uRaise * mix(texture2D(uMaskPrev, m).r, texture2D(uMask, m).r, uMix);
+    float g = mix(texture2D(uMaskPrev, m).r, texture2D(uMask, m).r, uMix);
+    // with the rise, the mask's grey is the order he first went: each country stands up in its turn
+    if (uRise > 0.5) return g > 0.02 ? uRaise * smoothstep(g - 0.07, g, uReveal * 1.08) : 0.0;
+    return uRaise * g;
   }
 `;
 
@@ -98,7 +135,12 @@ const reliefP = CFG.relief ? new Promise((ok) => { const i = new Image(); i.onlo
 
 function painter(world, colours) {
   const visited = world.countries.filter((f) => K.visitedIso.has(f.id));
+  let order = null;   // the grey each visited country gets in the mask: earlier trips darker
   return (cv, firstOf, y, hover, mask) => {
+    if (!order) {
+      const ys = [...new Set(visited.map((f) => firstOf[f.id]))].sort((a, b) => a - b);
+      order = Object.fromEntries(visited.map((f) => [f.id, 0.12 + 0.86 * (ys.indexOf(firstOf[f.id]) + 1) / ys.length]));
+    }
     const c = cv.getContext('2d');
     const path = d3.geoPath(eq, c);
     c.setTransform(1, 0, 0, 1, 0, 0);
@@ -106,10 +148,14 @@ function painter(world, colours) {
       const k = cv.width / TW;
       c.setTransform(k, 0, 0, k, 0, 0);
       c.fillStyle = '#000'; c.fillRect(0, 0, TW, TH);
-      c.fillStyle = '#fff';
-      for (const f of visited) if (firstOf[f.id] <= y) { c.beginPath(); path(f); c.fill(); }
+      for (const f of visited) if (firstOf[f.id] <= y) {
+        const g = CFG.rise ? Math.round(order[f.id] * 255) : 255;
+        c.fillStyle = `rgb(${g}, ${g}, ${g})`; c.beginPath(); path(f); c.fill();
+      }
       return;
     }
+    if (CFG.paint === 'chart') return paintChart(c, path, world, visited, colours, firstOf, y, hover);
+    if (CFG.paint === 'cut') return paintCut(c, path, world, visited, colours, firstOf, y, hover);
     c.fillStyle = colours.sea; c.fillRect(0, 0, TW, TH);
     c.fillStyle = colours.land; c.beginPath(); path(world.land); c.fill();
     if (reliefImg) {
@@ -128,6 +174,43 @@ function painter(world, colours) {
     c.strokeStyle = colours.hair; c.lineWidth = 1.6; c.beginPath(); path(world.borders); c.stroke();
     c.strokeStyle = colours.coast; c.lineWidth = 2.2; c.beginPath(); path(world.land); c.stroke();
   };
+}
+
+// "Sea chart" (the illustrator's pick): the colour is in the sea, the land is the page's own paper,
+// engraved waterlines round every coast, a crisp ink coast, dotted borders
+function paintChart(c, path, world, visited, col, firstOf, y, hover) {
+  c.fillStyle = col.sea; c.fillRect(0, 0, TW, TH);
+  c.lineJoin = 'round';
+  c.strokeStyle = col.water;
+  for (const [w, a] of [[46, 0.16], [30, 0.26], [16, 0.42]]) {
+    c.globalAlpha = a; c.lineWidth = w; c.beginPath(); path(world.land); c.stroke();
+  }
+  c.globalAlpha = 1;
+  c.fillStyle = col.land; c.beginPath(); path(world.land); c.fill();
+  for (const f of visited) {
+    if (firstOf[f.id] > y) continue;
+    c.fillStyle = f.id === hover ? col.beenOn : col.been;
+    c.beginPath(); path(f); c.fill();
+    c.strokeStyle = col.edge; c.lineWidth = 1.4; c.stroke();
+  }
+  c.setLineDash([3, 5]); c.strokeStyle = col.hair; c.lineWidth = 1.3; c.beginPath(); path(world.borders); c.stroke();
+  c.setLineDash([]);
+  c.strokeStyle = col.coast; c.lineWidth = 2.4; c.beginPath(); path(world.land); c.stroke();
+}
+// "Three papers": a grey card sea, a whiter sheet of land, terracotta for where he has been, each
+// layer throwing a soft shadow on the one below; no outlines, scored borders
+function paintCut(c, path, world, visited, col, firstOf, y, hover) {
+  c.fillStyle = col.sea; c.fillRect(0, 0, TW, TH);
+  const shadow = (draw, dx, dy, blur, a) => {
+    c.save(); c.filter = `blur(${blur}px)`; c.globalAlpha = a; c.fillStyle = col.ink;
+    c.translate(dx, dy); c.beginPath(); draw(); c.fill(); c.restore();
+  };
+  shadow(() => path(world.land), 5, 7, 7, 0.22);
+  c.fillStyle = col.land; c.beginPath(); path(world.land); c.fill();
+  const been = visited.filter((f) => firstOf[f.id] <= y);
+  shadow(() => been.forEach((f) => path(f)), 4, 6, 6, 0.28);
+  for (const f of been) { c.fillStyle = f.id === hover ? col.beenOn : col.been; c.beginPath(); path(f); c.fill(); }
+  c.strokeStyle = col.score; c.lineWidth = 1.2; c.beginPath(); path(world.borders); c.stroke();
 }
 
 /* ------------------------------------------------------------ the plane, a small paper cut-out */
@@ -153,7 +236,17 @@ window.JourneyMap = async function makeGlobe(svgEl) {
   const colours = {
     sea: rgb('--paper'), land: rgb('--paper-2'), been: rgb('--been'), beenOn: rgb('--been-on'),
     hair: rgb('--hair'), coast: rgb('--ink-3'), ink: rgb('--ink'), ink2: rgb('--ink-2'), route: rgb('--route'),
+    edge: rgb('oklch(74% 0.05 50)'),
   };
+  if (CFG.paint === 'chart') Object.assign(colours, {
+    sea: rgb('oklch(92.5% 0.018 235)'), water: rgb('oklch(82% 0.03 235)'), coast: rgb('oklch(42% 0.02 240)'),
+    land: rgb('--paper'), been: rgb('oklch(87% 0.045 55)'), beenOn: rgb('oklch(83% 0.06 50)'), edge: rgb('oklch(74% 0.05 50)'),
+    hair: rgb('oklch(70% 0.02 240)'),
+  });
+  if (CFG.paint === 'cut') Object.assign(colours, {
+    sea: rgb('oklch(90% 0.015 75)'), land: rgb('oklch(97% 0.005 85)'), been: rgb('oklch(80% 0.07 45)'),
+    beenOn: rgb('oklch(75% 0.09 42)'), edge: rgb('oklch(66% 0.08 42)'), score: rgb('oklch(88% 0.012 75)'),
+  });
   const [world] = await Promise.all([K.world(), reliefP]);
   const paint = painter(world, colours);
 
@@ -201,6 +294,9 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     uKx: { value: 0 }, uKy: { value: 0 }, uR: { value: R }, uCenter: { value: START * RAD },
     uRaise: { value: CFG.raise || 0 }, uMix: { value: 1 }, uLit: { value: 0 },
     uPrev: { value: texes[1] }, uBack: { value: new THREE.Color(colours.land) },
+    uWave: { value: CFG.wave ? 1 : 0 }, uFold: { value: 0 }, uHome: { value: new THREE.Vector2(HOME_LL[0] * RAD, HOME_LL[1] * RAD) },
+    uRise: { value: CFG.rise ? 1 : 0 }, uReveal: { value: CFG.rise && !K.reduced ? 0 : 1 },
+    uPlate: { value: CFG.plate ? 1 : 0 }, uWalls: { value: CFG.walls ? 1 : 0 }, uEdge: { value: new THREE.Color(colours.edge) },
     uMask: { value: maskTex ? maskTex[0] : texes[0] }, uMaskPrev: { value: maskTex ? maskTex[1] : texes[0] },
   };
   const mat = new THREE.MeshLambertMaterial({
@@ -215,14 +311,18 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     Object.assign(sh.uniforms, U);
     sh.vertexShader = sh.vertexShader
       .replace('#include <common>', `#include <common>\n${MORPH}`)
-      .replace('#include <beginnormal_vertex>', 'vec3 nrm; vec3 morphed = sheet(uv, raiseAt(uv), nrm);\nvec3 objectNormal = nrm;')
+      .replace('#include <beginnormal_vertex>', 'vec3 nrm; float rz = raiseAt(uv); vQ = uv; vRz = uRaise > 0.0 ? rz / uRaise : 0.0;\nvec3 morphed = sheet(uv, rz, nrm);\nvec3 objectNormal = nrm;')
       .replace('#include <begin_vertex>', 'vec3 transformed = morphed;');
     sh.fragmentShader = sh.fragmentShader
-      .replace('#include <common>', '#include <common>\nuniform sampler2D uPrev; uniform float uMix, uLit; uniform vec3 uBack;')
+      .replace('#include <common>', '#include <common>\nuniform sampler2D uPrev; uniform float uMix, uLit, uPlate, uFold, uWalls; uniform vec3 uBack, uEdge; varying vec2 vQ; varying float vRz;')
       .replace('#include <map_fragment>', `#include <map_fragment>
         #ifdef USE_MAP
           diffuseColor.rgb = mix(texture2D(uPrev, vMapUv).rgb, diffuseColor.rgb, uMix);
         #endif
+        // the printed plate: on arrival the map is trimmed to its band, 80N to 56S
+        if (uPlate > 0.5) { float la = (vQ.y - 0.5) * 180.0, o = smoothstep(0.15, 0.6, uFold); if (la > mix(80.0, 91.0, o) || la < mix(-56.0, -91.0, o)) discard; }
+        // the cut sides of a raised country, a deeper clay than its top
+        if (uWalls > 0.5) { float wall = smoothstep(0.04, 0.25, vRz) * (1.0 - smoothstep(0.75, 0.96, vRz)); diffuseColor.rgb = mix(diffuseColor.rgb, uEdge * 0.92, wall * 0.75); }
         if (!gl_FrontFacing) diffuseColor.rgb = uBack;`)
       .replace('#include <opaque_fragment>', 'outgoingLight = mix(diffuseColor.rgb, outgoingLight, uLit);\n#include <opaque_fragment>');
   };
@@ -247,6 +347,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     past: lineSet(colours.ink2, 1, 0),
     here: lineSet(colours.ink2, 1.3, 0),
     now: lineSet(colours.route, 2.4, 0),
+    plate: lineSet(colours.ink2, 1, CFG.plate ? 0.9 : 0),
   };
   sets.now.renderOrder = 2;
 
@@ -274,7 +375,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
   const planeGeo = planeShape();
 
   /* the state */
-  const st = { fold: 0, kx: 0, ky: 0, center: START, spin: [121, 23.5], tilt: 0, drag: [0, 0] };
+  const st = { fold: 0, want: 0, kx: 0, ky: 0, center: START, spin: [121, 23.5], tilt: 0, drag: [0, 0], drop: CFG.rise && !K.reduced ? 1 : 0 };
   let year = Infinity, hereYear = null, nowTrip = null, hover = null, flying = false;
   const ops = { grat: 0, fly: 1, past: 0, here: 0, now: 0 }, opsNow = { ...ops };
   let rewound = false;
@@ -282,7 +383,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
   const facing = () => [START + turnBy(START, st.spin[0] + st.drag[0]) * st.fold, clamp(st.spin[1] + st.drag[1], -60, 60) * st.fold];
 
   // the lift of a flight's arc at t along it: a little for the short hops, more for the long ones
-  const arcH = (d, t) => CFG.lift * Math.min(1, d / 1.4 + 0.25) * Math.sin(Math.PI * t);
+  const arcH = (d, t) => CFG.lift * (CFG.wave ? 1 + 2.4 * Math.sin(Math.PI * st.fold) : 1) * Math.min(1, d / 1.4 + 0.25) * Math.sin(Math.PI * t);
   const base = (CFG.raise || 0) + 0.004;
   const tmp = new THREE.Vector3(), tmp2 = new THREE.Vector3();
 
@@ -306,7 +407,19 @@ window.JourneyMap = async function makeGlobe(svgEl) {
   const legGo = (l) => { const c = K.legGeo(l).coordinates; return { go: d3.geoInterpolate(c[0], c[1]), d: d3.geoDistance(c[0], c[1]), flight: l.mode === 'flight' }; };
   const allLegs = K.trips.flatMap((t) => t.legs.map((l) => ({ t, ...legGo(l) })));
 
+  // the plate's frame on arrival: a neatline round the band and a tick every 30 degrees
+  function plateLines() {
+    const out = [], z = R + 0.002, x0 = -Math.PI * R, x1 = Math.PI * R, y0 = -56 * RAD * R, y1 = 80 * RAD * R, t = 0.025;
+    out.push(x0, y0, z, x1, y0, z, x1, y0, z, x1, y1, z, x1, y1, z, x0, y1, z, x0, y1, z, x0, y0, z);
+    for (let lon = -180 + 30; lon < 180; lon += 30) { const x = lon * RAD * R; out.push(x, y1, z, x, y1 + t, z, x, y0, z, x, y0 - t, z); }
+    for (let lat = -30; lat <= 60; lat += 30) { const y = lat * RAD * R; out.push(x0, y, z, x0 - t, y, z, x1, y, z, x1 + t, y, z); }
+    return out;
+  }
   function buildLines() {
+    if (CFG.plate) {
+      const a = clamp(1 - st.fold * 6, 0, 1) * 0.9;
+      if (a > 0.01) { if (!sets.plate.visible || !sets.plate.geometry.attributes.instanceStart) setLines(sets.plate, plateLines()); sets.plate.visible = true; sets.plate.material.opacity = a; } else sets.plate.visible = false;
+    }
     // the graticule, every 30 degrees, coming in as the sheet closes
     if (opsNow.grat > 0.01) {
       const g = [];
@@ -326,7 +439,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
       }
     }
     setLines(sets.past, past); setLines(sets.here, here); setLines(sets.now, now);
-    for (const k of Object.keys(sets)) if (sets[k].material.opacity !== opsNow[k]) sets[k].material.opacity = opsNow[k];
+    for (const k of Object.keys(ops)) if (sets[k].material.opacity !== opsNow[k]) sets[k].material.opacity = opsNow[k];
   }
 
   // a dot or a plane laid on the surface at a place, facing out
@@ -376,7 +489,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     const ppw = Math.min(r.w / fw, r.h / fh);
     const fov = camera.fov * RAD;
     const d = (H / ppw) / (2 * Math.tan(fov / 2));
-    const lookDown = (CFG.look || 0) * f;
+    const lookDown = (CFG.look || 0) * f + (CFG.wave ? 0.5 * Math.sin(Math.PI * f) : 0);
     camera.aspect = W / H;
     camera.position.set(0, cy + Math.sin(lookDown) * d, plane + Math.cos(lookDown) * d);
     camera.lookAt(0, cy, plane);
@@ -401,6 +514,9 @@ window.JourneyMap = async function makeGlobe(svgEl) {
   function frame(now) {
     raf = 0;
     for (const tw of [...tweens]) if (tw(now) === false) tweens.delete(tw);
+    // the fold carries a little weight: it follows the scroll instead of jumping with it
+    if (CFG.wave && st.fold !== st.want) { const d = st.want - st.fold; st.fold = Math.abs(d) < 0.0008 ? st.want : st.fold + d * 0.11; linesDirty = true; }
+    U.uFold.value = st.fold;
     for (const k of Object.keys(ops)) {
       const d = ops[k] - opsNow[k];
       if (Math.abs(d) > 0.003) { opsNow[k] += d * 0.14; linesDirty = true; } else if (opsNow[k] !== ops[k]) { opsNow[k] = ops[k]; linesDirty = true; }
@@ -410,11 +526,12 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     if (kx !== st.kx || ky !== st.ky || c !== st.center || tl !== st.tilt) linesDirty = true;
     st.kx = kx; st.ky = ky; st.center = c; st.tilt = tl;
     U.uKx.value = kx; U.uKy.value = ky; U.uCenter.value = c * RAD;
-    U.uLit.value = st.fold;
+    U.uLit.value = CFG.rise ? Math.max(st.fold, 0.7) : st.fold;
     const off = c / 360;
     for (const t of texes) t.offset.x = off;
     if (mat.bumpMap) mat.bumpMap.offset.x = off;
-    group.rotation.x = tl * RAD;
+    group.rotation.x = tl * RAD - 0.32 * st.drop * st.drop;
+    group.position.set(0, -0.25 * st.drop, 0.5 * st.drop);
     group.updateMatrixWorld();
     if (linesDirty) { buildLines(); placeMarks(); linesDirty = false; }
     frameCamera();
@@ -425,7 +542,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     renderer.setScissorTest(true);
     renderer.setScissor(r.x, H - r.y - r.h, r.w, r.h);
     renderer.render(scene, camera);
-    if (moving || tweens.size || Object.keys(ops).some((k) => opsNow[k] !== ops[k])) kick();
+    if (moving || st.fold !== st.want || tweens.size || Object.keys(ops).some((k) => opsNow[k] !== ops[k])) kick();
   }
   const tween = (dur, step) => new Promise((done) => {
     const t0 = performance.now();
@@ -528,8 +645,8 @@ window.JourneyMap = async function makeGlobe(svgEl) {
   /* the six words journey.js speaks */
   function setFold(a) {
     a = K.reduced ? (a < 0.5 ? 0 : 1) : a;
-    if (Math.abs(a - st.fold) < 0.0005) return;
-    st.fold = a;
+    if (CFG.wave && !K.reduced) { if (Math.abs(a - st.want) < 0.0005) return; st.want = a; }
+    else { if (Math.abs(a - st.fold) < 0.0005) return; st.fold = a; st.want = a; }
     ops.grat = rewound || a > 0 ? 0.55 * a : 0;
     kick();
   }
@@ -567,6 +684,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
 
   function settled(onLand) {
     flights.forEach((f) => { f.p = 1; f.end.on = true; });
+    U.uReveal.value = 1; st.drop = 0;
     linesDirty = true; kick();
     onLand(flights.length, true, 1);
   }
@@ -575,10 +693,14 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     flying = true;
     const planes = flights.map((f) => { const m = new THREE.Mesh(planeGeo, basic(colours.ink, { opacity: 1 })); m.visible = false; group.add(m); return m; });
     const rings = flights.map(() => { const m = new THREE.Mesh(ring, basic(colours.route, { opacity: 0 })); m.visible = false; group.add(m); return m; });
-    const t0 = performance.now();
+    // the plate is laid down on the table first, then the planes leave
+    const lay0 = st.drop > 0 ? 650 : 0;
+    if (st.drop > 0) tween(1100, (k) => { st.drop = 1 - ease(k); });
+    const t0 = performance.now() + lay0;
     let landed = -1;
     tweens.add((now) => {
       const el = now - t0;
+      if (el < 0) return true;
       let busy = false, n = 0;
       flights.forEach((f, i) => {
         const t = clamp(el / f.dur, 0, 1);
@@ -599,6 +721,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
       });
       linesDirty = true;
       const p = clamp(el / longest, 0, 1);
+      if (CFG.rise) U.uReveal.value = p;
       if (n !== landed || p < 1) { landed = n; onLand(n, false, p); }
       if (!busy) {
         planes.concat(rings).forEach((m) => { group.remove(m); m.material.dispose(); });
