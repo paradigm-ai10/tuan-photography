@@ -12,21 +12,28 @@
   `tools/build3.py` and server entry removed; the code is at the tag `design3-dropped-2026-10-28`.
   `start.command` now starts and opens 8642 only.
 - **93 photographs, 21 countries.** 22 US photographs have no camera data.
+- **Code-tab sidebar, decided 2026-10-29, he does the moving himself.** One sidebar group,
+  旅遊網站, holding one long-lived "desk" session per site tab (首頁 Home, 作品集 Gallery, 旅程 Journey,
+  攻略 Guides, 關於我 About) plus four outside the tabs: 靈感 Ideas, 照片 Photos, 網站整體 Site-wide,
+  報告 Reports (the automatic report runs). Every experiment for a tab is a side session started from
+  that tab's desk, so it nests under it; keep or drop archives the experiment and the desk stays.
+  Desks are created the first time that tab is worked on, not before. Existing sessions: "journey tab
+  design" becomes the Journey desk, "3D globe" sits beside it, "ideas" is the Ideas desk, "Travel website
+  session cleanup" is Site-wide. The 20 old report-run sessions (AI 情報報告, 網頁設計雷達, 週報, one
+  reminder) can go: every report is saved in `ideas/weekly/`. Do not create groups or move sessions
+  for him; he asked to do it himself.
 
 ## 上次做到哪 Where we left off
 
-2026-10-28: tidying the Code-tab sidebar. He wants the travel-website sessions grouped by site tab
-(Home, Gallery, Journey, Guides, About, plus ideas panel), with the tree planned together first and
-the grouping done by him. Design 3 dropped along the way.
 2026-10-29: the Journey tab rebuilt in the 8644 trial and made the real one: "the map should fold
 into the globe", "the latest trip", the 8642 Flights layout (photo behind, see-through panel), and
 of three marks for the trip in view he chose Fade. "Close 8644 entirely and make this the new 8642".
+Then the five 3D globe versions, built beside it. Then the sidebar plan was settled (see 現在狀態).
 
 ## 接下來 Next up
 
-**Plan the session tree with him**, one group per design 1 tab, then decide which old sessions to
-delete (Progress mod fixing, Restructure, Artifact post test, Cache and code mods, Session organization,
-Idea list additions were the candidates). He moves and deletes them himself.
+**Review the five 3D globes** on http://localhost:8642/journey/new/index.html (see below), or start the
+next tab's work. The sidebar tidy-up is decided and he is doing it himself (see 現在狀態).
 
 ## 等你決定 Waiting on you
 
