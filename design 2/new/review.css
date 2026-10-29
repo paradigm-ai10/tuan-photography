@@ -1,18 +1,9 @@
-/* The Note tab on a version page (review.js, 2026-10-29): on his Mac only, never on the public site. */
+/* The Notes box on a version page (review.js, 2026-10-29): dragged anywhere, minimized to a bar; on his Mac only, never on the public site. */
 .rv { position: fixed; left: 0; top: 50%; translate: 0 -50%; z-index: 90; display: flex; align-items: center; font-family: var(--f-text); }
-.rv__tab {
-  writing-mode: vertical-rl; rotate: 180deg; padding: 1rem 0.6rem; min-width: 2.75rem;
-  background: var(--ink); color: var(--paper);
-  font-size: 0.72rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase;
-}
-:lang(zh-Hant) .rv__tab { text-transform: none; letter-spacing: 0.3em; font-size: 0.82rem; }
-.rv__tab-s { display: inline-block; rotate: 180deg; writing-mode: horizontal-tb; margin-block: 0.4rem; font-size: 0.95rem; letter-spacing: 0; }
-.rv__tab-n { letter-spacing: 0.1em; }
-.rv.is-open .rv__tab { order: 2; }
 /* moved by hand: it floats where he left it */
 .rv.is-moved { left: var(--rv-x); top: var(--rv-y); translate: none; }
 .rv.is-moved .rv__panel { border-left: 1px solid var(--ink); }
-.rv__tab, .rv__head { cursor: grab; touch-action: none; user-select: none; }
+.rv__head { cursor: grab; touch-action: none; user-select: none; }
 .rv.is-dragging, .rv.is-dragging * { cursor: grabbing; }
 .rv.is-dragging .rv__panel { box-shadow: 0 1rem 3rem oklch(22% 0.01 60 / 0.22); }
 .rv__grip { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); }
@@ -23,8 +14,15 @@
   padding: 1rem 1.1rem 1.1rem; display: grid; gap: 0.6rem;
   box-shadow: 0 0.5rem 2rem oklch(22% 0.01 60 / 0.12);
 }
-.rv__panel[hidden] { display: none; }
-.rv__head { display: flex; align-items: baseline; gap: 1rem; }
+.rv__body { display: grid; gap: 0.6rem; }
+.rv__body[hidden] { display: none; }
+/* minimized: one small bar that stays where he left it */
+.rv:not(.is-open) .rv__panel { width: auto; padding: 0.55rem 0.9rem; border-left: 1px solid var(--ink); }
+.rv:not(.is-open) .rv__head { gap: 0.8rem; align-items: center; }
+.rv:not(.is-open) .rv__h { margin-right: 0.2rem; font-size: 0.95rem; }
+.rv__mini-s { display: grid; place-items: center; width: 1.8rem; height: 1.8rem; background: var(--ink); color: var(--paper); font-weight: 500; font-variant-numeric: tabular-nums; }
+.rv__mini-n { font-size: 0.8rem; color: var(--ink-2); }
+.rv__head { display: flex; align-items: baseline; gap: 0.75rem; white-space: nowrap; }
 .rv__h { font-size: 1.05rem; font-weight: 500; margin-right: auto; }
 .rv__back, .rv__x, .rv__w { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-2); text-decoration: none; min-height: 2rem; display: inline-flex; align-items: center; }
 :lang(zh-Hant) :is(.rv__back, .rv__x, .rv__w) { text-transform: none; letter-spacing: 0.15em; font-size: 0.78rem; }

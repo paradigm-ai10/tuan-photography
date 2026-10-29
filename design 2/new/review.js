@@ -80,14 +80,14 @@
     en: {
       tab: 'Note', title: 'Your notes', score: 'Score', scores: ['', 'Not for me', 'Weak', 'Fine', 'Good', 'Love it'],
       moment: 'Like something? Say what, it pins to this spot', pin: 'Pin it', moments: 'Moments', none: 'No moments yet. Scroll to something you notice and pin a line.',
-      note: 'Overall', noteHint: 'What to keep, what to change', go: 'Go there', del: 'Remove', close: 'Close',
+      note: 'Overall', noteHint: 'What to keep, what to change', go: 'Go there', del: 'Remove', close: 'Minimize', expand: 'Open', pinnedN: (n) => `${n} pinned`,
       saved: 'Saved. Claude can read it.', local: 'Saved in this browser only', saving: 'Saving', back: 'All versions',
       at: (p) => `${p}% down`, move: 'Drag', drag: 'Drag here to move the notes',
     },
     zh: {
       tab: '筆記', title: '你的筆記', score: '分數', scores: ['', '不要', '普通偏弱', '還可以', '喜歡', '超喜歡'],
       moment: '看到喜歡的？寫一句，會釘在這個位置', pin: '釘上', moments: '片刻', none: '還沒有。捲到你注意到的地方，寫一句釘上。',
-      note: '整體', noteHint: '要留什麼、要改什麼', go: '回到那裡', del: '刪掉', close: '關上',
+      note: '整體', noteHint: '要留什麼、要改什麼', go: '回到那裡', del: '刪掉', close: '縮小', expand: '打開', pinnedN: (n) => `釘了 ${n} 句`,
       saved: '已存，Claude 讀得到。', local: '只存在這個瀏覽器', saving: '存檔中', back: '所有版本',
       at: (p) => `往下 ${p}%`, move: '拖曳', drag: '拖這裡可以移動筆記',
     },
@@ -112,9 +112,9 @@
     const w = WORDS[lang()], it = item(ID), s = it.stars || 0, pins = it.pins || [];
     box.classList.toggle('is-open', open);
     box.innerHTML = `
-      <button type="button" class="rv__tab" aria-expanded="${open}" aria-controls="rv-panel">${esc(w.tab)}${s ? ` <span class="rv__tab-s">${s}</span>` : ''}${pins.length ? ` <span class="rv__tab-n">· ${pins.length}</span>` : ''}</button>
-      <div class="rv__panel" id="rv-panel" ${open ? '' : 'hidden'}>
-        <div class="rv__head" title="${esc(w.drag)}"><span class="rv__h">${esc(w.title)}</span><span class="rv__grip" aria-hidden="true">${esc(w.move)}</span><a class="rv__back" href="index.html#v-${ID}">${esc(w.back)}</a><button type="button" class="rv__x" data-rv="close">${esc(w.close)}</button></div>
+      <div class="rv__panel" id="rv-panel">
+        <div class="rv__head" title="${esc(w.drag)}"><span class="rv__h">${esc(open ? w.title : w.tab)}</span>${open ? '' : `${s ? `<span class="rv__mini-s">${s}</span>` : ''}${pins.length ? `<span class="rv__mini-n">${esc(w.pinnedN(pins.length))}</span>` : ''}`}<span class="rv__grip" aria-hidden="true">${esc(w.move)}</span>${open ? `<a class="rv__back" href="index.html#v-${ID}">${esc(w.back)}</a>` : ''}<button type="button" class="rv__x" data-rv="toggle" aria-expanded="${open}" aria-controls="rv-body">${esc(open ? w.close : w.expand)}</button></div>
+        <div class="rv__body" id="rv-body" ${open ? '' : 'hidden'}>
         <div class="rv__score" role="group" aria-label="${esc(w.score)}">
           ${[1, 2, 3, 4, 5].map((n) => `<button type="button" class="rv__n" data-rv="score" data-n="${n}" aria-pressed="${s === n}" title="${esc(w.scores[n])}">${n}</button>`).join('')}
         </div>
@@ -132,6 +132,7 @@
         <label class="rv__label" for="rv-note">${esc(w.note)}</label>
         <textarea class="rv__in" id="rv-note" rows="3" placeholder="${esc(w.noteHint)}">${esc(it.note || '')}</textarea>
         <p class="rv__state" role="status" aria-live="polite"></p>
+        </div>
       </div>`;
     place();
   }
@@ -142,6 +143,7 @@
     try { sessionStorage.setItem('rv-open', v ? '1' : '0'); } catch (e) { /* storage blocked */ }
     draw();
     if (v) box.querySelector('#rv-moment').focus();
+    else box.querySelector('.rv__x').focus();
   }
   function pin() {
     const t = box.querySelector('#rv-moment'), text = t.value.trim();
@@ -168,7 +170,7 @@
     box.style.setProperty('--rv-y', `${moved.y}px`);
   }
   box.addEventListener('pointerdown', (e) => {
-    const h = e.target.closest('.rv__tab, .rv__head');
+    const h = e.target.closest('.rv__head');
     if (!h || e.target.closest('a, [data-rv]') || e.button !== 0) return;
     const r = box.getBoundingClientRect();
     drag = { dx: e.clientX - r.left, dy: e.clientY - r.top, x0: e.clientX, y0: e.clientY };
@@ -194,12 +196,13 @@
   addEventListener('resize', place);
 
   box.addEventListener('click', (e) => {
-    const b = e.target.closest('[data-rv], .rv__tab');
-    if (!b) return;
     if (dragged) { dragged = false; return; }
-    if (b.classList.contains('rv__tab')) return setOpen(!open);
+    // a click on the small bar (not a drag) opens it
+    if (!open && e.target.closest('.rv__head')) return setOpen(true);
+    const b = e.target.closest('[data-rv]');
+    if (!b) return;
     const k = b.dataset.rv, it = item(ID);
-    if (k === 'close') setOpen(false);
+    if (k === 'toggle') setOpen(!open);
     else if (k === 'score') { window.Review.setScore(ID, +b.dataset.n); draw(); }
     else if (k === 'go') goTo(it.pins[+b.dataset.i].at);
     else if (k === 'del') { it.pins.splice(+b.dataset.i, 1); save(ID); draw(); }
