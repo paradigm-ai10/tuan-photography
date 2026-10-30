@@ -118,4 +118,4 @@ textarea:focus-visible, .lg-btn:focus-visible { outline: 2px solid var(--accent)
 .f-forum .lg-photo { font-family: "Forum", serif; letter-spacing: 0.24em; font-size: clamp(0.95rem, 0.8rem + 0.6vw, 1.3rem); }
 .f-forum .lg-small .lg-photo { font-size: 0.85rem; }
 .lg-lead a { color: var(--accent); text-underline-offset: 0.2em; }
-.f-cormorant .lg-frame .lg-tuan { font-size: clamp(2.2rem, 1rem + 5.1vw, 5.1rem); }
+.f-cormorant .lg-frame .lg-tuan { font-size: clamp(2.39rem, 1.1rem + 5.52vw, 5.52rem); } /* 8% under the shared size */
