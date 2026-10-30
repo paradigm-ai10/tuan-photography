@@ -243,62 +243,39 @@ text over the photograph. Check a new build against this list before showing it 
     handoff note, not a changelog — `git log` is the changelog.
 - Then commit and push it along with the day's work.
 
-## Ideas inbox — IDEAS.md
+## Ideas inbox — the Paradigm tool list (IDEAS.md is the old record)
 
-`IDEAS.md` is where his loose ideas and links to sites he likes are collected (started
-2026-09-28). When he drops a URL or an idea, add it there in 繁體中文 with the date and **what
-he likes about it** in his own words — ask if he didn't say. Collecting is not a request to
-build: don't change the site because of an entry until he asks. A liked site is a source of
-qualities, never a template to copy.
+**Everything he collects lives in the Paradigm tool list** (his call, 2026-10-30: "全部都整理過去", one
+main AI center to get everything from). It is the Google Sheet 「工具清單」 in the shared
+`paradigm_mainshare` folder, used by his team (its id is in Claude's memory, `reference-paradigm-tool-list`):
+one tab per area (影片製作, 設計與品牌, 內容與社群, 會議與協作, 開發與網站, 靈感來源, AI 服務與帳號) plus 首頁
+(counts) and 工具筆記 (longer notes, one section per tool, linked from each tab's 筆記 column).
 
-Two kinds of entry: (1) ideas about this site, (2) collected links / images / videos.
-Image and video files go in `ideas/`, which is **gitignored** — the GitHub repo is public and
-saved references are usually other people's work, so they stay on his Mac. Only the notes in
-`IDEAS.md` are pushed. Videos can't be watched by Claude: record the link and ask him which
-moment he liked.
-
-He reads the list as an **Excel file**, `ideas/靈感整理.xlsx` (his call, 2026-10-29: "it's a list";
-it was a Word file before). It is generated:
-**after every change to `IDEAS.md`, rerun `python3 tools/ideas_xlsx.py`** (`tools/ideas_doc.py`
-with no arguments does the same) and never edit the Excel file by hand. Each entry is a `###`
-heading followed by `- 欄位: 內容` lines; `類型` sets the group and `圖片` names a file in `ideas/`
-(images are not shown in Excel). An entry that belongs to two types names both, split by
-`" / "` (`類型: 網站靈感 / UI 介面靈感`, his call 2026-10-29), and is listed under each; it still
-counts once. The inspiration sites are split that way: 網站靈感 (whole sites) and UI 介面靈感
-(components, screens, motion).
-
-The file has **one tab per type** (his call, the third try on 2026-10-29: "keep each type having its own
-tab so that it's more easily updated and sorted"), each a real Excel table (filter and sort from the
-header): 名稱 (the link itself), 重點, 喜歡它什麼, 狀態, 日期, newest first; set-aside entries greyed, a
-missing 喜歡它什麼 shown as a grey 待補. A **總覽** tab comes first: each type and its count linked to its
-tab, the states, how many lack 喜歡它什麼.
-
-**Tools and general web-design resources live in the Paradigm tool list** (his call, 2026-10-29: Paradigm
-AI is a brand he is building and will design websites for). It is the Google Sheet 「工具清單」 in the shared
-`paradigm_mainshare` folder, used by his team: one tab per area (影片製作, 設計與品牌, 內容與社群, 會議與協作,
-開發與網站, 靈感來源, AI 服務與帳號) plus 首頁 (counts) and 工具筆記 (longer notes, one section per tool,
-linked from each tab's 筆記 column). Its rules are on its 首頁: one tool in one tab only, the name as
-`=HYPERLINK`, 狀態 from the dropdown (已在用, 已裝未試, 用別的代替, 沒有, 收藏參考 for reference sites), same
-小類 kept together and grouped so it folds. Write it in neutral team wording, not his private comments.
-A design skill, a component library, a font source or an inspiration site he collects goes there; only what
-is about the travel site (photographers, guide sites, effects and ideas for this site) goes in IDEAS.md.
-The 29 entries that moved stay in IDEAS.md with a `搬到` line and are left out of the Excel file.
-**To look up a tool or inspiration site, read the sheet, not IDEAS.md** (his question, 2026-10-30): the
-sheet is the live copy, the moved entries in IDEAS.md are not kept up to date.
-It must stay **readable at a glance**
-(he asked for that on 2026-09-28), so every entry needs a `重點`
-line, written as **one short phrase** (about 15 characters), and `狀態` is one or two words
-(已安裝, 已存檔, 已移除, 未註冊, 收集中). Longer explanation goes in other fields, which stay
-in `IDEAS.md` and are not shown in Excel. Don't add the same thing twice: check the list first
-and merge into the existing entry.
+- **Where things go.** Inspiration sites, photographer and travel-guide sites, scroll, map and other
+  effects: 靈感來源, grouped by 小類 (網站, 網站＋UI, UI 介面, 攝影師網站, 旅遊攻略網站, 捲動與地圖, 互動效果).
+  Skills, tools, tutorials and how-to tips: their area's tab, longer text in 工具筆記.
+- **Travel-site items are marked**: the 備註 starts with 「旅遊網站」 (his call, 2026-10-30: screen each one
+  and mark what is about the travel site). Use it for what was collected for, tried on or used in this site.
+- **Its rules are on its 首頁**: one tool in one tab only, the name as `=HYPERLINK`, 狀態 from the dropdown
+  (已在用, 已裝未試, 用別的代替, 沒有, 收藏參考 for reference sites), same 小類 kept together and grouped so it
+  folds (first row visible). New rows copy the format and the 狀態 validation of the row above
+  (PASTE_FORMAT, then PASTE_DATA_VALIDATION). Neutral team wording, not his private comments.
+- **When he drops a URL or an idea**, add it to the sheet with what he likes about it (ask if he didn't say),
+  after checking it isn't there already. Collecting is not a request to build: don't change the site because
+  of an entry until he asks. A liked site is a source of qualities, never a template to copy.
+- **To look anything up, read the sheet.** `IDEAS.md` keeps the 53 entries as they were on 2026-10-30, each
+  with a `搬到` line naming its tab, plus the full history (Claude's notes, trial records). It is no longer
+  updated. The Excel file `ideas/靈感整理.xlsx` was retired the same day; `tools/ideas_xlsx.py` is kept.
+- Image and video files he saves still go in `ideas/`, which is **gitignored** (other people's work, public
+  repo). Videos can't be watched by Claude: record the link and ask him which moment he liked.
 
 ## Build list 建置進度 — TODO.md
 
 `TODO.md` is his list of what the site still needs and how far each thing has got (started
-2026-09-29, at his request). The three lists have different jobs: `IDEAS.md` is what he has
+2026-09-29, at his request). The three lists have different jobs: the Paradigm tool list is what he has
 seen and liked, `TODO.md` is what he has decided to do, `PROGRESS.md` is where the last session
 stopped. When he says he wants to do something, add it here in 繁體中文 with the date. An idea
-moves from `IDEAS.md` to here only on his word.
+moves from the Paradigm sheet to here only on his word.
 
 Same format as `IDEAS.md`, same generator. He reads it as `ideas/建置進度.docx`:
 **after every change to `TODO.md`, rerun
@@ -319,8 +296,8 @@ public and his notes are private unless he says otherwise.
 
 - **Read it at the start of every session**, right after `PROGRESS.md`, and tell him in a
   line or two what is new since last time.
-- What he writes there is a note to himself, not an order. Nothing moves into `TODO.md` or
-  `IDEAS.md`, and nothing on the site changes, until he says so in the chat.
+- What he writes there is a note to himself, not an order. Nothing moves into `TODO.md` or the Paradigm sheet
+  and nothing on the site changes, until he says so in the chat.
 - The generated Word files are overwritten on every run, so they are never the place for his
   own writing. If he wants a note attached to one item of the build list, add it to that entry
   in `TODO.md` as a `筆記` field.
@@ -381,7 +358,7 @@ Decided experiments. Rejected ideas are not proposed again; the tags hold the co
 every Monday about 9:00 and searches the web for the week's new AI web-design tools, skills,
 plugins and news. It writes `ideas/weekly/<date>.md` and builds `ideas/weekly/<date>.docx` with
 the same generator (`python3 tools/ideas_doc.py <list.md> <out.docx>`), then hands him the Word
-file in the chat. **The report is a menu, not the inbox:** nothing from it goes into `IDEAS.md`
+file in the chat. **The report is a menu, not the inbox:** nothing from it goes into the Paradigm 工具清單
 until he says he is interested in an item. Nothing it finds gets installed without his say.
 
 ## Working habits
