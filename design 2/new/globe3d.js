@@ -10,6 +10,7 @@
      raised  the countries he has been to stand up from the globe like cut paper
      roll    the map rolls up like a paper chart first, then closes at the poles
      mix     raised countries with mid-height arcs, the globe at high's size (his pick)
+     gores   a painted paper globe; the map is cut into twelve strips that close round Taiwan
 
    The sheet is one grid of points; where each point sits is worked out on the graphics card from
    two curvatures (across and up and down), so the flat map, the half-rolled sheet and the globe are
@@ -48,6 +49,11 @@ const CFG = {
   paperwrap: { lift: 0.08, seg: [720, 360], raise: 0.018, soft: 4, frame1: 3.05, look: 0.3, wave: true, rise: true, unlit: true, bleed: true },
   ink: { lift: 0.09, seg: [720, 360], raise: 0.012, soft: 4, frame1: 3.05, look: 0.3, paint: 'ink', wave: true, rise: true, unlit: true, earth: true, bleed: true, noClouds: true },
   photo: { lift: 0.08, seg: [720, 360], raise: 0.014, soft: 4, frame1: 3.05, look: 0.3, paint: 'photo', wave: true, rise: true, develop: true, unlit: true },
+  // the globemaker's round (2026-10-30, from his references: Bellerby & Co's hand-painted globes and
+  // the gores they are made of): a globe printed on paper and tinted in watercolour; on arrival the
+  // routes are drawn in ink and each country takes its wash as its line lands; the fold cuts the map
+  // into twelve strips that close round Taiwan one by one, as a globemaker pastes them on the ball
+  gores: { lift: 0.03, seg: [720, 360], frame1: 3.05, look: 0.3, paint: 'globe', wave: true, gores: true, rise: true, pen: true, unlit: true, bleed: true, gloss: true, noGrat: true },
 }[V];
 const HOME_LL = [S.flightsFrom[1], S.flightsFrom[0]];
 const CRAFT = 'craft' in document.body.dataset;
@@ -90,9 +96,26 @@ function waveW(lon, lat, f) {
   const x = clamp(f * 1.7 - d * 0.7, 0, 1);
   return x * x * (3 - 2 * x);
 }
+// the gores: twelve strips, 30 degrees wide, the middle one centred on Taiwan (GORE0, as a share of the
+// sheet's width). Through the first fifth of the fold the knife narrows each strip towards its tips;
+// then each closes onto the ball on its own clock, Taiwan's first and the far side last, each pressed
+// down from its waist to its tips. The shader does the same sums for the sheet.
+const GORES = 12, GORE0 = 0.5 + ((HOME_LL[0] - START + 540) % 360 - 180) / 360;
+const smooth = (a, b, x) => { const t = clamp((x - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); };
+function gorePlace(q, b, h, f, out) {
+  const g = GORE0 + Math.floor((q - GORE0) * GORES + 0.5) / GORES;
+  const a = (q - 0.5) * TAU, gc = (g - 0.5) * TAU, dl = a - gc;
+  const xf = gc + dl * (1 + (Math.cos(b) - 1) * smooth(0, 0.2, f));
+  const dg = Math.abs(g - GORE0), far = Math.min(dg, 1 - dg) * 2;   // 0 at Taiwan's strip, 1 on the far side
+  const k = clamp(((f - 0.16) / 0.84) * 1.95 - far * 0.62 - (Math.abs(b) / (Math.PI / 2)) * 0.28, 0, 1), w = k * k * (3 - 2 * k);
+  const sx = Math.cos(b) * Math.sin(a) * R * (1 + h), sy = Math.sin(b) * R * (1 + h), sz = Math.cos(b) * Math.cos(a) * R * (1 + h);
+  const fx = xf * R, fy = b * R, fz = R + h * R;
+  return out.set(fx + (sx - fx) * w, fy + (sy - fy) * w, fz + (sz - fz) * w);
+}
 function place(lon, lat, h, st, out = new THREE.Vector3()) {
   const lonR = (((lon - st.center) % 360) + 540) % 360 - 180;
   const u = lonR * RAD * R, v = lat * RAD * R;
+  if (CFG.gores) { gorePlace((lonR + 180) / 360, lat * RAD, h, st.fold, out); out.lonR = lonR; return out; }
   if (CFG.wave) {
     const a = u / R, b = v / R, w = waveW(lon, lat, st.fold);
     const nx = Math.cos(b) * Math.sin(a), ny = Math.sin(b), nz = Math.cos(b) * Math.cos(a);
@@ -111,13 +134,28 @@ function place(lon, lat, h, st, out = new THREE.Vector3()) {
   return out;
 }
 const MORPH = /* glsl */`
-  uniform float uKx, uKy, uR, uCenter, uRaise, uMix, uWave, uFold, uRise, uReveal, uSoft;
+  uniform float uKx, uKy, uR, uCenter, uRaise, uMix, uWave, uFold, uRise, uReveal, uSoft, uGores, uGore0;
   uniform vec2 uHome;
   uniform sampler2D uMask, uMaskPrev;
   varying vec2 vQ;
   varying float vRz;
+  varying vec2 vGore;
+  ${CFG.gores ? 'attribute float aGore;' : 'const float aGore = 0.5;'}
   vec3 sheet(vec2 q, float h, out vec3 n) {
     float u = (q.x - 0.5) * 6.2831853 * uR, v = (q.y - 0.5) * 3.1415927 * uR;
+    vGore = vec2(0.0, 1.0);
+    if (uGores > 0.5) {
+      // a strip of the map (gorePlace in the JS): cut narrow towards its tips, then closed onto the ball
+      float a = u / uR, b = v / uR, gc = (aGore - 0.5) * 6.2831853, dl = a - gc;
+      float xf = gc + dl * mix(1.0, cos(b), smoothstep(0.0, 0.2, uFold));
+      float dg = abs(aGore - uGore0), far = min(dg, 1.0 - dg) * 2.0;
+      float k = clamp((uFold - 0.16) / 0.84 * 1.95 - far * 0.62 - abs(b) / 1.5707963 * 0.28, 0.0, 1.0);
+      float w = k * k * (3.0 - 2.0 * k);
+      vec3 ns = vec3(cos(b) * sin(a), sin(b), cos(b) * cos(a));
+      vGore = vec2(dl / 0.5235988, w);
+      n = normalize(mix(vec3(0.0, 0.0, 1.0), ns, w));
+      return mix(vec3(xf * uR, b * uR, uR + h * uR), ns * uR * (1.0 + h), w);
+    }
     if (uWave > 0.5) {
       float a = u / uR, b = v / uR;
       vec3 ns = vec3(cos(b) * sin(a), sin(b), cos(b) * cos(a));
@@ -173,11 +211,14 @@ function painter(world, colours, photos) {
       c.setTransform(k, 0, 0, k, 0, 0);
       c.fillStyle = '#000'; c.fillRect(0, 0, TW, TH);
       for (const f of visited) if (firstOf[f.id] <= y) {
-        const g = CFG.rise ? Math.round(order[f.id] * 255) : 255;
+        // with the pen, the grey is when its route lands (none: washed from the start, as Taiwan is)
+        const g = Math.round((CFG.pen ? LAND[f.id] || 0 : CFG.rise ? order[f.id] : 1) * 255);
+        if (!g) continue;
         c.fillStyle = `rgb(${g}, ${g}, ${g})`; c.beginPath(); path(f); c.fill();
       }
       return;
     }
+    if (CFG.paint === 'globe') return paintGlobe(c, path, world, visited, colours, firstOf, y, hover);
     if (CFG.paint === 'chart') return paintChart(c, path, world, visited, colours, firstOf, y, hover);
     if (CFG.paint === 'cut') return paintCut(c, path, world, visited, colours, firstOf, y, hover);
     if (CFG.paint === 'ink') return paintInk(c, path, world, visited, colours, firstOf, y, hover);
@@ -385,6 +426,101 @@ function paintInk(c, path, world, visited, col, firstOf, y, hover) {
   c.strokeStyle = 'rgba(60, 50, 40, 0.18)'; c.lineWidth = 1.1; c.beginPath(); path(world.borders); c.stroke();
 }
 
+/* ---- the globemaker's globe: printed on paper, tinted by hand in watercolour (after Bellerby & Co) ---- */
+// an aged paper sea under a pale wash that pools darker along the coasts, two engraved waterlines;
+// every country its own pale wash with a darker rim where the water dried; a fine sepia graticule,
+// dotted borders and an inked coast; the oceans named in spaced capitals; the paper's grain over all
+let GLOBE = null;
+let LAND = {};   // with the pen: when each country's route lands, as a share of the whole opening
+const TINTS = [['oklch(92% 0.022 85)', 'oklch(83% 0.035 78)'], ['oklch(91.5% 0.022 135)', 'oklch(83% 0.032 135)'], ['oklch(91.5% 0.02 40)', 'oklch(83% 0.032 40)'],
+  ['oklch(92.5% 0.03 95)', 'oklch(85% 0.045 92)'], ['oklch(91% 0.014 300)', 'oklch(83% 0.022 300)']];
+// (the Atlantic's name sits west of 30W, where the flat map is cut, so it is never split across the ends)
+const OCEANS = [{ ll: [-150, 6], en: 'Pacific Ocean', zh: '太平洋' }, { ll: [-56, 30], en: 'Atlantic Ocean', zh: '大西洋' }, { ll: [78, -22], en: 'Indian Ocean', zh: '印度洋' }];
+const hashOf = (s) => { let h = 7; for (const ch of String(s)) h = (h * 31 + ch.charCodeAt(0)) >>> 0; return h; };
+// a watercolour wash over some countries: the colour, then a darker rim just inside each edge
+function wash(c, path, fs, fill, rim, rimA = 0.55) {
+  if (!fs.length) return;
+  const all = () => { c.beginPath(); for (const f of fs) path(f); };
+  c.save();
+  c.fillStyle = fill; all(); c.fill();
+  all(); c.clip();
+  c.filter = 'blur(5px)'; c.globalAlpha = rimA; c.strokeStyle = rim; c.lineWidth = 10; c.lineJoin = 'round'; all(); c.stroke();
+  c.restore();
+}
+// letters set apart, as an engraver spaces them
+function spaced(c, text, x, y, gap) {
+  const ws = [...text].map((ch) => c.measureText(ch).width), total = ws.reduce((a, b) => a + b, 0) + gap * (ws.length - 1);
+  let at = x - total / 2;
+  [...text].forEach((ch, i) => { c.fillText(ch, at + ws[i] / 2, y); at += ws[i] + gap; });
+}
+function globeBase(world, lang) {
+  if (GLOBE && GLOBE.lang === lang) return GLOBE;
+  const mk = (w, h) => Object.assign(document.createElement('canvas'), { width: w, height: h });
+  const big = mk(TW, TH), c = big.getContext('2d'), path = d3.geoPath(eq, c);
+  // the paper, a little aged, and the sea's wash laid over it
+  c.fillStyle = rgb('oklch(93.5% 0.022 82)'); c.fillRect(0, 0, TW, TH);
+  c.globalAlpha = 0.85; c.fillStyle = rgb('oklch(89% 0.03 198)'); c.fillRect(0, 0, TW, TH); c.globalAlpha = 1;
+  // where the wash pooled: darker along every coast
+  c.save(); c.lineJoin = 'round'; c.filter = 'blur(22px)'; c.globalAlpha = 0.32; c.strokeStyle = rgb('oklch(80% 0.05 205)'); c.lineWidth = 46; c.beginPath(); path(world.land); c.stroke(); c.restore();
+  c.save(); c.lineJoin = 'round'; c.filter = 'blur(6px)'; c.globalAlpha = 0.3; c.strokeStyle = rgb('oklch(76% 0.055 210)'); c.lineWidth = 12; c.beginPath(); path(world.land); c.stroke(); c.restore();
+  // two engraved waterlines following each coast: a wide line hollowed out leaves a thin ring
+  const ring = mk(TW, TH), rc = ring.getContext('2d'), rp = d3.geoPath(eq, rc);
+  rc.lineJoin = 'round'; rc.strokeStyle = '#000';
+  for (const w of [58, 30]) {
+    rc.globalCompositeOperation = 'source-over'; rc.lineWidth = w + 2.6; rc.beginPath(); rp(world.land); rc.stroke();
+    rc.globalCompositeOperation = 'destination-out'; rc.lineWidth = w; rc.beginPath(); rp(world.land); rc.stroke();
+  }
+  rc.globalCompositeOperation = 'source-in'; rc.fillStyle = rgb('oklch(48% 0.045 215)'); rc.fillRect(0, 0, TW, TH);
+  c.globalAlpha = 0.17; c.drawImage(ring, 0, 0); c.globalAlpha = 1;
+  ring.width = ring.height = 0;
+  // the land: land without a country first, then every country its own pale wash
+  c.fillStyle = rgb('oklch(93% 0.02 85)'); c.beginPath(); path(world.land); c.fill();
+  const groups = TINTS.map(() => []);
+  world.countries.forEach((f) => groups[hashOf(f.id) % TINTS.length].push(f));
+  groups.forEach((fs, i) => wash(c, path, fs, rgb(TINTS[i][0]), rgb(TINTS[i][1]), 0.45));
+  // the engraved lines: every 15 degrees, the equator a little stronger, the tropics dashed
+  const sepia = rgb('oklch(42% 0.04 60)');
+  c.strokeStyle = sepia; c.globalAlpha = 0.15; c.lineWidth = 1.3; c.beginPath(); path(d3.geoGraticule().step([15, 15]).extentMinor([[-180, -80], [180, 80]])()); c.stroke();
+  const parallel = (lat) => ({ type: 'LineString', coordinates: d3.range(-180, 181, 2).map((lon) => [lon, lat]) });
+  c.globalAlpha = 0.3; c.lineWidth = 1.7; c.beginPath(); path(parallel(0)); c.stroke();
+  c.setLineDash([10, 9]); c.globalAlpha = 0.24; c.lineWidth = 1.3; c.beginPath(); path(parallel(23.44)); path(parallel(-23.44)); c.stroke(); c.setLineDash([]);
+  // the oceans' names, in the site's serif, set wide
+  const zh = lang === 'zh';
+  c.globalAlpha = 0.5; c.fillStyle = sepia; c.textAlign = 'center'; c.textBaseline = 'middle';
+  c.font = zh ? '500 46px "Noto Serif TC"' : '400 34px "Playfair Display"';
+  for (const o of OCEANS) { const [x, y] = eq(o.ll); spaced(c, zh ? o.zh : o.en.toUpperCase(), x, y, zh ? 34 : 10); }
+  c.globalAlpha = 1;
+  // the paper's grain (fine) and its age (broad, uneven), multiplied over everything at each repaint
+  const grain = mk(512, 512), gc = grain.getContext('2d'), gi = gc.createImageData(512, 512);
+  for (let i = 0; i < gi.data.length; i += 4) { const v = 238 + Math.random() * 17; gi.data[i] = v; gi.data[i + 1] = v - 1; gi.data[i + 2] = v - 4; gi.data[i + 3] = 255; }
+  gc.putImageData(gi, 0, 0);
+  const AW = 512, AH = 256, age = mk(AW, AH), ac = age.getContext('2d'), ai = ac.createImageData(AW, AH);
+  for (let y = 0; y < AH; y++) for (let x = 0; x < AW; x++) {
+    const th = (x / AW) * TAU, yy = (y / AH) * 5;
+    const n = noise3(Math.cos(th) * 2.4, Math.sin(th) * 2.4, yy) * 0.6 + noise3(Math.cos(th) * 6, Math.sin(th) * 6, yy * 2.4) * 0.4;
+    const v = 255 - Math.max(0, n - 0.45) * 46, i = (y * AW + x) * 4;
+    ai.data[i] = v; ai.data[i + 1] = v - 2; ai.data[i + 2] = v - 7; ai.data[i + 3] = 255;
+  }
+  ac.putImageData(ai, 0, 0);
+  return (GLOBE = { lang, big, grain, age });
+}
+function paintGlobe(c, path, world, visited, col, firstOf, y, hover) {
+  c.drawImage(GLOBE.big, 0, 0);
+  // his countries: a deeper wash, the one pointed at deeper still
+  const been = visited.filter((f) => firstOf[f.id] <= y);
+  wash(c, path, been.filter((f) => f.id !== hover), col.been, col.beenRim, 0.6);
+  wash(c, path, been.filter((f) => f.id === hover), col.beenOn, col.beenRim, 0.7);
+  // the ink: dotted borders, a fine coast, his countries' edges in their own colour
+  c.strokeStyle = col.ink3; c.globalAlpha = 0.5; c.setLineDash([2.5, 5]); c.lineWidth = 1.4; c.beginPath(); path(world.borders); c.stroke(); c.setLineDash([]);
+  c.globalAlpha = 0.85; c.strokeStyle = col.coast; c.lineWidth = 1.7; c.beginPath(); path(world.land); c.stroke();
+  c.globalAlpha = 0.75; c.strokeStyle = col.beenRim; c.lineWidth = 1.5; c.beginPath(); been.forEach((f) => path(f)); c.stroke();
+  c.globalAlpha = 1;
+  c.save(); c.globalCompositeOperation = 'multiply';
+  c.fillStyle = c.createPattern(GLOBE.grain, 'repeat'); c.fillRect(0, 0, TW, TH);
+  c.drawImage(GLOBE.age, 0, 0, TW, TH);
+  c.restore();
+}
+
 // "Developed": the world drawn quietly on the page's own paper, and every country he has been to
 // filled with his photograph from there. Each piece of a country (an island, a mainland) gets the
 // photograph fitted to its own outline, cropped like a print, never stretched.
@@ -411,6 +547,31 @@ function paintPhoto(c, path, world, visited, col, firstOf, y, hover, photos) {
   }
   c.strokeStyle = col.hair; c.lineWidth = 1.3; c.beginPath(); path(world.borders); c.stroke();
   c.strokeStyle = col.coast; c.lineWidth = 1.8; c.beginPath(); path(world.land); c.stroke();
+}
+
+/* ------------------------------------------------------------ the gores: the sheet in strips */
+
+// the sheet as twelve strips with their own edges (the two at the map's ends are halves of one), so
+// they can part; each point knows its strip's middle (aGore, as a share of the sheet's width)
+function goreSheet(cols, rows) {
+  const pos = [], uv = [], gore = [], idx = [];
+  const g0 = Math.floor(-GORE0 * GORES + 0.5), g1 = Math.floor((1 - GORE0) * GORES + 0.5);
+  for (let g = g0; g <= g1; g++) {
+    const mid = GORE0 + g / GORES, q0 = Math.max(0, mid - 0.5 / GORES), q1 = Math.min(1, mid + 0.5 / GORES);
+    if (q1 - q0 < 1e-6) continue;
+    const nx = Math.max(2, Math.round(cols * (q1 - q0))), first = uv.length / 2;
+    for (let j = 0; j <= rows; j++) for (let i = 0; i <= nx; i++) { uv.push(q0 + ((q1 - q0) * i) / nx, j / rows); gore.push(mid); pos.push(0, 0, 0); }
+    for (let j = 0; j < rows; j++) for (let i = 0; i < nx; i++) {
+      const a = first + j * (nx + 1) + i, b = a + 1, c = a + nx + 1, d = c + 1;
+      idx.push(a, b, c, b, d, c);
+    }
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  geo.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
+  geo.setAttribute('aGore', new THREE.Float32BufferAttribute(gore, 1));
+  geo.setIndex(idx);
+  return geo;
 }
 
 /* ------------------------------------------------------------ the plane, a small paper cut-out */
@@ -472,10 +633,19 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     sea: rgb('oklch(90% 0.015 75)'), land: rgb('oklch(97% 0.005 85)'), been: rgb('oklch(80% 0.07 45)'),
     beenOn: rgb('oklch(75% 0.09 42)'), edge: rgb('oklch(66% 0.08 42)'), score: rgb('oklch(88% 0.012 75)'),
   });
+  if (CFG.paint === 'globe') Object.assign(colours, {
+    sea: rgb('oklch(90% 0.028 198)'), land: rgb('--paper'), coast: rgb('oklch(38% 0.035 55)'), ink3: rgb('oklch(45% 0.03 60)'),
+    been: rgb('oklch(82% 0.065 48)'), beenOn: rgb('oklch(76% 0.09 46)'), beenRim: rgb('oklch(64% 0.08 42)'), fly: rgb('oklch(40% 0.05 45)'),
+  });
   const [world] = await Promise.all([K.world(), reliefP]);
   const photos = CFG.paint === 'photo' ? await countryPhotos() : {};
   if (CFG.paint === 'earth') earthBase(world, reliefImg);
   if (CFG.paint === 'ink') inkBase(world, reliefImg);
+  if (CFG.paint === 'globe') {
+    // the oceans' names are painted with the site's own serif, so it has to be loaded first
+    await Promise.all([document.fonts.load('400 36px "Playfair Display"', 'PACIFIC'), document.fonts.load('500 46px "Noto Serif TC"', '太平洋大西洋印度')]).catch(() => {});
+    globeBase(world, K.lang);
+  }
   const paint = painter(world, colours, photos);
 
   // the facts, as journey.js has them
@@ -514,7 +684,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     t.anisotropy = renderer.capabilities.getMaxAnisotropy();
     return t;
   });
-  const masks = CFG.raise ? [0, 1].map(() => Object.assign(document.createElement('canvas'), { width: 2048, height: 1024 })) : null;
+  const masks = CFG.raise || CFG.pen ? [0, 1].map(() => Object.assign(document.createElement('canvas'), { width: 2048, height: 1024 })) : null;
   const maskTex = masks ? masks.map((cv) => { const t = new THREE.CanvasTexture(cv); t.wrapS = THREE.RepeatWrapping; return t; }) : null;
   let front = 0;
 
@@ -527,12 +697,15 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     uPlate: { value: CFG.plate ? 1 : 0 }, uWalls: { value: CFG.walls ? 1 : 0 }, uEdge: { value: new THREE.Color(colours.edge) },
     uEarth: { value: CFG.earth ? 1 : 0 }, uAlive: { value: 0 }, uBleed: { value: CFG.bleed ? 1 : 0 }, uPaperC: { value: new THREE.Color(rgb('--paper')) },
     uDevelop: { value: CFG.develop ? 1 : 0 }, uDevTint: { value: new THREE.Color(rgb('oklch(78% 0.07 70)')) },
+    uGores: { value: CFG.gores ? 1 : 0 }, uGore0: { value: GORE0 }, uPen: { value: CFG.pen ? 1 : 0 },
     uMask: { value: maskTex ? maskTex[0] : texes[0] }, uMaskPrev: { value: maskTex ? maskTex[1] : texes[0] },
   };
-  const mat = new (CFG.earth ? THREE.MeshPhongMaterial : THREE.MeshLambertMaterial)({
+  const mat = new (CFG.earth || CFG.gloss ? THREE.MeshPhongMaterial : THREE.MeshLambertMaterial)({
     map: texes[0], side: THREE.DoubleSide, flatShading: !!CFG.raise && !CFG.soft,
     polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1,
   });
+  // the globemaker's varnish: a soft sheen where the light falls, nothing like glass
+  if (CFG.gloss) { mat.specular = new THREE.Color(0x2e2b26); mat.shininess = 24; }
   if ((CFG.relief || CFG.earth) && reliefImg) {
     const bump = new THREE.Texture(reliefImg); bump.needsUpdate = true; bump.wrapS = THREE.RepeatWrapping;
     mat.bumpMap = bump; mat.bumpScale = CFG.earth ? 0.9 : 1.4;
@@ -548,7 +721,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
       .replace('#include <beginnormal_vertex>', 'vec3 nrm; float rz = raiseAt(uv); vQ = uv; vRz = uRaise > 0.0 ? rz / uRaise : 0.0;\nvec3 morphed = sheet(uv, rz, nrm);\nvec3 objectNormal = nrm;')
       .replace('#include <begin_vertex>', 'vec3 transformed = morphed;');
     sh.fragmentShader = sh.fragmentShader
-      .replace('#include <common>', '#include <common>\nuniform sampler2D uPrev, uMask, uMaskPrev; uniform float uMix, uLit, uPlate, uFold, uWalls, uDevelop, uCenter, uReveal, uEarth, uAlive, uBleed; uniform vec3 uBack, uEdge, uDevTint, uPaperC; varying vec2 vQ; varying float vRz;')
+      .replace('#include <common>', '#include <common>\nuniform sampler2D uPrev, uMask, uMaskPrev; uniform float uMix, uLit, uPlate, uFold, uWalls, uDevelop, uCenter, uReveal, uEarth, uAlive, uBleed, uGores, uPen; uniform vec3 uBack, uEdge, uDevTint, uPaperC; varying vec2 vQ; varying float vRz; varying vec2 vGore;')
       .replace('#include <map_fragment>', `#include <map_fragment>
         #ifdef USE_MAP
           diffuseColor.rgb = mix(texture2D(uPrev, vMapUv).rgb, diffuseColor.rgb, uMix);
@@ -568,6 +741,25 @@ window.JourneyMap = async function makeGlobe(svgEl) {
             diffuseColor.rgb = mix(mix(uBack, diffuseColor.rgb, dv), uDevTint, 1.2 * dv * (1.0 - dv));
           }
         }
+        // the pen: a country he has been to waits as pale paper until its route lands, then takes its wash,
+        // the water spreading unevenly
+        if (uPen > 0.5) {
+          vec2 mq = vec2(vQ.x + uCenter / 6.2831853, vQ.y);
+          float g = mix(texture2D(uMaskPrev, mq).r, texture2D(uMask, mq).r, uMix);
+          if (g > 0.02) {
+            vec2 p = vQ * vec2(70.0, 35.0), i = floor(p), fr = fract(p); fr = fr * fr * (3.0 - 2.0 * fr);
+            float h00 = fract(sin(dot(i, vec2(127.1, 311.7))) * 43758.5453), h10 = fract(sin(dot(i + vec2(1.0, 0.0), vec2(127.1, 311.7))) * 43758.5453);
+            float h01 = fract(sin(dot(i + vec2(0.0, 1.0), vec2(127.1, 311.7))) * 43758.5453), h11 = fract(sin(dot(i + vec2(1.0, 1.0), vec2(127.1, 311.7))) * 43758.5453);
+            float nz = mix(mix(h00, h10, fr.x), mix(h01, h11, fr.x), fr.y);
+            float dv = smoothstep(g - 0.06 + nz * 0.03, g + nz * 0.03, uReveal * 1.03);
+            diffuseColor.rgb = mix(mix(diffuseColor.rgb, uPaperC * 0.965, 0.8), diffuseColor.rgb, dv);
+          }
+        }
+        // the cut between two strips: a faint edge while the knife works, almost gone once pasted down
+        if (uGores > 0.5) {
+          float seam = smoothstep(0.43, 0.5, abs(vGore.x)) * smoothstep(0.02, 0.2, uFold) * mix(0.7, 0.18, vGore.y);
+          diffuseColor.rgb *= 1.0 - 0.2 * seam;
+        }
         // the printed plate: on arrival the map is trimmed to its band, 80N to 56S
         if (uPlate > 0.5) { float la = (vQ.y - 0.5) * 180.0, o = smoothstep(0.15, 0.6, uFold); if (la > mix(80.0, 91.0, o) || la < mix(-56.0, -91.0, o)) discard; }
         // the cut sides of a raised country, a deeper clay than its top
@@ -579,13 +771,16 @@ window.JourneyMap = async function makeGlobe(svgEl) {
           float la = (vQ.y - 0.5) * 180.0;
           float e = max(smoothstep(64.0, 86.0, la), smoothstep(34.0, 56.0, -la));
           e = max(e, max(1.0 - smoothstep(0.0, 0.035, vQ.x), smoothstep(0.965, 1.0, vQ.x)));
-          outgoingLight = mix(outgoingLight, uPaperC, e * (1.0 - smoothstep(0.45, 0.92, uFold)));
+          // (the gores show their whole pointed shapes once the knife has cut them)
+          outgoingLight = mix(outgoingLight, uPaperC, e * (1.0 - (uGores > 0.5 ? smoothstep(0.08, 0.3, uFold) : smoothstep(0.45, 0.92, uFold))));
         }
         #include <opaque_fragment>`);
   };
-  const sheet = new THREE.Mesh(new THREE.PlaneGeometry(1, 1, ...CFG.seg), mat);
+  const sheet = new THREE.Mesh(CFG.gores ? goreSheet(...CFG.seg) : new THREE.PlaneGeometry(1, 1, ...CFG.seg), mat);
   // the grid's own corners stand in for the uv: the shader places every point itself
   sheet.geometry.attributes.position.array.fill(0);
+  // the back of a pasted strip is plain paper
+  if (CFG.gores) U.uBack.value = new THREE.Color(rgb('--paper'));
   sheet.frustumCulled = false;
   group.add(sheet);
 
@@ -617,7 +812,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
   };
   const sets = {
     grat: lineSet(colours.hair, 1, 0),
-    fly: lineSet(colours.route, 1.5, 1),
+    fly: lineSet(colours.fly || colours.route, CFG.pen ? 1.25 : 1.5, 1),
     past: lineSet(colours.ink2, 1, 0),
     here: lineSet(colours.ink2, 1.3, 0),
     now: lineSet(colours.route, 2.4, 0),
@@ -640,10 +835,13 @@ window.JourneyMap = async function makeGlobe(svgEl) {
   const home = ll(S.flightsFrom);
   const flights = S.countries.filter((c) => c.id !== HOME_ID).map((c) => {
     const km = K.km(S.flightsFrom, c.ll);
-    return { c, to: ll(c.ll), go: d3.geoInterpolate(home, ll(c.ll)), d: d3.geoDistance(home, ll(c.ll)), first: firstYear[c.id], dur: 1700 + Math.min(1, km / 13000) * 3600, p: 0, end: dot(colours.sea, colours.route, 0.011), plane: null, ringM: null };
+    return { c, to: ll(c.ll), go: d3.geoInterpolate(home, ll(c.ll)), d: d3.geoDistance(home, ll(c.ll)), first: firstYear[c.id], dur: 1700 + Math.min(1, km / 13000) * 3600, p: 0, end: dot(colours.sea, colours.fly || colours.route, CFG.pen ? 0.009 : 0.011), plane: null, ringM: null };
   });
   flights.forEach((f) => { f.end.visible = false; });
   const longest = Math.max(...flights.map((f) => f.dur));
+  // with the pen, each country's wash comes as its route lands (a share of the whole opening)
+  LAND = {};
+  if (CFG.pen) for (const f of flights) if (K.ISO[f.c.id]) LAND[K.ISO[f.c.id]] = Math.min(1, f.dur / longest + 0.06);
   const homeDot = dot(colours.ink, colours.ink, 0.012);
   const stops = [];
   const planeGeo = planeShape();
@@ -654,7 +852,10 @@ window.JourneyMap = async function makeGlobe(svgEl) {
   const ops = { grat: 0, fly: 1, past: 0, here: 0, now: 0 }, opsNow = { ...ops };
   let rewound = false;
 
-  const facing = () => [START + turnBy(START, st.spin[0] + st.drag[0]) * st.fold, clamp(st.spin[1] + st.drag[1], -60, 60) * st.fold];
+  // the gores close facing the flat map's own middle (the strips are cut there); only the finished
+  // globe turns to the trip being read
+  const turned = () => (CFG.gores ? smooth(0.82, 1, st.fold) : st.fold);
+  const facing = () => [START + turnBy(START, st.spin[0] + st.drag[0]) * turned(), clamp(st.spin[1] + st.drag[1], -60, 60) * turned()];
 
   // the lift of a flight's arc at t along it: a little for the short hops, more for the long ones
   const arcH = (d, t) => CFG.lift * (CFG.wave ? 1 + 2.4 * Math.sin(Math.PI * st.fold) : 1) * Math.min(1, d / 1.4 + 0.25) * Math.sin(Math.PI * t);
@@ -713,7 +914,9 @@ window.JourneyMap = async function makeGlobe(svgEl) {
       }
     }
     setLines(sets.past, past); setLines(sets.here, here); setLines(sets.now, now);
-    for (const k of Object.keys(ops)) if (sets[k].material.opacity !== opsNow[k]) sets[k].material.opacity = opsNow[k];
+    // the gores: the lines are lifted off while the strips are apart, and laid back on the closed globe
+    const gate = CFG.gores ? Math.max(1 - smooth(0.02, 0.14, st.fold), smooth(0.9, 1, st.fold)) : 1;
+    for (const k of Object.keys(ops)) if (sets[k].material.opacity !== opsNow[k] * gate) sets[k].material.opacity = opsNow[k] * gate;
   }
 
   // a dot or a plane laid on the surface at a place, facing out
@@ -981,7 +1184,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     a = K.reduced ? (a < 0.5 ? 0 : 1) : a;
     if (CFG.wave && !K.reduced) { if (Math.abs(a - st.want) < 0.0005) return; st.want = a; }
     else { if (Math.abs(a - st.fold) < 0.0005) return; st.fold = a; st.want = a; }
-    ops.grat = rewound || a > 0 ? (CFG.earth ? 0.16 : 0.55) * a : 0;
+    ops.grat = CFG.noGrat ? 0 : rewound || a > 0 ? (CFG.earth ? 0.16 : 0.55) * a : 0;
     kick();
   }
   function trip(t) {
@@ -1028,8 +1231,8 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     // an opening photograph may be on screen first (open.js): the map waits for it to land
     if (window.JourneyOpening && !window.JourneyOpening.done) { st.drop = 0; window.JourneyOpening.ready.then(() => flyOut(onLand)); return; }
     flying = true;
-    const planes = flights.map((f) => { const m = new THREE.Mesh(planeGeo, basic(colours.ink, { opacity: 1 })); m.visible = false; group.add(m); return m; });
-    const rings = flights.map(() => { const m = new THREE.Mesh(ring, basic(colours.route, { opacity: 0 })); m.visible = false; group.add(m); return m; });
+    const planes = CFG.pen ? [] : flights.map((f) => { const m = new THREE.Mesh(planeGeo, basic(colours.ink, { opacity: 1 })); m.visible = false; group.add(m); return m; });
+    const rings = CFG.pen ? [] : flights.map(() => { const m = new THREE.Mesh(ring, basic(colours.route, { opacity: 0 })); m.visible = false; group.add(m); return m; });
     // the plate is laid down on the table first, then the planes leave
     const lay0 = st.drop > 0 ? 650 : 0;
     // the opening photograph's country comes up at once, under the photograph as it lands
@@ -1050,6 +1253,8 @@ window.JourneyMap = async function makeGlobe(svgEl) {
       flights.forEach((f, i) => {
         const t = clamp(el / f.dur, 0, 1);
         f.p = ease(t);
+        // the pen: only the line, drawn out from Taiwan; the country's wash answers when it lands
+        if (CFG.pen) { if (t >= 1) { n++; f.end.on = true; } else busy = true; return; }
         const pl = planes[i];
         if (t >= 1) { n++; pl.visible = false; f.end.on = true; } else {
           busy = true;

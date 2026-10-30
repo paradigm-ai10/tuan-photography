@@ -21,6 +21,7 @@
         ['1', 'The live page', 'The Journey tab as it is now: the paper globe, the trips on one line, the Impeccable polish. The main one.', 'journey.html', 'pick'],
         ['2', 'Sea chart, scroll-craft', 'A4: the flat map closes into a large globe on the whole screen, home sends out a ring, the panel slides in. A pale blue chart surface.', 'journey-craft.html'],
         ['3', 'Paper, the whole page wraps', 'New: the live page\'s quiet paper globe, with A4\'s movement and the whole page wrapping up into it, so no rectangle lifts off the background. The smallest step from what is live.', 'journey-paperwrap.html'],
+        ['4', 'Painted paper globe, closing in strips', 'New, from your references: a globe printed on paper and tinted in watercolour, after Bellerby & Co, the oceans named in engraved capitals. On arrival the routes are drawn in ink from Taiwan and each country takes its wash as its line lands; scrolling cuts the map into twelve strips that close round Taiwan one by one, as a globemaker pastes them on.', 'journey-gores.html'],
       ],
     },
     zh: {
@@ -38,6 +39,7 @@
         ['1', '目前的正式版', '現在的旅程頁：紙質地球、所有旅程掛在一條線上、Impeccable 小修。這是主要版本。', 'journey.html', 'pick'],
         ['2', '海圖，scroll-craft 版', 'A4：平面地圖在整個畫面上合成大地球，台灣亮一圈，面板滑進來。表面是淡藍色海圖。', 'journey-craft.html'],
         ['3', '紙，整頁包起來', '新的：正式版安靜的紙質地球，加上 A4 的動態，而且是整個頁面包成地球，不會有一塊長方形從背景翹起來。和正式版差最少的一步。', 'journey-paperwrap.html'],
+        ['4', '手繪紙地球，一條一條包起來', '新的，照你選的參考做：像 Bellerby & Co 那樣印在紙上、用水彩上色的地球，海洋名稱像雕版印的字。一打開，航線從台灣用墨水一條條畫出去，線到了哪個國家，那裡就染上顏色；往下捲，地圖切成十二條，從台灣那一條開始，一條一條貼到球上。', 'journey-gores.html'],
       ],
     },
   };

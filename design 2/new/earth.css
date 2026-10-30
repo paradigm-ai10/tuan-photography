@@ -1,7 +1,7 @@
-/* The earth round (2026-10-30), data-globe="earth", "ink", "paperwrap": the map fills the whole page edge to edge on
+/* The earth round (2026-10-30), data-globe="earth", "ink", "paperwrap", "gores": the map fills the whole page edge to edge on
    arrival (globe3d.js fades its edges into the paper), so it is the page that wraps up into the
    globe, not a sheet lifting off it. Desktop; the phone keeps its own pinned strip. */
 @media (min-width: 64rem) {
-  :is([data-globe="earth"], [data-globe="ink"], [data-globe="paperwrap"]) .jr-map,
-  [data-craft]:is([data-globe="earth"], [data-globe="ink"], [data-globe="paperwrap"]) .jr-map { padding: calc(1rem * var(--dock)) 0 calc(1rem * var(--dock)) 0; }
+  :is([data-globe="earth"], [data-globe="ink"], [data-globe="paperwrap"], [data-globe="gores"]) .jr-map,
+  [data-craft]:is([data-globe="earth"], [data-globe="ink"], [data-globe="paperwrap"], [data-globe="gores"]) .jr-map { padding: calc(1rem * var(--dock)) 0 calc(1rem * var(--dock)) 0; }
 }
