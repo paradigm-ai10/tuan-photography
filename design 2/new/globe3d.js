@@ -23,6 +23,8 @@ import { LineMaterial } from "../vendor/three/lines/LineMaterial.js";
 const K = window.Kit;
 const S = K.S;
 const V = document.body.dataset.globe || 'paper';
+// the globemaker's globe (see gores below), shared by its photograph variations
+const GORE = { lift: 0.03, seg: [720, 360], frame1: 3.05, look: 0.3, paint: 'globe', wave: true, gores: true, rise: true, pen: true, unlit: true, bleed: true, gloss: true, noGrat: true };
 const CFG = {
   paper: { lift: 0.07, seg: [360, 180] },
   relief: { lift: 0.07, seg: [360, 180], relief: true },
@@ -53,7 +55,16 @@ const CFG = {
   // the gores they are made of): a globe printed on paper and tinted in watercolour; on arrival the
   // routes are drawn in ink and each country takes its wash as its line lands; the fold cuts the map
   // into twelve strips that close round Taiwan one by one, as a globemaker pastes them on the ball
-  gores: { lift: 0.03, seg: [720, 360], frame1: 3.05, look: 0.3, paint: 'globe', wave: true, gores: true, rise: true, pen: true, unlit: true, bleed: true, gloss: true, noGrat: true },
+  gores: GORE,
+  // his photographs in the transition (2026-10-31, his ask: "add some photos ... to enrich the display"):
+  // through  the map was printed over the trip's photograph: the cuts open onto it, and it is there,
+  //          whole, when the globe has closed (the same photograph the reading then shows behind it)
+  // prints   a desk of small prints, one per trip, lies under the map; the strips lift off them and
+  //          the globe closes in the middle of them
+  // backs    each strip has one of his photographs printed on its back, seen as it swings round
+  'gores-through': { ...GORE, photos: 'through' },
+  'gores-prints': { ...GORE, photos: 'prints' },
+  'gores-backs': { ...GORE, photos: 'backs' },
 }[V];
 const HOME_LL = [S.flightsFrom[1], S.flightsFrom[0]];
 const CRAFT = 'craft' in document.body.dataset;
@@ -140,10 +151,11 @@ const MORPH = /* glsl */`
   varying vec2 vQ;
   varying float vRz;
   varying vec2 vGore;
+  varying float vGoreId;
   ${CFG.gores ? 'attribute float aGore;' : 'const float aGore = 0.5;'}
   vec3 sheet(vec2 q, float h, out vec3 n) {
     float u = (q.x - 0.5) * 6.2831853 * uR, v = (q.y - 0.5) * 3.1415927 * uR;
-    vGore = vec2(0.0, 1.0);
+    vGore = vec2(0.0, 1.0); vGoreId = 0.0;
     if (uGores > 0.5) {
       // a strip of the map (gorePlace in the JS): cut narrow towards its tips, then closed onto the ball
       float a = u / uR, b = v / uR, gc = (aGore - 0.5) * 6.2831853, dl = a - gc;
@@ -153,6 +165,7 @@ const MORPH = /* glsl */`
       float w = k * k * (3.0 - 2.0 * k);
       vec3 ns = vec3(cos(b) * sin(a), sin(b), cos(b) * cos(a));
       vGore = vec2(dl / 0.5235988, w);
+      vGoreId = mod(floor((aGore - uGore0) * 12.0 + 0.5) + 12.0, 12.0);
       n = normalize(mix(vec3(0.0, 0.0, 1.0), ns, w));
       return mix(vec3(xf * uR, b * uR, uR + h * uR), ns * uR * (1.0 + h), w);
     }
@@ -698,6 +711,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     uEarth: { value: CFG.earth ? 1 : 0 }, uAlive: { value: 0 }, uBleed: { value: CFG.bleed ? 1 : 0 }, uPaperC: { value: new THREE.Color(rgb('--paper')) },
     uDevelop: { value: CFG.develop ? 1 : 0 }, uDevTint: { value: new THREE.Color(rgb('oklch(78% 0.07 70)')) },
     uGores: { value: CFG.gores ? 1 : 0 }, uGore0: { value: GORE0 }, uPen: { value: CFG.pen ? 1 : 0 },
+    uBacks: { value: 0 }, uBackTex: { value: texes[0] },
     uMask: { value: maskTex ? maskTex[0] : texes[0] }, uMaskPrev: { value: maskTex ? maskTex[1] : texes[0] },
   };
   const mat = new (CFG.earth || CFG.gloss ? THREE.MeshPhongMaterial : THREE.MeshLambertMaterial)({
@@ -721,7 +735,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
       .replace('#include <beginnormal_vertex>', 'vec3 nrm; float rz = raiseAt(uv); vQ = uv; vRz = uRaise > 0.0 ? rz / uRaise : 0.0;\nvec3 morphed = sheet(uv, rz, nrm);\nvec3 objectNormal = nrm;')
       .replace('#include <begin_vertex>', 'vec3 transformed = morphed;');
     sh.fragmentShader = sh.fragmentShader
-      .replace('#include <common>', '#include <common>\nuniform sampler2D uPrev, uMask, uMaskPrev; uniform float uMix, uLit, uPlate, uFold, uWalls, uDevelop, uCenter, uReveal, uEarth, uAlive, uBleed, uGores, uPen; uniform vec3 uBack, uEdge, uDevTint, uPaperC; varying vec2 vQ; varying float vRz; varying vec2 vGore;')
+      .replace('#include <common>', '#include <common>\nuniform sampler2D uPrev, uMask, uMaskPrev; uniform float uMix, uLit, uPlate, uFold, uWalls, uDevelop, uCenter, uReveal, uEarth, uAlive, uBleed, uGores, uPen, uBacks; uniform sampler2D uBackTex; uniform vec3 uBack, uEdge, uDevTint, uPaperC; varying vec2 vQ; varying float vRz; varying vec2 vGore; varying float vGoreId;')
       .replace('#include <map_fragment>', `#include <map_fragment>
         #ifdef USE_MAP
           diffuseColor.rgb = mix(texture2D(uPrev, vMapUv).rgb, diffuseColor.rgb, uMix);
@@ -764,7 +778,14 @@ window.JourneyMap = async function makeGlobe(svgEl) {
         if (uPlate > 0.5) { float la = (vQ.y - 0.5) * 180.0, o = smoothstep(0.15, 0.6, uFold); if (la > mix(80.0, 91.0, o) || la < mix(-56.0, -91.0, o)) discard; }
         // the cut sides of a raised country, a deeper clay than its top
         if (uWalls > 0.5) { float wall = smoothstep(0.04, 0.25, vRz) * (1.0 - smoothstep(0.75, 0.96, vRz)); diffuseColor.rgb = mix(diffuseColor.rgb, uEdge * 0.92, wall * 0.75); }
-        if (!gl_FrontFacing) diffuseColor.rgb = uBack;`)
+        // a strip's back: plain paper, or (backs) one of his photographs printed on it, cut by the strip's shape
+        if (!gl_FrontFacing) {
+          diffuseColor.rgb = uBack;
+          if (uBacks > 0.5) {
+            float cb = cos((vQ.y - 0.5) * 3.1415927);
+            diffuseColor.rgb = texture2D(uBackTex, vec2((vGoreId + 0.5 - vGore.x * cb) / 12.0, vQ.y)).rgb;
+          }
+        }`)
       .replace('#include <opaque_fragment>', `outgoingLight = mix(diffuseColor.rgb, outgoingLight, uLit);
         // the map fills the page, and its edges fade into the paper, so no sheet edge is ever seen
         if (uBleed > 0.5) {
@@ -781,6 +802,80 @@ window.JourneyMap = async function makeGlobe(svgEl) {
   sheet.geometry.attributes.position.array.fill(0);
   // the back of a pasted strip is plain paper
   if (CFG.gores) U.uBack.value = new THREE.Color(rgb('--paper'));
+
+  /* his photographs in the transition (the gores' variations, CFG.photos) */
+  // a trip's photograph, newest trip first: its lead, or the first that suits (prefer)
+  const pickOf = (t, prefer) => { const ids = [t.lead, ...t.photos].filter(Boolean); return (prefer && ids.find(prefer)) || ids[0] || null; };
+  const tripPhotos = (n, prefer) => K.trips.map((t) => pickOf(t, prefer)).filter((id, i, a) => id && a.indexOf(id) === i).slice(0, n);
+  let under = null, underFor = () => {};
+  if (CFG.photos === 'through' || CFG.photos === 'prints') {
+    // a layer under the map's drawing, shown only inside the map's own box
+    under = document.createElement('div');
+    under.className = `g3-under g3-under--${CFG.photos}`;
+    box.prepend(under);
+  }
+  if (CFG.photos === 'through') {
+    // the photograph of the trip being read (the newest before the reading starts), the same one the
+    // reading then shows behind the globe, so the two are one picture
+    const ims = [0, 1].map(() => { const im = new Image(); im.className = 'g3-under__img'; im.alt = ''; im.decoding = 'async'; under.appendChild(im); return im; });
+    let shownId = null, turn = 0;
+    underFor = (t) => {
+      const id = pickOf(t || K.trips[0]);
+      if (!id || id === shownId) return;
+      shownId = id;
+      const sl = S.slides[id];
+      turn ^= 1;
+      const im = ims[turn], old = ims[turn ^ 1];
+      im.srcset = `${K.src(sl.file, 640)} 640w, ${K.src(sl.file, 1280)} 1280w, ${K.src(sl.file)} 2400w`;
+      im.sizes = '100vw';
+      im.src = K.src(sl.file, 1280);
+      const on = () => { im.classList.add('is-on'); old.classList.remove('is-on'); };
+      if (im.complete) on(); else im.onload = on;
+    };
+    underFor(null);
+  }
+  if (CFG.photos === 'prints') {
+    // one small print per trip, laid loosely down both sides of the desk, where the globe will not cover them
+    const desk = document.createElement('div');
+    desk.className = 'g3-under__desk';
+    under.appendChild(desk);
+    const ids = tripPhotos(14);
+    const jit = (i) => { const x = Math.sin(i * 12.9898 + 4.1) * 43758.5453; return x - Math.floor(x); };
+    const perSide = Math.ceil(ids.length / 2);
+    ids.forEach((id, i) => {
+      const sl = S.slides[id], right = i % 2, row = Math.floor(i / 2), rows = right ? Math.floor(ids.length / 2) : perSide;
+      const pr = document.createElement('figure');
+      pr.className = 'g3-print';
+      pr.style.setProperty('--x', `${((right ? 88 : 12) + (jit(i + 7) - 0.5) * 5).toFixed(2)}%`);
+      pr.style.setProperty('--y', `${(14 + (72 * (row + 0.5)) / rows + (jit(i + 13) - 0.5) * 6).toFixed(2)}%`);
+      pr.style.setProperty('--rot', `${((jit(i + 21) - 0.5) * 7).toFixed(2)}deg`);
+      pr.style.setProperty('--ar', (sl.w / sl.h).toFixed(4));
+      const im = new Image(); im.alt = ''; im.decoding = 'async';
+      im.src = K.src(sl.file, 640);
+      pr.appendChild(im);
+      desk.appendChild(pr);
+    });
+  }
+  if (CFG.photos === 'backs') {
+    // twelve of his photographs, one per strip, each printed down the back of its strip
+    const SW = 256, SH = 1536, atlas = Object.assign(document.createElement('canvas'), { width: SW * 12, height: SH });
+    const ac = atlas.getContext('2d');
+    ac.fillStyle = rgb('--paper'); ac.fillRect(0, 0, atlas.width, SH);
+    const tex = new THREE.CanvasTexture(atlas);
+    tex.colorSpace = THREE.SRGBColorSpace;
+    U.uBackTex.value = tex; U.uBacks.value = 1;
+    tripPhotos(12, (id) => S.slides[id].h > S.slides[id].w).forEach((id, i) => {
+      const im = new Image();
+      im.onload = () => {
+        const k = Math.max(SW / im.naturalWidth, SH / im.naturalHeight), w = im.naturalWidth * k, h = im.naturalHeight * k;
+        ac.save(); ac.beginPath(); ac.rect(i * SW, 0, SW, SH); ac.clip();
+        ac.drawImage(im, i * SW + (SW - w) / 2, (SH - h) / 2, w, h);
+        ac.restore();
+        tex.needsUpdate = true; kick();
+      };
+      im.src = K.src(S.slides[id].file, 640);
+    });
+  }
   sheet.frustumCulled = false;
   group.add(sheet);
 
@@ -1032,6 +1127,17 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     frameCamera();
     // drawn only inside the map's own box, as the SVG was
     const r = target();
+    if (under) {
+      // the photographs under the map: shown inside its box, once the cuts have opened, until the reading takes over
+      // (through: as the globe docks, the photograph opens out to the whole screen, as the reading shows it)
+      const dk = parseFloat(getComputedStyle(fig).getPropertyValue('--dock')) || 0;
+      const through = CFG.photos === 'through', open = through ? 1 - dk : 1;
+      const show = smooth(0.1, 0.3, st.fold) * (through ? 1 : 1 - smooth(0.15, 0.6, dk));
+      const set = (k, v) => under.style.setProperty(k, v);
+      set('--show', show.toFixed(3));
+      set('--t', `${r.y * open}px`); set('--l', `${r.x * open}px`); set('--w', `${r.w}px`); set('--h', `${r.h}px`);
+      set('--r', `${(W - r.x - r.w) * open}px`); set('--b', `${(H - r.y - r.h) * open}px`);
+    }
     renderer.setScissorTest(false);
     renderer.clear();
     renderer.setScissorTest(true);
@@ -1190,6 +1296,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
   function trip(t) {
     if (t === nowTrip) return;
     nowTrip = t;
+    underFor(t);
     stops.forEach((s) => group.remove(s));
     stops.length = 0;
     if (t) for (const s of t.stops) { const d = dot(colours.sea, colours.route, 0.0095); d.at = ll(s.at.ll); stops.push(d); }

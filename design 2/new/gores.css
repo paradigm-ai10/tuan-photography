@@ -1,0 +1,15 @@
+/* The gores' photograph variations (2026-10-31, data-globe="gores-through", "gores-prints"): what lies
+   under the printed map while it is cut into strips and pasted round the globe. globe3d.js sets
+   --show (how much of it is seen) and the map's box (--t --r --b --l, --w --h) on every frame; the
+   layer shows only inside that box, so nothing lies under the page's own words. */
+.jr-map .g3 canvas { position: relative; z-index: 1; }
+.g3-under { position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: var(--show, 0); clip-path: inset(var(--t, 0) var(--r, 0) var(--b, 0) var(--l, 0)); }
+
+/* through: the trip's photograph, cropped as the reading crops it behind the globe */
+.g3-under__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; opacity: 0; transition: opacity 0.7s var(--ease); }
+.g3-under__img.is-on { opacity: 1; }
+
+/* prints: small prints on the desk, a paper margin and a hairline, no shadow */
+.g3-under__desk { position: absolute; top: var(--t); left: var(--l); width: var(--w); height: var(--h); }
+.g3-print { position: absolute; left: var(--x); top: var(--y); width: 10.5%; margin: 0; aspect-ratio: var(--ar); padding: 0.35vw; background: var(--paper); border: 1px solid var(--hair); transform: translate(-50%, -50%) rotate(var(--rot)); }
+.g3-print img { display: block; width: 100%; height: 100%; object-fit: cover; }

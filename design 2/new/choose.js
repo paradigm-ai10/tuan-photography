@@ -22,6 +22,9 @@
         ['2', 'Sea chart, scroll-craft', 'A4: the flat map closes into a large globe on the whole screen, home sends out a ring, the panel slides in. A pale blue chart surface.', 'journey-craft.html'],
         ['3', 'Paper, the whole page wraps', 'New: the live page\'s quiet paper globe, with A4\'s movement and the whole page wrapping up into it, so no rectangle lifts off the background. The smallest step from what is live.', 'journey-paperwrap.html'],
         ['4', 'Painted paper globe, closing in strips', 'New, from your references: a globe printed on paper and tinted in watercolour, after Bellerby & Co, the oceans named in engraved capitals. On arrival the routes are drawn in ink from Taiwan and each country takes its wash as its line lands; scrolling cuts the map into twelve strips that close round Taiwan one by one, as a globemaker pastes them on.', 'journey-gores.html'],
+        ['5', 'Strips, the photograph beneath', 'Version 4 with your photographs in the transition: the map was printed over the trip\'s photograph, so the cuts open onto it, and it is there, whole, behind the globe once it closes. It is the same photograph the reading then shows.', 'journey-gores-through.html'],
+        ['6', 'Strips, a desk of prints', 'Version 4 with your photographs in the transition: a small print from every trip lies under the map; the strips lift off them, and the globe closes in the middle of the prints.', 'journey-gores-prints.html'],
+        ['7', 'Strips, photographs on their backs', 'Version 4 with your photographs in the transition: each strip has one of your photographs printed down its back, seen as the strips swing round to close the far side.', 'journey-gores-backs.html'],
       ],
     },
     zh: {
@@ -40,6 +43,9 @@
         ['2', '海圖，scroll-craft 版', 'A4：平面地圖在整個畫面上合成大地球，台灣亮一圈，面板滑進來。表面是淡藍色海圖。', 'journey-craft.html'],
         ['3', '紙，整頁包起來', '新的：正式版安靜的紙質地球，加上 A4 的動態，而且是整個頁面包成地球，不會有一塊長方形從背景翹起來。和正式版差最少的一步。', 'journey-paperwrap.html'],
         ['4', '手繪紙地球，一條一條包起來', '新的，照你選的參考做：像 Bellerby & Co 那樣印在紙上、用水彩上色的地球，海洋名稱像雕版印的字。一打開，航線從台灣用墨水一條條畫出去，線到了哪個國家，那裡就染上顏色；往下捲，地圖切成十二條，從台灣那一條開始，一條一條貼到球上。', 'journey-gores.html'],
+        ['5', '紙條下面是照片', '第四版加上你的照片：地圖像是印在這趟旅行的照片上面，切開的縫裡看得到照片，地球合起來以後，整張照片就在地球後面。和往下讀時背景那張是同一張。', 'journey-gores-through.html'],
+        ['6', '紙條下面是一桌照片', '第四版加上你的照片：地圖下面放著每趟旅行一張的小照片，紙條掀起來就看到它們，地球在這圈照片中間合起來。', 'journey-gores-prints.html'],
+        ['7', '紙條背面印著照片', '第四版加上你的照片：每一條紙的背面印著你的一張照片，紙條翻過去包住地球背面時看得到。', 'journey-gores-backs.html'],
       ],
     },
   };
