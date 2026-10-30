@@ -112,3 +112,9 @@ textarea:focus-visible, .lg-btn:focus-visible { outline: 2px solid var(--accent)
 @media (max-width: 560px) { .lg-btn.replay { margin-left: 0; } .lg-small-menu { display: none; } }
 .f-instrument .lg-small .lg-tuan { font-size: 1.55rem; }
 .f-instrument .lg-small .lg-photo { font-size: 0.9rem; }
+.f-castoro .lg-tuan { font-family: "Castoro Titling", serif; letter-spacing: 0.26em; }
+.f-castoro .lg-photo { font-family: "Castoro Titling", serif; letter-spacing: 0.3em; }
+.f-forum .lg-tuan { font-family: "Forum", serif; letter-spacing: 0.28em; }
+.f-forum .lg-photo { font-family: "Forum", serif; letter-spacing: 0.24em; font-size: clamp(0.95rem, 0.8rem + 0.6vw, 1.3rem); }
+.f-forum .lg-small .lg-photo { font-size: 0.85rem; }
+.lg-lead a { color: var(--accent); text-underline-offset: 0.2em; }

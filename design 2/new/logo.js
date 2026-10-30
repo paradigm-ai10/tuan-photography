@@ -3,8 +3,12 @@
    (POST /__reviews/logo-fonts through the site server). Claude reads that file directly. */
 (() => {
   'use strict';
-  const URL_ = '/__reviews/logo-fonts';
-  const FACES = [
+  // one script, two pages: logo.html (the twelve, Good / Not for me) and logo-final.html (the last five,
+  // one choice), told apart by <body data-review> and data-set
+  const REVIEW = document.body.dataset.review || 'logo-fonts';
+  const FINAL = document.body.dataset.set === 'final';
+  const URL_ = '/__reviews/' + REVIEW;
+  const ALL = [
     { id: 'playfair', name: 'Playfair Display', kind: '現在網站的標題字 The site’s heading face now',
       say: '跟網站現在的標題一樣，標誌和網站一體。photography 用斜體。 Same as the site’s headings, so the logo and site are one; photography in italic.' },
     { id: 'cormorant', name: 'Cormorant Garamond Light', kind: '細的古典襯線 Light classical serif',
@@ -28,8 +32,17 @@
     { id: 'tenor', name: 'Tenor Sans', kind: '人文無襯線 Humanist sans',
       say: '安靜、清楚、有一點書法的溫度，不搶照片。 Quiet and clear with a little calligraphic warmth; never competes with a photograph.' },
     { id: 'signature', name: 'Cormorant + Pinyon Script', kind: '大寫加手寫 Capitals with a signature',
-      say: 'TUAN 用細襯線大寫，photography 用手寫，像在照片背後簽名。 TUAN in thin serif capitals, photography in script, like signing the back of a print.' }
+      say: 'TUAN 用細襯線大寫，photography 用手寫，像在照片背後簽名。 TUAN in thin serif capitals, photography in script, like signing the back of a print.' },
+    { id: 'castoro', name: 'Castoro Titling', kind: '銳利的碑文大寫 Sharp inscription capitals',
+      say: '新的。介於 Cinzel 和 Cormorant 之間：像 Cinzel 一樣是刻字的大寫，但更細、更銳利。 New. Between Cinzel and Cormorant: carved capitals like Cinzel, but finer and sharper.' },
+    { id: 'forum', name: 'Forum', kind: '細長的羅馬字 Slender Roman letters',
+      say: '新的。古羅馬的字形，比 Cinzel 窄、安靜，有小寫，photography 寫起來自然。 New. Roman letterforms, narrower and quieter than Cinzel, with real lowercase for photography.' }
   ];
+  const SETS = {
+    all: ['playfair', 'cormorant', 'italiana', 'bodoni', 'fraunces', 'instrument', 'cinzel', 'marcellus', 'jost', 'josefin', 'tenor', 'signature'],
+    final: ['cormorant', 'cinzel', 'signature', 'castoro', 'forum']
+  };
+  const FACES = (SETS[document.body.dataset.set] || SETS.all).map((id) => ALL.find((f) => f.id === id));
 
   let data = { items: {}, general: '' };
   let timer = 0;
@@ -93,7 +106,19 @@
       li.appendChild(el('h2', 'lg-name', f.name));
       li.appendChild(el('p', 'lg-say', f.say));
       const row = el('div', 'lg-row');
-      [['good', 'lg-btn', '喜歡 Good'], ['bad', 'lg-btn no', '不是我要的 Not for me']].forEach(([v, cls, label]) => {
+      if (FINAL) {
+        const pick = el('button', 'lg-btn pick', '選這個 Choose this one');
+        pick.type = 'button';
+        pick.setAttribute('aria-pressed', String(data.choice === f.id));
+        pick.addEventListener('click', () => {
+          data.choice = data.choice === f.id ? '' : f.id;
+          data.choiceName = data.choice ? f.name : '';
+          document.querySelectorAll('.lg-btn.pick').forEach((x) => x.setAttribute('aria-pressed', 'false'));
+          if (data.choice) pick.setAttribute('aria-pressed', 'true');
+          save();
+        });
+        row.appendChild(pick);
+      } else [['good', 'lg-btn', '喜歡 Good'], ['bad', 'lg-btn no', '不是我要的 Not for me']].forEach(([v, cls, label]) => {
         const b = el('button', cls, label);
         b.type = 'button';
         b.setAttribute('aria-pressed', String(mine.verdict === v));
