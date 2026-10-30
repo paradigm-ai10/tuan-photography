@@ -18,7 +18,7 @@ Word 版：雙擊專案資料夾裡的 `建置進度.command` 就會更新並打
 - 日期: 2026-10-31
 - 重點: 先選標誌的字體
 - 狀態: 等你決定
-- 說明: 你看了 16 個 Awwwards 參考網站，喜歡 Per Appelgren、Tommaso D'intino、Tengile MalaMala，三個都是一打開先有安靜的載入畫面。你想要自己的標誌「TUAN photography」，用它當首頁的載入畫面，帶人進網站。第一步選字體：http://localhost:8642/journey/new/logo.html 有 12 種字體，每格就是載入畫面，按喜歡或不是、寫筆記（存在 ideas/reviews/logo-fonts.json）。之後再定排法和動態。 10/31 你在 12 個裡選了三個：Cormorant Garamond、Cinzel、Cormorant 加手寫 photography。最後五個（這三個加上新的 Castoro Titling、Forum）在 http://localhost:8642/journey/new/logo-final.html ，選一個（存在 ideas/reviews/logo-final.json）。
+- 說明: 你看了 16 個 Awwwards 參考網站，喜歡 Per Appelgren、Tommaso D'intino、Tengile MalaMala，三個都是一打開先有安靜的載入畫面。你想要自己的標誌「TUAN photography」，用它當首頁的載入畫面，帶人進網站。第一步選字體：http://localhost:8642/journey/new/logo.html 有 12 種字體，每格就是載入畫面，按喜歡或不是、寫筆記（存在 ideas/reviews/logo-fonts.json）。之後再定排法和動態。 10/31 你在 12 個裡選了三個：Cormorant Garamond、Cinzel、Cormorant 加手寫 photography。最後五個（這三個加上新的 Castoro Titling、Forum）在 http://localhost:8642/journey/new/logo-final.html ，選一個（存在 ideas/reviews/logo-final.json）。 給朋友投票的公開頁（Claude Artifact）：https://claude.ai/artifact/TtRWBXgWkSXAfSa1w8ixcB ，用 email 邀請的朋友可以直接投，拿到公開連結的朋友按「複製我的選擇」傳到 Instagram。
 
 ### 旅程頁地球重新設計
 - 類型: 功能
