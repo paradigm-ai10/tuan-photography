@@ -283,6 +283,8 @@ linked from each tab's 筆記 column). Its rules are on its 首頁: one tool in 
 A design skill, a component library, a font source or an inspiration site he collects goes there; only what
 is about the travel site (photographers, guide sites, effects and ideas for this site) goes in IDEAS.md.
 The 29 entries that moved stay in IDEAS.md with a `搬到` line and are left out of the Excel file.
+**To look up a tool or inspiration site, read the sheet, not IDEAS.md** (his question, 2026-10-30): the
+sheet is the live copy, the moved entries in IDEAS.md are not kept up to date.
 It must stay **readable at a glance**
 (he asked for that on 2026-09-28), so every entry needs a `重點`
 line, written as **one short phrase** (about 15 characters), and `狀態` is one or two words
