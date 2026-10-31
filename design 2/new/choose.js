@@ -29,6 +29,7 @@
         ['9', 'Prints wall, the edges are photographs', 'The live page with your photographs: the prints along the wall\'s faded top and bottom are your photographs. They come up out of the paper as they lift off, and turn into map as they are laid on the ball.', 'journey-gallery-edges.html'],
         ['10', 'Prints wall, a ring of photographs', 'The live page with your photographs: one print per trip lifts off the wall where that trip went and hangs in a ring round the finished globe. As you read, the ring turns so the trip you are on hangs at the bottom, a little larger.', 'journey-gallery-ring.html'],
         ['11', 'Prints wall, the photographs thrown', 'Row 8 made plain to see: as the wall parts, each print is tossed up and a little aside and turns over in the air, so a cloud of your photographs fills the screen; they land photograph up and the globe forms as a ball of your photographs, and only then do they turn back to the map, Taiwan\'s first.', 'journey-gallery-scatter.html'],
+        ['12', 'Prints wall, the globe stays photographs', 'Row 11, but the prints never turn back: the globe stays a ball of your photographs for good, while you read every trip, with the routes drawn over them.', 'journey-gallery-photoball.html'],
       ],
     },
     zh: {
@@ -54,6 +55,7 @@
         ['9', '照片牆，邊上是照片', '正式版加上你的照片：牆上下兩邊淡掉的那幾排相片是你的照片，拿起來時從紙裡浮出來，貼到地球上時變回地圖。', 'journey-gallery-edges.html'],
         ['10', '照片牆，一圈照片', '正式版加上你的照片：每趟旅行一張照片，從牆上那趟去的地方拿起來，掛成一圈繞著合起來的地球。往下讀時，這圈會轉，讓你正在看的那趟掛在最下面，大一點。', 'journey-gallery-ring.html'],
         ['11', '照片牆，照片拋起來', '第 8 版放大來看：牆一分開，每張相片被拋起、往旁邊飛一點，在空中翻過來，滿畫面都是你的照片；落下時照片朝上，地球先變成一顆照片球，之後才從台灣那幾張開始翻回地圖。', 'journey-gallery-scatter.html'],
+        ['12', '照片牆，地球一直是照片', '跟第 11 版一樣，但相片不再翻回地圖：地球一直是一顆照片球，讀每一趟旅程時都是，路線畫在照片上。', 'journey-gallery-photoball.html'],
       ],
     },
   };
