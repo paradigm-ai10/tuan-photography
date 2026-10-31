@@ -28,6 +28,7 @@
         ['8', 'Prints wall, photographs on the backs', 'The live page with your photographs: every print is two-sided, the map on its face and one of your photographs on its back, in a thin paper border. You see them as the prints turn over on their way round the ball; the flat map and the finished globe stay map.', 'journey-gallery-backs.html'],
         ['9', 'Prints wall, the edges are photographs', 'The live page with your photographs: the prints along the wall\'s faded top and bottom are your photographs. They come up out of the paper as they lift off, and turn into map as they are laid on the ball.', 'journey-gallery-edges.html'],
         ['10', 'Prints wall, a ring of photographs', 'The live page with your photographs: one print per trip lifts off the wall where that trip went and hangs in a ring round the finished globe. As you read, the ring turns so the trip you are on hangs at the bottom, a little larger.', 'journey-gallery-ring.html'],
+        ['11', 'Prints wall, the photographs thrown', 'Row 8 made plain to see: as the wall parts, each print is tossed up and a little aside and turns right over in the air, lingering photograph up, so a cloud of your photographs fills the screen on the way; each lands map up on the ball.', 'journey-gallery-scatter.html'],
       ],
     },
     zh: {
@@ -52,6 +53,7 @@
         ['8', '照片牆，背面是照片', '正式版加上你的照片：每張相片兩面都有，正面是地圖，背面是你的一張照片，外面一圈細細的紙邊。相片翻過去飛到地球另一邊時看得到；平面地圖和合起來的地球還是地圖。', 'journey-gallery-backs.html'],
         ['9', '照片牆，邊上是照片', '正式版加上你的照片：牆上下兩邊淡掉的那幾排相片是你的照片，拿起來時從紙裡浮出來，貼到地球上時變回地圖。', 'journey-gallery-edges.html'],
         ['10', '照片牆，一圈照片', '正式版加上你的照片：每趟旅行一張照片，從牆上那趟去的地方拿起來，掛成一圈繞著合起來的地球。往下讀時，這圈會轉，讓你正在看的那趟掛在最下面，大一點。', 'journey-gallery-ring.html'],
+        ['11', '照片牆，照片拋起來', '第 8 版放大來看：牆一分開，每張相片被拋起、往旁邊飛一點，在空中整張翻過來，照片那面停久一點，一路上滿畫面都是你的照片；落到地球上時地圖朝上。', 'journey-gallery-scatter.html'],
       ],
     },
   };
