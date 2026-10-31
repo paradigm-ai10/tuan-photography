@@ -25,6 +25,9 @@
         ['5', 'Strips, the photograph beneath', 'Version 4 with your photographs in the transition: the map was printed over the trip\'s photograph, so the cuts open onto it, and it is there, whole, behind the globe once it closes. It is the same photograph the reading then shows.', 'journey-gores-through.html'],
         ['6', 'Strips, a desk of prints', 'Version 4 with your photographs in the transition: a small print from every trip lies under the map; the strips lift off them, and the globe closes in the middle of the prints.', 'journey-gores-prints.html'],
         ['7', 'Strips, photographs on their backs', 'Version 4 with your photographs in the transition: each strip has one of your photographs printed down its back, seen as the strips swing round to close the far side.', 'journey-gores-backs.html'],
+        ['8', 'Prints wall, photographs on the backs', 'The live page with your photographs: every print is two-sided, the map on its face and one of your photographs on its back, in a thin paper border. You see them as the prints turn over on their way round the ball; the flat map and the finished globe stay map.', 'journey-gallery-backs.html'],
+        ['9', 'Prints wall, the edges are photographs', 'The live page with your photographs: the prints along the wall\'s faded top and bottom are your photographs. They come up out of the paper as they lift off, and turn into map as they are laid on the ball.', 'journey-gallery-edges.html'],
+        ['10', 'Prints wall, a ring of photographs', 'The live page with your photographs: one print per trip lifts off the wall where that trip went and hangs in a ring round the finished globe. As you read, the ring turns so the trip you are on hangs at the bottom, a little larger.', 'journey-gallery-ring.html'],
       ],
     },
     zh: {
@@ -46,6 +49,9 @@
         ['5', '紙條下面是照片', '第四版加上你的照片：地圖像是印在這趟旅行的照片上面，切開的縫裡看得到照片，地球合起來以後，整張照片就在地球後面。和往下讀時背景那張是同一張。', 'journey-gores-through.html'],
         ['6', '紙條下面是一桌照片', '第四版加上你的照片：地圖下面放著每趟旅行一張的小照片，紙條掀起來就看到它們，地球在這圈照片中間合起來。', 'journey-gores-prints.html'],
         ['7', '紙條背面印著照片', '第四版加上你的照片：每一條紙的背面印著你的一張照片，紙條翻過去包住地球背面時看得到。', 'journey-gores-backs.html'],
+        ['8', '照片牆，背面是照片', '正式版加上你的照片：每張相片兩面都有，正面是地圖，背面是你的一張照片，外面一圈細細的紙邊。相片翻過去飛到地球另一邊時看得到；平面地圖和合起來的地球還是地圖。', 'journey-gallery-backs.html'],
+        ['9', '照片牆，邊上是照片', '正式版加上你的照片：牆上下兩邊淡掉的那幾排相片是你的照片，拿起來時從紙裡浮出來，貼到地球上時變回地圖。', 'journey-gallery-edges.html'],
+        ['10', '照片牆，一圈照片', '正式版加上你的照片：每趟旅行一張照片，從牆上那趟去的地方拿起來，掛成一圈繞著合起來的地球。往下讀時，這圈會轉，讓你正在看的那趟掛在最下面，大一點。', 'journey-gallery-ring.html'],
       ],
     },
   };
