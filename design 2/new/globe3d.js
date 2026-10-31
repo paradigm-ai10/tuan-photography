@@ -83,8 +83,9 @@ const CFG = {
   'gallery-backs': { ...GALLERY, photos: 'tileBacks' },
   'gallery-edges': { ...GALLERY, photos: 'tileEdges' },
   'gallery-ring': { ...GALLERY, photos: 'ring' },
-  // scatter  backs, made plain to see: each print is tossed higher and a little aside, and turns
-  //          right over in flight about its own slant, lingering photograph up, then lands map up
+  // scatter  backs, made plain to see: each print is tossed higher and a little aside and turns over in
+  //          flight, lands photograph up, and the ball forms as a ball of his photographs; only then
+  //          do they turn back to the map, Taiwan's first
   'gallery-scatter': { ...GALLERY, photos: 'tileBacks', flip: true, tileLift: 0.5, scatter: 0.1 },
 }[V];
 const HOME_LL = [S.flightsFrom[1], S.flightsFrom[0]];
@@ -149,17 +150,22 @@ function gorePlace(q, b, h, f, out) {
 // whole, travels and turns to face out from its place on the ball, narrowing to the ball's width
 // there, and is pressed down onto it as it lands, the gaps closing. The shader does the same sums.
 const TILES = CFG.tiles || [1, 1], TILE_GAP = 0.06, TILE_LIFT = CFG.tileLift || 0.3, TILE_FLIP = CFG.flip ? 1 : 0, TILE_SCATTER = CFG.scatter || 0;
-// (scatter) each print's own slant, from its place on the wall; the shader works it out the same way
-const tileSlant = (c, r) => ((c * 7 + r * 13) * 2.39996) % TAU;
+// (scatter) the prints fly quicker so the ball is whole by 0.73 of the fold, and hold photograph up
+// until 0.82; each is thrown aside its own way, and turns over about its across (0, 2) or its up and
+// down (1, 3), so it lands the same shape; the shader works both out the same way
+const TILE_RATE = CFG.flip ? 2.2 : 1.6;
+const tileSlant = (c, r) => ((c * 7 + r * 13) * 2.39996) % TAU, tileTurn = (c, r) => (c * 7 + r * 13) % 4;
 const smoother = (x) => x * x * x * (x * (x * 6 - 15) + 10);
 function tilePlace(q, b, h, f, center, out) {
   const [cols, rows] = TILES, qy = b / Math.PI + 0.5;
-  const ac = ((Math.min(cols - 1, Math.floor(q * cols)) + 0.5) / cols - 0.5) * TAU;
-  const bc = ((Math.min(rows - 1, Math.max(0, Math.floor(qy * rows))) + 0.5) / rows - 0.5) * Math.PI;
+  const col = Math.min(cols - 1, Math.floor(q * cols)), row = Math.min(rows - 1, Math.max(0, Math.floor(qy * rows)));
+  const ac = ((col + 0.5) / cols - 0.5) * TAU, bc = ((row + 0.5) / rows - 0.5) * Math.PI;
   const hp = HOME_LL[1] * RAD, dh = ac + center - HOME_LL[0] * RAD;
   const d = Math.acos(clamp(Math.sin(bc) * Math.sin(hp) + Math.cos(bc) * Math.cos(hp) * Math.cos(dh), -1, 1)) / Math.PI;
-  const s = smoother(clamp(f * 1.6 - d * 0.6, 0, 1));
-  const gap = TILE_GAP * smooth(0, 0.1, f) * (1 - smooth(0.78, 1, s));
+  const s = smoother(clamp(f * TILE_RATE - d * 0.6, 0, 1));
+  // (scatter) the turn back to the map, once the ball is whole; until then a thin gap keeps them prints
+  const ub = TILE_FLIP ? smooth(0, 1, clamp((f - 0.82) / 0.12 - d * 0.5, 0, 1)) : 1;
+  const gap = TILE_GAP * smooth(0, 0.1, f) * (1 - smooth(0.78, 1, s) * (0.5 + 0.5 * ub));
   const ox = ((q - 0.5) * TAU - ac) * (1 - gap), oy = (b - bc) * (1 - gap);
   const ya = ac * s, pa = bc * s, lift = TILE_LIFT * Math.sin(Math.PI * s), wx = 1 + (Math.cos(bc) - 1) * s;
   const nx = Math.cos(pa) * Math.sin(ya), ny = Math.sin(pa), nz = Math.cos(pa) * Math.cos(ya);
@@ -167,16 +173,15 @@ function tilePlace(q, b, h, f, center, out) {
   let cx = ac * R + (Math.cos(bc) * Math.sin(ac) - ac) * R * s + nx * lift, cy = bc * R + (Math.sin(bc) - bc) * R * s + ny * lift, cz = R + (Math.cos(bc) * Math.cos(ac) - 1) * R * s + nz * lift;
   let X = ox * wx * R, Y = oy * R, Z = h * R;
   if (TILE_FLIP) {
-    // tossed: pushed a little aside along its slant, and turned one whole time about it, slowest
-    // while its back (the photograph) is up
-    const ph = tileSlant(Math.min(cols - 1, Math.floor(q * cols)), Math.min(rows - 1, Math.max(0, Math.floor(qy * rows))));
-    const kx = Math.cos(ph), ky = Math.sin(ph), t = smooth(0.04, 0.72, s), th = TAU * t + 0.6 * Math.sin(TAU * t);
-    const co = Math.cos(th), sn = Math.sin(th), kv = kx * X + ky * Y, dr = TILE_SCATTER * R * Math.sin(Math.PI * s);
+    // tossed: pushed a little aside its own way, turned over in flight, and turned back once the ball is whole
+    const tn = tileTurn(col, row), kx = [1, 0, -1, 0][tn], ky = [0, 1, 0, -1][tn], ps = tileSlant(col, row);
+    const th = Math.PI * (smooth(0.04, 0.6, s) + ub), co = Math.cos(th), sn = Math.sin(th), kv = kx * X + ky * Y;
     [X, Y, Z] = [X * co + ky * Z * sn + kx * kv * (1 - co), Y * co - kx * Z * sn + ky * kv * (1 - co), Z * co + (kx * Y - ky * X) * sn];
-    cx += (ex * -ky + mx * kx) * dr; cy += my * kx * dr; cz += (ez * -ky + mz * kx) * dr;
+    const dr = TILE_SCATTER * R * Math.sin(Math.PI * s), dx = Math.cos(ps) * dr, dy = Math.sin(ps) * dr;
+    cx += ex * dx + mx * dy; cy += my * dy; cz += ez * dx + mz * dy;
   }
   const rx = cx + ex * X + mx * Y + nx * Z, ry = cy + my * Y + ny * Z, rz = cz + ez * X + mz * Y + nz * Z;
-  const a2 = ac + ox, b2 = bc + oy, k = R * (1 + h), cf = smooth(0.72, 1, s);
+  const a2 = ac + ox, b2 = bc + oy, k = R * (1 + h), cf = smooth(0.72, 1, s) * smooth(0.6, 1, ub);
   const px = Math.cos(b2) * Math.sin(a2) * k, py = Math.sin(b2) * k, pz = Math.cos(b2) * Math.cos(a2) * k;
   return out.set(rx + (px - rx) * cf, ry + (py - ry) * cf, rz + (pz - rz) * cf);
 }
@@ -203,7 +208,7 @@ function place(lon, lat, h, st, out = new THREE.Vector3()) {
   return out;
 }
 const MORPH = /* glsl */`
-  uniform float uKx, uKy, uR, uCenter, uRaise, uMix, uWave, uFold, uRise, uReveal, uSoft, uGores, uGore0, uTiles, uTileGap, uTileLift, uTileFlip, uTileScatter;
+  uniform float uKx, uKy, uR, uCenter, uRaise, uMix, uWave, uFold, uRise, uReveal, uSoft, uGores, uGore0, uTiles, uTileGap, uTileLift, uTileFlip, uTileScatter, uTileRate;
   uniform vec2 uHome, uTileN;
   uniform sampler2D uMask, uMaskPrev;
   varying vec2 vQ;
@@ -223,8 +228,9 @@ const MORPH = /* glsl */`
       float a = u / uR, b = v / uR;
       float ac = (aTile.x - 0.5) * 6.2831853, bc = (aTile.y - 0.5) * 3.1415927;
       float d = acos(clamp(sin(bc) * sin(uHome.y) + cos(bc) * cos(uHome.y) * cos(ac + uCenter - uHome.x), -1.0, 1.0)) / 3.1415927;
-      float s = clamp(uFold * 1.6 - d * 0.6, 0.0, 1.0); s = s * s * s * (s * (s * 6.0 - 15.0) + 10.0);
-      vec2 o = vec2(a - ac, b - bc) * (1.0 - uTileGap * smoothstep(0.0, 0.1, uFold) * (1.0 - smoothstep(0.78, 1.0, s)));
+      float s = clamp(uFold * uTileRate - d * 0.6, 0.0, 1.0); s = s * s * s * (s * (s * 6.0 - 15.0) + 10.0);
+      float ub = uTileFlip > 0.5 ? smoothstep(0.0, 1.0, clamp((uFold - 0.82) / 0.12 - d * 0.5, 0.0, 1.0)) : 1.0;
+      vec2 o = vec2(a - ac, b - bc) * (1.0 - uTileGap * smoothstep(0.0, 0.1, uFold) * (1.0 - smoothstep(0.78, 1.0, s) * (0.5 + 0.5 * ub)));
       float ya = ac * s, pa = bc * s;
       vec3 nr = vec3(cos(pa) * sin(ya), sin(pa), cos(pa) * cos(ya));
       vec3 ex = vec3(cos(ya), 0.0, -sin(ya)), my = vec3(-sin(pa) * sin(ya), cos(pa), -sin(pa) * cos(ya));
@@ -233,18 +239,19 @@ const MORPH = /* glsl */`
       vec3 L = vec3(o.x * mix(1.0, cos(bc), s), o.y, h) * uR, nf = nr;
       if (uTileFlip > 0.5) {
         vec2 tc = floor(aTile * uTileN);
-        float ph = mod((tc.x * 7.0 + tc.y * 13.0) * 2.39996, 6.2831853), kx = cos(ph), ky = sin(ph);
-        float t = smoothstep(0.04, 0.72, s), th = 6.2831853 * t + 0.6 * sin(6.2831853 * t), co = cos(th), sn = sin(th), kv = kx * L.x + ky * L.y;
+        float tn = mod(tc.x * 7.0 + tc.y * 13.0, 4.0), kx = cos(tn * 1.5707963), ky = sin(tn * 1.5707963);
+        float ps = mod((tc.x * 7.0 + tc.y * 13.0) * 2.39996, 6.2831853);
+        float th = 3.1415927 * (smoothstep(0.04, 0.6, s) + ub), co = cos(th), sn = sin(th), kv = kx * L.x + ky * L.y;
         L = vec3(L.x * co + ky * L.z * sn + kx * kv * (1.0 - co), L.y * co - kx * L.z * sn + ky * kv * (1.0 - co), L.z * co + (kx * L.y - ky * L.x) * sn);
         nf = ex * ky * sn - my * kx * sn + nr * co;
-        c += (ex * -ky + my * kx) * uTileScatter * uR * sin(3.1415927 * s);
+        c += (ex * cos(ps) + my * sin(ps)) * uTileScatter * uR * sin(3.1415927 * s);
       }
       vec3 rigid = c + ex * L.x + my * L.y + nr * L.z;
       vec2 g = vec2(ac, bc) + o;
       vec3 ns = vec3(cos(g.y) * sin(g.x), sin(g.y), cos(g.y) * cos(g.x));
-      float cf = smoothstep(0.72, 1.0, s);
+      float cf = smoothstep(0.72, 1.0, s) * smoothstep(0.6, 1.0, ub);
       vTile = vec2(a - ac, b - bc) / vec2(3.1415927 / uTileN.x, 1.5707963 / uTileN.y);
-      vLand = s; vTileC = aTile; vW = mix(1.0, cos(bc), s);
+      vLand = min(s, mix(0.74, 1.0, ub)); vTileC = aTile; vW = mix(1.0, cos(bc), s);
       n = normalize(mix(nf, ns, cf));
       return mix(rigid, ns * uR * (1.0 + h), cf);
     }
@@ -825,7 +832,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     uEarth: { value: CFG.earth ? 1 : 0 }, uAlive: { value: 0 }, uBleed: { value: CFG.bleed ? 1 : 0 }, uPaperC: { value: new THREE.Color(rgb('--paper')) },
     uDevelop: { value: CFG.develop ? 1 : 0 }, uDevTint: { value: new THREE.Color(rgb('oklch(78% 0.07 70)')) },
     uGores: { value: CFG.gores ? 1 : 0 }, uGore0: { value: GORE0 }, uPen: { value: CFG.pen ? 1 : 0 },
-    uTiles: { value: CFG.tiles ? 1 : 0 }, uTilePhotos: { value: { tileBacks: 1, tileEdges: 2 }[CFG.photos] || 0 }, uAtlasN: { value: 6 }, uTileN: { value: new THREE.Vector2(...TILES) }, uTileGap: { value: TILE_GAP }, uTileLift: { value: TILE_LIFT }, uTileFlip: { value: TILE_FLIP }, uTileScatter: { value: TILE_SCATTER },
+    uTiles: { value: CFG.tiles ? 1 : 0 }, uTilePhotos: { value: { tileBacks: 1, tileEdges: 2 }[CFG.photos] || 0 }, uAtlasN: { value: 6 }, uTileN: { value: new THREE.Vector2(...TILES) }, uTileGap: { value: TILE_GAP }, uTileLift: { value: TILE_LIFT }, uTileFlip: { value: TILE_FLIP }, uTileScatter: { value: TILE_SCATTER }, uTileRate: { value: TILE_RATE },
     uBacks: { value: 0 }, uBackTex: { value: texes[0] },
     uMask: { value: maskTex ? maskTex[0] : texes[0] }, uMaskPrev: { value: maskTex ? maskTex[1] : texes[0] },
   };
@@ -850,7 +857,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
       .replace('#include <beginnormal_vertex>', 'vec3 nrm; float rz = raiseAt(uv); vQ = uv; vRz = uRaise > 0.0 ? rz / uRaise : 0.0;\nvec3 morphed = sheet(uv, rz, nrm);\nvec3 objectNormal = nrm;')
       .replace('#include <begin_vertex>', 'vec3 transformed = morphed;');
     sh.fragmentShader = sh.fragmentShader
-      .replace('#include <common>', '#include <common>\nuniform sampler2D uPrev, uMask, uMaskPrev; uniform float uMix, uLit, uPlate, uFold, uWalls, uDevelop, uCenter, uReveal, uEarth, uAlive, uBleed, uGores, uPen, uBacks, uTiles, uTilePhotos, uAtlasN; uniform vec2 uTileN; uniform sampler2D uBackTex; uniform vec3 uBack, uEdge, uDevTint, uPaperC; varying vec2 vQ; varying float vRz; varying vec2 vGore; varying float vGoreId; varying vec2 vTile, vTileC; varying float vLand, vW;')
+      .replace('#include <common>', '#include <common>\nuniform sampler2D uPrev, uMask, uMaskPrev; uniform float uMix, uLit, uPlate, uFold, uWalls, uDevelop, uCenter, uReveal, uEarth, uAlive, uBleed, uGores, uPen, uBacks, uTiles, uTilePhotos, uAtlasN, uTileFlip; uniform vec2 uTileN; uniform sampler2D uBackTex; uniform vec3 uBack, uEdge, uDevTint, uPaperC; varying vec2 vQ; varying float vRz; varying vec2 vGore; varying float vGoreId; varying vec2 vTile, vTileC; varying float vLand, vW;')
       .replace('#include <map_fragment>', `#include <map_fragment>
         #ifdef USE_MAP
           diffuseColor.rgb = mix(texture2D(uPrev, vMapUv).rgb, diffuseColor.rgb, uMix);
@@ -915,7 +922,8 @@ window.JourneyMap = async function makeGlobe(svgEl) {
           bool edgeRow = tr < 2.5 || tr > uTileN.y - 2.5;
           if (uTilePhotos < 1.5 ? !gl_FrontFacing : edgeRow) {
             vec2 l = vTile * 0.5 + 0.5;
-            if (!gl_FrontFacing) l.x = 1.0 - l.x;
+            // seen from behind it reads mirrored across the way it turned over (scatter: across or up and down)
+            if (!gl_FrontFacing) { if (uTileFlip > 0.5 && mod(tc * 7.0 + tr * 13.0, 2.0) < 0.5) l.y = 1.0 - l.y; else l.x = 1.0 - l.x; }
             float id = mod(tc * 7.0 + tr * 11.0, uAtlasN * uAtlasN);
             vec2 pu = (l - 0.06) / 0.88;
             pu.x = 0.5 + (pu.x - 0.5) * vW;
@@ -1202,7 +1210,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     }
     setLines(sets.past, past); setLines(sets.here, here); setLines(sets.now, now);
     // the gores and the prints: the lines are lifted off while they are apart, and laid back on the closed globe
-    const gate = CFG.gores || CFG.tiles ? Math.max(1 - smooth(0.02, 0.14, st.fold), smooth(0.9, 1, st.fold)) : 1;
+    const gate = CFG.gores || CFG.tiles ? Math.max(1 - smooth(0.02, 0.14, st.fold), smooth(CFG.flip ? 0.95 : 0.9, 1, st.fold)) : 1;
     for (const k of Object.keys(ops)) if (sets[k].material.opacity !== opsNow[k] * gate) sets[k].material.opacity = opsNow[k] * gate;
   }
 
