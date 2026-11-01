@@ -31,6 +31,7 @@
         ['11', 'Prints wall, the photographs thrown', 'Row 8 made plain to see: as the wall parts, each print is tossed up and a little aside and turns over in the air, so a cloud of your photographs fills the screen; they land photograph up and the globe forms as a ball of your photographs, and only then do they turn back to the map, Taiwan\'s first.', 'journey-gallery-scatter.html'],
         ['12', 'Prints wall, the globe stays photographs', 'Row 11, but the prints never turn back: the globe stays a ball of your photographs for good, while you read every trip, with the routes drawn over them.', 'journey-gallery-photoball.html'],
         ['13', 'Atlas, a personal record', 'New: one paper globe you zoom freely, from the whole world down to a city, holding every place you have been and every trip. City dots grow with each visit, the countries deepen with each return, and close up your photographs lie at their places as small prints. An index of places and trips beside it; any trip can be played.', 'journey-atlas.html'],
+        ['14', 'Atlas in colour', 'The same personal atlas, now lit by a low warm sun: the land tinted like a hand-coloured atlas, your countries raised in terracotta, a soft rim and shadow so the globe stands on the page, each trip coloured by its year, a years line you can play, and your photographs larger at every zoom.', 'journey-atlas-bold.html'],
       ],
     },
     zh: {
@@ -58,6 +59,7 @@
         ['11', '照片牆，照片拋起來', '第 8 版放大來看：牆一分開，每張相片被拋起、往旁邊飛一點，在空中翻過來，滿畫面都是你的照片；落下時照片朝上，地球先變成一顆照片球，之後才從台灣那幾張開始翻回地圖。', 'journey-gallery-scatter.html'],
         ['12', '照片牆，地球一直是照片', '跟第 11 版一樣，但相片不再翻回地圖：地球一直是一顆照片球，讀每一趟旅程時都是，路線畫在照片上。', 'journey-gallery-photoball.html'],
         ['13', '足跡，個人地圖', '新的：一顆紙地球，可以自由拉近拉遠，從整個世界一路到一座城市，記著你去過的每個地方、走過的每趟旅程。城市的點去越多次越大，國家每回去一次顏色就深一點，拉近時你的照片像小相片一樣放在拍的地方。旁邊是地方和旅程的目錄；每一趟都可以播放。', 'journey-atlas.html'],
+        ['14', '彩色足跡', '同一本個人地圖，現在有一道溫暖的低角度陽光：陸地像手工上色的地圖，你去過的國家以赤陶色微微浮起，柔和的邊光和影子讓地球立在頁面上，每趟旅程依年份上色，還有一條可以播放的年份線，你的照片在每個縮放層級都更大。', 'journey-atlas-bold.html'],
       ],
     },
   };
