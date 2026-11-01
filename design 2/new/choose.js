@@ -30,6 +30,7 @@
         ['10', 'Prints wall, a ring of photographs', 'The live page with your photographs: one print per trip lifts off the wall where that trip went and hangs in a ring round the finished globe. As you read, the ring turns so the trip you are on hangs at the bottom, a little larger.', 'journey-gallery-ring.html'],
         ['11', 'Prints wall, the photographs thrown', 'Row 8 made plain to see: as the wall parts, each print is tossed up and a little aside and turns over in the air, so a cloud of your photographs fills the screen; they land photograph up and the globe forms as a ball of your photographs, and only then do they turn back to the map, Taiwan\'s first.', 'journey-gallery-scatter.html'],
         ['12', 'Prints wall, the globe stays photographs', 'Row 11, but the prints never turn back: the globe stays a ball of your photographs for good, while you read every trip, with the routes drawn over them.', 'journey-gallery-photoball.html'],
+        ['13', 'Atlas, a personal record', 'New: one paper globe you zoom freely, from the whole world down to a city, holding every place you have been and every trip. City dots grow with each visit, the countries deepen with each return, and close up your photographs lie at their places as small prints. An index of places and trips beside it; any trip can be played.', 'journey-atlas.html'],
       ],
     },
     zh: {
@@ -56,6 +57,7 @@
         ['10', '照片牆，一圈照片', '正式版加上你的照片：每趟旅行一張照片，從牆上那趟去的地方拿起來，掛成一圈繞著合起來的地球。往下讀時，這圈會轉，讓你正在看的那趟掛在最下面，大一點。', 'journey-gallery-ring.html'],
         ['11', '照片牆，照片拋起來', '第 8 版放大來看：牆一分開，每張相片被拋起、往旁邊飛一點，在空中翻過來，滿畫面都是你的照片；落下時照片朝上，地球先變成一顆照片球，之後才從台灣那幾張開始翻回地圖。', 'journey-gallery-scatter.html'],
         ['12', '照片牆，地球一直是照片', '跟第 11 版一樣，但相片不再翻回地圖：地球一直是一顆照片球，讀每一趟旅程時都是，路線畫在照片上。', 'journey-gallery-photoball.html'],
+        ['13', '足跡，個人地圖', '新的：一顆紙地球，可以自由拉近拉遠，從整個世界一路到一座城市，記著你去過的每個地方、走過的每趟旅程。城市的點去越多次越大，國家每回去一次顏色就深一點，拉近時你的照片像小相片一樣放在拍的地方。旁邊是地方和旅程的目錄；每一趟都可以播放。', 'journey-atlas.html'],
       ],
     },
   };
