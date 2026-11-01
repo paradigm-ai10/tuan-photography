@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>Journey routes · tuan photography 陳亮元</title>
+<meta name="description" content="Every trip Thomas Chen has taken, flown and driven again on a paper globe: flights between countries, trains and roads within them.">
+<link rel="icon" href="../../favicon.ico">
+<link rel="stylesheet" href="../../css/fonts.css">
+<link rel="stylesheet" href="journey-routes.css">
+</head>
+<body class="jr">
+<canvas class="jr-globe" id="globe" aria-label="A globe showing the routes of every trip"></canvas>
+<div class="jr-labels" id="labels" aria-hidden="true"></div>
+
+<header class="jr-top">
+  <a class="jr-word jr-back" id="back" href="journey.html">Journey</a>
+  <span class="jr-name" id="name">Journey routes</span>
+  <button class="jr-word" type="button" id="lang" lang="zh-Hant">中文</button>
+</header>
+
+<section class="jr-now" aria-live="polite">
+  <h1 class="jr-when" id="when"></h1>
+  <p class="jr-leg" id="leg"></p>
+  <div class="jr-row">
+    <button class="jr-word" type="button" id="play">Pause</button>
+    <button class="jr-word" type="button" id="next">Next</button>
+    <ul class="jr-key" id="key">
+      <li class="jr-key__item" data-mode="flight"><span class="jr-key__line"></span><span data-word="flight"></span></li>
+      <li class="jr-key__item" data-mode="train"><span class="jr-key__line"></span><span data-word="train"></span></li>
+      <li class="jr-key__item" data-mode="road"><span class="jr-key__line"></span><span data-word="road"></span></li>
+    </ul>
+  </div>
+</section>
+
+<nav class="jr-list" aria-label="Trips">
+  <ol id="list"></ol>
+</nav>
+
+<script src="../vendor/d3.min.js"></script>
+<script src="../vendor/topojson-client.min.js"></script>
+<script src="../data.js"></script>
+<script type="importmap">{ "imports": { "three": "../vendor/three/three.module.js" } }</script>
+<script type="module" src="journey-routes.js"></script>
+</body>
+</html>

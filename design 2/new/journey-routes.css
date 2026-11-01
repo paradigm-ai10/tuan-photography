@@ -1,0 +1,192 @@
+/* Journey routes (just for fun, 2026-11-01): every trip flown and driven again on a paper globe.
+   Light only, warm paper, ink and the three earth colours for the three kinds of travel.
+   The tokens mirror design 1's; journey-routes.js reads them from here for the globe too. */
+:root {
+  --bg: oklch(96.6% 0.011 82);
+  --band: oklch(91.8% 0.013 80);
+  --paper: oklch(97.5% 0.008 85);
+  --line: oklch(84.5% 0.015 78);
+  --text: oklch(25% 0.012 60);
+  --text-2: oklch(45% 0.017 62);
+  --accent: oklch(46% 0.092 47);
+  --clay: oklch(53% 0.088 47);
+  --olive: oklch(49% 0.052 95);
+  --slate: oklch(41% 0.03 195);
+
+  --serif: "Playfair Display", "Noto Serif TC", Georgia, serif;
+  --sans: "Geist", "Noto Sans TC", system-ui, sans-serif;
+  --gutter: clamp(16px, 3vw, 40px);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body.jr {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+:lang(zh-Hant) body.jr, html[lang="zh-Hant"] body.jr { font-family: "Noto Sans TC", "Geist", sans-serif; }
+
+.jr-globe {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+  cursor: grab;
+}
+.jr-globe.is-dragging { cursor: grabbing; }
+
+/* words, never icons: small spaced capitals, deep clay where it can be followed */
+.jr-word {
+  font: 500 0.75rem/1 var(--sans);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: none;
+  border: 0;
+  padding: 0.5rem 0;
+  cursor: pointer;
+  text-decoration: none;
+}
+.jr-word:hover { color: var(--text); }
+.jr-word:focus-visible { outline: 1px solid var(--accent); outline-offset: 4px; }
+
+.jr-top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: calc(var(--gutter) * 0.6) var(--gutter);
+  pointer-events: none;
+}
+.jr-top > * { pointer-events: auto; }
+.jr-name {
+  font: 400 1rem/1.2 var(--serif);
+  color: var(--text-2);
+  text-align: center;
+}
+
+.jr-now {
+  position: fixed;
+  left: var(--gutter);
+  bottom: var(--gutter);
+  max-width: min(30rem, calc(100vw - 2 * var(--gutter)));
+  pointer-events: none;
+}
+.jr-now > * { pointer-events: auto; }
+.jr-when {
+  margin: 0;
+  font: 400 clamp(1.75rem, 1.3rem + 1.5vw, 2.4rem)/1.1 var(--serif);
+  color: var(--text);
+}
+html[lang="zh-Hant"] .jr-when { font-family: "Noto Serif TC", var(--serif); font-weight: 500; }
+.jr-leg {
+  margin: 0.5rem 0 0.25rem;
+  min-height: 1.4em;
+  font-size: 0.9375rem;
+  line-height: 1.4;
+  color: var(--text-2);
+}
+.jr-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 1.5rem;
+}
+
+.jr-key {
+  display: flex;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+.jr-key__item { display: flex; align-items: center; gap: 0.4rem; }
+.jr-key__line { width: 1.25rem; height: 0; border-top: 2px solid var(--clay); }
+.jr-key__item[data-mode="train"] .jr-key__line { border-top: 2px dashed var(--slate); }
+.jr-key__item[data-mode="road"] .jr-key__line { border-top-color: var(--olive); }
+
+/* the trips, a quiet list of dates down the right */
+.jr-list {
+  position: fixed;
+  right: var(--gutter);
+  top: 50%;
+  transform: translateY(-50%);
+  max-height: 70vh;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.jr-list::-webkit-scrollbar { display: none; }
+.jr-list ol { margin: 0; padding: 0; list-style: none; text-align: right; }
+.jr-list .jr-word {
+  /* a paper halo, so a date stays readable where a route passes under it */
+  text-shadow: 0 0 3px var(--bg), 0 0 3px var(--bg), 0 0 8px var(--bg);
+  display: block;
+  width: 100%;
+  text-align: right;
+  padding: 0.35rem 0;
+  color: var(--text-2);
+  letter-spacing: 0.12em;
+}
+.jr-list .jr-word:hover { color: var(--text); }
+.jr-list .jr-word[aria-current="true"] { color: var(--accent); }
+
+/* city names beside their dots */
+.jr-labels { position: fixed; inset: 0; pointer-events: none; overflow: hidden; }
+.jr-label {
+  position: absolute;
+  left: 0;
+  top: 0;
+  white-space: nowrap;
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text);
+  text-shadow: 0 0 3px var(--paper), 0 0 3px var(--paper), 0 0 6px var(--paper);
+  opacity: 0;
+  transform: translate(var(--x, -100px), var(--y, -100px));
+  transition: opacity 0.4s ease;
+  will-change: transform;
+}
+.jr-label.is-on { opacity: 1; }
+.jr-label.is-home { color: var(--accent); }
+
+/* phone: the trips become one row above the caption, the caption full width */
+@media (max-width: 700px) {
+  .jr-list {
+    top: auto;
+    transform: none;
+    left: 0;
+    right: 0;
+    bottom: calc(var(--gutter) + 8.5rem);
+    max-height: none;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0 var(--gutter);
+    scroll-padding-inline: var(--gutter);
+    /* the row fades out at both ends, so it shows there is more to scroll */
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--gutter), #000 calc(100% - 2.5rem), transparent);
+    mask-image: linear-gradient(to right, transparent, #000 var(--gutter), #000 calc(100% - 2.5rem), transparent);
+  }
+  .jr-list ol { display: flex; gap: 1.25rem; text-align: left; width: max-content; padding-inline-end: 3rem; }
+  .jr-list .jr-word { width: auto; white-space: nowrap; text-align: left; }
+  .jr-now { right: var(--gutter); }
+  .jr-key { gap: 0.75rem; }
+  .jr-name { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jr-label { transition: none; }
+}
