@@ -1026,7 +1026,24 @@ $('pb-next').addEventListener('click', () => {
 });
 $('pb-stop').addEventListener('click', () => { const t = playTrip; stopPlay(false); if (t) { sel.kind = 'trip'; sel.item = t; buildStrong(); renderPage(); } });
 $('pb-follow').addEventListener('click', () => { view.owner = 'follow'; writePlaybar(); wake(); });
-view.onUser = () => { if (playing) writePlaybar(); };
+view.onUser = () => { quietSince = performance.now(); spinK = 0; if (playing) writePlaybar(); };
+// The globe turns slowly on its own while it is left alone at world level: from the arrival on, and
+// again after a quiet spell. Any touch stops it at once; reduced motion never turns it.
+// The loop sleeps at rest, so a timer wakes it when the quiet spell is over.
+const SPIN = 5;            // degrees of longitude a second, about 72 s a turn
+const SPIN_AFTER = 12000;  // ms left alone before it turns again
+let quietSince = -Infinity, spinK = 0, spinTimer = 0;
+function stepSpin(dt) {
+  const now = performance.now();
+  // something open (a place, a photograph, a trip playing) counts as being looked at: the quiet starts when it closes
+  if (playing || sel.kind || sel.photo) { quietSince = now; spinK = 0; return false; }
+  if (reduce || view.busy() || document.body.dataset.level !== 'world') { spinK = 0; return false; }
+  const wait = quietSince + SPIN_AFTER - now;
+  if (wait > 0) { clearTimeout(spinTimer); spinTimer = setTimeout(wake, wait + 20); return false; }
+  spinK = THREE.MathUtils.damp(spinK, 1, 1.5, dt); // eases into the turn
+  cam.lng = wrap(cam.lng + SPIN * spinK * dt);
+  return true;
+}
 
 /* ---------- the address: the view and what is open ---------- */
 let hashT = 0, applying = false;
@@ -1225,6 +1242,7 @@ function frame() {
   const dt = Math.min(MAX_DT, timer.getDelta());
   let moving = view.step(dt);
   if (stepPlay(dt)) moving = true;
+  if (arrival >= 1 && stepSpin(dt)) moving = true;
   if (arrival < 1) { arrivalT += dt; arrival = reduce ? 1 : Math.min(1, arrivalT / 1.6); moving = true; }
   // Any change of the camera is motion, whoever made it: a drag, a pinch and a trackpad move it
   // inside their own events, between frames.
