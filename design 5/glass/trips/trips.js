@@ -58,7 +58,11 @@ function photosOf(J) {
     if (rivals.length === 1) return true;
     if (!s.city) return false;
     const withCity = rivals.filter(j => (j.places || []).includes(s.city));
-    return withCity.length === 1 && withCity[0] === J;
+    if (withCity.length === 1) return withCity[0] === J;
+    // a city he went to more than once: an undated photograph goes to the newest of those trips
+    // (his call, 2026-11-02: the undated New York and Los Angeles ones are from summer 2025)
+    const last = j => j.legs.map(l => l.month || '').sort().pop() || j.id;
+    return withCity.length > 1 && withCity.reduce((a, b) => (last(b) > last(a) ? b : a)) === J;
   };
   const ids = J.countries.flatMap(c => (country[c] ? country[c].photos : [])).filter(ours);
   const order = new Map(ids.map((id, i) => [id, i]));
