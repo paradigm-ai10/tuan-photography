@@ -98,9 +98,11 @@ const tripList = document.getElementById('trip-list');
 const guidePhoto = document.getElementById('guide-photo');
 
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-function img(id, size, extra = '') {
+function img(id, size, { alt, eager } = {}) {
   const s = slides[id];
-  return `<img src="${IMG(s.file, size)}" width="${s.w}" height="${s.h}" alt="${esc(pick(s.alt))}" loading="lazy" decoding="async"${extra}>`;
+  const a = alt === undefined ? pick(s.alt) : alt;
+  const load = eager ? 'fetchpriority="high"' : 'loading="lazy"';
+  return `<img src="${IMG(s.file, size)}" width="${s.w}" height="${s.h}" alt="${esc(a)}" ${load} decoding="async">`;
 }
 
 function renderSections() {
@@ -127,14 +129,18 @@ function renderSections() {
   const trips = SITE.journeys.filter(j => j.countries.some(c => countries[c] && countries[c].photos.length)).slice(0, 4);
   tripList.innerHTML = trips.map(j => {
     const year = j.id.slice(0, 4);
-    const pool = j.countries.flatMap(c => (countries[c] ? countries[c].photos : []))
-      .filter(id => slides[id] && slides[id].w > slides[id].h);
-    const sameYear = pool.filter(id => (slides[id].taken || '').startsWith(year));
-    const shots = (sameYear.length ? sameYear : pool).slice(0, 3);
+    // one landscape print from each country in turn, from that year when the files say so
+    const lists = j.countries.map(c => {
+      const all = (countries[c] ? countries[c].photos : []).filter(id => slides[id] && slides[id].w > slides[id].h);
+      const yr = all.filter(id => (slides[id].taken || '').startsWith(year));
+      return yr.length ? yr : all;
+    }).filter(l => l.length);
+    const shots = [];
+    for (let r = 0; shots.length < 3 && r < 6; r++) for (const l of lists) if (l[r] && shots.length < 3) shots.push(l[r]);
     const names = j.countries.map(c => (countries[c] ? pick(countries[c].name) : c)).join(tr('list'));
     return `<li class="trip"><p class="trip-date">${esc(pick(j.date))}</p>
       <p class="trip-where">${esc(names)}</p>
-      <p class="trip-glimpse">${shots.map(id => `<button type="button" data-open="trip-${j.id}" data-list="${shots.join(' ')}" data-id="${id}" aria-label="${esc(tr('open')(pick(slides[id].place)))}">${img(id, 640, ' alt=""').replace(/alt="[^"]*" /, '')}</button>`).join('')}</p></li>`;
+      <p class="trip-glimpse">${shots.map(id => `<button type="button" data-open="trip-${j.id}" data-list="${shots.join(' ')}" data-id="${id}" aria-label="${esc(tr('open')(pick(slides[id].place)))}">${img(id, 640, { alt: '' })}</button>`).join('')}</p></li>`;
   }).join('');
 }
 
@@ -225,7 +231,7 @@ applyWords();
 if (NO_GL) {
   const lead = document.getElementById('lead');
   const id = STACK[0];
-  lead.innerHTML = `<button type="button" data-open="plates-lead" data-list="${STACK.join(' ')}" data-id="${id}">${img(id, 1280, ' fetchpriority="high"').replace('loading="lazy" ', '')}</button>
+  lead.innerHTML = `<button type="button" data-open="plates-lead" data-list="${STACK.join(' ')}" data-id="${id}">${img(id, 1280, { eager: true })}</button>
     <figcaption><span class="cap-place">${esc(pick(slides[id].place))}</span><span class="cap-where">${esc(pick(slides[id].where))}</span></figcaption>`;
   lead.hidden = false;
 } else {
@@ -253,14 +259,15 @@ function startGlass() {
   /* ---- sizes (scene units: a pane is 1.5 by 1) ---- */
   const N = STACK.length;
   const W = 1.5, H = 1.0, TH = 0.016, STEP = 0.032;
-  const BORDER = 0.022;                       // the clear glass round each print, as a share of the width
+  const BORDER = 0.007;                       // the clear glass round each print, as a share of the width
   const innerA = (W * (1 - 2 * BORDER)) / (H - 2 * BORDER * W);
 
   /* ---- shared uniforms ---- */
   const G = {
     uFade: { value: STILL ? 1 : 0 },
     uBg: { value: BG.clone() },
-    uGlass: { value: new THREE.Color('#2d4a43') },
+    uGlass: { value: new THREE.Color('#3f6359') },
+    uGlassDeep: { value: new THREE.Color('#0f1a17') },
     uGlassHi: { value: new THREE.Color('#c9e2d8') },
     uEmpty: { value: new THREE.Color('#1f2422') },
     uKey: { value: new THREE.Vector3(-0.45, 0.75, 0.55).normalize() },
@@ -276,8 +283,8 @@ function startGlass() {
       gl_Position = projectionMatrix * viewMatrix * wp;
     }`;
   const paneFrag = /* glsl */`
-    uniform sampler2D uMap; uniform float uHas; uniform vec2 uCrop; uniform float uShade;
-    uniform float uFade; uniform vec3 uBg; uniform vec3 uGlass; uniform vec3 uGlassHi; uniform vec3 uEmpty;
+    uniform sampler2D uMap; uniform float uHas; uniform vec2 uCrop; uniform float uShade; uniform float uRefl;
+    uniform float uFade; uniform vec3 uBg; uniform vec3 uGlass; uniform vec3 uGlassDeep; uniform vec3 uGlassHi; uniform vec3 uEmpty;
     uniform vec3 uKey;
     varying vec2 vUv; varying vec3 vN; varying vec3 vWN; varying vec3 vWP;
     void main() {
@@ -309,13 +316,20 @@ function startGlass() {
         float soft = smoothstep(0.35, 0.9, R.y) * 0.035 + fres * 0.22;
         col += uGlassHi * soft;
       } else {
-        // the edge of the glass: green, lit along its length
-        col = mix(uGlass, uGlassHi, clamp(0.18 + 0.5 * diff + 0.45 * fres, 0.0, 1.0)) * mix(0.55, 1.0, uShade);
+        // the edge of the glass: deep green inside, a bright line where it catches the light
+        float along = abs(vN.x) > 0.5 ? vUv.x : vUv.y;
+        vec3 body = mix(uGlassDeep, uGlass, 0.25 + 0.45 * diff);
+        body *= 0.82 + 0.3 * smoothstep(0.0, 1.0, along);
+        vec3 Lr = reflect(-uKey, Nw);
+        float spec = pow(max(dot(Lr, V), 0.0), 24.0);
+        col = body * mix(0.6, 1.0, uShade) * (abs(vN.y) > 0.5 ? 0.72 : 1.0) + uGlassHi * (spec * 0.4 + fres * 0.12);
+        // the tops are 32 edges thinner than a pixel: one calm even tone, or they shimmer
+        if (abs(vN.y) > 0.5) col = mix(uGlassDeep, uGlass, 0.5) * 0.7 * mix(0.6, 1.0, uShade);
       }
       float a = 1.0;
       #ifdef MIRROR
         float h = -vWP.y;
-        a = (1.0 - smoothstep(0.0, 0.5, h)) * 0.2 * uFade;
+        a = (1.0 - smoothstep(0.0, 0.5, h)) * 0.2 * uFade * uRefl;
         col *= 0.7;
       #else
         col = mix(uBg, col, uFade);
@@ -334,7 +348,7 @@ function startGlass() {
     const u = {
       ...G,
       uMap: { value: null }, uHas: { value: 0 }, uCrop: { value: new THREE.Vector2(1, 1) },
-      uShade: { value: 1 },
+      uShade: { value: 1 }, uRefl: { value: 1 },
     };
     const mat = new THREE.ShaderMaterial({ uniforms: u, vertexShader: paneVert, fragmentShader: paneFrag });
     const mMat = new THREE.ShaderMaterial({
@@ -403,6 +417,7 @@ function startGlass() {
   function pump() {
     while (inflight < 4 && next < panes.length) {
       const p = panes[next++];
+      if (p.state) continue;
       inflight++;
       p.state = 1;
       loader.load(IMG(p.s.file, 640), tex => {
@@ -461,22 +476,24 @@ function startGlass() {
 
   function pose(s) {
     const turn = easeIO(clamp01(s / TURN));
-    const spread = 1 + 0.55 * turn;              // the block opens a little as it turns
+    const spread = 1 + 0.7 * turn;              // the block opens a little as it turns
     const step = STEP * spread;
     const depth = (N - 1) * step + TH;
 
     // the block turns; the camera rises a little to see the top edges
-    block.rotation.y = -0.12 - 0.7 * turn;
+    block.rotation.y = -0.12 - 0.62 * turn;
     floorU.uYaw.value = block.rotation.y;
     floorU.uHalf.value.set(W / 2, depth / 2);
 
     const fov = camera.fov * Math.PI / 180;
     const th = Math.tan(fov / 2);
-    const visW = 1.75;
-    const frac = phone ? 0.74 : 0.36;
+    const yaw = Math.abs(block.rotation.y);
+    const visW = W * Math.cos(yaw) + depth * Math.sin(yaw);   // how wide the block looks from here
+    const frac = phone ? 0.8 : 0.36;
     const dist = Math.max(visW / (frac * 2 * th * camera.aspect), 1.15 / ((phone ? 0.5 : 0.56) * 2 * th));
     const elev = 0.1 + 0.2 * turn;
-    lookAt.set(phone ? 0 : -dist * th * camera.aspect * 0.34, phone ? 0.5 - dist * th * 0.2 : 0.5, 0);
+    const off = 0.34 - 0.2 * smooth(TURN * 0.8, TURN + 0.3, s);   // the block drifts toward the middle once the name has gone
+    lookAt.set(phone ? 0 : -dist * th * camera.aspect * off, phone ? 0.5 - dist * th * 0.2 : 0.5, 0);
     camera.position.set(lookAt.x, lookAt.y + Math.sin(elev) * dist, lookAt.z + Math.cos(elev) * dist);
     camera.lookAt(lookAt);
     camera.updateMatrixWorld();
@@ -529,6 +546,7 @@ function startGlass() {
       }
       p.mesh.position.copy(restP);
       p.u.uShade.value = shade;
+      p.u.uRefl.value = p === active ? 1 - big : 1;
     }
     block.updateMatrixWorld(true);
     for (const p of panes) p.mirror.matrix.multiplyMatrices(REFLECT, p.mesh.matrixWorld);
@@ -572,7 +590,7 @@ function startGlass() {
     if (!down || Math.hypot(e.clientX - down.x, e.clientY - down.y) > 8) { down = null; return; }
     down = null;
     const p = hit(e);
-    if (p) openViewer(STACK, p.id, langBtn);
+    if (p) openViewer(STACK, p.id, null);
   });
 
   /* ---- the loop: draw only when something changed, and only while the stage is on screen ---- */

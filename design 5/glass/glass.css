@@ -74,7 +74,7 @@ p { margin: 0; }
 
 .intro {
   position: absolute; left: var(--gutter); bottom: clamp(2rem, 9vh, 6rem);
-  max-width: 26rem; pointer-events: none;
+  max-width: 34rem; pointer-events: none;
 }
 .intro h1 { font-size: clamp(2.6rem, 5.2vw, 4.6rem); }
 .intro p { margin-top: 1rem; color: var(--ink-2); max-width: 22rem; }
@@ -230,3 +230,7 @@ html.v-open { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; scroll-behavior: auto !important; }
 }
+
+/* his Notes box: bottom right, off the work */
+html .rv { left: auto; right: 0; top: auto; bottom: 1.2rem; translate: none; }
+html .rv.is-moved { right: auto; bottom: auto; }
