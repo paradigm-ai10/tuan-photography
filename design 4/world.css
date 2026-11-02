@@ -157,10 +157,12 @@ html[data-lang="zh"] .caption h2 { font-weight: 500; letter-spacing: 0.02em; }
   position: fixed; inset: 0; z-index: 20;
   display: grid; grid-template-rows: 1fr auto; gap: 0;
   padding: clamp(3.4rem, 6vh, 4.6rem) var(--gutter) 1rem;
-  background: color-mix(in oklab, var(--haze) 94%, white);
-  opacity: 0; transition: opacity 0.35s var(--ease);
+  background: transparent;
+  transition: background-color 0.45s var(--ease);
 }
-.viewer.on { opacity: 1; }
+.viewer.on { background: color-mix(in oklab, var(--haze) 94%, white); }
+.viewer .v-cap, .viewer .v-words { opacity: 0; transition: opacity 0.4s var(--ease); }
+.viewer.on .v-cap, .viewer.on .v-words { opacity: 1; transition-delay: 0.25s; }
 .viewer[hidden] { display: none; }
 .v-figure {
   margin: 0; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr) 17rem; gap: 2.4rem;
@@ -168,9 +170,7 @@ html[data-lang="zh"] .caption h2 { font-weight: 500; letter-spacing: 0.02em; }
 }
 .v-figure img {
   width: 100%; height: 100%; min-height: 0; object-fit: contain; object-position: center bottom;
-  transform: scale(0.985); transition: transform 0.6s var(--ease);
 }
-.viewer.on .v-figure img { transform: none; }
 .v-cap { padding-bottom: 0.3rem; }
 .v-place { margin: 0; font-family: var(--serif); font-weight: 400; font-size: clamp(1.6rem, 1.2rem + 1vw, 2.2rem); line-height: 1.1; }
 .v-where { margin: 0.35rem 0 0; color: var(--ink-soft); font-size: var(--t-s); }

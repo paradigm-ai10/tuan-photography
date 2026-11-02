@@ -49,7 +49,7 @@ const pick = o => (o ? (o[lang] || o.en || '') : '');
 
 /* ------------------------------------------------------------------ places */
 
-const S = 1.6;                                  // units per degree
+const S = 4;                                    // units per degree
 const toXZ = ([lat, lng]) => new THREE.Vector3((lng - 121.5) * S, 0, -(lat - 25) * S);
 
 const ORDER = ['taiwan', 'japan', 'china', 'hong-kong', 'vietnam', 'singapore', 'australia',
@@ -93,6 +93,19 @@ for (const id of ORDER) {
       title: key ? cityTitle(key) : c.name,
       photos, P: toXZ(ll), book,
     });
+  }
+}
+// neighbours in Europe and on the US east coast sit closer than two arcs of prints:
+// nudge them apart (a degree or so) so one place never stands inside another
+for (let it = 0; it < 80; it++) {
+  for (let i = 0; i < stops.length; i++) for (let j = i + 1; j < stops.length; j++) {
+    const a = stops[i].P, b = stops[j].P;
+    const d = Math.hypot(b.x - a.x, b.z - a.z), MIN = 26;
+    if (d < MIN && d > 0.001) {
+      const k = (MIN - d) / 2 / d;
+      const dx = (b.x - a.x) * k, dz = (b.z - a.z) * k;
+      a.x -= dx; a.z -= dz; b.x += dx; b.z += dz;
+    }
   }
 }
 
@@ -172,7 +185,7 @@ endSec.innerHTML = `
 stops.forEach((stop, i) => {
   const prev = i ? stops[i - 1] : null;
   const dist = prev ? prev.P.distanceTo(stop.P) : 40;
-  story.append(flightHTML(i ? Math.round(Math.min(170, Math.max(70, 55 + dist * 0.55))) : 40));
+  story.append(flightHTML(i ? Math.round(Math.min(170, Math.max(70, 55 + dist * 0.22))) : 40));
   const sec = stopHTML(stop, i);
   story.append(sec);
   sections.push(sec);
@@ -497,7 +510,7 @@ stops.forEach((s, i) => {
   if (i) {
     const a = routePts[routePts.length - 1];
     const d = a.distanceTo(p);
-    const n = Math.max(1, Math.ceil(d / 0.6));
+    const n = Math.max(1, Math.ceil(d / 1.2));
     for (let k = 1; k <= n; k++) routePts.push(a.clone().lerp(p, k / n));
   } else routePts.push(p);
 });
@@ -560,20 +573,20 @@ function stopPose(stop, u) {
 function openPose() {
   const s = stops[0];
   const lift = portrait ? 1.35 : 1;
-  return { pos: s.C.clone().add(V(4, 52 * lift, 40 * lift)), tgt: s.C.clone().add(V(-6, 0, -16)), at: 0, ia: 0, ib: 0, t: 0 };
+  return { pos: s.C.clone().add(V(4, 19 * lift, 36 * lift)), tgt: s.C.clone().add(V(-12, 0, -34)), at: 0, ia: 0, ib: 0, t: 0 };
 }
 const centroid = stops.reduce((a, s) => a.add(s.C.clone().multiplyScalar(1 / stops.length)), V(0, 0, 0));
 function endPose() {
   const lift = portrait ? 1.6 : 1;
   return {
-    pos: centroid.clone().add(V(0, 250 * lift, 175 * lift)), tgt: centroid.clone().add(V(0, 0, 10)),
+    pos: centroid.clone().add(V(0, 600 * lift, 420 * lift)), tgt: centroid.clone().add(V(0, 0, 25)),
     at: routeLen[routeLen.length - 1], ia: stops.length - 1, ib: stops.length - 1, t: 0,
   };
 }
 function flight(a, b, t, hop) {
   const e = ease(t);
   const d = Math.hypot(b.pos.x - a.pos.x, b.pos.z - a.pos.z);
-  const H = hop ? Math.min(70, Math.max(4, d * 0.32)) : 0;
+  const H = hop ? Math.min(130, Math.max(5, d * 0.3)) : 0;
   const up = Math.sin(Math.PI * e);
   const pos = lerpV(a.pos, b.pos, e); pos.y += H * up;
   const tgt = lerpV(a.tgt, b.tgt, e);
@@ -715,8 +728,8 @@ function tick(now) {
   sky.position.copy(camera.position);
 
   const h = pose.pos.y;
-  fog.near = 7 + h * 0.5;
-  fog.far = 44 + h * 2.7;
+  fog.near = 8 + h * 0.6;
+  fog.far = 58 + h * 4.2;
   applyPalette(pose);
   showRoute(pose.at);
 
@@ -805,21 +818,67 @@ function showViewer() {
   document.getElementById('v-prev').hidden = !many;
   document.getElementById('v-next').hidden = !many;
 }
-function openViewer(stop, index, from) {
+// The print's rectangle on screen, from its photo plane's four corners.
+function printRect(stop, index) {
+  const pr = stop.prints[index];
+  if (!pr || !stop.group.visible) return null;
+  const g = pr.photo.geometry.parameters;
+  let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+  for (const [sx, sy] of [[-1, -1], [1, -1], [1, 1], [-1, 1]]) {
+    tmpV.set(sx * g.width / 2, sy * g.height / 2, 0);
+    pr.photo.localToWorld(tmpV);
+    tmpV.project(camera);
+    if (tmpV.z > 1) return null;
+    const x = (tmpV.x * 0.5 + 0.5) * window.innerWidth, y = (-tmpV.y * 0.5 + 0.5) * window.innerHeight;
+    x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y);
+  }
+  if (x1 < 0 || y1 < 0 || x0 > window.innerWidth || y0 > window.innerHeight) return null;
+  return { x: x0, y: y0, w: x1 - x0, h: y1 - y0 };
+}
+// Where the photograph actually sits inside the viewer's <img> (object-fit: contain).
+function shownRect() {
+  const r = vImg.getBoundingClientRect();
+  const ar = (vImg.naturalWidth || 3) / (vImg.naturalHeight || 2);
+  let w = r.width, h = r.width / ar;
+  if (h > r.height) { h = r.height; w = h * ar; }
+  const bottom = getComputedStyle(vImg).objectPosition.trim().endsWith('100%');
+  return { x: r.left + (r.width - w) / 2, y: bottom ? r.bottom - h : r.top + (r.height - h) / 2, w, h };
+}
+// The print travels between the world and the viewer: one motion, so the eye never loses it.
+function flyPrint(from, to, back) {
+  const k = `translate(${from.x - to.x}px, ${from.y - to.y}px) scale(${from.w / to.w}, ${from.h / to.h})`;
+  vImg.style.transformOrigin = `${to.x - vImg.getBoundingClientRect().left}px ${to.y - vImg.getBoundingClientRect().top}px`;
+  return vImg.animate(back ? [{ transform: 'none' }, { transform: k }] : [{ transform: k }, { transform: 'none' }],
+    { duration: back ? 520 : 760, easing: 'cubic-bezier(0.22, 1, 0.36, 1)', fill: 'both' });
+}
+async function openViewer(stop, index, from) {
   viewer.stop = stop; viewer.index = index; viewer.returnFocus = from || document.activeElement;
+  const fromRect = !reduceMotion.matches && printRect(stop, index);
   setHover(null);
   showViewer();
   vEl.hidden = false;
-  requestAnimationFrame(() => vEl.classList.add('on'));
   document.body.style.overflow = 'hidden';
   document.getElementById('v-close').focus({ preventScroll: true });
+  if (fromRect) {
+    vImg.style.opacity = '0';
+    // wait for the photograph (never longer than a moment), so the flight knows its shape
+    if (!vImg.complete || !vImg.naturalWidth) {
+      await new Promise(r => { vImg.addEventListener('load', r, { once: true }); vImg.addEventListener('error', r, { once: true }); setTimeout(r, 1200); });
+    }
+    vImg.style.opacity = '';
+    flyPrint(fromRect, shownRect(), false);
+  }
+  requestAnimationFrame(() => vEl.classList.add('on'));
 }
 function closeViewer() {
   if (!viewer.stop) return;
+  const toRect = !reduceMotion.matches && printRect(viewer.stop, viewer.index);
   viewer.stop = null;
   vEl.classList.remove('on');
   document.body.style.overflow = '';
-  setTimeout(() => { if (!viewer.stop) vEl.hidden = true; }, 300);
+  const done = () => { if (!viewer.stop) { vEl.hidden = true; vImg.getAnimations().forEach(a => a.cancel()); } };
+  if (toRect) flyPrint(toRect, shownRect(), true).finished.then(done, done);
+  else setTimeout(done, 300);
   if (viewer.returnFocus && viewer.returnFocus.focus) viewer.returnFocus.focus({ preventScroll: true });
 }
 function stepViewer(d) {
@@ -874,7 +933,7 @@ document.addEventListener('keydown', e => {
 
 // for checking in the browser: __d4.snap() draws the exact frame for the current scroll
 window.__d4 = {
-  camera, scene, stops, poseAt, get smoothY() { return smoothY; },
+  camera, scene, stops, poseAt, printRect, shownRect, get smoothY() { return smoothY; },
   snap() { smoothY = window.scrollY; dirty = true; tick(performance.now()); return camera.position.toArray().map(v => +v.toFixed(2)); },
 };
 
