@@ -1,0 +1,130 @@
+/* Glass block, Trips: a quiet timeline beside a route map (design 5).
+   Wide: the trips scroll on the left, the map stays on the right. Phone: the map sits small at the
+   top and changes as the trips pass under it. Tokens, bar, footer and viewer come from ../kit/kit.css. */
+
+:root {
+  --land: #22201e;          /* a shade lighter than the ground */
+  --land-on: #322f2b;       /* the countries of the trip in view */
+  --pane-rim: rgba(236, 231, 223, 0.34);
+  --pane-rim-2: rgba(236, 231, 223, 0.16);
+  --pane-edge: rgba(156, 196, 181, 0.32);   /* the glass seen edge on */
+}
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+.trips-page {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.22fr);
+  grid-template-areas: "head map" "list map";
+  grid-template-rows: auto 1fr;
+  column-gap: clamp(2rem, 4vw, 4rem);
+}
+.trips-page .page-head { grid-area: head; padding-right: 0; padding-bottom: clamp(2.5rem, 7vh, 4.5rem); }
+.trips-page .page-head p { max-width: 26rem; }
+
+/* ------------------------------------------------------------------ the map */
+
+.map-wrap {
+  grid-area: map; align-self: start;
+  position: sticky; top: 0;
+  height: 100svh;
+  padding: clamp(1rem, 3vh, 2rem) var(--gutter) clamp(1rem, 3vh, 2rem) 0;
+}
+.map { position: relative; width: 100%; height: 100%; }
+.map canvas {
+  position: absolute; inset: 0; width: 100%; height: 100%; display: block;
+  /* the edges dissolve into the ground, so the map has no frame */
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 9%, #000 91%, transparent),
+                      linear-gradient(to bottom, transparent, #000 9%, #000 91%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to right, transparent, #000 9%, #000 91%, transparent),
+              linear-gradient(to bottom, transparent, #000 9%, #000 91%, transparent);
+  mask-composite: intersect;
+  opacity: 0; transition: opacity 0.8s ease;
+}
+.map.is-ready canvas { opacity: 1; }
+html.still .map canvas { transition: none; }
+
+/* ------------------------------------------------------------------ the trips */
+
+.timeline { grid-area: list; padding: 0 0 38svh var(--gutter); }
+.trip-list, .earlier-list { list-style: none; margin: 0; padding: 0; }
+
+.trip { padding: clamp(2.2rem, 6vh, 3.6rem) 0; }
+.trip:first-child { padding-top: 0; }
+.trip-date { color: var(--ink-3); font-size: 0.86rem; letter-spacing: 0.01em; }
+.trip-where {
+  margin-top: 0.35rem; font-size: clamp(1.6rem, 2.3vw, 2.15rem);
+  color: var(--ink-2); transition: color 0.4s ease;
+}
+.trip.is-on .trip-where { color: var(--ink); }
+.trip-stops { margin-top: 0.6rem; max-width: 30rem; color: var(--ink-3); font-size: 0.86rem; line-height: 1.55; }
+
+/* a trip without photographs: one line */
+.trip--line { display: flex; align-items: baseline; gap: 1.2rem; padding: 1.1rem 0; }
+.trip--line .trip-date { flex: 0 0 7.5rem; }
+.trip--line .trip-where { margin: 0; font-size: 1.15rem; }
+
+.earlier-title {
+  margin-top: clamp(2.5rem, 7vh, 4rem); padding-bottom: 0.6rem;
+  font-size: 0.92rem; color: var(--ink-3); letter-spacing: 0.01em;
+}
+html[data-lang="zh"] .earlier-title { font-size: 0.92rem; }
+.earlier-list .trip--line { padding: 0.7rem 0; }
+
+/* ------------------------------------------------------------------ the glass panes */
+
+.panes {
+  display: flex; flex-wrap: wrap; align-items: flex-end;
+  gap: 1.7rem 0.95rem; margin-top: 1.5rem; padding: 0.2rem 0.3rem 0 0;
+}
+.pane {
+  --h: clamp(7rem, 11vh, 9.5rem);
+  position: relative; display: block; flex: none;
+  height: calc(var(--h) + 8px); aspect-ratio: var(--ar);
+  max-width: 100%;
+  padding: 3px;                                   /* the clear rim around the print */
+  background: rgba(156, 196, 181, 0.05);
+  border: 1px solid var(--pane-rim-2);
+  border-top-color: var(--pane-rim); border-left-color: var(--pane-rim);
+  box-shadow: 2px 2px 0 -1px var(--pane-edge);    /* the second edge: the pane's thickness */
+  /* a faint reflection on the floor below */
+  -webkit-box-reflect: below 3px linear-gradient(transparent 70%, rgba(255, 255, 255, 0.16));
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.pane img { width: 100%; height: 100%; object-fit: cover; background: var(--bg-2); }
+.pane:hover, .pane:focus-visible {
+  transform: translateY(-3px);
+  border-color: rgba(236, 231, 223, 0.3); border-top-color: rgba(236, 231, 223, 0.6); border-left-color: rgba(236, 231, 223, 0.6);
+  box-shadow: 2px 2px 0 -1px rgba(156, 196, 181, 0.55);
+}
+html.still .pane { transition: none; }
+html.still .pane:hover, html.still .pane:focus-visible { transform: none; }
+
+/* ------------------------------------------------------------------ phone */
+
+@media (max-width: 860px) {
+  .trips-page {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "head" "map" "list";
+    grid-template-rows: auto auto 1fr;
+  }
+  .trips-page .page-head { padding: clamp(3.5rem, 9vh, 5rem) var(--gutter) 1.5rem; }
+  .map-wrap {
+    z-index: 5; height: 36svh; min-height: 13rem; padding: 0;
+    background: var(--bg);
+    border-bottom: 1px solid var(--hair);
+  }
+  .map canvas {
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+  }
+  .timeline { padding: 2rem var(--gutter) 40svh; }
+  .pane { --h: 6.2rem; }
+  .panes { gap: 1.4rem 0.8rem; }
+  .trip--line { gap: 1rem; }
+  .trip--line .trip-date { flex-basis: 6.6rem; }
+}
