@@ -7,8 +7,11 @@
 (() => {
   'use strict';
   const LOCAL = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
-  const NAME = 'journey';
-  const KEY = 'journey-review';
+  // a page outside this folder names its own record: <script src=… data-name="world" data-id="world" data-back="">
+  const SCRIPT = document.currentScript;
+  const OPT = (SCRIPT && SCRIPT.dataset) || {};
+  const NAME = OPT.name || 'journey';
+  const KEY = `${NAME}-review`;
   const URL_ = `/__reviews/${NAME}`;
 
   // ---- the store ----------------------------------------------------------------------------
@@ -72,9 +75,9 @@
   };
 
   // ---- the Note tab on a version page ---------------------------------------------------------
-  const page = document.body && document.body.classList.contains('journey');
+  const page = document.body && (document.body.classList.contains('journey') || !!OPT.name);
   if (!LOCAL || !page) return;
-  const ID = (location.pathname.split('/').pop() || 'journey.html').replace('.html', '');
+  const ID = OPT.id || (location.pathname.split('/').pop() || 'journey.html').replace('.html', '');
 
   const WORDS = {
     en: {
@@ -113,7 +116,7 @@
     box.classList.toggle('is-open', open);
     box.innerHTML = `
       <div class="rv__panel" id="rv-panel">
-        <div class="rv__head" title="${esc(w.drag)}"><span class="rv__h">${esc(open ? w.title : w.tab)}</span>${open ? '' : `${s ? `<span class="rv__mini-s">${s}</span>` : ''}${pins.length ? `<span class="rv__mini-n">${esc(w.pinnedN(pins.length))}</span>` : ''}`}<span class="rv__grip" aria-hidden="true">${esc(w.move)}</span>${open ? `<a class="rv__back" href="index.html#v-${ID}">${esc(w.back)}</a>` : ''}<button type="button" class="rv__x" data-rv="toggle" aria-expanded="${open}" aria-controls="rv-body">${esc(open ? w.close : w.expand)}</button></div>
+        <div class="rv__head" title="${esc(w.drag)}"><span class="rv__h">${esc(open ? w.title : w.tab)}</span>${open ? '' : `${s ? `<span class="rv__mini-s">${s}</span>` : ''}${pins.length ? `<span class="rv__mini-n">${esc(w.pinnedN(pins.length))}</span>` : ''}`}<span class="rv__grip" aria-hidden="true">${esc(w.move)}</span>${open && OPT.back !== '' ? `<a class="rv__back" href="index.html#v-${ID}">${esc(w.back)}</a>` : ''}<button type="button" class="rv__x" data-rv="toggle" aria-expanded="${open}" aria-controls="rv-body">${esc(open ? w.close : w.expand)}</button></div>
         <div class="rv__body" id="rv-body" ${open ? '' : 'hidden'}>
         <div class="rv__score" role="group" aria-label="${esc(w.score)}">
           ${[1, 2, 3, 4, 5].map((n) => `<button type="button" class="rv__n" data-rv="score" data-n="${n}" aria-pressed="${s === n}" title="${esc(w.scores[n])}">${n}</button>`).join('')}

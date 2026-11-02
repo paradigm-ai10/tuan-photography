@@ -205,6 +205,15 @@ html[data-lang="zh"] .lede { max-width: none; line-height: 1.45; }
 .places-list .pl-where { display: block; font-family: var(--sans); font-size: var(--t-xs); color: var(--ink-soft); }
 .places-close { position: fixed; top: 0.9rem; right: var(--gutter); }
 
+/* ---- his Notes box (design 2's review kit, localhost only): give it this page's words and colours,
+   and keep it on the right, away from the place names ---- */
+html .rv {
+  --f-text: var(--sans); --ink-2: var(--ink-soft); --ink-3: var(--ink-soft); --hair: var(--line);
+  --link: var(--accent); --route: var(--accent); --paper-2: oklch(94% 0.01 80);
+  left: auto; right: 0;
+}
+html .rv.is-moved { right: auto; }
+
 /* ---- phones ---- */
 @media (max-width: 767px) {
   .bar { padding: 0.75rem 1rem; }
