@@ -76,7 +76,7 @@
   };
 
   // ---- the Note tab on a version page ---------------------------------------------------------
-  const page = document.body && (document.body.classList.contains('journey') || !!OPT.name);
+  const page = document.body && (document.body.classList.contains('journey') || (!!OPT.name && !('list' in OPT)));
   if (!LOCAL || !page) return;
   const ID = OPT.id || (location.pathname.split('/').pop() || 'journey.html').replace('.html', '');
 
