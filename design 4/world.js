@@ -66,7 +66,7 @@ function cityTitle(city) {
 }
 
 const R_ARC = 9;          // radius of a place's arc of prints
-const WALK = 5.6;         // the camera walks this far in front of the prints
+const WALK = 7.4;         // the camera walks this far in front of the prints
 const PRINT_H = 1.5;
 const BORDER = 0.06;
 const GAP = 0.55;
@@ -185,7 +185,7 @@ endSec.innerHTML = `
 stops.forEach((stop, i) => {
   const prev = i ? stops[i - 1] : null;
   const dist = prev ? prev.P.distanceTo(stop.P) : 40;
-  story.append(flightHTML(i ? Math.round(Math.min(170, Math.max(70, 55 + dist * 0.22))) : 40));
+  story.append(flightHTML(i ? Math.round(Math.min(140, Math.max(70, 55 + dist * 0.2))) : 40));
   const sec = stopHTML(stop, i);
   story.append(sec);
   sections.push(sec);
@@ -253,7 +253,7 @@ if (renderer) {
 /* ---- palette: paper, tinted by each place's photograph ---- */
 
 const PAPER = {
-  sky: new THREE.Color('#e3e7e7'),
+  sky: new THREE.Color('#d6dddf'),
   hor: new THREE.Color('#f2f0ea'),
   gnd: new THREE.Color('#efece4'),
 };
@@ -352,7 +352,7 @@ async function paintAtlas() {
     // graticule every 15 degrees
     g.strokeStyle = 'rgba(120,112,100,0.10)'; g.lineWidth = W / 8192;
     g.beginPath(); path(d3.geoGraticule().step([15, 15])()); g.stroke();
-    g.fillStyle = '#e9e5dc';
+    g.fillStyle = '#ddd5c6';
     g.beginPath(); path(land); g.fill();
     g.strokeStyle = 'rgba(90,80,68,0.10)'; g.lineWidth = 0.8 * W / 8192;
     g.beginPath(); path(borders); g.stroke();
@@ -381,8 +381,8 @@ function gradTex(draw, w = 8, h = 128) {
 const fadeTex = gradTex((g, w, h) => {
   const gr = g.createLinearGradient(0, h, 0, 0);
   gr.addColorStop(0, 'rgb(255,255,255)');
-  gr.addColorStop(0.18, 'rgb(150,150,150)');
-  gr.addColorStop(0.55, 'rgb(0,0,0)');
+  gr.addColorStop(0.1, 'rgb(150,150,150)');
+  gr.addColorStop(0.3, 'rgb(0,0,0)');
   gr.addColorStop(1, 'rgb(0,0,0)');
   g.fillStyle = gr; g.fillRect(0, 0, w, h);
 });
@@ -404,7 +404,13 @@ stops.forEach((stop, si) => {
   const group = new THREE.Group();
   stop.group = group;
   const n = stop.photos.length;
-  const ws = stop.photos.map(p => PRINT_H * Math.min(1.9, Math.max(0.56, p.w / p.h)));
+  // one print per place is the lead: the cover of its book, printed larger
+  const book = SITE.books.find(b => b.key === stop.id || (!stop.city && b.country === stop.country.id));
+  let hero = book ? stop.photos.findIndex(p => p.id === book.cover || p.id === book.photo) : -1;
+  if (hero < 0) hero = 0;
+  const hs = stop.photos.map((p, k) => (k === hero && n > 1 ? 2.25 : PRINT_H));
+  stop.heights = hs;
+  const ws = stop.photos.map((p, k) => hs[k] * Math.min(1.9, Math.max(0.56, p.w / p.h)));
   const L = ws.reduce((a, w) => a + w + 2 * BORDER, 0) + GAP * (n - 1);
   // keep a place's arc to a gentle curve: wide places get a wider radius
   const R = Math.max(R_ARC, L / 2.1);
@@ -416,7 +422,7 @@ stops.forEach((stop, si) => {
   stop.prints = [];
   stop.photos.forEach((p, k) => {
     const w = ws[k];
-    const fw = w + 2 * BORDER, fh = PRINT_H + 2 * BORDER;
+    const fw = w + 2 * BORDER, fh = hs[k] + 2 * BORDER;
     const th = (s + fw / 2) / R;
     s += fw + GAP;
     stop.angles.push(th);
@@ -432,7 +438,7 @@ stops.forEach((stop, si) => {
     pg.add(frame);
 
     const mat = new THREE.MeshBasicMaterial({ color: stop.pal.gnd.clone().multiplyScalar(0.92) });
-    const photo = new THREE.Mesh(new THREE.PlaneGeometry(w, PRINT_H), mat);
+    const photo = new THREE.Mesh(new THREE.PlaneGeometry(w, hs[k]), mat);
     photo.position.set(0, cy, 0.0156);
     photo.userData = { stop: si, index: k };
     pg.add(photo);
@@ -449,7 +455,7 @@ stops.forEach((stop, si) => {
     pg.add(refl);
 
     const shadow = new THREE.Mesh(new THREE.PlaneGeometry(fw + 1.2, 1.1),
-      new THREE.MeshBasicMaterial({ color: '#3b342c', alphaMap: shadowTex, transparent: true, opacity: 0.2, depthWrite: false }));
+      new THREE.MeshBasicMaterial({ color: '#3b342c', alphaMap: shadowTex, transparent: true, opacity: 0.34, depthWrite: false }));
     shadow.rotation.x = -Math.PI / 2;
     shadow.position.set(0, 0.006, 0.05);
     shadow.renderOrder = 2;
@@ -479,7 +485,7 @@ function loadPrint(stop, print, size) {
     print.photo.material.needsUpdate = true;
     print.refl.material.map = tex;
     print.refl.material.color.set(0xffffff);
-    print.refl.material.opacity = 0.62;
+    print.refl.material.opacity = 0.22;
     print.refl.material.needsUpdate = true;
     if (old) old.dispose();
     print.state = size === 1280 ? 4 : 2;
@@ -488,7 +494,7 @@ function loadPrint(stop, print, size) {
   }, undefined, () => { loading--; print.state = size === 1280 ? 2 : 0; });
 }
 function pumpTextures() {
-  if (loading >= 4) return;
+  if (loading >= 5) return;
   const here = camera.position;
   let best = null, bestD = Infinity, bestSize = 640;
   for (const stop of stops) {
@@ -498,7 +504,7 @@ function pumpTextures() {
       else if (print.state === 2 && d < 16 && d - 1000 < bestD) { best = [stop, print]; bestD = d - 1000; bestSize = 1280; }
     }
   }
-  if (best && (bestD < fog.far * 1.6 || bestD < -900)) loadPrint(best[0], best[1], bestSize);
+  if (best) loadPrint(best[0], best[1], bestSize);   // nearest first, then the rest of the world
 }
 
 /* ---- the route ---- */
@@ -552,7 +558,7 @@ function arcPoint(stop, th, r, y) {
 // along a place: rest at each print, move between them
 function stopPose(stop, u) {
   const n = stop.prints.length;
-  let th;
+  let th, look = stop.heights[0];
   if (n === 1) th = stop.angles[0];
   else {
     const x = Math.min(n - 1, Math.max(0, u * (n - 1)));
@@ -561,12 +567,13 @@ function stopPose(stop, u) {
     // a short rest on each print, then a soft walk to the next
     const g = f < 0.22 ? 0 : f > 0.78 ? 1 : ease((f - 0.22) / 0.56);
     th = stop.angles[k] + (stop.angles[k + 1] - stop.angles[k]) * g;
+    look = stop.heights[k] + (stop.heights[k + 1] - stop.heights[k]) * g;
   }
-  const eye = portrait ? 1.0 : 1.08;
-  const back = portrait ? 0.4 : 0;
+  const eye = portrait ? 1.15 : 1.4;
+  const back = portrait ? -2.2 : 0;   // on a phone the camera stands closer, one print fills the width
   return {
     pos: arcPoint(stop, th, stop.walk - back, eye),
-    tgt: arcPoint(stop, th, stop.R, 0.86),
+    tgt: arcPoint(stop, th, stop.R, 0.14 + look * 0.5),
     at: stop.routeAt, ia: stops.indexOf(stop), ib: stops.indexOf(stop), t: 0,
   };
 }
@@ -579,14 +586,14 @@ const centroid = stops.reduce((a, s) => a.add(s.C.clone().multiplyScalar(1 / sto
 function endPose() {
   const lift = portrait ? 1.6 : 1;
   return {
-    pos: centroid.clone().add(V(0, 600 * lift, 420 * lift)), tgt: centroid.clone().add(V(0, 0, 25)),
+    pos: centroid.clone().add(V(-40, 330 * lift, 700 * lift)), tgt: centroid.clone().add(V(-40, 0, -40)),
     at: routeLen[routeLen.length - 1], ia: stops.length - 1, ib: stops.length - 1, t: 0,
   };
 }
 function flight(a, b, t, hop) {
   const e = ease(t);
   const d = Math.hypot(b.pos.x - a.pos.x, b.pos.z - a.pos.z);
-  const H = hop ? Math.min(130, Math.max(5, d * 0.3)) : 0;
+  const H = hop ? Math.min(46, Math.max(5, d * 0.22)) : 0;
   const up = Math.sin(Math.PI * e);
   const pos = lerpV(a.pos, b.pos, e); pos.y += H * up;
   const tgt = lerpV(a.tgt, b.tgt, e);
@@ -606,15 +613,15 @@ function measure() {
   const vh = window.innerHeight;
   portrait = window.innerWidth / vh < 0.82;
   maxY = Math.max(1, document.documentElement.scrollHeight - vh);
-  const capTop = portrait ? 0.62 : 0.66;
   const keys = [];
   sections.forEach(sec => {
     const cap = sec.querySelector('.caption');
+    const capTop = (parseFloat(getComputedStyle(cap).top) || vh * 0.66) / vh;
     const a = sec.offsetTop - vh * capTop;
     const b = sec.offsetTop + sec.offsetHeight - vh * capTop - cap.offsetHeight;
     keys.push([a, Math.max(a + 1, b)]);
   });
-  const endY = Math.min(maxY, endSec.offsetTop - vh * 0.3);
+  const endY = Math.min(maxY, endSec.offsetTop - vh * 0.6);
   segs = [];
   let prevY = 0, prevPose = openPose, hop = false;
   stops.forEach((stop, i) => {
@@ -729,7 +736,7 @@ function tick(now) {
 
   const h = pose.pos.y;
   fog.near = 8 + h * 0.6;
-  fog.far = 58 + h * 4.2;
+  fog.far = 70 + h * 6;
   applyPalette(pose);
   showRoute(pose.at);
 
@@ -858,7 +865,8 @@ async function openViewer(stop, index, from) {
   showViewer();
   vEl.hidden = false;
   document.body.style.overflow = 'hidden';
-  document.getElementById('v-close').focus({ preventScroll: true });
+  // keyboard users land on Close; a click on a print leaves no ring showing
+  (from ? document.getElementById('v-close') : vEl).focus({ preventScroll: true });
   if (fromRect) {
     vImg.style.opacity = '0';
     // wait for the photograph (never longer than a moment), so the flight knows its shape
