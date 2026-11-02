@@ -302,7 +302,7 @@ function measure() {
 // lens shift: on the first screen the model stands right of the name; beside the photographs, left
 function lens(p) {
   const w = innerWidth, h = innerHeight;
-  if (portrait) { camera.setViewOffset(w, h, 0, h * 0.2, w, h); return; }
+  if (portrait) { camera.setViewOffset(w, h, 0, h * 0.24, w, h); return; }
   const k = Math.min(1, Math.max(0, p + 1));
   const s = k * k * (3 - 2 * k);
   camera.setViewOffset(w, h, w * (-0.16 + 0.31 * s), h * (0.11 - 0.07 * s), w, h);
@@ -343,7 +343,7 @@ function draw(p) {
   // the camera walks slowly round the table, one quarter turn over the four mountains
   const az = -0.55 + Math.max(0, p) * 0.32 + (p < 0 ? p * 0.12 : 0);
   const el = portrait ? 0.62 : 0.5 - (p < 0 ? p * 0.12 : 0);
-  const r = (portrait ? 36 : 33) - (p < 0 ? p * 3 : 0);
+  const r = (portrait ? 50 : 33) - (p < 0 ? p * 3 : 0);
   lens(p);
   camera.position.set(Math.sin(az) * Math.cos(el) * r, Math.sin(el) * r + 0.4, Math.cos(az) * Math.cos(el) * r);
   camera.lookAt(0, 0.3, 0);
