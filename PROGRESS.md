@@ -53,6 +53,9 @@ trials; what he said that decides the next step:
 
 ## 接下來 Next up
 
+Read `ideas/reviews/design5.json` first (his pick among the three design 5 directions), then build the
+full site in that direction.
+
 Read `ideas/reviews/world.json` (his score and notes on Design 4), then open
 http://localhost:8642/world/ with him. Code: `design 4/world.js` (poses: `stopPose`, `flight`,
 `openPose`, `endPose`; prints and the atlas near the top), `design 4/world.css`.
@@ -65,6 +68,9 @@ Main; 2 Sea chart, scroll-craft; 3 Paper, the whole page wraps). Next he **bring
 
 ## 等你決定 Waiting on you
 
+- **Design 5, the new website from scratch: pick one of three directions** (2026-11-02):
+  http://localhost:8642/next/ (Relief, Glass block, Orrery; his marks and notes save to
+  `ideas/reviews/design5.json`). Then build the full site from the pick. Brief: `design 5/BRIEF.md`.
 - **Design 4** (2026-11-02): keep developing it, or not? http://localhost:8642/world/
 - **Journey globe** (2026-10-30): kept the three with 5 stars, the live one as main; next, references
   for the globe's look, the wrap and the arrival. Front-end research report (skills, fonts, techniques, workflow, reference sites), 2026-10-30: https://claude.ai/artifact/9HiVVp4ySh6ih3izJeJXG3 Removed trials are at tags
