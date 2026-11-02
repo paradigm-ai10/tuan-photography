@@ -1,0 +1,177 @@
+/* Glass block: a guide. A small glass stack to open, then a long read on the dark ground:
+   about 65 characters to a line, 1.7 line height, Geist 400 for reading (light only for the large
+   headings), --ink on --bg. Photographs bare, their name and camera data beneath. */
+
+.guide { --read: 65ch; --wide: 52rem; }
+
+/* ------------------------------------------------------------------ the opening */
+
+.g-open {
+  display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  align-items: end; gap: clamp(2rem, 4vw, 4rem);
+  padding: clamp(2.5rem, 7vh, 5rem) var(--gutter) clamp(3rem, 9vh, 6rem);
+  min-height: min(82svh, 52rem);
+}
+.g-open .stack { --u: min(35vw, 33rem); --turn: -38deg; align-self: center; }
+.g-say { padding-bottom: clamp(0.5rem, 3vh, 2rem); }
+.g-say h1 { font-size: clamp(3rem, 6.2vw, 5.6rem); }
+.g-facts { margin-top: 1.1rem; color: var(--ink-2); font-size: 1.05rem; max-width: 26rem; }
+.g-meta { margin-top: 0.4rem; color: var(--ink-3); font-size: 0.9rem; font-variant-numeric: tabular-nums; }
+
+/* ------------------------------------------------------------------ the reading */
+
+.g-read {
+  display: grid; grid-template-columns: minmax(0, 1fr);
+  max-width: 82rem; margin: 0 auto; padding: 0 var(--gutter);
+  border-top: 1px solid var(--hair);
+}
+.g-body {
+  font-size: 1.0625rem; line-height: 1.7; font-weight: 400;
+  padding-top: clamp(1rem, 3vh, 2rem);
+  min-width: 0;
+}
+html[data-lang="zh"] .g-body { line-height: 1.85; letter-spacing: 0.02em; }
+.g-body p, .g-body ul, .g-body .note, .g-body .facts-box, .spot-text { max-width: var(--read); }
+.g-body > p { margin-top: 1rem; }
+.g-body strong { font-weight: 500; color: var(--ink); }
+
+.g-body h2 {
+  margin-top: clamp(4rem, 11vh, 6.5rem); margin-bottom: 1.4rem;
+  font-size: clamp(1.8rem, 2.8vw, 2.4rem); line-height: 1.15;
+  scroll-margin-top: 1.5rem;
+}
+.g-body h3 { font-size: 1.15rem; font-weight: 500; letter-spacing: 0; line-height: 1.35; }
+html[data-lang="zh"] .g-body h3 { font-weight: 500; }
+
+/* the contents: a plain list of words, the section being read in full ink */
+.g-toc { padding-top: clamp(2rem, 5vh, 3rem); font-size: 0.92rem; }
+.g-toc h2 { font-size: 0.85rem; font-weight: 400; letter-spacing: 0.01em; color: var(--ink-3); }
+.g-toc ol { list-style: none; margin: 0.8rem 0 0; padding: 0; display: grid; gap: 0.15rem; }
+.g-toc a { display: inline-block; padding: 0.3rem 0; color: var(--ink-2); text-decoration: none; line-height: 1.35; transition: color 0.2s; }
+.g-toc a:hover { color: var(--accent); }
+.g-toc a[aria-current] { color: var(--ink); }
+
+@media (min-width: 1100px) {
+  .g-read { grid-template-columns: 12.5rem minmax(0, 1fr); column-gap: clamp(3rem, 6vw, 6.5rem); }
+  .g-toc { position: sticky; top: 0; align-self: start; max-height: 100svh; overflow: auto; padding-top: clamp(3rem, 8vh, 5rem); }
+  .g-body { max-width: var(--wide); }
+}
+
+/* ------------------------------------------------------------------ photographs */
+
+.shot { margin: 0; }
+.shot-open { display: block; width: 100%; cursor: zoom-in; }
+.shot img { width: 100%; height: auto; background: var(--bg-2); transition: opacity 0.25s; }
+.shot-open:hover img { opacity: 0.88; }
+.shot figcaption { margin-top: 0.7rem; display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.25rem 1.2rem; }
+.shot-name { font-size: 0.95rem; color: var(--ink); }
+.shot-data { display: inline-flex; flex-wrap: wrap; gap: 0 0.85rem; font-size: 0.82rem; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.shot.is-tall { max-width: 26rem; }
+
+/* rows of photographs the guide placed between sections */
+.shots { display: flex; gap: clamp(1rem, 2vw, 1.5rem); margin-top: clamp(2.5rem, 6vh, 3.5rem); align-items: flex-start; }
+.shots .shot { flex: var(--ar) 1 0; min-width: 0; max-width: none; }
+.shots.n1 .shot.is-tall { flex: none; width: min(100%, 26rem); }
+
+/* ------------------------------------------------------------------ before you go */
+
+.glance { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(1.5rem, 3.5vw, 3rem); align-items: start; }
+.glance .shot.is-tall { max-width: none; }
+.facts-h { margin-bottom: 0.4rem; }
+.facts { margin: 0; }
+.facts div { padding: 0.85rem 0; }
+.facts div + div { border-top: 1px solid rgba(236, 231, 223, 0.08); }
+.facts dt { font-size: 0.85rem; color: var(--ink-3); }
+.facts dd { margin: 0.15rem 0 0; }
+
+/* ------------------------------------------------------------------ tables */
+
+.sheet-wrap { margin-top: 1.6rem; }
+.sheet { width: 100%; border-collapse: collapse; font-size: 0.97rem; line-height: 1.55; }
+.sheet caption { caption-side: top; text-align: left; font-size: 1.15rem; font-weight: 500; color: var(--ink); padding-bottom: 0.6rem; }
+.sheet caption.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); padding: 0; }
+.sheet th { text-align: left; font-weight: 400; font-size: 0.82rem; color: var(--ink-3); padding: 0 1.25rem 0.6rem 0; }
+.sheet td { vertical-align: top; padding: 0.85rem 1.25rem 0.85rem 0; color: var(--ink-2); }
+.sheet tbody tr { border-top: 1px solid rgba(236, 231, 223, 0.08); }
+.sheet td:first-child { color: var(--ink); }
+.sheet td:last-child, .sheet th:last-child { padding-right: 0; }
+.sheet .t { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.sheet .best { color: var(--ink); }
+.sheet .ate { margin-left: 0.4em; font-size: 0.8em; color: var(--ink-3); white-space: nowrap; }
+.sheet a, .spot-map a, .g-body .note a {
+  color: var(--accent); text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+}
+.sheet a:hover, .spot-map a:hover { border-bottom-color: var(--accent); }
+.sheet + .sheet, .sheet-wrap + .sheet-wrap { margin-top: 2.5rem; }
+
+/* ------------------------------------------------------------------ photo spots */
+
+.spots { margin-top: 2rem; }
+.spot { padding: 1.6rem 0; }
+.spot + .spot { border-top: 1px solid rgba(236, 231, 223, 0.08); }
+.spot.has-shot { padding: 2.4rem 0; }
+.spot.is-wide .shot { margin-bottom: 1.4rem; }
+.spot.is-tall { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(1.5rem, 3.5vw, 3rem); align-items: end; }
+.spot.is-tall .shot { max-width: none; }
+.spot h3 { font-size: 1.25rem; font-weight: 400; }
+.spot-when { margin-top: 0.35rem; display: flex; gap: 0.8rem; align-items: baseline; font-variant-numeric: tabular-nums; }
+.spot-lbl { font-size: 0.85rem; color: var(--ink-3); }
+.spot-when .is-best { color: var(--ink); }
+.spot-note { margin-top: 0.5rem; color: var(--ink-2); }
+.spot-map { margin-top: 0.6rem; font-size: 0.95rem; }
+
+/* ------------------------------------------------------------------ the route, the notes */
+
+.days { margin-top: 1.5rem; }
+.day { display: grid; grid-template-columns: 11rem minmax(0, 1fr); gap: 0.5rem 2rem; padding: 1.8rem 0; }
+.day + .day { border-top: 1px solid rgba(236, 231, 223, 0.08); }
+.day__no { margin: 0; display: grid; gap: 0.15rem; align-content: start; }
+.day__no b { font-weight: 400; font-size: 0.85rem; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.day__no span { color: var(--ink); }
+.day h3 + p { margin-top: 0.5rem; }
+.day p { color: var(--ink-2); }
+.day__light { margin-top: 0.6rem; font-size: 0.9rem; color: var(--ink-3) !important; }
+
+.note { margin-top: 1.6rem; padding: 1.3rem 1.5rem; background: var(--bg-2); }
+.note h3 { font-size: 1.05rem; }
+.note p { margin-top: 0.5rem; color: var(--ink-2); }
+.note + .note { margin-top: 1rem; }
+.g-body > h3 { margin-top: 3rem; }
+
+.ticks { list-style: none; margin: 1rem 0 0; padding: 0; }
+.ticks li { position: relative; padding-left: 1.4rem; color: var(--ink-2); }
+.ticks li + li { margin-top: 0.6rem; }
+.ticks li::before { content: ''; position: absolute; left: 0.2rem; top: 0.72em; width: 4px; height: 4px; background: var(--ink-3); }
+
+.g-back { max-width: 82rem; margin: clamp(4rem, 10vh, 6rem) auto clamp(4rem, 10vh, 6rem); padding: 0 var(--gutter); }
+
+/* ------------------------------------------------------------------ phone */
+
+@media (max-width: 760px) {
+  .g-open { grid-template-columns: minmax(0, 1fr); min-height: 0; gap: 1.5rem; padding-top: 1.5rem; padding-bottom: 2.75rem; }
+  .g-open .stack { --u: 62vw; --gap-open: calc(var(--u) * 0.12); --turn: -44deg; order: -1; margin: 0 0 0.5rem 9vw; }
+  .g-say h1 { font-size: 2.9rem; }
+  .g-body { font-size: 1.0625rem; }
+  .g-body h2 { margin-top: 3.5rem; font-size: 1.75rem; }
+
+  .glance, .spot.is-tall { grid-template-columns: minmax(0, 1fr); }
+  .spot.is-tall .shot, .glance .shot.is-tall { max-width: 22rem; }
+  .shots { flex-direction: column; }
+  .shots .shot { flex: none; width: 100%; }
+  .shots .shot.is-tall { max-width: 22rem; }
+
+  /* a table row becomes a small block: its first cell as the title, the rest labelled */
+  .sheet thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .sheet tbody tr { display: block; padding: 1rem 0; }
+  .sheet td { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr); gap: 0.8rem; padding: 0.15rem 0; }
+  .sheet td::before { content: attr(data-h); font-size: 0.82rem; color: var(--ink-3); padding-top: 0.12rem; }
+  .sheet td:first-child { display: block; font-size: 1.05rem; padding-bottom: 0.35rem; }
+  .sheet td:first-child::before { content: none; }
+  .sheet td.c-link { display: block; padding-top: 0.35rem; }
+  .sheet td.c-link::before { content: none; }
+  .sheet .t { white-space: normal; }
+
+  .day { grid-template-columns: minmax(0, 1fr); }
+  .note { padding: 1.1rem 1.15rem; }
+}
