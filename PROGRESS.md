@@ -68,7 +68,10 @@ Main; 2 Sea chart, scroll-craft; 3 Paper, the whole page wraps). Next he **bring
 
 ## 等你決定 Waiting on you
 
-- **Design 5, the new website from scratch: pick one of three directions** (2026-11-02):
+- **Design 5: he picked Glass block.** Full site built: home, portfolio/, trips/, guides/, guides/barcelona/
+  at http://localhost:8642/next/glass/ . Waiting for his look. Open question: 9 undated US photographs
+  (New York, LA) belong to no trip.
+- (earlier) **Design 5, three directions** (2026-11-02):
   http://localhost:8642/next/ (Relief, Glass block, Orrery; his marks and notes save to
   `ideas/reviews/design5.json`). Then build the full site from the pick. Brief: `design 5/BRIEF.md`.
 - **Design 4** (2026-11-02): keep developing it, or not? http://localhost:8642/world/
