@@ -32,7 +32,7 @@ const T = {
   zh: {
     name: '陳亮元', places: '地點', switch: 'EN', skip: '跳到各個地點',
     title: '陳亮元的風景攝影',
-    lede: '旅途中的照片，立在它們被拍下的地方。',
+    lede: '旅途中的照片，\n立在它們被拍下的地方。',
     prev: '上一張', next: '下一張', close: SITE.i18n.zh.close, best: SITE.i18n.zh.best,
     countryPage: '國家頁面', guide: t => `${t}攻略`,
     photo: (p, n, all) => `${p}，第 ${n} 張，共 ${all} 張`,
@@ -145,7 +145,7 @@ function fillCaption(sec, stop) {
   const cap = sec.querySelector('.caption');
   cap.querySelector('h2').textContent = pick(stop.title);
   cap.querySelector('.c-when').textContent = stop.city
-    ? `${pick(stop.country.name)}, ${pick(stop.country.date)}`
+    ? `${pick(stop.country.name)}${lang === 'zh' ? '，' : ', '}${pick(stop.country.date)}`
     : pick(stop.country.date);
   cap.querySelector('.c-note').textContent = stop.city ? '' : pick(stop.country.note);
   const links = [];
@@ -933,7 +933,7 @@ document.addEventListener('keydown', e => {
 
 // for checking in the browser: __d4.snap() draws the exact frame for the current scroll
 window.__d4 = {
-  camera, scene, stops, poseAt, printRect, shownRect, get smoothY() { return smoothY; },
+  camera, scene, renderer, stops, poseAt, printRect, shownRect, get smoothY() { return smoothY; },
   snap() { smoothY = window.scrollY; dirty = true; tick(performance.now()); return camera.position.toArray().map(v => +v.toFixed(2)); },
 };
 

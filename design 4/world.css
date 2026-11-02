@@ -87,6 +87,7 @@ main a, main button { pointer-events: auto; }
   position: absolute; left: var(--gutter); bottom: 9svh; margin: 0;
   max-width: 22ch;
   font-family: var(--serif); font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.25rem); line-height: 1.25;
+  white-space: pre-line; text-wrap: balance;
   color: var(--ink);
   opacity: 0; transform: translateY(0.6rem);
   transition: opacity 1.2s var(--ease) 0.5s, transform 1.2s var(--ease) 0.5s;
@@ -113,6 +114,7 @@ html.ready .lede { opacity: 1; transform: none; }
   line-height: 1.05; letter-spacing: -0.005em; color: var(--ink);
 }
 html[data-lang="zh"] .caption h2 { font-weight: 500; letter-spacing: 0.02em; }
+html[data-lang="zh"] .lede { max-width: none; line-height: 1.45; }
 .c-when { margin: 0.5rem 0 0; font-size: var(--t-s); color: var(--ink-soft); }
 .c-note { margin: 0.35rem 0 0; font-size: var(--t-m); color: var(--ink); max-width: 34ch; }
 .c-links { margin: 0.7rem 0 0; display: flex; flex-wrap: wrap; gap: 0 1.4rem; font-size: var(--t-s); }
