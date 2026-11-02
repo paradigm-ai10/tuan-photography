@@ -123,7 +123,7 @@ function renderSections() {
   }
   document.getElementById('guide-title').textContent = pick(book.title);
   document.getElementById('guide-facts').textContent = pick(g.facts);
-  document.getElementById('guide-link').href = `../../posts/${book.guide}.html`;
+  document.getElementById("guide-link").href = `guides/${book.guide}/`;
 
   // the latest trips that have photographs
   const trips = SITE.journeys.filter(j => j.countries.some(c => countries[c] && countries[c].photos.length)).slice(0, 4);
@@ -264,6 +264,7 @@ function startGlass() {
 
   /* ---- shared uniforms ---- */
   const G = {
+    uSweep: { value: -9 },
     uFade: { value: STILL ? 1 : 0 },
     uBg: { value: BG.clone() },
     uGlass: { value: new THREE.Color('#3f6359') },
@@ -284,7 +285,7 @@ function startGlass() {
     }`;
   const paneFrag = /* glsl */`
     uniform sampler2D uMap; uniform float uHas; uniform vec2 uCrop; uniform float uShade; uniform float uRefl;
-    uniform float uFade; uniform vec3 uBg; uniform vec3 uGlass; uniform vec3 uGlassDeep; uniform vec3 uGlassHi; uniform vec3 uEmpty;
+    uniform float uFade; uniform float uSweep; uniform vec3 uBg; uniform vec3 uGlass; uniform vec3 uGlassDeep; uniform vec3 uGlassHi; uniform vec3 uEmpty;
     uniform vec3 uKey;
     varying vec2 vUv; varying vec3 vN; varying vec3 vWN; varying vec3 vWP;
     void main() {
@@ -315,6 +316,9 @@ function startGlass() {
         vec3 R = reflect(-V, Nw);
         float soft = smoothstep(0.35, 0.9, R.y) * 0.035 + fres * 0.22;
         col += uGlassHi * soft;
+        // the opening: one band of light crosses the glass once the block has formed
+        float band = vWP.x * 0.8 + vWP.y * 0.45 - uSweep;
+        col += uGlassHi * 0.45 * exp(-band * band * 5.0) * (1.0 - inPhoto * 0.55);
       } else {
         // the edge of the glass: deep green inside, a bright line where it catches the light
         float along = abs(vN.x) > 0.5 ? vUv.x : vUv.y;
@@ -363,7 +367,11 @@ function startGlass() {
     mirror.renderOrder = 1;
     scene.add(mirror);
     const base = 1 - 0.32 * Math.pow(i / Math.max(1, N - 1), 0.8);
-    return { id, i, s: slides[id], u, mesh, mirror, base, state: 0, feature: FEATURES.indexOf(id) };
+    // where it comes from in the opening: out of the dark, behind and around the block
+    const r = (k) => { const x = Math.sin((i + 1) * 12.9898 * k) * 43758.5453; return x - Math.floor(x); };
+    const from = new THREE.Vector3((r(1) - 0.5) * 8, 0.1 + r(2) * 1.5, -5 - r(3) * 9);
+    const spin = new THREE.Euler((r(4) - 0.5) * 1.2, (r(5) - 0.5) * 1.6, (r(6) - 0.5) * 0.8);
+    return { id, i, s: slides[id], u, mesh, mirror, base, state: 0, feature: FEATURES.indexOf(id), from, spinQ: new THREE.Quaternion().setFromEuler(spin) };
   });
   const meshes = panes.map(p => p.mesh);
 
@@ -473,6 +481,7 @@ function startGlass() {
   const restP = new THREE.Vector3(), slidP = new THREE.Vector3(), bigP = new THREE.Vector3();
   const lookAt = new THREE.Vector3();
   let active = null, bigAmt = 0, capAmt = 0;
+  let arrive = STILL || matchMedia('(prefers-reduced-motion: reduce)').matches ? 1 : 0;
 
   function pose(s) {
     const turn = easeIO(clamp01(s / TURN));
@@ -544,6 +553,15 @@ function startGlass() {
         p.mesh.quaternion.identity();
         shade *= 1 - 0.5 * bigAmt;
       }
+      // the opening: back panes land first, the front one (the Matterhorn) last
+      if (arrive < 1) {
+        const delay = (1 - p.i / Math.max(1, N - 1)) * 0.62;
+        const a = clamp01((arrive - delay) / 0.38);
+        const e = 1 - Math.pow(1 - a, 3);
+        restP.addScaledVector(p.from, 1 - e);
+        p.mesh.quaternion.slerp(p.spinQ, 1 - e);
+        shade *= 0.25 + 0.75 * e;
+      }
       p.mesh.position.copy(restP);
       p.u.uShade.value = shade;
       p.u.uRefl.value = p === active ? 1 - big : 1;
@@ -609,6 +627,11 @@ function startGlass() {
       const diff = goal - shown;
       if (Math.abs(diff) > 0.0004) { shown += diff * (1 - Math.exp(-dt * 5.5)); dirty = true; }
       else if (diff !== 0) { shown = goal; dirty = true; }
+      if (fadeStart && (arrive < 1 || G.uSweep.value < 9)) {
+        arrive = clamp01((now - fadeStart) / 2300);
+        G.uSweep.value = arrive < 1 ? -9 : -6 + ((now - fadeStart - 2300) / 1500) * 15;
+        dirty = true;
+      }
       if (fadeStart && G.uFade.value < 1) {
         G.uFade.value = clamp01((now - fadeStart) / 1100);
         G.uFade.value = G.uFade.value * G.uFade.value * (3 - 2 * G.uFade.value);
@@ -621,4 +644,6 @@ function startGlass() {
     renderer.render(scene, camera);
   }
   requestAnimationFrame(frame);
+  // for checking in the browser: draw the opening at a given moment
+  window.__glass = { show(a, sweep = -9) { arrive = a; G.uSweep.value = sweep; G.uFade.value = 1; pose(shown); renderer.render(scene, camera); } };
 }
