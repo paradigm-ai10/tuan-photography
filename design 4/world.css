@@ -1,0 +1,230 @@
+/* Design 4, "Where they were taken". The world is drawn by world.js on the canvas;
+   this sheet sets the words that sit in front of it. --haze and --ink-soft are
+   rewritten by world.js as the light changes from place to place. */
+
+:root {
+  --haze: #f1f0ec;            /* the mist colour where you are (set by world.js) */
+  --paper: oklch(97.5% 0.008 85);
+  --ink: oklch(25% 0.012 60);
+  --ink-soft: oklch(42% 0.017 62);
+  --accent: oklch(46% 0.092 47);   /* deep clay: the route and links, nothing else */
+  --line: oklch(84.5% 0.015 78);
+
+  --serif: "Playfair Display", "Noto Serif TC", Georgia, serif;
+  --sans: "Geist", "Noto Sans TC", system-ui, sans-serif;
+
+  --t-xs: 0.8125rem;
+  --t-s: 0.9375rem;
+  --t-m: 1.0625rem;
+  --t-place: clamp(2.25rem, 1.4rem + 3.2vw, 4rem);
+
+  --gutter: clamp(1.25rem, 0.6rem + 2.6vw, 3rem);
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { background: var(--haze); color: var(--ink); -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  font-family: var(--sans);
+  font-size: var(--t-m);
+  line-height: 1.55;
+  background: var(--haze);
+  transition: background-color 0.6s linear;
+}
+html[data-lang="zh"] body { font-feature-settings: "palt" 0; }
+a { color: var(--accent); text-underline-offset: 0.2em; text-decoration-thickness: 1px; }
+a:hover { text-decoration-thickness: 2px; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+.skip { position: absolute; left: var(--gutter); top: -4rem; z-index: 30; background: var(--paper); padding: 0.5rem 0.75rem; }
+.skip:focus { top: 0.75rem; }
+
+/* ---- words: the one control style (small spaced capitals, no boxes) ---- */
+.word {
+  appearance: none; background: none; border: 0; padding: 0.55rem 0.1rem;
+  font-family: var(--sans); font-size: var(--t-xs); font-weight: 500;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink);
+  cursor: pointer; text-decoration: none;
+  transition: color 0.2s var(--ease);
+}
+.word:hover { color: var(--accent); }
+html[data-lang="zh"] .word { letter-spacing: 0.08em; }
+
+/* ---- top bar ---- */
+.bar {
+  position: fixed; inset: 0 0 auto 0; z-index: 10;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.9rem var(--gutter);
+  pointer-events: none;
+}
+.bar > * { pointer-events: auto; }
+.name {
+  font-family: var(--serif); font-size: 1.125rem; color: var(--ink); text-decoration: none;
+  letter-spacing: 0.01em;
+}
+.bar-words { display: flex; gap: 1.6rem; }
+
+/* ---- the world ---- */
+#world {
+  position: fixed; inset: 0; width: 100%; height: 100%; display: block; z-index: 0;
+  opacity: 0; transition: opacity 1.4s var(--ease);
+}
+html.ready #world { opacity: 1; }
+html.has-hover #world { cursor: pointer; }
+
+/* ---- the story: real sections in the page, scrolling over the world ---- */
+main { position: relative; z-index: 1; pointer-events: none; }
+main a, main button { pointer-events: auto; }
+
+.opening { height: 100svh; position: relative; }
+.lede {
+  position: absolute; left: var(--gutter); bottom: 9svh; margin: 0;
+  max-width: 22ch;
+  font-family: var(--serif); font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.25rem); line-height: 1.25;
+  color: var(--ink);
+  opacity: 0; transform: translateY(0.6rem);
+  transition: opacity 1.2s var(--ease) 0.5s, transform 1.2s var(--ease) 0.5s;
+}
+html.ready .lede { opacity: 1; transform: none; }
+
+.flight { height: var(--len, 80svh); }
+
+/* the opening line steps back as soon as the journey starts */
+@supports (animation-timeline: scroll()) {
+  .opening { animation: opening-out linear both; animation-timeline: scroll(root); animation-range: 0 40svh; }
+  @keyframes opening-out { to { opacity: 0; } }
+}
+
+.stop { position: relative; height: var(--len, 120svh); }
+.caption {
+  position: sticky; top: 66svh;
+  margin-left: var(--gutter);
+  width: min(30rem, calc(100% - 2 * var(--gutter)));
+  padding: 1.1rem 1.4rem 1.2rem 0;
+}
+.caption h2 {
+  margin: 0; font-family: var(--serif); font-weight: 400; font-size: var(--t-place);
+  line-height: 1.05; letter-spacing: -0.005em; color: var(--ink);
+}
+html[data-lang="zh"] .caption h2 { font-weight: 500; letter-spacing: 0.02em; }
+.c-when { margin: 0.5rem 0 0; font-size: var(--t-s); color: var(--ink-soft); }
+.c-note { margin: 0.35rem 0 0; font-size: var(--t-m); color: var(--ink); max-width: 34ch; }
+.c-links { margin: 0.7rem 0 0; display: flex; flex-wrap: wrap; gap: 0 1.4rem; font-size: var(--t-s); }
+
+.c-photos { list-style: none; margin: 0; padding: 0; }
+.c-photos button {
+  position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0);
+  white-space: nowrap; border: 0; padding: 0; background: none;
+}
+.c-photos button:focus-visible {
+  position: static; width: auto; height: auto; clip: auto; overflow: visible;
+  display: inline-block; margin-top: 0.6rem; padding: 0.2rem 0; font-size: var(--t-s);
+  color: var(--accent); outline-offset: 2px;
+}
+.c-fallback { display: none; }
+
+.end { position: relative; height: 150svh; }
+.end-inner {
+  position: sticky; top: 30svh;
+  margin: 0 auto; width: min(36rem, calc(100% - 2 * var(--gutter)));
+  text-align: center;
+}
+.end h2 { margin: 0; font-family: var(--serif); font-weight: 400; font-size: var(--t-place); line-height: 1.05; }
+.end p { margin: 0.9rem auto 0; max-width: 34ch; color: var(--ink); }
+.end-tabs { display: flex; flex-wrap: wrap; justify-content: center; gap: 0 1.8rem; margin-top: 1.6rem; }
+.end-tabs .word { color: var(--ink); }
+.end-ig { margin-top: 1.4rem; }
+
+/* ---- name beneath a hovered print ---- */
+.hovercap {
+  position: fixed; left: 0; top: 0; z-index: 5; margin: 0; pointer-events: none;
+  text-align: center; transform: translate(-50%, 0);
+  opacity: 0; transition: opacity 0.25s var(--ease);
+  white-space: nowrap;
+}
+.hovercap.on { opacity: 1; }
+.hc-place { display: block; font-family: var(--serif); font-size: 1.125rem; line-height: 1.2; color: var(--ink); }
+.hc-where { display: block; font-size: var(--t-xs); color: var(--ink-soft); margin-top: 0.15rem; }
+
+/* ---- the viewer: one photograph, large, on the haze of its place ---- */
+.viewer {
+  position: fixed; inset: 0; z-index: 20;
+  display: grid; grid-template-rows: 1fr auto; gap: 0;
+  padding: clamp(3.4rem, 6vh, 4.6rem) var(--gutter) 1rem;
+  background: color-mix(in oklab, var(--haze) 94%, white);
+  opacity: 0; transition: opacity 0.35s var(--ease);
+}
+.viewer.on { opacity: 1; }
+.viewer[hidden] { display: none; }
+.v-figure {
+  margin: 0; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr) 17rem; gap: 2.4rem;
+  align-items: end;
+}
+.v-figure img {
+  width: 100%; height: 100%; min-height: 0; object-fit: contain; object-position: center bottom;
+  transform: scale(0.985); transition: transform 0.6s var(--ease);
+}
+.viewer.on .v-figure img { transform: none; }
+.v-cap { padding-bottom: 0.3rem; }
+.v-place { margin: 0; font-family: var(--serif); font-weight: 400; font-size: clamp(1.6rem, 1.2rem + 1vw, 2.2rem); line-height: 1.1; }
+.v-where { margin: 0.35rem 0 0; color: var(--ink-soft); font-size: var(--t-s); }
+.v-note { margin: 0.9rem 0 0; font-size: var(--t-s); }
+.v-best, .v-made { margin: 0.6rem 0 0; font-size: var(--t-xs); color: var(--ink-soft); }
+.v-best:empty, .v-made:empty, .v-note:empty { display: none; }
+.v-words { display: flex; justify-content: flex-end; gap: 1.8rem; padding-top: 0.6rem; }
+
+/* ---- the places list ---- */
+.places {
+  position: fixed; inset: 0; z-index: 20; overflow-y: auto;
+  background: color-mix(in oklab, var(--haze) 92%, white);
+  opacity: 0; transition: opacity 0.3s var(--ease);
+}
+.places.on { opacity: 1; }
+.places[hidden] { display: none; }
+.places-inner { padding: 5.5rem var(--gutter) 3rem; max-width: 64rem; margin: 0 auto; }
+.places-title { margin: 0 0 2rem; font-family: var(--serif); font-weight: 400; font-size: var(--t-place); line-height: 1.05; }
+.places-list {
+  list-style: none; margin: 0; padding: 0;
+  columns: 3 14rem; column-gap: 3rem;
+}
+.places-list li { break-inside: avoid; }
+.places-list button {
+  appearance: none; background: none; border: 0; padding: 0.45rem 0; cursor: pointer; text-align: left;
+  font-family: var(--serif); font-size: 1.5rem; line-height: 1.2; color: var(--ink);
+}
+.places-list button:hover { color: var(--accent); }
+.places-list .pl-where { display: block; font-family: var(--sans); font-size: var(--t-xs); color: var(--ink-soft); }
+.places-close { position: fixed; top: 0.9rem; right: var(--gutter); }
+
+/* ---- phones ---- */
+@media (max-width: 767px) {
+  .bar { padding: 0.75rem 1rem; }
+  .bar-words { gap: 1.1rem; }
+  .caption { top: 62svh; margin-left: 1rem; width: calc(100% - 2rem); padding-right: 0; }
+  .lede { left: 1rem; bottom: 12svh; }
+  .viewer { padding: 3.6rem 1rem 0.8rem; }
+  .v-figure { grid-template-columns: 1fr; grid-template-rows: minmax(0, 1fr) auto; gap: 1rem; align-items: stretch; }
+  .v-figure img { object-position: center; }
+  .v-words { justify-content: space-between; }
+  .places-list button { font-size: 1.3rem; }
+}
+
+/* ---- without WebGL: each place shows its first photograph ---- */
+html.no-gl #world { display: none; }
+html.no-gl .flight { height: 10svh; }
+html.no-gl .stop { height: auto; padding: 12svh 0 4svh; }
+html.no-gl .caption { position: static; background: none; }
+html.no-gl .c-fallback { display: block; width: 100%; height: auto; margin: 0 0 1.2rem; }
+html.no-gl .opening { height: 70svh; }
+html.no-gl .end { height: auto; padding: 14svh 0; }
+html.no-gl .end-inner { position: static; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0.01ms !important; }
+}
