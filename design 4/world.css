@@ -210,9 +210,9 @@ html[data-lang="zh"] .lede { max-width: none; line-height: 1.45; }
 html .rv {
   --f-text: var(--sans); --ink-2: var(--ink-soft); --ink-3: var(--ink-soft); --hair: var(--line);
   --link: var(--accent); --route: var(--accent); --paper-2: oklch(94% 0.01 80);
-  left: auto; right: 0;
+  left: auto; right: 0; top: auto; bottom: 1.2rem; translate: none;
 }
-html .rv.is-moved { right: auto; }
+html .rv.is-moved { right: auto; bottom: auto; }
 
 /* ---- phones ---- */
 @media (max-width: 767px) {

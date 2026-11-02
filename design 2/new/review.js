@@ -12,6 +12,7 @@
   const OPT = (SCRIPT && SCRIPT.dataset) || {};
   const NAME = OPT.name || 'journey';
   const KEY = `${NAME}-review`;
+  const PLACE_KEY = OPT.name ? `rv-place-${OPT.name}` : 'rv-place';   // where he left the box, per page family
   const URL_ = `/__reviews/${NAME}`;
 
   // ---- the store ----------------------------------------------------------------------------
@@ -162,7 +163,7 @@
 
   // he can drag the notes anywhere by the tab or the top line; the place is remembered for every page
   let moved = null, drag = null, dragged = false;
-  try { moved = JSON.parse(localStorage.getItem('rv-place')); } catch (e) { /* storage blocked */ }
+  try { moved = JSON.parse(localStorage.getItem(PLACE_KEY)); } catch (e) { /* storage blocked */ }
   function place() {
     if (!moved) { box.classList.remove('is-moved'); return; }
     const r = box.getBoundingClientRect();
@@ -192,7 +193,7 @@
     if (!drag) return;
     drag = null;
     box.classList.remove('is-dragging');
-    if (dragged) try { localStorage.setItem('rv-place', JSON.stringify(moved)); } catch (e) { /* storage blocked */ }
+    if (dragged) try { localStorage.setItem(PLACE_KEY, JSON.stringify(moved)); } catch (e) { /* storage blocked */ }
   };
   box.addEventListener('pointerup', drop);
   box.addEventListener('pointercancel', drop);
