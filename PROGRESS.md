@@ -32,8 +32,8 @@
 ## 上次做到哪 Where we left off
 
 2026-11-02: nine general 3D skills installed on the Mac (MengTo scroll worlds, virtual tour, landscape,
-globe-gl, cobejs; davila7 3d-web-experience; freshtechbro web3d patterns, Blender pipeline, R3F); the
-account upload is still to do (Claude in Chrome was not connected; zips in `~/.claude/skills-library/upload-zips/`).
+globe-gl, cobejs; davila7 3d-web-experience; freshtechbro web3d patterns, Blender pipeline, R3F); also
+uploaded to his Claude account (both sides, skills page version 18).
 Then he asked for a completely new 3D design and left for 3 to 4 hours: Design 4 was built, checked on
 desktop and phone, critiqued by a second agent and refined.
 
@@ -66,7 +66,6 @@ Main; 2 Sea chart, scroll-craft; 3 Paper, the whole page wraps). Next he **bring
 ## 等你決定 Waiting on you
 
 - **Design 4** (2026-11-02): keep developing it, or not? http://localhost:8642/world/
-- **Upload the nine 3D skills to the Claude account** once Claude in Chrome is connected.
 - **Journey globe** (2026-10-30): kept the three with 5 stars, the live one as main; next, references
   for the globe's look, the wrap and the arrival. Front-end research report (skills, fonts, techniques, workflow, reference sites), 2026-10-30: https://claude.ai/artifact/9HiVVp4ySh6ih3izJeJXG3 Removed trials are at tags
   `globe3d-five-versions-2026-10-29`, `journey-panels-three-2026-10-29`, `journey-artists-a1-a3-2026-10-29`,
