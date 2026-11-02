@@ -32,6 +32,11 @@
         ['12', 'Prints wall, the globe stays photographs', 'Row 11, but the prints never turn back: the globe stays a ball of your photographs for good, while you read every trip, with the routes drawn over them.', 'journey-gallery-photoball.html'],
         ['13', 'Atlas, a personal record', 'New: one paper globe you zoom freely, from the whole world down to a city, holding every place you have been and every trip. City dots grow with each visit, the countries deepen with each return, and close up your photographs lie at their places as small prints. An index of places and trips beside it; any trip can be played.', 'journey-atlas.html'],
         ['14', 'Atlas in colour', 'The same personal atlas, now lit by a low warm sun: the land tinted like a hand-coloured atlas, your countries raised in terracotta, a soft rim and shadow so the globe stands on the page, each trip coloured by its year, a years line you can play, and your photographs larger at every zoom.', 'journey-atlas-bold.html'],
+        ['15', 'Atlas, varnished globe', 'A hand-painted paper globe with a soft varnish: warm washed seas that deepen toward the coasts, your countries in layered clay watercolour, ocean names in both languages. It rises from a faint shadow on the page like a globe set down on a desk, then turns Taiwan to the front.', 'journey-atlas-v1.html'],
+        ['16', 'Atlas, engraved globe', 'An engraved paper globe in ink only: hairline coasts, waterlines along every shore, mountains drawn in short strokes, your countries hatched in clay. On arrival the coasts draw themselves outward from Taipei, then the land and your countries fill in.', 'journey-atlas-v2.html'],
+        ['17', 'Atlas, porcelain globe', 'An unglazed porcelain globe with no colour: the mountains are real light and shadow, the sea a smooth lower surface, and your countries glazed in clay so they catch the light as it turns. It arrives as a flat tile that turns upright and swells into a sphere.', 'journey-atlas-v3.html'],
+        ['18', 'Atlas, contour globe', 'A paper globe drawn in fine olive form lines, with ink coasts and quiet clay for your countries; closer in, finer lines appear. It opens close over Taiwan and rises steadily to the whole world, your trips drawing out as each country comes into view.', 'journey-atlas-v4.html'],
+        ['19', 'Atlas, prints globe', 'A quiet paper globe with your photographs laid where you took them, as small bordered prints. On arrival they start as a loose contact sheet and each one flies home to its place, Taiwan first, while the globe appears beneath them.', 'journey-atlas-v5.html'],
       ],
     },
     zh: {
@@ -60,6 +65,11 @@
         ['12', '照片牆，地球一直是照片', '跟第 11 版一樣，但相片不再翻回地圖：地球一直是一顆照片球，讀每一趟旅程時都是，路線畫在照片上。', 'journey-gallery-photoball.html'],
         ['13', '足跡，個人地圖', '新的：一顆紙地球，可以自由拉近拉遠，從整個世界一路到一座城市，記著你去過的每個地方、走過的每趟旅程。城市的點去越多次越大，國家每回去一次顏色就深一點，拉近時你的照片像小相片一樣放在拍的地方。旁邊是地方和旅程的目錄；每一趟都可以播放。', 'journey-atlas.html'],
         ['14', '彩色足跡', '同一本個人地圖，現在有一道溫暖的低角度陽光：陸地像手工上色的地圖，你去過的國家以赤陶色微微浮起，柔和的邊光和影子讓地球立在頁面上，每趟旅程依年份上色，還有一條可以播放的年份線，你的照片在每個縮放層級都更大。', 'journey-atlas-bold.html'],
+        ['15', '足跡，上漆紙地球', '一顆手繪上漆的紙地球：溫暖的海色越靠近海岸越深，你去過的國家以一層層赤陶水彩上色，海洋名稱有中英兩種文字。開場時它像放在書桌上一樣，從頁面上淡淡的影子裡升起，再把台灣轉到正面。', 'journey-atlas-v1.html'],
+        ['16', '足跡，銅版地球', '一顆只用墨線的銅版紙地球：細細的海岸線，沿岸的水紋線，山以短短的筆觸刻出，你去過的國家以赤陶色斜線標出。開場時海岸線從台北向外一筆一筆畫出來，接著陸地和你的國家才填上。', 'journey-atlas-v2.html'],
+        ['17', '足跡，素燒地球', '一顆沒有上色的素燒瓷地球：山是真實的光與影，海是較低較平滑的表面，你去過的國家上了一層赤陶釉，轉動時會映出光。開場時它是一片平放的瓷片，立起來後慢慢鼓成一顆球。', 'journey-atlas-v3.html'],
+        ['18', '足跡，等高線地球', '一顆用細細橄欖色地形線畫成的紙地球，墨色海岸，你的國家淡淡的赤陶色；拉近時會出現更細的線。開場時從台灣上空近處開始，平穩地升高到整個世界，每看到一個國家，你的旅程就畫出來。', 'journey-atlas-v4.html'],
+        ['19', '足跡，相片地球', '一顆安靜的紙地球，你的照片像有白邊的小相片一樣放在拍攝的地方。開場時它們先像一張攤開的印樣，接著每一張飛回自己的地方，台灣的最先，地球也在它們下面慢慢出現。', 'journey-atlas-v5.html'],
       ],
     },
   };

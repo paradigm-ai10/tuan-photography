@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>Prints globe · tuan photography 陳亮元</title>
+<meta name="description" content="Every place Thomas Chen has been and every trip he has taken, on a paper globe with his photographs laid where they were taken.">
+<link rel="icon" href="../../favicon.ico">
+<link rel="stylesheet" href="../fonts.css">
+<link rel="stylesheet" href="journey-atlas-v5.css">
+<link rel="stylesheet" href="review.css">
+</head>
+<body class="at journey">
+<canvas class="at-globe" id="globe" aria-label="A paper globe with his photographs laid where they were taken. The Index lists everything on it."></canvas>
+<canvas class="at-hair" id="hair" aria-hidden="true"></canvas>
+<div class="at-marks" id="marks"></div>
+
+<header class="at-top" id="top">
+  <a class="at-word at-back" id="back" href="journey.html">Journey</a>
+  <span class="at-name" id="name">Prints globe</span>
+  <button class="at-word" type="button" id="lang" lang="zh-Hant">中文</button>
+</header>
+<nav class="at-crumbs" id="crumbs" aria-label="Where you are"></nav>
+<p class="at-sr" id="live" aria-live="polite"></p>
+
+<div class="at-controls" id="controls">
+  <button class="at-word at-closer" type="button" id="closer">Closer</button>
+  <button class="at-word at-further" type="button" id="further">Further</button>
+  <button class="at-word" type="button" id="whole">Whole world</button>
+  <span class="at-scale" id="scale"></span>
+</div>
+<p class="at-totals" id="totals"></p>
+
+<section class="at-playbar" id="playbar" hidden aria-live="polite">
+  <p class="at-playbar__kicker" id="pb-label">Playing</p>
+  <p class="at-playbar__trip" id="pb-trip"></p>
+  <p class="at-playbar__leg" id="pb-leg"></p>
+  <p class="at-playbar__row">
+    <button class="at-word" type="button" id="pb-pause">Pause</button>
+    <button class="at-word" type="button" id="pb-next">Next leg</button>
+    <button class="at-word" type="button" id="pb-stop">Stop</button>
+    <button class="at-word" type="button" id="pb-follow" hidden>Follow</button>
+  </p>
+</section>
+
+<aside class="at-panel" id="panel" aria-label="Index">
+  <div class="at-panel__head">
+    <button class="at-word at-sheet-toggle" type="button" id="sheet-toggle" aria-expanded="false" aria-controls="panel-body">Index</button>
+    <p class="at-sheet-summary" id="sheet-summary"></p>
+    <div class="at-tabs" role="tablist">
+      <button class="at-word at-tab" type="button" role="tab" id="tab-places" data-tab="places" aria-selected="true">Places</button>
+      <button class="at-word at-tab" type="button" role="tab" id="tab-trips" data-tab="trips" aria-selected="false">Trips</button>
+      <button class="at-word at-sheet-world" type="button" id="sheet-world">Whole world</button>
+    </div>
+  </div>
+  <div class="at-panel__body" id="panel-body">
+    <div class="at-index" id="index">
+      <div id="index-body"></div>
+      <p class="at-foot"><a class="at-word" id="routes" href="journey-routes.html">The routes, played</a></p>
+    </div>
+    <article class="at-page" id="page" hidden></article>
+  </div>
+</aside>
+
+<div class="at-viewer" id="viewer" hidden role="dialog" aria-modal="true" aria-labelledby="v-text">
+  <figure class="at-v">
+    <div class="at-v__frame" id="v-frame"><img id="v-img" alt="" decoding="async"></div>
+    <figcaption class="at-v__text" id="v-text"></figcaption>
+    <p class="at-v__row">
+      <button class="at-word" type="button" id="v-prev">Previous</button>
+      <button class="at-word" type="button" id="v-next">Next</button>
+      <a class="at-word" id="v-gallery" href="../../gallery.html">Gallery</a>
+      <button class="at-word" type="button" id="v-close">Close</button>
+    </p>
+  </figure>
+</div>
+
+<script src="../vendor/d3.min.js"></script>
+<script src="../vendor/topojson-client.min.js"></script>
+<script src="../vendor/country-names.js"></script>
+<script src="../data.js"></script>
+<script>
+  // the Notes box (review.js) asks the page for its language; the atlas tells it when it changes
+  window.Kit = { lang: (function () { try { return localStorage.getItem('tlap-lang') === 'zh' ? 'zh' : 'en'; } catch (e) { return 'en'; } })(), _f: [], onLang: function (f) { this._f.push(f); } };
+</script>
+<script src="review.js"></script>
+<script type="importmap">{ "imports": { "three": "../vendor/three/three.module.js" } }</script>
+<script type="module" src="journey-atlas-v5.js"></script>
+</body>
+</html>
