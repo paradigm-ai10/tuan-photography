@@ -1219,6 +1219,7 @@ function stepSpin(dt) {
   const wait = quietSince + SPIN_AFTER - now;
   if (wait > 0) { clearTimeout(spinTimer); spinTimer = setTimeout(wake, wait + 20); return false; }
   spinK = THREE.MathUtils.damp(spinK, 1, 1.5, dt); // eases into the turn
+  if (cardIdx !== -1) { cardIdx = -1; $('card').hidden = true; light.U.uHover.value = -1; reservedBoxes = reserved(); collideNext = true; }
   cam.lng = wrap(cam.lng + SPIN * spinK * dt);
   return true;
 }
@@ -1653,8 +1654,8 @@ function showCard(i, x, y) {
     return;
   }
   const c = R.countries[i];
-  // a country being looked at holds the globe still (the slow turn waits, as for any touch)
-  quietSince = performance.now(); spinK = 0;
+  // a country under a resting pointer does not stop the slow turn; the card steps aside while it turns
+  if (spinK > 0.01) return;
   if (cardIdx !== i) {
     cardIdx = i;
     const w = W();
