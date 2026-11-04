@@ -123,10 +123,10 @@ textarea:focus-visible, .lg-btn:focus-visible { outline: 2px solid var(--accent)
 
 /* the last five together (his call, 2026-11-04): side by side in rows of three, so he sees them at once.
    Each frame sizes its letters to its own width (cqi), so the five keep the proportions they had alone. */
-[data-set="final"] .lg-main { max-width: 84rem; }
-[data-set="final"] .lg-list { display: flex; flex-wrap: wrap; justify-content: center; gap: 0 2rem; }
-[data-set="final"] .lg-item { flex: 0 1 calc((100% - 4rem) / 3); min-width: min(100%, 20rem); }
-[data-set="final"] .lg-frame { container-type: inline-size; }
+[data-set="final"] .lg-main, [data-set="vary"] .lg-main { max-width: 84rem; }
+[data-set="final"] .lg-list, [data-set="vary"] .lg-list { display: flex; flex-wrap: wrap; justify-content: center; gap: 0 2rem; }
+[data-set="final"] .lg-item, [data-set="vary"] .lg-item { flex: 0 1 calc((100% - 4rem) / 3); min-width: min(100%, 20rem); }
+[data-set="final"] .lg-frame, [data-set="vary"] .lg-frame { container-type: inline-size; }
 [data-set="final"] .lg-frame .lg-tuan { font-size: 11.5cqi; }
 [data-set="final"] .f-cormorant .lg-frame .lg-tuan { font-size: 10.58cqi; } /* 8% under the shared size */
 [data-set="final"] .lg-frame .lg-photo { font-size: max(0.75rem, 2.4cqi); }
@@ -134,6 +134,29 @@ textarea:focus-visible, .lg-btn:focus-visible { outline: 2px solid var(--accent)
 [data-set="final"] .f-forum .lg-frame .lg-photo { font-size: max(0.8rem, 2.6cqi); }
 [data-set="final"] .lg-small-menu { display: none; }
 [data-set="final"] .lg-small { justify-content: center; }
-[data-set="final"] .lg-btn.replay { margin-left: 0; }
+[data-set="final"] .lg-btn.replay, [data-set="vary"] .lg-btn.replay { margin-left: 0; }
 /* he likes photography in capitals under TUAN (2026-11-04): Cormorant now sets it like Cinzel and Castoro */
 [data-set="final"] .f-cormorant .lg-photo { text-transform: uppercase; }
+
+/* variations (2026-11-04): Cormorant and Cinzel, six ways each. Sizes are shares of the frame's width (cqi),
+   carried as --tuan and --photo so each way changes only what it is about */
+[data-set="vary"] .lv-group { margin-bottom: 3rem; }
+[data-set="vary"] .lv-group > .lg-name { text-align: center; margin: 0 0 1rem; }
+[data-set="vary"] .lg-item { --tuan: 11.5cqi; --photo: 2.4cqi; }
+[data-set="vary"] .f-cormorant { --tuan: 10.58cqi; } /* 8% under the shared size */
+[data-set="vary"] .lg-frame .lg-tuan { font-size: var(--tuan); }
+[data-set="vary"] .lg-frame .lg-photo { font-size: max(0.75rem, var(--photo)); text-transform: uppercase; }
+[data-set="vary"] .lg-photo span:last-child { margin-right: -0.3em; }
+[data-set="vary"] .lv-b { --tuan: 9.8cqi; --photo: 3.4cqi; }
+[data-set="vary"] .lv-b.f-cormorant { --tuan: 9cqi; }
+[data-set="vary"] .lv-c .lg-photo { display: flex; justify-content: space-between; justify-self: stretch; letter-spacing: 0; }
+[data-set="vary"] .lv-c .lg-photo span:last-child { margin-right: 0; }
+[data-set="vary"] .lv-d .lg-rule { display: none; }
+[data-set="vary"] .lv-d .lg-tuan { margin-bottom: 0.4em; }
+[data-set="vary"] .lv-e { --tuan: 8.6cqi; --photo: 2.1cqi; }
+[data-set="vary"] .lv-e.f-cormorant { --tuan: 7.9cqi; }
+[data-set="vary"] .lv-e .lg-tuan { letter-spacing: 0.5em; }
+[data-set="vary"] .lv-e .lg-tuan span:last-child { margin-right: -0.5em; }
+[data-set="vary"] .lv-e .lg-photo { letter-spacing: 0.5em; }
+[data-set="vary"] .lv-e .lg-photo span:last-child { margin-right: -0.5em; }
+[data-set="vary"] .lv-f .lg-rule { width: 22%; justify-self: center; transform-origin: center; }

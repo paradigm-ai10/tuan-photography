@@ -40,7 +40,7 @@
   ];
   const SETS = {
     all: ['playfair', 'cormorant', 'italiana', 'bodoni', 'fraunces', 'instrument', 'cinzel', 'marcellus', 'jost', 'josefin', 'tenor', 'signature'],
-    final: ['cormorant', 'cinzel', 'castoro']
+    final: ['cormorant', 'cinzel']
   };
   const FACES = (SETS[document.body.dataset.set] || SETS.all).map((id) => ALL.find((f) => f.id === id));
 
