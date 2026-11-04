@@ -5,8 +5,9 @@
 @media (min-width: 64rem) {
   /* the held stretch where the map closes into the globe on the whole screen */
   [data-craft] .jr-hold { display: block; height: 128svh; pointer-events: none; }
-  /* (data-fold="long") the fold given 2.2 times the scroll: 1.02 screens more */
-  [data-craft][data-fold="long"] .jr-hold { height: 230svh; }
+  /* (data-fold="long") the fold given more scroll (journey.js writes --fold-len, 2.2 unless the adjust
+     tab says otherwise): 0.85 screens more for each step past 1 */
+  [data-craft][data-fold="long"] .jr-hold { height: calc(128svh + 85svh * (var(--fold-len, 2.2) - 1)); }
   [data-craft] .jr { --arr: 0; }
   /* depth: three planes leave at three speeds. The words go first and fastest, the counters a
      little slower, the map itself barely moves, so the sheet reads as the furthest thing back */

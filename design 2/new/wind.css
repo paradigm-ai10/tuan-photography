@@ -1,0 +1,31 @@
+/* The wind versions of the Journey (data-globe="gallery-wind" and its sisters): his photographs behind
+   the prints while they are in the air (globe3d.js, CFG.backdrop), and the adjust tab (adjust.js). */
+
+/* his landscapes behind the cloud: shown inside the map's box once the map comes apart, one after
+   another as the scroll goes on, each pushing in slowly; gone as the globe glides aside */
+.jr-map .g3 canvas { position: relative; z-index: 1; }
+.g3-under { position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: var(--show, 0); clip-path: inset(var(--t, 0) var(--r, 0) var(--b, 0) var(--l, 0)); overflow: hidden; }
+.g3-under__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(var(--kb, 1)); transition: opacity 1.4s var(--ease); }
+.g3-under__img.is-on { opacity: 1; }
+
+/* the adjust tab: a word at the bottom left, on his Mac only */
+.adj { position: fixed; left: 16px; bottom: 16px; z-index: 2147481000; font: 400 0.8125rem/1.4 var(--f-text); color: var(--ink); }
+.adj-tab, .adj-close, .adj-reset {
+  font: 500 0.6875rem/1 var(--f-text); letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink);
+  background: var(--paper); border: 1px solid var(--hair); border-radius: 0; padding: 9px 12px; cursor: pointer;
+}
+.adj-tab:hover, .adj-close:hover, .adj-reset:hover { border-color: var(--ink); }
+.adj-tab:focus-visible, .adj-close:focus-visible, .adj-reset:focus-visible, .adj-range:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+.adj.is-open .adj-tab { display: none; }
+.adj-panel { width: min(320px, calc(100vw - 32px)); padding: 16px; background: var(--paper); border: 1px solid var(--hair); }
+.adj-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 4px; }
+.adj-title { margin: 0; font: 500 0.6875rem/1 var(--f-text); letter-spacing: 0.12em; text-transform: uppercase; }
+.adj-close { padding: 6px 8px; }
+.adj-now { margin: 0 0 12px; color: color-mix(in oklch, var(--ink) 60%, var(--paper)); font-variant-numeric: tabular-nums; }
+.adj-row { display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; margin: 0 0 14px; }
+.adj-name { font-weight: 500; }
+.adj-val { font-variant-numeric: tabular-nums; text-align: right; }
+.adj-range { grid-column: 1 / -1; width: 100%; margin: 4px 0 0; accent-color: var(--link); }
+.adj-hint { grid-column: 1 / -1; color: color-mix(in oklch, var(--ink) 55%, var(--paper)); font-size: 0.75rem; }
+.adj-foot { display: flex; align-items: center; gap: 12px; margin-top: 4px; }
+.adj-status { color: color-mix(in oklch, var(--ink) 55%, var(--paper)); font-size: 0.75rem; }

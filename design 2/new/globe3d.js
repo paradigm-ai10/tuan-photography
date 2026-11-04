@@ -28,6 +28,7 @@ const V = document.body.dataset.globe || 'paper';
 // the globemaker's globe (see gores below), shared by its photograph variations
 const GORE = { lift: 0.03, seg: [720, 360], frame1: 3.05, look: 0.3, paint: 'globe', wave: true, gores: true, rise: true, pen: true, unlit: true, bleed: true, gloss: true, noGrat: true };
 const GALLERY = { ...GORE, gores: false, tiles: [24, 12] };
+const WIND = { ...GALLERY, photos: 'tileBacks', flip: true, backdrop: ['matterhorn-lake', 'roys-peak', 'fuji-lake', 'sapa-valley'] };
 const CFG = {
   paper: { lift: 0.07, seg: [360, 180] },
   relief: { lift: 0.07, seg: [360, 180], relief: true },
@@ -99,11 +100,25 @@ const CFG = {
   'gallery-hold': { ...GALLERY, photos: 'tileBacks', flip: true, hold: true, tileLift: 0.5, scatter: 0.1 },
   'gallery-some': { ...GALLERY, photos: 'tileBacks', flip: true, keep: 0.25, tileLift: 0.5, scatter: 0.1 },
   'gallery-window': { ...GALLERY, photos: 'tileBacks', flip: true, window: 40, tileLift: 0.5, scatter: 0.1 },
-  // wind     the map comes apart into its prints and a wind carries them off, west first; they tumble
-  //          over to show his photographs and hang in a drifting cloud that rocks in the air, held over a
-  //          longer stretch of scroll (data-fold="long"), then, Taiwan's first, are drawn back in a slow
-  //          spiral round the ball, turning back to the map as they come, and pressed down onto it
-  'gallery-wind': { ...GALLERY, photos: 'tileBacks', flip: true, wind: true },
+  // the wind versions: the map comes apart into its prints, they hang in the air in a figure of their
+  // own showing his photographs, over a longer stretch of scroll (data-fold="long"), while his
+  // landscapes show behind them (backdrop), and are drawn back onto the ball turning back to the map;
+  // the adjust tab (adjust.js) sets the timing. The figures:
+  // gust     a wind carries them off, west first; they tumble over and hang in a drifting cloud that
+  //          rocks in the air, then are drawn back, Taiwan's first, in a slow spiral round the ball
+  // murmur   a murmuration: they stream along one long ribbon that sweeps and folds across the screen,
+  //          thick and thin by turns, flashing as they bank like starlings turning, and pour into the ball
+  // deck     every print is gathered into one pile in the middle, turned face up on the way, the pile
+  //          is fanned out in three rows like a hand of cards, and they are dealt back onto the ball
+  // vortex   they are pulled up off the map, the bottom first, into a column that turns as the page
+  //          scrolls, widening to the top like a whirlwind, which closes down into the ball
+  // tide     a wave runs out from Taiwan and turns each print over where it lies, so the map becomes a
+  //          contact sheet of his photographs; it ripples like cloth in the wind and rolls up into the ball
+  'gallery-wind': { ...WIND, wind: 'gust' },
+  'gallery-murmur': { ...WIND, wind: 'murmur' },
+  'gallery-deck': { ...WIND, wind: 'deck' },
+  'gallery-vortex': { ...WIND, wind: 'vortex' },
+  'gallery-tide': { ...WIND, wind: 'tide' },
 }[V];
 const HOME_LL = [S.flightsFrom[1], S.flightsFrom[0]];
 const CRAFT = 'craft' in document.body.dataset;
@@ -233,7 +248,7 @@ function place(lon, lat, h, st, out = new THREE.Vector3()) {
 }
 const MORPH = /* glsl */`
   uniform float uKx, uKy, uR, uCenter, uRaise, uMix, uWave, uFold, uRise, uReveal, uSoft, uGores, uGore0, uTiles, uTileGap, uTileLift, uTileFlip, uTileScatter, uTileRate, uTileMode, uTileKeep, uTurn, uTime;
-  uniform vec4 uWin;
+  uniform vec4 uWin, uWind;
   uniform vec2 uHome, uTileN;
   uniform sampler2D uMask, uMaskPrev;
   varying vec2 vQ;
@@ -254,36 +269,101 @@ const MORPH = /* glsl */`
       float ac = (aTile.x - 0.5) * 6.2831853, bc = (aTile.y - 0.5) * 3.1415927;
       float d = acos(clamp(sin(bc) * sin(uHome.y) + cos(bc) * cos(uHome.y) * cos(ac + uCenter - uHome.x), -1.0, 1.0)) / 3.1415927;
       if (uTileMode > 4.5) {
-        // (wind) each print is blown off the wall on its own clock, west first, and tumbles over (once or
-        // three times) to show its photograph; it hangs in a cloud that drifts on with the wind as the
-        // scroll goes on and rocks in the air while it waits; then, Taiwan's first, it is drawn back in a
-        // spiral round the ball's axis, kept clear of the ball, turning back to the map as it comes, and
-        // pressed down onto its place
+        // (the wind versions) each print leaves the wall on its own clock, turns over to show its
+        // photograph and hangs in the air in its version's figure; then, in its version's order, it is
+        // drawn back onto the ball, turning back to the map as it comes, and pressed down onto its place.
+        // uWind: x where the return starts, y the wind (or the figure's speed), z the rocking while it
+        // waits (uTime), w the figure (0 gust, 1 murmur, 2 deck, 3 vortex, 4 tide)
         vec2 tc = floor(aTile * uTileN);
-        float h1 = fract((tc.x * 7.0 + tc.y * 13.0) * 0.6180339), h2 = fract((tc.x * 11.0 + tc.y * 5.0) * 0.7548777);
-        float h3 = fract((tc.x * 3.0 + tc.y * 17.0) * 0.5698403), h4 = fract((tc.x * 13.0 + tc.y * 3.0) * 0.4142136);
-        float rel = 0.04 + 0.16 * ((ac / 6.2831853 + 0.5) * 0.7 + h1 * 0.3), ea = smoothstep(rel, rel + 0.12, uFold);
-        float e = clamp((uFold - 0.55 - 0.17 * d) / 0.28, 0.0, 1.0); e = e * e * e * (e * (e * 6.0 - 15.0) + 10.0);
-        float air = ea * (1.0 - e), eb = smoothstep(0.15, 0.9, e);
-        vec2 o = vec2(a - ac, b - bc) * (1.0 - uTileGap * smoothstep(0.0, 0.1, uFold) * (1.0 - smoothstep(0.7, 1.0, e)));
-        vec3 hang = vec3(ac * 0.6 + 0.2 + (h2 - 0.5) * 0.6, bc * 0.7 + 0.1 + (h3 - 0.5) * 0.4, 0.6 + (h4 - 0.5) * 1.4)
-          + vec3(0.9, 0.25, 0.0) * max(uFold - rel, 0.0)
-          + vec3(0.08 * sin(uFold * 9.0 + h2 * 6.28), 0.06 * sin(uFold * 7.0 + h3 * 6.28) + 0.025 * sin(uTime * 1.1 + h1 * 6.28) * air, 0.08 * sin(uFold * 8.0 + h4 * 6.28));
-        vec3 p = mix(vec3(ac, bc, 1.0), hang, ea) * uR + vec3(0.0, 0.0, 0.35 * uR * sin(3.1415927 * ea));
-        float pq = atan(p.x, p.z), ph = pq + mod(ac - pq, 6.2831853) * e, rr = mix(length(p.xz), uR * cos(bc), e);
-        vec3 c = vec3(rr * sin(ph), mix(p.y, uR * sin(bc), e), rr * cos(ph));
-        c = normalize(c) * max(length(c), uR * (1.0 + 0.3 * sin(3.1415927 * e)) * smoothstep(0.0, 0.35, e));
-        float ce = smoothstep(0.0, 0.7, e), ya = ph * ce, pa = bc * ce;
+        // four numbers of its own, scattered without a pattern (PI is three.js's own)
+        float h1 = fract(sin(dot(tc, vec2(12.9898, 78.233))) * 43758.5453), h2 = fract(sin(dot(tc, vec2(39.3468, 11.135))) * 24634.6345);
+        float h3 = fract(sin(dot(tc, vec2(73.156, 52.235))) * 15731.743), h4 = fract(sin(dot(tc, vec2(27.619, 91.471))) * 31415.9265);
+        float f = uFold, sty = uWind.w, hold = uWind.x, span = 1.0 - hold, wd = uWind.y / 0.9, rk = uWind.z, t = uTime;
+        float tn = mod(tc.x * 7.0 + tc.y * 13.0, 4.0), kx = cos(tn * 1.5707963), ky = sin(tn * 1.5707963);
+        float idx = (tc.y * uTileN.x + tc.x) / (uTileN.x * uTileN.y);
+        // when it leaves the wall, how quickly, and its place in the order back (Taiwan's first, unless)
+        float rel, rise = 0.12, dd = d;
+        if (sty < 0.5) rel = 0.04 + 0.16 * ((ac / 6.2831853 + 0.5) * 0.7 + h1 * 0.3);
+        else if (sty < 1.5) { rel = 0.04 + 0.2 * h1; dd = h1; }
+        else if (sty < 2.5) { rel = 0.03 + 0.12 * h1; rise = 0.1; }
+        else if (sty < 3.5) rel = 0.03 + 0.15 * (bc / PI + 0.5) + 0.04 * h1;
+        else { rel = 0.03 + 0.22 * d; rise = 0.08; }
+        float ea = smoothstep(rel, rel + rise, f);
+        float e = clamp((f - hold - span * 0.38 * dd) / (span * 0.62), 0.0, 1.0); e = e * e * e * (e * (e * 6.0 - 15.0) + 10.0);
+        float air = ea * (1.0 - e), eb = smoothstep(0.35, 0.95, e), fl = max(f - rel, 0.0);
+        vec3 wall = vec3(ac, bc, 1.0), hang = wall;
+        float yaw = 0.0, pit = 0.0, turns = 1.0, sway = 0.0, ps = 0.0, lift = 0.35;
+        if (sty < 0.5) {
+          // gust: a cloud that drifts on with the wind as the scroll goes on, each tumbling once or three times
+          hang = vec3(ac * 0.6 + 0.2 + (h2 - 0.5) * 0.6, bc * 0.7 + 0.1 + (h3 - 0.5) * 0.4, 0.6 + (h4 - 0.5) * 1.4)
+            + vec3(1.0, 0.28, 0.0) * uWind.y * fl
+            + vec3(0.08 * sin(f * 9.0 + h2 * 6.28), 0.06 * sin(f * 7.0 + h3 * 6.28) + 0.025 * rk * sin(t * 1.1 + h1 * 6.28), 0.08 * sin(f * 8.0 + h4 * 6.28));
+          turns = h4 < 0.5 ? 1.0 : 3.0;
+          sway = 0.3 * rk * sin(t * (0.7 + h2) + h3 * 6.28);
+          ps = (h1 - 0.5) * 1.2 + 0.12 * rk * sin(t * (0.5 + h4) + h1 * 6.28);
+        } else if (sty < 1.5) {
+          // murmur: a ribbon along a moving curve, its place along it the order it left in; the prints
+          // bank with the way they go and a wave of them turns edge on and over, the starlings' flash
+          float tau = f * 3.0 * wd - h1 * 2.4;
+          vec3 cv = vec3(1.75 * sin(tau * 0.95 + 0.3), 0.55 * sin(tau * 1.7 + 0.8) + 0.25 * sin(tau * 3.3), 0.5 + 0.45 * cos(tau * 1.3));
+          vec3 tg = vec3(1.6625 * cos(tau * 0.95 + 0.3), 0.935 * cos(tau * 1.7 + 0.8) + 0.825 * cos(tau * 3.3), -0.585 * sin(tau * 1.3));
+          hang = cv + (vec3(h2, h3, h4) - 0.5) * 0.3 * (1.0 + 0.8 * sin(tau * 2.5 + 1.7)) + vec3(0.0, 0.03 * rk * sin(t * 1.3 + h1 * 6.28), 0.0);
+          ps = atan(tg.y, abs(tg.x) + 0.2) * 0.8;
+          yaw = 0.25 * tg.x / length(tg);
+          sway = 1.1 * sin(tau * 3.0 + h1 * 9.0) + 0.25 * rk * sin(t * 0.9 + h2 * 6.28);
+          lift = 0.2;
+        } else if (sty < 2.5) {
+          // deck: one pile in the middle, then fanned out from a point below the screen in three rows
+          float fan = smoothstep(0.22, 0.42, f), row = floor(h2 * 3.0), within = fract(h2 * 3.0);
+          float phi = ((within - 0.5) * 2.6 + 0.1 * sin(f * 6.0) * wd + 0.03 * rk * sin(t * 0.8 + row)) * fan;
+          vec3 pile = vec3((h3 - 0.5) * 0.05, -0.05 + (h4 - 0.5) * 0.05, 0.5 + idx * 0.0016);
+          vec3 fanned = vec3(0.0, -1.45, 0.45 + row * 0.15 + within * 0.12) + (1.0 + row * 0.42) * vec3(sin(phi), cos(phi), 0.0);
+          hang = mix(pile, fanned, fan);
+          ps = mix((h1 - 0.5) * 0.14, -phi, fan);
+          sway = 0.08 * rk * sin(t * 0.9 + within * 6.28);
+          lift = 0.25;
+        } else if (sty < 3.5) {
+          // vortex: a column round an upright axis, wider at the top, turning with the scroll (and slowly
+          // by itself), each print facing out from it
+          float yy = (h2 - 0.5) * 2.3 + 0.08 * sin(f * 10.0 + h1 * 6.28);
+          float ang = h1 * 6.2831853 + f * 9.0 * wd + t * 0.12 * rk + yy * 0.6;
+          float rr = 0.45 + 0.28 * (yy + 1.15) + (h3 - 0.5) * 0.12;
+          hang = vec3(rr * sin(ang), yy, 0.35 + rr * cos(ang));
+          yaw = mod(ang + PI, 6.2831853) - PI; pit = 0.15 * (h4 - 0.5);
+          sway = 0.2 * rk * sin(t * (0.6 + h3) + h2 * 6.28);
+          lift = 0.15;
+        } else {
+          // tide: turned over where it lies, then the sheet ripples like cloth, each print tilting with it
+          float amp = smoothstep(0.12, 0.35, f) * (1.0 - smoothstep(hold - 0.05, hold + 0.2, f));
+          float A = ac * 2.2 + bc * 1.3 - f * 16.0 * wd, B = ac * 3.7 - bc * 2.1 - f * 9.0 * wd;
+          hang = wall + vec3(0.0, 0.0, (0.16 * sin(A) + 0.06 * sin(B)) * amp + 0.012 * rk * sin(t * 1.4 + ac * 2.0 + bc));
+          yaw = -(0.352 * cos(A) + 0.222 * cos(B)) * amp; pit = -(0.208 * cos(A) - 0.126 * cos(B)) * amp;
+          lift = 0.12;
+        }
+        vec2 o = vec2(a - ac, b - bc) * (1.0 - uTileGap * smoothstep(0.0, 0.1, f) * (1.0 - smoothstep(0.7, 1.0, e)));
+        vec3 p = mix(wall, hang, ea) * uR + vec3(0.0, 0.0, lift * uR * sin(PI * ea));
+        float ph; vec3 c;
+        if (sty > 3.5) {
+          // rolled up as the wall was in the gallery: laid on the ball from where it lies
+          ph = ac;
+          vec3 nE = vec3(cos(bc * e) * sin(ac * e), sin(bc * e), cos(bc * e) * cos(ac * e));
+          c = mix(p, vec3(cos(bc) * sin(ac), sin(bc), cos(bc) * cos(ac)) * uR, e) + nE * 0.3 * uR * sin(PI * e);
+        } else {
+          // drawn back in a spiral round the ball's axis, kept clear of the ball until it lands
+          float pq = atan(p.x, p.z), rr = mix(length(p.xz), uR * cos(bc), e);
+          ph = pq + mod(ac - pq, 6.2831853) * e;
+          c = vec3(rr * sin(ph), mix(p.y, uR * sin(bc), e), rr * cos(ph));
+          c = normalize(c) * max(length(c), uR * (1.0 + 0.3 * sin(PI * e)) * smoothstep(0.0, 0.35, e));
+        }
+        float ce = sty > 3.5 ? e : smoothstep(0.0, 0.7, e), ya = mix(yaw * ea, ph, ce), pa = mix(pit * ea, bc, ce);
         vec3 nr = vec3(cos(pa) * sin(ya), sin(pa), cos(pa) * cos(ya));
         vec3 ex = vec3(cos(ya), 0.0, -sin(ya)), my = vec3(-sin(pa) * sin(ya), cos(pa), -sin(pa) * cos(ya));
-        float tn = mod(tc.x * 7.0 + tc.y * 13.0, 4.0), kx = cos(tn * 1.5707963), ky = sin(tn * 1.5707963);
-        float th = 3.1415927 * ((h4 < 0.5 ? 1.0 : 3.0) * ea + eb) + 0.3 * sin(uTime * (0.7 + h2) + h3 * 6.28) * air;
-        float ps = (h1 - 0.5) * 1.2 * ea * (1.0 - eb) + 0.12 * sin(uTime * (0.5 + h4) + h1 * 6.28) * air;
+        float th = PI * (turns * ea + eb) + sway * air, sp = ps * ea * (1.0 - eb);
         vec3 L = vec3(o.x * mix(1.0, cos(bc), e), o.y, h) * uR;
         float co = cos(th), sn = sin(th), kv = kx * L.x + ky * L.y;
         L = vec3(L.x * co + ky * L.z * sn + kx * kv * (1.0 - co), L.y * co - kx * L.z * sn + ky * kv * (1.0 - co), L.z * co + (kx * L.y - ky * L.x) * sn);
         vec3 nl = vec3(ky * sn, -kx * sn, co);
-        float cp = cos(ps), sq = sin(ps);
+        float cp = cos(sp), sq = sin(sp);
         L.xy = vec2(L.x * cp - L.y * sq, L.x * sq + L.y * cp); nl.xy = vec2(nl.x * cp - nl.y * sq, nl.x * sq + nl.y * cp);
         vec2 g = vec2(ac, bc) + o;
         vec3 ns = vec3(cos(g.y) * sin(g.x), sin(g.y), cos(g.y) * cos(g.x));
@@ -921,7 +1001,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     uEarth: { value: CFG.earth ? 1 : 0 }, uAlive: { value: 0 }, uBleed: { value: CFG.bleed ? 1 : 0 }, uPaperC: { value: new THREE.Color(rgb('--paper')) },
     uDevelop: { value: CFG.develop ? 1 : 0 }, uDevTint: { value: new THREE.Color(rgb('oklch(78% 0.07 70)')) },
     uGores: { value: CFG.gores ? 1 : 0 }, uGore0: { value: GORE0 }, uPen: { value: CFG.pen ? 1 : 0 },
-    uTiles: { value: CFG.tiles ? 1 : 0 }, uTilePhotos: { value: { tileBacks: 1, tileEdges: 2 }[CFG.photos] || 0 }, uAtlasN: { value: 6 }, uTileN: { value: new THREE.Vector2(...TILES) }, uTileGap: { value: TILE_GAP }, uTileLift: { value: TILE_LIFT }, uTileFlip: { value: TILE_FLIP }, uTileScatter: { value: TILE_SCATTER }, uTileRate: { value: TILE_RATE }, uTileMode: { value: CFG.stay ? 1 : CFG.hold ? 2 : CFG.keep ? 3 : CFG.window ? 4 : CFG.wind ? 5 : 0 }, uTime: { value: 0 }, uTileKeep: { value: CFG.keep || 0 }, uTurn: { value: 0 }, uWin: { value: new THREE.Vector4(23.5 * RAD, 23.5 * RAD, 1, (CFG.window || 1) * RAD) },
+    uTiles: { value: CFG.tiles ? 1 : 0 }, uTilePhotos: { value: { tileBacks: 1, tileEdges: 2 }[CFG.photos] || 0 }, uAtlasN: { value: 6 }, uTileN: { value: new THREE.Vector2(...TILES) }, uTileGap: { value: TILE_GAP }, uTileLift: { value: TILE_LIFT }, uTileFlip: { value: TILE_FLIP }, uTileScatter: { value: TILE_SCATTER }, uTileRate: { value: TILE_RATE }, uTileMode: { value: CFG.stay ? 1 : CFG.hold ? 2 : CFG.keep ? 3 : CFG.window ? 4 : CFG.wind ? 5 : 0 }, uTime: { value: 0 }, uWind: { value: new THREE.Vector4(0.55, 0.9, 1, ['gust', 'murmur', 'deck', 'vortex', 'tide'].indexOf(CFG.wind)) }, uTileKeep: { value: CFG.keep || 0 }, uTurn: { value: 0 }, uWin: { value: new THREE.Vector4(23.5 * RAD, 23.5 * RAD, 1, (CFG.window || 1) * RAD) },
     uBacks: { value: 0 }, uBackTex: { value: texes[0] },
     uMask: { value: maskTex ? maskTex[0] : texes[0] }, uMaskPrev: { value: maskTex ? maskTex[1] : texes[0] },
   };
@@ -1045,12 +1125,31 @@ window.JourneyMap = async function makeGlobe(svgEl) {
   const pickOf = (t, prefer) => { const ids = [t.lead, ...t.photos].filter(Boolean); return (prefer && ids.find(prefer)) || ids[0] || null; };
   const tripPhotos = (n, prefer) => K.trips.map((t) => pickOf(t, prefer)).filter((id, i, a) => id && a.indexOf(id) === i).slice(0, n);
   let under = null, underFor = () => {};
-  if (CFG.photos === 'through' || CFG.photos === 'prints') {
+  if (CFG.photos === 'through' || CFG.photos === 'prints' || CFG.backdrop) {
     // a layer under the map's drawing, shown only inside the map's own box
     under = document.createElement('div');
-    under.className = `g3-under g3-under--${CFG.photos}`;
+    under.className = `g3-under g3-under--${CFG.backdrop ? 'drift' : CFG.photos}`;
     box.prepend(under);
   }
+  // (the wind versions) his landscapes behind the prints while they are in the air, one after another
+  let drift = [], driftAt = -1;
+  if (CFG.backdrop) {
+    drift = CFG.backdrop.filter((id) => S.slides[id]).map((id) => {
+      const sl = S.slides[id], im = new Image();
+      im.className = 'g3-under__img'; im.alt = ''; im.decoding = 'async'; im.loading = 'lazy';
+      im.srcset = `${K.src(sl.file, 1280)} 1280w, ${K.src(sl.file)} 2400w`; im.sizes = '100vw'; im.src = K.src(sl.file, 1280);
+      under.appendChild(im);
+      return im;
+    });
+  }
+  // (the wind versions) the adjust tab's values: when the prints start back, the wind, the rocking
+  const tweak = () => {
+    const T = window.JourneyTweak;
+    if (!T || !CFG.wind) return;
+    U.uWind.value.set(T.hold, T.wind, T.rock, U.uWind.value.w);
+    kick();
+  };
+  addEventListener('journeytweak', tweak);
   if (CFG.photos === 'through') {
     // the photograph of the trip being read (the newest before the reading starts), the same one the
     // reading then shows behind the globe, so the two are one picture
@@ -1447,8 +1546,16 @@ window.JourneyMap = async function makeGlobe(svgEl) {
       // (through: as the globe docks, the photograph opens out to the whole screen, as the reading shows it)
       const dk = parseFloat(getComputedStyle(fig).getPropertyValue('--dock')) || 0;
       const through = CFG.photos === 'through', open = through ? 1 - dk : 1;
-      const show = smooth(0.1, 0.3, st.fold) * (through ? 1 : 1 - smooth(0.15, 0.6, dk));
       const set = (k, v) => under.style.setProperty(k, v);
+      let show = smooth(0.1, 0.3, st.fold) * (through ? 1 : 1 - smooth(0.15, 0.6, dk));
+      if (CFG.backdrop) {
+        // (the wind versions) shown as the map comes apart, one landscape per stretch of the change,
+        // each pushing in slowly, gone as the globe glides aside
+        const k = clamp((st.fold - 0.04) / 0.9, 0, 0.9999), i = Math.floor(k * drift.length);
+        if (i !== driftAt) { driftAt = i; drift.forEach((im, j) => im.classList.toggle('is-on', j === i)); }
+        set('--kb', (1.1 - 0.1 * ((k * drift.length) % 1)).toFixed(4));
+        show = smooth(0.02, 0.14, st.fold) * (1 - smooth(0, 0.5, dk)) * ((window.JourneyTweak || {}).photos ?? 1);
+      }
       set('--show', show.toFixed(3));
       set('--t', `${r.y * open}px`); set('--l', `${r.x * open}px`); set('--w', `${r.w}px`); set('--h', `${r.h}px`);
       set('--r', `${(W - r.x - r.w) * open}px`); set('--b', `${(H - r.y - r.h) * open}px`);
@@ -1736,6 +1843,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
       renderer.dispose(); box.remove();
     },
   };
+  tweak();
   trip(null);
   kick();
   return { flyOut, settled, at, forward, trip, setFold };

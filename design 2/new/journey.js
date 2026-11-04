@@ -427,14 +427,18 @@
   function dockCraft(frame, hold) {
     const H = innerHeight, y = scrollY;
     const arr = clamp(y / (H * 0.45), 0, 1);
-    // (data-fold="long") the fold is given more scroll, and the glide aside waits for it
-    const L = document.body.dataset.fold === 'long' ? 2.2 : 1;
+    // (data-fold="long") the fold is given more scroll (2.2 times, or what the adjust tab says), and the
+    // glide aside waits for it
+    const L = document.body.dataset.fold === 'long' ? (window.JourneyTweak || {}).fold || 2.2 : 1;
+    frame.style.setProperty('--fold-len', L);
     const fold = clamp((y - H * 0.15) / (H * 0.85 * L), 0, 1);
     const d = clamp((y - H * (1.12 + 0.85 * (L - 1))) / (H * 0.5), 0, 1);
     frame.style.setProperty('--arr', arr.toFixed(4));
     frame.style.setProperty('--dock', d3.easeCubicInOut(d).toFixed(4));
     map.setFold(d3.easeCubicInOut(fold));
   }
+  // the adjust tab (adjust.js) changes the scroll the fold takes
+  addEventListener('journeytweak', () => { if (map) dock(); });
   function dock() {
     const frame = $('.jr');
     const hold = CRAFT && $('.jr-hold');
