@@ -427,8 +427,10 @@
   function dockCraft(frame, hold) {
     const H = innerHeight, y = scrollY;
     const arr = clamp(y / (H * 0.45), 0, 1);
-    const fold = clamp((y - H * 0.15) / (H * 0.85), 0, 1);
-    const d = clamp((y - H * 1.12) / (H * 0.5), 0, 1);
+    // (data-fold="long") the fold is given more scroll, and the glide aside waits for it
+    const L = document.body.dataset.fold === 'long' ? 2.2 : 1;
+    const fold = clamp((y - H * 0.15) / (H * 0.85 * L), 0, 1);
+    const d = clamp((y - H * (1.12 + 0.85 * (L - 1))) / (H * 0.5), 0, 1);
     frame.style.setProperty('--arr', arr.toFixed(4));
     frame.style.setProperty('--dock', d3.easeCubicInOut(d).toFixed(4));
     map.setFold(d3.easeCubicInOut(fold));

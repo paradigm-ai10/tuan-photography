@@ -5,6 +5,8 @@
 @media (min-width: 64rem) {
   /* the held stretch where the map closes into the globe on the whole screen */
   [data-craft] .jr-hold { display: block; height: 128svh; pointer-events: none; }
+  /* (data-fold="long") the fold given 2.2 times the scroll: 1.02 screens more */
+  [data-craft][data-fold="long"] .jr-hold { height: 230svh; }
   [data-craft] .jr { --arr: 0; }
   /* depth: three planes leave at three speeds. The words go first and fastest, the counters a
      little slower, the map itself barely moves, so the sheet reads as the furthest thing back */

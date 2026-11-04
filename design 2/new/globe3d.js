@@ -99,6 +99,11 @@ const CFG = {
   'gallery-hold': { ...GALLERY, photos: 'tileBacks', flip: true, hold: true, tileLift: 0.5, scatter: 0.1 },
   'gallery-some': { ...GALLERY, photos: 'tileBacks', flip: true, keep: 0.25, tileLift: 0.5, scatter: 0.1 },
   'gallery-window': { ...GALLERY, photos: 'tileBacks', flip: true, window: 40, tileLift: 0.5, scatter: 0.1 },
+  // wind     the map comes apart into its prints and a wind carries them off, west first; they tumble
+  //          over to show his photographs and hang in a drifting cloud that rocks in the air, held over a
+  //          longer stretch of scroll (data-fold="long"), then, Taiwan's first, are drawn back in a slow
+  //          spiral round the ball, turning back to the map as they come, and pressed down onto it
+  'gallery-wind': { ...GALLERY, photos: 'tileBacks', flip: true, wind: true },
 }[V];
 const HOME_LL = [S.flightsFrom[1], S.flightsFrom[0]];
 const CRAFT = 'craft' in document.body.dataset;
@@ -172,6 +177,13 @@ function tilePlace(q, b, h, f, center, out) {
   const [cols, rows] = TILES, qy = b / Math.PI + 0.5;
   const col = Math.min(cols - 1, Math.floor(q * cols)), row = Math.min(rows - 1, Math.max(0, Math.floor(qy * rows)));
   const ac = ((col + 0.5) / cols - 0.5) * TAU, bc = ((row + 0.5) / rows - 0.5) * Math.PI;
+  if (CFG.wind) {
+    // (wind) the prints' flight is the shader's alone: the routes and dots are put away while they are in the air
+    const a = (q - 0.5) * TAU, k = R * (1 + h);
+    if (f >= 0.5) return out.set(Math.cos(b) * Math.sin(a) * k, Math.sin(b) * k, Math.cos(b) * Math.cos(a) * k);
+    const gap = TILE_GAP * smooth(0, 0.1, f);
+    return out.set((ac + (a - ac) * (1 - gap)) * R, (bc + (b - bc) * (1 - gap)) * R, k);
+  }
   const hp = HOME_LL[1] * RAD, dh = ac + center - HOME_LL[0] * RAD;
   const d = Math.acos(clamp(Math.sin(bc) * Math.sin(hp) + Math.cos(bc) * Math.cos(hp) * Math.cos(dh), -1, 1)) / Math.PI;
   const s = smoother(clamp(f * TILE_RATE - d * 0.6, 0, 1));
@@ -220,7 +232,7 @@ function place(lon, lat, h, st, out = new THREE.Vector3()) {
   return out;
 }
 const MORPH = /* glsl */`
-  uniform float uKx, uKy, uR, uCenter, uRaise, uMix, uWave, uFold, uRise, uReveal, uSoft, uGores, uGore0, uTiles, uTileGap, uTileLift, uTileFlip, uTileScatter, uTileRate, uTileMode, uTileKeep, uTurn;
+  uniform float uKx, uKy, uR, uCenter, uRaise, uMix, uWave, uFold, uRise, uReveal, uSoft, uGores, uGore0, uTiles, uTileGap, uTileLift, uTileFlip, uTileScatter, uTileRate, uTileMode, uTileKeep, uTurn, uTime;
   uniform vec4 uWin;
   uniform vec2 uHome, uTileN;
   uniform sampler2D uMask, uMaskPrev;
@@ -241,6 +253,46 @@ const MORPH = /* glsl */`
       float a = u / uR, b = v / uR;
       float ac = (aTile.x - 0.5) * 6.2831853, bc = (aTile.y - 0.5) * 3.1415927;
       float d = acos(clamp(sin(bc) * sin(uHome.y) + cos(bc) * cos(uHome.y) * cos(ac + uCenter - uHome.x), -1.0, 1.0)) / 3.1415927;
+      if (uTileMode > 4.5) {
+        // (wind) each print is blown off the wall on its own clock, west first, and tumbles over (once or
+        // three times) to show its photograph; it hangs in a cloud that drifts on with the wind as the
+        // scroll goes on and rocks in the air while it waits; then, Taiwan's first, it is drawn back in a
+        // spiral round the ball's axis, kept clear of the ball, turning back to the map as it comes, and
+        // pressed down onto its place
+        vec2 tc = floor(aTile * uTileN);
+        float h1 = fract((tc.x * 7.0 + tc.y * 13.0) * 0.6180339), h2 = fract((tc.x * 11.0 + tc.y * 5.0) * 0.7548777);
+        float h3 = fract((tc.x * 3.0 + tc.y * 17.0) * 0.5698403), h4 = fract((tc.x * 13.0 + tc.y * 3.0) * 0.4142136);
+        float rel = 0.04 + 0.16 * ((ac / 6.2831853 + 0.5) * 0.7 + h1 * 0.3), ea = smoothstep(rel, rel + 0.12, uFold);
+        float e = clamp((uFold - 0.55 - 0.17 * d) / 0.28, 0.0, 1.0); e = e * e * e * (e * (e * 6.0 - 15.0) + 10.0);
+        float air = ea * (1.0 - e), eb = smoothstep(0.15, 0.9, e);
+        vec2 o = vec2(a - ac, b - bc) * (1.0 - uTileGap * smoothstep(0.0, 0.1, uFold) * (1.0 - smoothstep(0.7, 1.0, e)));
+        vec3 hang = vec3(ac * 0.6 + 0.2 + (h2 - 0.5) * 0.6, bc * 0.7 + 0.1 + (h3 - 0.5) * 0.4, 0.6 + (h4 - 0.5) * 1.4)
+          + vec3(0.9, 0.25, 0.0) * max(uFold - rel, 0.0)
+          + vec3(0.08 * sin(uFold * 9.0 + h2 * 6.28), 0.06 * sin(uFold * 7.0 + h3 * 6.28) + 0.025 * sin(uTime * 1.1 + h1 * 6.28) * air, 0.08 * sin(uFold * 8.0 + h4 * 6.28));
+        vec3 p = mix(vec3(ac, bc, 1.0), hang, ea) * uR + vec3(0.0, 0.0, 0.35 * uR * sin(3.1415927 * ea));
+        float pq = atan(p.x, p.z), ph = pq + mod(ac - pq, 6.2831853) * e, rr = mix(length(p.xz), uR * cos(bc), e);
+        vec3 c = vec3(rr * sin(ph), mix(p.y, uR * sin(bc), e), rr * cos(ph));
+        c = normalize(c) * max(length(c), uR * (1.0 + 0.3 * sin(3.1415927 * e)) * smoothstep(0.0, 0.35, e));
+        float ce = smoothstep(0.0, 0.7, e), ya = ph * ce, pa = bc * ce;
+        vec3 nr = vec3(cos(pa) * sin(ya), sin(pa), cos(pa) * cos(ya));
+        vec3 ex = vec3(cos(ya), 0.0, -sin(ya)), my = vec3(-sin(pa) * sin(ya), cos(pa), -sin(pa) * cos(ya));
+        float tn = mod(tc.x * 7.0 + tc.y * 13.0, 4.0), kx = cos(tn * 1.5707963), ky = sin(tn * 1.5707963);
+        float th = 3.1415927 * ((h4 < 0.5 ? 1.0 : 3.0) * ea + eb) + 0.3 * sin(uTime * (0.7 + h2) + h3 * 6.28) * air;
+        float ps = (h1 - 0.5) * 1.2 * ea * (1.0 - eb) + 0.12 * sin(uTime * (0.5 + h4) + h1 * 6.28) * air;
+        vec3 L = vec3(o.x * mix(1.0, cos(bc), e), o.y, h) * uR;
+        float co = cos(th), sn = sin(th), kv = kx * L.x + ky * L.y;
+        L = vec3(L.x * co + ky * L.z * sn + kx * kv * (1.0 - co), L.y * co - kx * L.z * sn + ky * kv * (1.0 - co), L.z * co + (kx * L.y - ky * L.x) * sn);
+        vec3 nl = vec3(ky * sn, -kx * sn, co);
+        float cp = cos(ps), sq = sin(ps);
+        L.xy = vec2(L.x * cp - L.y * sq, L.x * sq + L.y * cp); nl.xy = vec2(nl.x * cp - nl.y * sq, nl.x * sq + nl.y * cp);
+        vec2 g = vec2(ac, bc) + o;
+        vec3 ns = vec3(cos(g.y) * sin(g.x), sin(g.y), cos(g.y) * cos(g.x));
+        float cf = smoothstep(0.8, 1.0, e);
+        vTile = vec2(a - ac, b - bc) / vec2(3.1415927 / uTileN.x, 1.5707963 / uTileN.y);
+        vLand = 0.5 * ea + 0.5 * e; vTileC = aTile; vW = mix(1.0, cos(bc), e);
+        n = normalize(mix(ex * nl.x + my * nl.y + nr * nl.z, ns, cf));
+        return mix(c + ex * L.x + my * L.y + nr * L.z, ns * uR * (1.0 + h), cf);
+      }
       float s = clamp(uFold * uTileRate - d * 0.6, 0.0, 1.0); s = s * s * s * (s * (s * 6.0 - 15.0) + 10.0);
       float ub = uTileFlip > 0.5 ? smoothstep(0.0, 1.0, clamp((uFold - 0.82) / 0.12 - d * 0.5, 0.0, 1.0)) : 1.0;
       float two = step(0.5, uTileMode), gb = ub;
@@ -869,7 +921,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     uEarth: { value: CFG.earth ? 1 : 0 }, uAlive: { value: 0 }, uBleed: { value: CFG.bleed ? 1 : 0 }, uPaperC: { value: new THREE.Color(rgb('--paper')) },
     uDevelop: { value: CFG.develop ? 1 : 0 }, uDevTint: { value: new THREE.Color(rgb('oklch(78% 0.07 70)')) },
     uGores: { value: CFG.gores ? 1 : 0 }, uGore0: { value: GORE0 }, uPen: { value: CFG.pen ? 1 : 0 },
-    uTiles: { value: CFG.tiles ? 1 : 0 }, uTilePhotos: { value: { tileBacks: 1, tileEdges: 2 }[CFG.photos] || 0 }, uAtlasN: { value: 6 }, uTileN: { value: new THREE.Vector2(...TILES) }, uTileGap: { value: TILE_GAP }, uTileLift: { value: TILE_LIFT }, uTileFlip: { value: TILE_FLIP }, uTileScatter: { value: TILE_SCATTER }, uTileRate: { value: TILE_RATE }, uTileMode: { value: CFG.stay ? 1 : CFG.hold ? 2 : CFG.keep ? 3 : CFG.window ? 4 : 0 }, uTileKeep: { value: CFG.keep || 0 }, uTurn: { value: 0 }, uWin: { value: new THREE.Vector4(23.5 * RAD, 23.5 * RAD, 1, (CFG.window || 1) * RAD) },
+    uTiles: { value: CFG.tiles ? 1 : 0 }, uTilePhotos: { value: { tileBacks: 1, tileEdges: 2 }[CFG.photos] || 0 }, uAtlasN: { value: 6 }, uTileN: { value: new THREE.Vector2(...TILES) }, uTileGap: { value: TILE_GAP }, uTileLift: { value: TILE_LIFT }, uTileFlip: { value: TILE_FLIP }, uTileScatter: { value: TILE_SCATTER }, uTileRate: { value: TILE_RATE }, uTileMode: { value: CFG.stay ? 1 : CFG.hold ? 2 : CFG.keep ? 3 : CFG.window ? 4 : CFG.wind ? 5 : 0 }, uTime: { value: 0 }, uTileKeep: { value: CFG.keep || 0 }, uTurn: { value: 0 }, uWin: { value: new THREE.Vector4(23.5 * RAD, 23.5 * RAD, 1, (CFG.window || 1) * RAD) },
     uBacks: { value: 0 }, uBackTex: { value: texes[0] },
     uMask: { value: maskTex ? maskTex[0] : texes[0] }, uMaskPrev: { value: maskTex ? maskTex[1] : texes[0] },
   };
@@ -1247,7 +1299,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     }
     setLines(sets.past, past); setLines(sets.here, here); setLines(sets.now, now);
     // the gores and the prints: the lines are lifted off while they are apart, and laid back on the closed globe
-    const gate = CFG.gores || CFG.tiles ? Math.max(1 - smooth(0.02, 0.14, st.fold), smooth(TILE_TWO ? 0.8 : CFG.flip ? 0.95 : 0.9, 1, st.fold)) : 1;
+    const gate = CFG.gores || CFG.tiles ? Math.max(1 - smooth(0.02, 0.14, st.fold), smooth(CFG.wind ? 0.97 : TILE_TWO ? 0.8 : CFG.flip ? 0.95 : 0.9, 1, st.fold)) : 1;
     for (const k of Object.keys(ops)) if (sets[k].material.opacity !== opsNow[k] * gate) sets[k].material.opacity = opsNow[k] * gate;
   }
 
@@ -1266,7 +1318,10 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     obj.scale.setScalar(scale);
   }
   function placeMarks() {
-    for (const f of flights) { f.end.visible = f.end.on && f.first <= year && !rewound; if (f.end.visible) lay(f.end, ...f.to, base + 0.001, f.end.r); }
+    // (wind) the dots are put away while the prints are in the air
+    const aloft = CFG.wind && st.fold > 0.06 && st.fold < 0.97;
+    homeDot.visible = !aloft;
+    for (const f of flights) { f.end.visible = f.end.on && f.first <= year && !rewound && !aloft; if (f.end.visible) lay(f.end, ...f.to, base + 0.001, f.end.r); }
     lay(homeDot, ...home, base + 0.002, homeDot.r);
     stops.forEach((s) => { s.visible = rewound; lay(s, ...s.at, base + 0.002, s.r); });
   }
@@ -1351,7 +1406,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     for (const tw of [...tweens]) if (tw(now) === false) tweens.delete(tw);
     // the fold carries a little weight: it follows the scroll instead of jumping with it
     if (CFG.wave && st.fold !== st.want) { const d = st.want - st.fold; st.fold = Math.abs(d) < 0.0008 ? st.want : st.fold + d * 0.11; linesDirty = true; }
-    U.uFold.value = st.fold;
+    U.uFold.value = st.fold; U.uTime.value = now / 1000;
     if (CFG.wave && !K.reduced) {
       if (st.fold > 0.985 && !st.closed) { st.closed = true; pulseHome(); }
       else if (st.fold < 0.9) st.closed = false;
@@ -1404,7 +1459,8 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     renderer.setScissor(r.x, H - r.y - r.h, r.w, r.h);
     renderer.render(scene, camera);
     // the earth keeps living while it is a globe: the clouds drift, light runs along the trip
-    const alive = CFG.earth && !K.reduced && st.fold > 0.85 && !document.hidden;
+    // (the earth's clouds, and the wind's prints rocking in the air) drawn on every frame
+    const alive = (CFG.earth ? st.fold > 0.85 : CFG.wind && st.fold > 0.04 && st.fold < 0.99) && !K.reduced && !document.hidden;
     if (alive || moving || ringAt !== ringWant || st.fold !== st.want || tweens.size || Object.keys(ops).some((k) => opsNow[k] !== ops[k])) kick();
   }
   const tween = (dur, step) => new Promise((done) => {
