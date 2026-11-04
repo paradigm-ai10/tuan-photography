@@ -538,6 +538,22 @@
     follow();
   }
 
+  // for the review kit (review-kit/bar.js, on his Mac only): a mark, or a move to the next version,
+  // brings back the same moment. The fold is measured in screen heights, so the view is too.
+  window.ReviewView = {
+    get: () => {
+      const on = document.querySelector('.jr-trip.is-reading');
+      return { y: +(scrollY / innerHeight).toFixed(4), trip: on ? on.dataset.trip || '' : '' };
+    },
+    set: (s) => {
+      if (!s || typeof s.y !== 'number') return;
+      const html = document.documentElement, was = html.style.scrollBehavior;
+      html.style.scrollBehavior = 'auto';
+      scrollTo({ top: s.y * innerHeight, behavior: 'instant' });
+      requestAnimationFrame(() => { html.style.scrollBehavior = was; });
+    },
+  };
+
   K.onLang(mount);
   mount();
 })();

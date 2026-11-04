@@ -1,0 +1,660 @@
+{
+  "name": "journey",
+  "endpoint": "/__reviews/journey",
+  "stills": "/__reviews/journey/thumbs/",
+  "hub": "index.html",
+  "title": {
+    "en": "Journey, the versions",
+    "zh": "旅程：各個版本"
+  },
+  "siteTitle": "tuan photography 陳亮元",
+  "intro": {
+    "en": "Open one to look. On the page, the comma and full stop keys (, .) move to the previous or next version, N opens your notes, M marks a spot, B comes back here. Scores here or there.",
+    "zh": "打開一版來看。在頁面上，逗號和句號鍵（, .）換到上一版或下一版，N 打開筆記，M 標記一個地方，B 回到這裡。分數在這裡或頁面上都可以打。"
+  },
+  "lang": {
+    "from": "html[lang]",
+    "event": "langchange"
+  },
+  "groups": [
+    {
+      "id": "live",
+      "title": {
+        "en": "Live and kept",
+        "zh": "正式版與留下的"
+      }
+    },
+    {
+      "id": "strips",
+      "title": {
+        "en": "Strips",
+        "zh": "紙條"
+      }
+    },
+    {
+      "id": "wall",
+      "title": {
+        "en": "Prints wall",
+        "zh": "相片牆"
+      }
+    },
+    {
+      "id": "atlas",
+      "title": {
+        "en": "Atlas",
+        "zh": "地圖集"
+      }
+    },
+    {
+      "id": "air",
+      "title": {
+        "en": "Prints in the air, five figures",
+        "zh": "空中的相片，五種動態"
+      }
+    }
+  ],
+  "items": [
+    {
+      "id": "journey",
+      "href": "journey.html",
+      "group": "live",
+      "main": true,
+      "title": {
+        "en": "The live page",
+        "zh": "目前的正式版"
+      },
+      "desc": {
+        "en": "The Journey tab as it is now (since 31 October, your pick): the painted paper globe; the grand map arrives whole, parts into a wall of square prints and folds into the globe print by print, Taiwan's first; the trips on one line. The main one.",
+        "zh": "現在的旅程頁（10/31 你選的）：手繪紙地球；一打開是整張大地圖，往下捲分成一面方形相片牆，一張一張從台灣開始貼成地球；所有旅程掛在一條線上。這是主要版本。"
+      },
+      "still": {
+        "wait": 20000
+      }
+    },
+    {
+      "id": "journey-craft",
+      "href": "journey-craft.html",
+      "group": "live",
+      "title": {
+        "en": "Sea chart, scroll-craft",
+        "zh": "海圖，scroll-craft 版"
+      },
+      "desc": {
+        "en": "A4: the flat map closes into a large globe on the whole screen, home sends out a ring, the panel slides in. A pale blue chart surface.",
+        "zh": "A4：平面地圖在整個畫面上合成大地球，台灣亮一圈，面板滑進來。表面是淡藍色海圖。"
+      },
+      "still": {
+        "wait": 20000
+      }
+    },
+    {
+      "id": "journey-paperwrap",
+      "href": "journey-paperwrap.html",
+      "group": "live",
+      "title": {
+        "en": "Paper, the whole page wraps",
+        "zh": "紙，整頁包起來"
+      },
+      "desc": {
+        "en": "New: the live page's quiet paper globe, with A4's movement and the whole page wrapping up into it, so no rectangle lifts off the background. The smallest step from what is live.",
+        "zh": "新的：正式版安靜的紙質地球，加上 A4 的動態，而且是整個頁面包成地球，不會有一塊長方形從背景翹起來。和正式版差最少的一步。"
+      },
+      "still": {
+        "wait": 20000
+      }
+    },
+    {
+      "id": "journey-gores",
+      "href": "journey-gores.html",
+      "group": "strips",
+      "title": {
+        "en": "Painted paper globe, closing in strips",
+        "zh": "手繪紙地球，一條一條包起來"
+      },
+      "desc": {
+        "en": "New, from your references: a globe printed on paper and tinted in watercolour, after Bellerby & Co, the oceans named in engraved capitals. On arrival the routes are drawn in ink from Taiwan and each country takes its wash as its line lands; scrolling cuts the map into twelve strips that close round Taiwan one by one, as a globemaker pastes them on.",
+        "zh": "新的，照你選的參考做：像 Bellerby & Co 那樣印在紙上、用水彩上色的地球，海洋名稱像雕版印的字。一打開，航線從台灣用墨水一條條畫出去，線到了哪個國家，那裡就染上顏色；往下捲，地圖切成十二條，從台灣那一條開始，一條一條貼到球上。"
+      },
+      "still": {
+        "wait": 20000
+      }
+    },
+    {
+      "id": "journey-gores-through",
+      "href": "journey-gores-through.html",
+      "group": "strips",
+      "title": {
+        "en": "Strips, the photograph beneath",
+        "zh": "紙條下面是照片"
+      },
+      "desc": {
+        "en": "Version 4 with your photographs in the transition: the map was printed over the trip's photograph, so the cuts open onto it, and it is there, whole, behind the globe once it closes. It is the same photograph the reading then shows.",
+        "zh": "第四版加上你的照片：地圖像是印在這趟旅行的照片上面，切開的縫裡看得到照片，地球合起來以後，整張照片就在地球後面。和往下讀時背景那張是同一張。"
+      },
+      "still": {
+        "wait": 20000
+      }
+    },
+    {
+      "id": "journey-gores-prints",
+      "href": "journey-gores-prints.html",
+      "group": "strips",
+      "title": {
+        "en": "Strips, a desk of prints",
+        "zh": "紙條下面是一桌照片"
+      },
+      "desc": {
+        "en": "Version 4 with your photographs in the transition: a small print from every trip lies under the map; the strips lift off them, and the globe closes in the middle of the prints.",
+        "zh": "第四版加上你的照片：地圖下面放著每趟旅行一張的小照片，紙條掀起來就看到它們，地球在這圈照片中間合起來。"
+      },
+      "still": {
+        "wait": 20000
+      }
+    },
+    {
+      "id": "journey-gores-backs",
+      "href": "journey-gores-backs.html",
+      "group": "strips",
+      "title": {
+        "en": "Strips, photographs on their backs",
+        "zh": "紙條背面印著照片"
+      },
+      "desc": {
+        "en": "Version 4 with your photographs in the transition: each strip has one of your photographs printed down its back, seen as the strips swing round to close the far side.",
+        "zh": "第四版加上你的照片：每一條紙的背面印著你的一張照片，紙條翻過去包住地球背面時看得到。"
+      },
+      "still": {
+        "wait": 20000
+      }
+    },
+    {
+      "id": "journey-gallery-backs",
+      "href": "journey-gallery-backs.html",
+      "group": "wall",
+      "title": {
+        "en": "Prints wall, photographs on the backs",
+        "zh": "照片牆，背面是照片"
+      },
+      "desc": {
+        "en": "The live page with your photographs: every print is two-sided, the map on its face and one of your photographs on its back, in a thin paper border. You see them as the prints turn over on their way round the ball; the flat map and the finished globe stay map.",
+        "zh": "正式版加上你的照片：每張相片兩面都有，正面是地圖，背面是你的一張照片，外面一圈細細的紙邊。相片翻過去飛到地球另一邊時看得到；平面地圖和合起來的地球還是地圖。"
+      },
+      "still": {
+        "wait": 20000
+      }
+    },
+    {
+      "id": "journey-gallery-edges",
+      "href": "journey-gallery-edges.html",
+      "group": "wall",
+      "title": {
+        "en": "Prints wall, the edges are photographs",
+        "zh": "照片牆，邊上是照片"
+      },
+      "desc": {
+        "en": "The live page with your photographs: the prints along the wall's faded top and bottom are your photographs. They come up out of the paper as they lift off, and turn into map as they are laid on the ball.",
+        "zh": "正式版加上你的照片：牆上下兩邊淡掉的那幾排相片是你的照片，拿起來時從紙裡浮出來，貼到地球上時變回地圖。"
+      },
+      "still": {
+        "wait": 20000
+      }
+    },
+    {
+      "id": "journey-gallery-ring",
+      "href": "journey-gallery-ring.html",
+      "group": "wall",
+      "title": {
+        "en": "Prints wall, a ring of photographs",
+        "zh": "照片牆，一圈照片"
+      },
+      "desc": {
+        "en": "The live page with your photographs: one print per trip lifts off the wall where that trip went and hangs in a ring round the finished globe. As you read, the ring turns so the trip you are on hangs at the bottom, a little larger.",
+        "zh": "正式版加上你的照片：每趟旅行一張照片，從牆上那趟去的地方拿起來，掛成一圈繞著合起來的地球。往下讀時，這圈會轉，讓你正在看的那趟掛在最下面，大一點。"
+      },
+      "still": {
+        "wait": 20000
+      }
+    },
+    {
+      "id": "journey-gallery-scatter",
+      "href": "journey-gallery-scatter.html",
+      "group": "wall",
+      "title": {
+        "en": "Prints wall, the photographs thrown",
+        "zh": "照片牆，照片拋起來"
+      },
+      "desc": {
+        "en": "Row 8 made plain to see: as the wall parts, each print is tossed up and a little aside and turns over in the air, so a cloud of your photographs fills the screen; they land photograph up and the globe forms as a ball of your photographs, and only then do they turn back to the map, Taiwan's first.",
+        "zh": "第 8 版放大來看：牆一分開，每張相片被拋起、往旁邊飛一點，在空中翻過來，滿畫面都是你的照片；落下時照片朝上，地球先變成一顆照片球，之後才從台灣那幾張開始翻回地圖。"
+      },
+      "still": {
+        "wait": 20000
+      }
+    },
+    {
+      "id": "journey-gallery-photoball",
+      "href": "journey-gallery-photoball.html",
+      "group": "wall",
+      "title": {
+        "en": "Prints wall, the globe stays photographs",
+        "zh": "照片牆，地球一直是照片"
+      },
+      "desc": {
+        "en": "Row 11, but the prints never turn back: the globe stays a ball of your photographs for good, while you read every trip, with the routes drawn over them.",
+        "zh": "跟第 11 版一樣，但相片不再翻回地圖：地球一直是一顆照片球，讀每一趟旅程時都是，路線畫在照片上。"
+      },
+      "still": {
+        "wait": 20000
+      }
+    },
+    {
+      "id": "journey-gallery-hold",
+      "href": "journey-gallery-hold.html",
+      "group": "wall",
+      "title": {
+        "en": "Balance: the photographs held longer",
+        "zh": "平衡：照片留久一點"
+      },
+      "desc": {
+        "en": "Row 11, but the photo ball stays while the globe glides aside, and turns back to the map, Taiwan's first, when you start reading the first trip; scroll back above it and it is photographs again.",
+        "zh": "跟第 11 版一樣，但地球移到旁邊時照片球還留著，開始讀第一趟旅程時才從台灣那幾張翻回地圖；捲回上面又變回照片。"
+      },
+      "still": {
+        "wait": 20000
+      }
+    },
+    {
+      "id": "journey-gallery-some",
+      "href": "journey-gallery-some.html",
+      "group": "wall",
+      "title": {
+        "en": "Balance: a few photographs stay",
+        "zh": "平衡：留幾張照片"
+      },
+      "desc": {
+        "en": "Row 11, but not every print turns back: about one in four stays a photograph, so the globe is a map with your prints pasted here and there.",
+        "zh": "跟第 11 版一樣，但不是每張都翻回地圖：大約四張留一張照片，地球是地圖，上面到處貼著你的照片。"
+      },
+      "still": {
+        "wait": 20000
+      }
+    },
+    {
+      "id": "journey-gallery-window",
+      "href": "journey-gallery-window.html",
+      "group": "wall",
+      "title": {
+        "en": "Balance: a window of map",
+        "zh": "平衡：一扇地圖窗"
+      },
+      "desc": {
+        "en": "The globe keeps a ring of photographs round its edge, and its front, round the trip you are reading, turns back to the map; the window moves with each trip.",
+        "zh": "地球四周留一圈照片，正面你在讀的那趟旅程附近翻回地圖；換一趟旅程，窗就跟著移過去。"
+      },
+      "still": {
+        "wait": 20000
+      }
+    },
+    {
+      "id": "journey-gallery-wind",
+      "href": "journey-gallery-wind.html",
+      "group": "air",
+      "title": {
+        "en": "In the air: a gust",
+        "zh": "空中：一陣風"
+      },
+      "desc": {
+        "en": "The map comes apart into its prints and a wind blows them off, west first; they tumble over and hang in a drifting cloud of your photographs, rocking in the air, then spiral back round the globe, Taiwan's first, turning back to the map as they come. Your landscapes show behind them, and the Adjust word at the bottom left sets the scroll length and timing.",
+        "zh": "地圖拆成一張張相片，被一陣風從西邊吹散，在空中翻過來，變成一大片飄著、輕輕晃動的照片雲；之後從台灣那幾張開始，繞著地球慢慢捲回去，邊捲邊翻回地圖。背後是你的風景照；左下角的「調整」可以改捲動長度和時間。"
+      },
+      "still": {
+        "wait": 20000,
+        "view": {
+          "state": {
+            "y": 0.9
+          }
+        }
+      }
+    },
+    {
+      "id": "journey-gallery-murmur",
+      "href": "journey-gallery-murmur.html",
+      "group": "air",
+      "title": {
+        "en": "In the air: a murmuration",
+        "zh": "空中：一群鳥"
+      },
+      "desc": {
+        "en": "The prints rise one after another and stream along one long ribbon that sweeps and folds across the screen, thick and thin by turns, flashing as they bank like starlings turning, then pour into the globe. Your landscapes show behind them, and the Adjust word at the bottom left sets the scroll length and timing.",
+        "zh": "相片一張接一張飛起來，排成一條長長的帶子在畫面上掃過、轉彎，時粗時細，轉向時像椋鳥群一樣一閃一閃，最後湧進地球。背後是你的風景照；左下角的「調整」可以改捲動長度和時間。"
+      },
+      "still": {
+        "wait": 20000,
+        "view": {
+          "state": {
+            "y": 0.9
+          }
+        }
+      }
+    },
+    {
+      "id": "journey-gallery-deck",
+      "href": "journey-gallery-deck.html",
+      "group": "air",
+      "title": {
+        "en": "In the air: a deck of cards",
+        "zh": "空中：一副牌"
+      },
+      "desc": {
+        "en": "Every print is gathered into one pile in the middle, turned face up on the way; the pile is fanned out in three rows like a hand of cards, and they are dealt back onto the globe, Taiwan's first. Your landscapes show behind them, and the Adjust word at the bottom left sets the scroll length and timing.",
+        "zh": "所有相片先收成中間一疊，收的時候翻成照片朝上；接著像一手牌一樣攤成三排扇形，再從台灣那幾張開始一張張發回地球上。背後是你的風景照；左下角的「調整」可以改捲動長度和時間。"
+      },
+      "still": {
+        "wait": 20000,
+        "view": {
+          "state": {
+            "y": 0.9
+          }
+        }
+      }
+    },
+    {
+      "id": "journey-gallery-vortex",
+      "href": "journey-gallery-vortex.html",
+      "group": "air",
+      "title": {
+        "en": "In the air: a whirlwind",
+        "zh": "空中：龍捲風"
+      },
+      "desc": {
+        "en": "The prints are pulled up off the map, the bottom first, into a turning column that widens to the top like a whirlwind, each facing out with its photograph, and the column closes down into the globe. Your landscapes show behind them, and the Adjust word at the bottom left sets the scroll length and timing.",
+        "zh": "相片從地圖下面開始被捲起來，變成一根旋轉、越往上越寬的龍捲風柱，每張都照片朝外；最後柱子收進地球。背後是你的風景照；左下角的「調整」可以改捲動長度和時間。"
+      },
+      "still": {
+        "wait": 20000,
+        "view": {
+          "state": {
+            "y": 0.9
+          }
+        }
+      }
+    },
+    {
+      "id": "journey-gallery-tide",
+      "href": "journey-gallery-tide.html",
+      "group": "air",
+      "title": {
+        "en": "In the air: a tide",
+        "zh": "空中：一道浪"
+      },
+      "desc": {
+        "en": "A wave runs out from Taiwan and turns each print over where it lies, so the map becomes a contact sheet of your photographs; it ripples like cloth in the wind and rolls up into the globe, turning back to the map. Your landscapes show behind them, and the Adjust word at the bottom left sets the scroll length and timing.",
+        "zh": "一道浪從台灣往外跑，把每張相片就地翻過來，地圖變成一整張你的照片印樣；它像布被風吹一樣起伏，然後捲成地球，邊捲邊翻回地圖。背後是你的風景照；左下角的「調整」可以改捲動長度和時間。"
+      },
+      "still": {
+        "wait": 20000,
+        "view": {
+          "state": {
+            "y": 0.9
+          }
+        }
+      }
+    },
+    {
+      "id": "journey-atlas",
+      "href": "journey-atlas.html",
+      "group": "atlas",
+      "title": {
+        "en": "Atlas, a personal record",
+        "zh": "足跡，個人地圖"
+      },
+      "desc": {
+        "en": "New: one paper globe you zoom freely, from the whole world down to a city, holding every place you have been and every trip. City dots grow with each visit, the countries deepen with each return, and close up your photographs lie at their places as small prints. An index of places and trips beside it; any trip can be played.",
+        "zh": "新的：一顆紙地球，可以自由拉近拉遠，從整個世界一路到一座城市，記著你去過的每個地方、走過的每趟旅程。城市的點去越多次越大，國家每回去一次顏色就深一點，拉近時你的照片像小相片一樣放在拍的地方。旁邊是地方和旅程的目錄；每一趟都可以播放。"
+      },
+      "still": {
+        "wait": 20000,
+        "crop": [
+          0,
+          0.145,
+          0.74,
+          0.74
+        ]
+      }
+    },
+    {
+      "id": "journey-atlas-bold",
+      "href": "journey-atlas-bold.html",
+      "group": "atlas",
+      "title": {
+        "en": "Atlas in colour",
+        "zh": "彩色足跡"
+      },
+      "desc": {
+        "en": "The same personal atlas, now lit by a low warm sun: the land tinted like a hand-coloured atlas, your countries raised in terracotta, a soft rim and shadow so the globe stands on the page, each trip coloured by its year, a years line you can play, and your photographs larger at every zoom.",
+        "zh": "同一本個人地圖，現在有一道溫暖的低角度陽光：陸地像手工上色的地圖，你去過的國家以赤陶色微微浮起，柔和的邊光和影子讓地球立在頁面上，每趟旅程依年份上色，還有一條可以播放的年份線，你的照片在每個縮放層級都更大。"
+      },
+      "still": {
+        "wait": 20000,
+        "crop": [
+          0,
+          0.145,
+          0.74,
+          0.74
+        ]
+      }
+    },
+    {
+      "id": "journey-atlas-v1",
+      "href": "journey-atlas-v1.html",
+      "group": "atlas",
+      "title": {
+        "en": "Atlas, varnished globe",
+        "zh": "足跡，上漆紙地球"
+      },
+      "desc": {
+        "en": "A hand-painted paper globe with a soft varnish: warm washed seas that deepen toward the coasts, your countries in layered clay watercolour, ocean names in both languages. It rises from a faint shadow on the page like a globe set down on a desk, then turns Taiwan to the front.",
+        "zh": "一顆手繪上漆的紙地球：溫暖的海色越靠近海岸越深，你去過的國家以一層層赤陶水彩上色，海洋名稱有中英兩種文字。開場時它像放在書桌上一樣，從頁面上淡淡的影子裡升起，再把台灣轉到正面。"
+      },
+      "still": {
+        "wait": 20000,
+        "crop": [
+          0,
+          0.145,
+          0.74,
+          0.74
+        ]
+      }
+    },
+    {
+      "id": "journey-atlas-v2",
+      "href": "journey-atlas-v2.html",
+      "group": "atlas",
+      "title": {
+        "en": "Atlas, engraved globe",
+        "zh": "足跡，銅版地球"
+      },
+      "desc": {
+        "en": "An engraved paper globe in ink only: hairline coasts, waterlines along every shore, mountains drawn in short strokes, your countries hatched in clay. On arrival the coasts draw themselves outward from Taipei, then the land and your countries fill in.",
+        "zh": "一顆只用墨線的銅版紙地球：細細的海岸線，沿岸的水紋線，山以短短的筆觸刻出，你去過的國家以赤陶色斜線標出。開場時海岸線從台北向外一筆一筆畫出來，接著陸地和你的國家才填上。"
+      },
+      "still": {
+        "wait": 20000,
+        "crop": [
+          0,
+          0.145,
+          0.74,
+          0.74
+        ]
+      }
+    },
+    {
+      "id": "journey-atlas-v3",
+      "href": "journey-atlas-v3.html",
+      "group": "atlas",
+      "title": {
+        "en": "Atlas, porcelain globe",
+        "zh": "足跡，素燒地球"
+      },
+      "desc": {
+        "en": "An unglazed porcelain globe with no colour: the mountains are real light and shadow, the sea a smooth lower surface, and your countries glazed in clay so they catch the light as it turns. It arrives as a flat tile that turns upright and swells into a sphere.",
+        "zh": "一顆沒有上色的素燒瓷地球：山是真實的光與影，海是較低較平滑的表面，你去過的國家上了一層赤陶釉，轉動時會映出光。開場時它是一片平放的瓷片，立起來後慢慢鼓成一顆球。"
+      },
+      "still": {
+        "wait": 20000,
+        "crop": [
+          0,
+          0.145,
+          0.74,
+          0.74
+        ]
+      }
+    },
+    {
+      "id": "journey-atlas-v4",
+      "href": "journey-atlas-v4.html",
+      "group": "atlas",
+      "title": {
+        "en": "Atlas, contour globe",
+        "zh": "足跡，等高線地球"
+      },
+      "desc": {
+        "en": "A paper globe drawn in fine olive form lines, with ink coasts and quiet clay for your countries; closer in, finer lines appear. It opens close over Taiwan and rises steadily to the whole world, your trips drawing out as each country comes into view.",
+        "zh": "一顆用細細橄欖色地形線畫成的紙地球，墨色海岸，你的國家淡淡的赤陶色；拉近時會出現更細的線。開場時從台灣上空近處開始，平穩地升高到整個世界，每看到一個國家，你的旅程就畫出來。"
+      },
+      "still": {
+        "wait": 20000,
+        "crop": [
+          0,
+          0.145,
+          0.74,
+          0.74
+        ]
+      }
+    },
+    {
+      "id": "journey-atlas-v5",
+      "href": "journey-atlas-v5.html",
+      "group": "atlas",
+      "title": {
+        "en": "Atlas, prints globe",
+        "zh": "足跡，相片地球"
+      },
+      "desc": {
+        "en": "A quiet paper globe with your photographs laid where you took them, as small bordered prints. On arrival they start as a loose contact sheet and each one flies home to its place, Taiwan first, while the globe appears beneath them.",
+        "zh": "一顆安靜的紙地球，你的照片像有白邊的小相片一樣放在拍攝的地方。開場時它們先像一張攤開的印樣，接著每一張飛回自己的地方，台灣的最先，地球也在它們下面慢慢出現。"
+      },
+      "still": {
+        "wait": 20000,
+        "crop": [
+          0,
+          0.145,
+          0.74,
+          0.74
+        ]
+      }
+    }
+  ],
+  "tags": [
+    {
+      "id": "colour",
+      "en": "Colour",
+      "zh": "顏色"
+    },
+    {
+      "id": "motion",
+      "en": "Motion",
+      "zh": "動態"
+    },
+    {
+      "id": "globe",
+      "en": "Globe",
+      "zh": "地球"
+    },
+    {
+      "id": "map",
+      "en": "Map",
+      "zh": "地圖"
+    },
+    {
+      "id": "photos",
+      "en": "Photos",
+      "zh": "照片"
+    },
+    {
+      "id": "type",
+      "en": "Type",
+      "zh": "字"
+    },
+    {
+      "id": "opening",
+      "en": "Opening",
+      "zh": "開場"
+    },
+    {
+      "id": "speed",
+      "en": "Speed",
+      "zh": "速度"
+    },
+    {
+      "id": "layout",
+      "en": "Layout",
+      "zh": "版面"
+    }
+  ],
+  "phrases": [
+    {
+      "id": "more",
+      "en": "More of this",
+      "zh": "多一點"
+    },
+    {
+      "id": "too-fast",
+      "en": "Too fast",
+      "zh": "太快"
+    },
+    {
+      "id": "too-busy",
+      "en": "Too busy",
+      "zh": "太亂"
+    },
+    {
+      "id": "hard-to-see",
+      "en": "Hard to see",
+      "zh": "看不清楚"
+    },
+    {
+      "id": "lovely",
+      "en": "Lovely",
+      "zh": "很美"
+    },
+    {
+      "id": "feels-fake",
+      "en": "Feels fake",
+      "zh": "不自然"
+    },
+    {
+      "id": "bigger",
+      "en": "Bigger",
+      "zh": "大一點"
+    },
+    {
+      "id": "smaller",
+      "en": "Smaller",
+      "zh": "小一點"
+    }
+  ],
+  "theme": {
+    "--rv-paper": "var(--paper, oklch(97.6% 0.006 85))",
+    "--rv-paper-2": "var(--paper-2, oklch(94.2% 0.008 85))",
+    "--rv-ink": "var(--ink, oklch(22% 0.01 60))",
+    "--rv-ink-2": "var(--ink-2, oklch(44% 0.012 60))",
+    "--rv-ink-3": "var(--ink-3, oklch(64% 0.012 60))",
+    "--rv-mark": "var(--route, oklch(55% 0.17 33))",
+    "--rv-link": "var(--link, oklch(42% 0.11 38))",
+    "--rv-hair": "var(--rule, var(--hair, oklch(87% 0.01 80)))",
+    "--rv-label": "\"Geist\", \"Noto Sans TC\", sans-serif",
+    "--rv-name": "\"Playfair Display\", \"Noto Serif TC\", serif"
+  },
+  "words": {}
+}

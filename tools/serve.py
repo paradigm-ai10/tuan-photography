@@ -15,21 +15,23 @@
 所以他的筆記只留在這台 Mac；Claude 直接讀那個檔，不用他複製貼上。
 Review pages (good / not, notes): GET and POST /__reviews/<name> read and write
 ideas/reviews/<name>.json, private (ideas/ is gitignored), read by Claude straight from the file.
+The review kit's endpoints come from reviews_mixin.py (2026-11-04): also the stills under
+/__reviews/<name>/thumbs/, a copy of each file before its first save of the day, a 1 MB cap.
 """
 import functools
 import http.server
-import json
 import os
-import re
 import sys
-import time
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from reviews_mixin import ReviewsMixin  # noqa: E402
 
 PROJECT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 REVIEWS = os.path.join(PROJECT, 'ideas', 'reviews')
-REVIEW_PATH = re.compile(r'^/__reviews/([a-z0-9-]{1,60})$')
 
 
-class NoCacheHandler(http.server.SimpleHTTPRequestHandler):
+class NoCacheHandler(ReviewsMixin, http.server.SimpleHTTPRequestHandler):
+    REVIEWS_DIR = REVIEWS
     extensions_map = {
         **http.server.SimpleHTTPRequestHandler.extensions_map,
         '.webmanifest': 'application/manifest+json',
@@ -42,48 +44,13 @@ class NoCacheHandler(http.server.SimpleHTTPRequestHandler):
     def log_message(self, fmt, *args):
         pass  # 安靜一點，終端機只留啟動訊息
 
-    def _review_file(self):
-        m = REVIEW_PATH.match(self.path.split('?')[0])
-        return os.path.join(REVIEWS, m.group(1) + '.json') if m else None
-
-    def _send_json(self, code, obj):
-        body = json.dumps(obj, ensure_ascii=False).encode('utf-8')
-        self.send_response(code)
-        self.send_header('Content-Type', 'application/json; charset=utf-8')
-        self.send_header('Content-Length', str(len(body)))
-        self.end_headers()
-        self.wfile.write(body)
-
     def do_GET(self):
-        f = self._review_file()
-        if not f:
+        if not self.reviews_get():
             return super().do_GET()
-        try:
-            with open(f, encoding='utf-8') as fh:
-                return self._send_json(200, json.load(fh))
-        except (OSError, ValueError):
-            return self._send_json(200, {})
 
     def do_POST(self):
-        f = self._review_file()
-        if not f:
+        if not self.reviews_post():
             return self.send_error(404)
-        n = int(self.headers.get('Content-Length') or 0)
-        if n <= 0 or n > 200_000:
-            return self.send_error(413)
-        try:
-            data = json.loads(self.rfile.read(n).decode('utf-8'))
-            if not isinstance(data, dict):
-                raise ValueError
-        except ValueError:
-            return self.send_error(400)
-        data['_saved'] = time.strftime('%Y-%m-%d %H:%M:%S')
-        os.makedirs(REVIEWS, exist_ok=True)
-        tmp = f + '.tmp'
-        with open(tmp, 'w', encoding='utf-8') as fh:
-            json.dump(data, fh, ensure_ascii=False, indent=2)
-        os.replace(tmp, f)
-        return self._send_json(200, {'ok': True, 'saved': data['_saved']})
 
 
 def main():
@@ -94,6 +61,8 @@ def main():
     # 第二個參數：要預覽的資料夾（從專案資料夾算起），給 experiments/ 裡的試作版用
     os.chdir(sys.argv[2] if len(sys.argv) > 2 else "design 1")
     handler = functools.partial(NoCacheHandler, directory=os.getcwd())
+    # a longer queue than the default 5, so a burst of saves and pictures is never turned away
+    http.server.ThreadingHTTPServer.request_queue_size = 64
     with http.server.ThreadingHTTPServer(('127.0.0.1', port), handler) as httpd:
         httpd.serve_forever()
 

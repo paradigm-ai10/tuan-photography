@@ -19,8 +19,10 @@ const D = Math.PI / 180;
 const clamp = THREE.MathUtils.clamp;
 const smooth = (a, b, x) => { const t = clamp((x - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); };
 const reduceQ = matchMedia('(prefers-reduced-motion: reduce)');
-let reduce = reduceQ.matches;
-reduceQ.addEventListener?.('change', (e) => { reduce = e.matches; });
+// a still for the review list (?still, review_thumbs.py) shows the page arrived: no opening, no spin
+const STILL = /[?&]still\b/.test(location.search);
+let reduce = reduceQ.matches || STILL;
+reduceQ.addEventListener?.('change', (e) => { reduce = e.matches || STILL; });
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s == null ? '' : s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
@@ -1157,6 +1159,20 @@ function applyHash(fly) {
 }
 addEventListener('popstate', () => { if (R) applyHash(true); });
 addEventListener('hashchange', () => { if (R && location.hash !== hashString()) applyHash(true); });
+// for the review kit (review-kit/bar.js, on his Mac only): a mark or a move to the next version keeps
+// this view, which is what the address holds (#at=…); near is the label or country under a click
+window.ReviewView = {
+  get: () => (R ? { hash: hashString() } : null),
+  set: (s) => { if (s && s.hash && R) { if (typeof view.onUser === 'function') view.onUser(); if (location.hash === s.hash) applyHash(true); else location.hash = s.hash; } },
+  near: (x, y) => {
+    if (!R) return '';
+    const m = marks.nearest(x, y, 24);
+    if (m && m.name) return m.name.textContent.trim();
+    const g = view.hit(x, y);
+    const i = g ? pickIndex(g.lat, g.lng) : -1;
+    return i >= 0 ? R.countries[i].name.en : '';
+  },
+};
 
 /* ---------- taps on the globe ---------- */
 view.onTap = (x, y, touch) => {

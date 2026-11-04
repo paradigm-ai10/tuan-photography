@@ -8,7 +8,7 @@
 <link rel="icon" href="../../favicon.ico">
 <link rel="stylesheet" href="../../css/fonts.css">
 <link rel="stylesheet" href="kit.css">
-<link rel="stylesheet" href="choose.css">
+<link rel="stylesheet" href="review-kit/hub.css">
 </head>
 <body class="choose">
 <div id="top"></div>
@@ -17,7 +17,13 @@
 <script src="../vendor/topojson-client.min.js"></script>
 <script src="../data.js"></script>
 <script src="kit.js"></script>
-<script src="review.js"></script>
-<script src="choose.js"></script>
+<script>
+  // the site's top bar and language switch; the review kit follows <html lang>
+  (function () { var K = window.Kit, top = document.getElementById('top'); function draw() { top.innerHTML = K.topbar('journey'); } K.onLang(draw); draw(); })();
+</script>
+<script src="review-kit/words.js"></script>
+<script src="review-kit/store.js"></script>
+<script src="review-kit/compare.js"></script>
+<script src="review-kit/hub.js" data-manifest="review-manifest.json" data-mount="#main"></script>
 </body>
 </html>
