@@ -53,8 +53,8 @@ trials; what he said that decides the next step:
 
 ## 接下來 Next up
 
-Read `ideas/reviews/design5.json` first (his pick among the three design 5 directions), then build the
-full site in that direction.
+Design 5: Glass block was dropped (2026-11-04, "I don't like this version"; tag
+`glass-block-dropped-2026-11-04`). Ask him where the new website goes next: Relief, Orrery, or a fresh direction.
 
 Read `ideas/reviews/world.json` (his score and notes on Design 4), then open
 http://localhost:8642/world/ with him. Code: `design 4/world.js` (poses: `stopPose`, `flight`,
@@ -68,11 +68,10 @@ Main; 2 Sea chart, scroll-craft; 3 Paper, the whole page wraps). Next he **bring
 
 ## 等你決定 Waiting on you
 
-- **Design 5: he picked Glass block.** Full site built: home, portfolio/, trips/, guides/, guides/barcelona/
-  at http://localhost:8642/next/glass/ . Waiting for his look. Undated New York and LA photographs go
-  to summer 2025 (his call).
+- **Design 5: Glass block dropped** (2026-11-04, at his word; the full site is at tag
+  `glass-block-dropped-2026-11-04`). Next direction for the new website: his call.
 - (earlier) **Design 5, three directions** (2026-11-02):
-  http://localhost:8642/next/ (Relief, Glass block, Orrery; his marks and notes save to
+  http://localhost:8642/next/ (Relief and Orrery left; his marks and notes save to
   `ideas/reviews/design5.json`). Then build the full site from the pick. Brief: `design 5/BRIEF.md`.
 - **Design 4** (2026-11-02): keep developing it, or not? http://localhost:8642/world/
 - **Journey globe** (2026-10-30): kept the three with 5 stars, the live one as main; next, references

@@ -25,7 +25,7 @@ photograph.
 | Folder | Centrepiece | Look |
 |---|---|---|
 | `relief/` | real mountains he shot as matte plaster sculptures from real elevation data, on a table, light moving across like a day | light |
-| `glass/` | his photographs printed on thin glass panes, stacked into one solid block that turns; panes slide out | dark |
+| ~~`glass/`~~ | dropped 2026-11-04 at his word ("I don't like this version"); code at tag `glass-block-dropped-2026-11-04` | |
 | `orrery/` | a brass-and-paper instrument, the earth at its centre, his trips as rings around it; turning it moves through time | warm paper |
 
 Each is ONE home page (`<folder>/index.html` plus its own css/js), showing the centrepiece, its one or
