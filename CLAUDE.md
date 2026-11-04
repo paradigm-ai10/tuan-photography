@@ -119,10 +119,7 @@ Arranged on 2026-09-28 at his request, so the top level reads at a glance. Keep 
   trip being read; the trip's photograph fills the screen behind; the trips are read on a frosted
   panel where the one the globe shows stays clear and the others fade ("Fade"). Files: `journey.js`,
   `journey.css`, `kit.js`, `kit.css`, the scroll-craft engine (`scrollcraft.js`, `.css`, copied
-  unedited; brief in `scrollcraft/`). `design 2/new/` (the review list, `index.html`) is only for getting around (his call, 2026-10-29): one
-  line per version with its score and how many moments he pinned, no pictures; every version page carries a Notes box (dragged anywhere, minimized to a small bar, or the N key) where he scores it and pins a
-  line to the spot he is looking at (his request 2026-10-29: he looks, he does not read). `review.js` is the
-  store and the tab, shown on localhost only; all of it saves to `ideas/reviews/journey.json`. A trip opens on
+  unedited; brief in `scrollcraft/`). `design 2/new/` (the review list, `index.html`) is the version-review kit (redesigned 2026-11-04 at his ask, now also the skill `version-review` on both sides): a still of each version with its score and notes (he chose small previews, reversing the words-only list of 2026-10-29), Compare two, and on every version page a slim bar (previous / next with , and ., 1 to 5, N notes, M mark a spot). The versions are listed in `review-manifest.json` (choose.js is gone); the kit is `review-kit/`, `review.js` is a shim to it; stills by `tools/review_thumbs.py`, his notes read with `tools/read_reviews.py`; localhost only; all of it saves to `ideas/reviews/journey.json`. A trip opens on
   `design 2/wc-sketch/trip/?trip=<id>&from=journey`, whose back word returns to that entry. The
   pen-and-wash Journey is still at `/journey/wc-sketch/` (before the merge: tag
   `before-journey-merge-2026-10-29`); the trial's other versions are at the tags
