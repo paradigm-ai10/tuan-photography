@@ -90,6 +90,15 @@ const CFG = {
   // photoball  scatter, but they never turn back: the globe stays a ball of his photographs for good,
   //            each pressed onto it still photograph up, with the routes drawn over them
   'gallery-photoball': { ...GALLERY, photos: 'tileBacks', flip: true, stay: true, tileLift: 0.5, scatter: 0.1 },
+  // the balances between the map and the photo ball, each with scatter's flight and photo ball:
+  // hold    the ball holds through the glide aside and turns back to the map, Taiwan's first, once the
+  //         first trip is read (and back to photographs above it)
+  // some    they turn back as in scatter, but about one print in four stays a photograph
+  // window  the front of the ball, round the trip being read, turns back to the map, the prints round
+  //         its edge stay photographs, and the window moves with each trip
+  'gallery-hold': { ...GALLERY, photos: 'tileBacks', flip: true, hold: true, tileLift: 0.5, scatter: 0.1 },
+  'gallery-some': { ...GALLERY, photos: 'tileBacks', flip: true, keep: 0.25, tileLift: 0.5, scatter: 0.1 },
+  'gallery-window': { ...GALLERY, photos: 'tileBacks', flip: true, window: 40, tileLift: 0.5, scatter: 0.1 },
 }[V];
 const HOME_LL = [S.flightsFrom[1], S.flightsFrom[0]];
 const CRAFT = 'craft' in document.body.dataset;
@@ -152,7 +161,7 @@ function gorePlace(q, b, h, f, out) {
 // whole map; the first of the scroll opens a thin line of paper between the prints. Each print keeps its own clock, Taiwan's first and the far side last: it lifts off the wall
 // whole, travels and turns to face out from its place on the ball, narrowing to the ball's width
 // there, and is pressed down onto it as it lands, the gaps closing. The shader does the same sums.
-const TILES = CFG.tiles || [1, 1], TILE_GAP = 0.06, TILE_LIFT = CFG.tileLift || 0.3, TILE_FLIP = CFG.flip ? 1 : 0, TILE_SCATTER = CFG.scatter || 0, TILE_STAY = CFG.stay ? 1 : 0;
+const TILES = CFG.tiles || [1, 1], TILE_GAP = 0.06, TILE_LIFT = CFG.tileLift || 0.3, TILE_FLIP = CFG.flip ? 1 : 0, TILE_SCATTER = CFG.scatter || 0, TILE_TWO = CFG.stay || CFG.hold || CFG.keep || CFG.window ? 1 : 0;
 // (scatter) the prints fly quicker so the ball is whole by 0.73 of the fold, and hold photograph up
 // until 0.82; each is thrown aside its own way, and turns over about its across (0, 2) or its up and
 // down (1, 3), so it lands the same shape; the shader works both out the same way
@@ -167,7 +176,7 @@ function tilePlace(q, b, h, f, center, out) {
   const d = Math.acos(clamp(Math.sin(bc) * Math.sin(hp) + Math.cos(bc) * Math.cos(hp) * Math.cos(dh), -1, 1)) / Math.PI;
   const s = smoother(clamp(f * TILE_RATE - d * 0.6, 0, 1));
   // (scatter) the turn back to the map, once the ball is whole; until then a thin gap keeps them prints
-  const ub = TILE_STAY ? 0 : TILE_FLIP ? smooth(0, 1, clamp((f - 0.82) / 0.12 - d * 0.5, 0, 1)) : 1;
+  const ub = TILE_TWO ? 0 : TILE_FLIP ? smooth(0, 1, clamp((f - 0.82) / 0.12 - d * 0.5, 0, 1)) : 1;
   const gap = TILE_GAP * smooth(0, 0.1, f) * (1 - smooth(0.78, 1, s) * (0.5 + 0.5 * ub));
   const ox = ((q - 0.5) * TAU - ac) * (1 - gap), oy = (b - bc) * (1 - gap);
   const ya = ac * s, pa = bc * s, lift = TILE_LIFT * Math.sin(Math.PI * s), wx = 1 + (Math.cos(bc) - 1) * s;
@@ -184,7 +193,7 @@ function tilePlace(q, b, h, f, center, out) {
     cx += ex * dx + mx * dy; cy += my * dy; cz += ez * dx + mz * dy;
   }
   const rx = cx + ex * X + mx * Y + nx * Z, ry = cy + my * Y + ny * Z, rz = cz + ez * X + mz * Y + nz * Z;
-  const a2 = ac + ox, b2 = bc + oy, k = R * (1 + h), cf = smooth(0.72, 1, s) * (TILE_STAY ? 1 : smooth(0.6, 1, ub));
+  const a2 = ac + ox, b2 = bc + oy, k = R * (1 + h), cf = smooth(0.72, 1, s) * (TILE_TWO ? 1 : smooth(0.6, 1, ub));
   const px = Math.cos(b2) * Math.sin(a2) * k, py = Math.sin(b2) * k, pz = Math.cos(b2) * Math.cos(a2) * k;
   return out.set(rx + (px - rx) * cf, ry + (py - ry) * cf, rz + (pz - rz) * cf);
 }
@@ -211,7 +220,8 @@ function place(lon, lat, h, st, out = new THREE.Vector3()) {
   return out;
 }
 const MORPH = /* glsl */`
-  uniform float uKx, uKy, uR, uCenter, uRaise, uMix, uWave, uFold, uRise, uReveal, uSoft, uGores, uGore0, uTiles, uTileGap, uTileLift, uTileFlip, uTileScatter, uTileRate, uTileStay;
+  uniform float uKx, uKy, uR, uCenter, uRaise, uMix, uWave, uFold, uRise, uReveal, uSoft, uGores, uGore0, uTiles, uTileGap, uTileLift, uTileFlip, uTileScatter, uTileRate, uTileMode, uTileKeep, uTurn;
+  uniform vec4 uWin;
   uniform vec2 uHome, uTileN;
   uniform sampler2D uMask, uMaskPrev;
   varying vec2 vQ;
@@ -232,8 +242,25 @@ const MORPH = /* glsl */`
       float ac = (aTile.x - 0.5) * 6.2831853, bc = (aTile.y - 0.5) * 3.1415927;
       float d = acos(clamp(sin(bc) * sin(uHome.y) + cos(bc) * cos(uHome.y) * cos(ac + uCenter - uHome.x), -1.0, 1.0)) / 3.1415927;
       float s = clamp(uFold * uTileRate - d * 0.6, 0.0, 1.0); s = s * s * s * (s * (s * 6.0 - 15.0) + 10.0);
-      float ub = uTileStay > 0.5 ? 0.0 : uTileFlip > 0.5 ? smoothstep(0.0, 1.0, clamp((uFold - 0.82) / 0.12 - d * 0.5, 0.0, 1.0)) : 1.0;
-      vec2 o = vec2(a - ac, b - bc) * (1.0 - uTileGap * smoothstep(0.0, 0.1, uFold) * (1.0 - smoothstep(0.78, 1.0, s) * (0.5 + 0.5 * ub)));
+      float ub = uTileFlip > 0.5 ? smoothstep(0.0, 1.0, clamp((uFold - 0.82) / 0.12 - d * 0.5, 0.0, 1.0)) : 1.0;
+      float two = step(0.5, uTileMode), gb = ub;
+      if (two > 0.5) {
+        // (photoball and the balances) which prints turn back to the map, and when; the gaps close as the ball is done
+        float lt = smoothstep(0.8, 1.0, uFold), h1 = fract(sin(dot(floor(aTile * uTileN), vec2(12.9898, 78.233))) * 43758.5453);
+        if (uTileMode < 1.5) ub = 0.0;
+        else if (uTileMode < 2.5) ub = smoothstep(0.0, 1.0, clamp(uTurn * 1.6 - d * 0.6, 0.0, 1.0)) * lt;
+        else if (uTileMode < 3.5) ub *= step(uTileKeep, h1);
+        else {
+          // the window: the prints within its reach of the front, at the trip's height (x, the last; y, the next)
+          float da = acos(clamp(sin(bc) * sin(uWin.x) + cos(bc) * cos(uWin.x) * cos(ac), -1.0, 1.0)) / uWin.w;
+          float db = acos(clamp(sin(bc) * sin(uWin.y) + cos(bc) * cos(uWin.y) * cos(ac), -1.0, 1.0)) / uWin.w;
+          float inA = step(da, 1.0), inB = step(db, 1.0);
+          float come = smoothstep(0.0, 1.0, clamp(uWin.z * 1.5 - db * 0.5, 0.0, 1.0)), leave = smoothstep(0.0, 1.0, clamp(uWin.z * 1.5 - (1.0 - da) * 0.5, 0.0, 1.0));
+          ub = max(inA * inB, max(inB * come, inA * (1.0 - leave))) * smoothstep(0.0, 1.0, clamp(lt * 1.6 - db * 0.6, 0.0, 1.0));
+        }
+        gb = uTileMode < 1.5 ? 0.0 : lt;
+      }
+      vec2 o = vec2(a - ac, b - bc) * (1.0 - uTileGap * smoothstep(0.0, 0.1, uFold) * (1.0 - smoothstep(0.78, 1.0, s) * (0.5 + 0.5 * gb)));
       float ya = ac * s, pa = bc * s;
       vec3 nr = vec3(cos(pa) * sin(ya), sin(pa), cos(pa) * cos(ya));
       vec3 ex = vec3(cos(ya), 0.0, -sin(ya)), my = vec3(-sin(pa) * sin(ya), cos(pa), -sin(pa) * cos(ya));
@@ -249,16 +276,20 @@ const MORPH = /* glsl */`
         L = vec3(L.x * co + ky * L.z * sn + kx * kv * (1.0 - co), L.y * co - kx * L.z * sn + ky * kv * (1.0 - co), L.z * co + (kx * L.y - ky * L.x) * sn);
         nf = ex * ky * sn - my * kx * sn + nr * co;
         c += (ex * cos(ps) + my * sin(ps)) * uTileScatter * uR * sin(3.1415927 * s);
-        // (photoball) pressed onto the ball still turned over, so each point lands mirrored across the turn
-        if (uTileStay > 0.5) om = 2.0 * dot(vec2(kx, ky), o) * vec2(kx, ky) - o;
+        // (photoball and the balances) pressed onto the ball as it lies: photograph up, so each point lands
+        // mirrored across the turn, or map up; lifted clear of the ball while it turns between the two
+        if (two > 0.5) {
+          c += nr * uR * 0.14 * sin(3.1415927 * ub);
+          if (ub < 0.5) om = 2.0 * dot(vec2(kx, ky), o) * vec2(kx, ky) - o;
+        }
       }
       vec3 rigid = c + ex * L.x + my * L.y + nr * L.z;
       vec2 g = vec2(ac, bc) + om;
       vec3 ns = vec3(cos(g.y) * sin(g.x), sin(g.y), cos(g.y) * cos(g.x));
-      float cf = smoothstep(0.72, 1.0, s) * (uTileStay > 0.5 ? 1.0 : smoothstep(0.6, 1.0, ub));
+      float cf = smoothstep(0.72, 1.0, s) * (two > 0.5 ? 1.0 - smoothstep(0.0, 0.3, ub) + smoothstep(0.7, 1.0, ub) : smoothstep(0.6, 1.0, ub));
       vTile = vec2(a - ac, b - bc) / vec2(3.1415927 / uTileN.x, 1.5707963 / uTileN.y);
       vLand = min(s, mix(0.74, 1.0, ub)); vTileC = aTile; vW = mix(1.0, cos(bc), s);
-      n = normalize(mix(nf, uTileStay > 0.5 ? -ns : ns, cf));
+      n = normalize(mix(nf, two > 0.5 && ub < 0.5 ? -ns : ns, cf));
       return mix(rigid, ns * uR * (1.0 + h), cf);
     }
     if (uGores > 0.5) {
@@ -838,7 +869,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     uEarth: { value: CFG.earth ? 1 : 0 }, uAlive: { value: 0 }, uBleed: { value: CFG.bleed ? 1 : 0 }, uPaperC: { value: new THREE.Color(rgb('--paper')) },
     uDevelop: { value: CFG.develop ? 1 : 0 }, uDevTint: { value: new THREE.Color(rgb('oklch(78% 0.07 70)')) },
     uGores: { value: CFG.gores ? 1 : 0 }, uGore0: { value: GORE0 }, uPen: { value: CFG.pen ? 1 : 0 },
-    uTiles: { value: CFG.tiles ? 1 : 0 }, uTilePhotos: { value: { tileBacks: 1, tileEdges: 2 }[CFG.photos] || 0 }, uAtlasN: { value: 6 }, uTileN: { value: new THREE.Vector2(...TILES) }, uTileGap: { value: TILE_GAP }, uTileLift: { value: TILE_LIFT }, uTileFlip: { value: TILE_FLIP }, uTileScatter: { value: TILE_SCATTER }, uTileRate: { value: TILE_RATE }, uTileStay: { value: TILE_STAY },
+    uTiles: { value: CFG.tiles ? 1 : 0 }, uTilePhotos: { value: { tileBacks: 1, tileEdges: 2 }[CFG.photos] || 0 }, uAtlasN: { value: 6 }, uTileN: { value: new THREE.Vector2(...TILES) }, uTileGap: { value: TILE_GAP }, uTileLift: { value: TILE_LIFT }, uTileFlip: { value: TILE_FLIP }, uTileScatter: { value: TILE_SCATTER }, uTileRate: { value: TILE_RATE }, uTileMode: { value: CFG.stay ? 1 : CFG.hold ? 2 : CFG.keep ? 3 : CFG.window ? 4 : 0 }, uTileKeep: { value: CFG.keep || 0 }, uTurn: { value: 0 }, uWin: { value: new THREE.Vector4(23.5 * RAD, 23.5 * RAD, 1, (CFG.window || 1) * RAD) },
     uBacks: { value: 0 }, uBackTex: { value: texes[0] },
     uMask: { value: maskTex ? maskTex[0] : texes[0] }, uMaskPrev: { value: maskTex ? maskTex[1] : texes[0] },
   };
@@ -1216,7 +1247,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     }
     setLines(sets.past, past); setLines(sets.here, here); setLines(sets.now, now);
     // the gores and the prints: the lines are lifted off while they are apart, and laid back on the closed globe
-    const gate = CFG.gores || CFG.tiles ? Math.max(1 - smooth(0.02, 0.14, st.fold), smooth(CFG.stay ? 0.8 : CFG.flip ? 0.95 : 0.9, 1, st.fold)) : 1;
+    const gate = CFG.gores || CFG.tiles ? Math.max(1 - smooth(0.02, 0.14, st.fold), smooth(TILE_TWO ? 0.8 : CFG.flip ? 0.95 : 0.9, 1, st.fold)) : 1;
     for (const k of Object.keys(ops)) if (sets[k].material.opacity !== opsNow[k] * gate) sets[k].material.opacity = opsNow[k] * gate;
   }
 
@@ -1403,9 +1434,26 @@ window.JourneyMap = async function makeGlobe(svgEl) {
   if (masks) { paint(masks[1], isoFirst, year, null, true); maskTex[1].needsUpdate = true; }
 
   /* the turn to a trip */
-  let turnId = 0;
+  let turnId = 0, holdTo = 0, holdId = 0, winId = 0;
+  // (hold) the photo ball turns back to the map once a trip is read, and to photographs again above the first
+  function holdTurn(to) {
+    if (to === holdTo) return;
+    holdTo = to;
+    const from = U.uTurn.value, id = ++holdId;
+    if (K.reduced) { U.uTurn.value = to; kick(); return; }
+    tween(1800, (k) => { if (id === holdId) U.uTurn.value = from + (to - from) * k; });
+  }
+  // (window) the map's window on the ball moves to the trip's height, its prints turning over as it goes
+  function windowTo(lat) {
+    const w = U.uWin.value;
+    w.x = w.z > 0.5 ? w.y : w.x; w.y = lat * RAD; w.z = 0;
+    const id = ++winId;
+    if (K.reduced || st.fold === 0) { w.x = w.y; w.z = 1; kick(); return; }
+    tween(1300, (k) => { if (id === winId) w.z = k; });
+  }
   function face(lonlat) {
     const to = [lonlat[0], clamp(lonlat[1], -35, 35)];
+    if (CFG.window) windowTo(to[1]);
     to[0] = st.spin[0] + turnBy(st.spin[0], to[0]);
     const from = st.spin.slice(), drag0 = st.drag.slice();
     const id = ++turnId;
@@ -1529,6 +1577,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     if (t === nowTrip) return;
     nowTrip = t;
     underFor(t);
+    if (CFG.hold) holdTurn(t ? 1 : 0);
     if (hung.length) { ringWant = Math.max(0, hung.findIndex((p) => p.t === (t || K.trips[0]))); kick(); }
     stops.forEach((s) => group.remove(s));
     stops.length = 0;
