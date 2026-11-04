@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Logo motion · tuan photography 陳亮元</title>
+<!-- optional: the project's own fonts and colour tokens, so the manifest "theme" can point at them -->
+<link rel="stylesheet" href="../../../css/fonts.css">
+<link rel="stylesheet" href="review-kit/hub.css">
+<style>
+  body { margin: 0; background: var(--rv-paper, #f8f5ef); }
+  .rv-lang { position: fixed; top: 0.75rem; right: 1rem; font: 500 0.75rem/1 ui-sans-serif, sans-serif; letter-spacing: 0.1em; background: none; border: 0; padding: 0.5rem; cursor: pointer; color: var(--rv-ink-2, #5f5850); }
+</style>
+</head>
+<body>
+<!-- the language word: the kit follows <html lang>, so any switch that sets it works -->
+<button type="button" class="rv-lang" id="rv-lang">中文</button>
+<main id="main"></main>
+<script>
+  (function () {
+    var b = document.getElementById('rv-lang'), h = document.documentElement;
+    try { if (localStorage.getItem('rv-lang') === 'zh') h.lang = 'zh-Hant'; } catch (e) {}
+    function word() { b.textContent = /^zh/.test(h.lang) ? 'English' : '中文'; }
+    b.addEventListener('click', function () {
+      h.lang = /^zh/.test(h.lang) ? 'en' : 'zh-Hant';
+      try { localStorage.setItem('rv-lang', /^zh/.test(h.lang) ? 'zh' : 'en'); } catch (e) {}
+      word();
+    });
+    word();
+  })();
+</script>
+<script src="review-kit/words.js"></script>
+<script src="review-kit/store.js"></script>
+<script src="review-kit/compare.js"></script>
+<script src="review-kit/hub.js" data-manifest="review-manifest.json" data-mount="#main"></script>
+</body>
+</html>
