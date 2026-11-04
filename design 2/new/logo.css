@@ -135,3 +135,5 @@ textarea:focus-visible, .lg-btn:focus-visible { outline: 2px solid var(--accent)
 [data-set="final"] .lg-small-menu { display: none; }
 [data-set="final"] .lg-small { justify-content: center; }
 [data-set="final"] .lg-btn.replay { margin-left: 0; }
+/* he likes photography in capitals under TUAN (2026-11-04): Cormorant now sets it like Cinzel and Castoro */
+[data-set="final"] .f-cormorant .lg-photo { text-transform: uppercase; }
