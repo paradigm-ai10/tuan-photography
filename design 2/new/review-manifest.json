@@ -167,6 +167,54 @@
       }
     },
     {
+      "id": "journey-luxe-clouds",
+      "href": "journey-luxe-clouds.html",
+      "group": "luxe",
+      "title": {
+        "en": "Through the clouds (after Velaa)",
+        "zh": "穿過雲層（來自 Velaa）"
+      },
+      "desc": {
+        "en": "From Velaa's film-like descent through the clouds. Three banks of paper-white mist pass the eye one after another, nearer and larger; the map bends into the globe behind them, and when they clear the globe is whole. One slow movement, nothing else on the page.",
+        "zh": "來自 Velaa 像電影一樣穿過雲層往下的開場。三層紙白色的雲一層接一層從眼前飄過，越來越近、越來越大；地圖在雲後面彎成地球，雲散開時地球已經成形。整頁只有這一個慢慢的動作。"
+      },
+      "still": {
+        "wait": 20000
+      }
+    },
+    {
+      "id": "journey-luxe-drift",
+      "href": "journey-luxe-drift.html",
+      "group": "luxe",
+      "title": {
+        "en": "Five prints drifting (after Cartier)",
+        "zh": "五張照片漂過（來自 Cartier）"
+      },
+      "desc": {
+        "en": "From Cartier's gemstones floating at different depths. Five of your photographs rise slowly past at three depths while the map folds, the near ones larger, quicker and in front, the far ones small and soft, kept mostly off the middle; they leave at the top as the globe closes.",
+        "zh": "來自 Cartier 寶石在不同深度漂浮的感覺。地圖在折的時候，五張你的照片在三種深度慢慢往上漂過：近的比較大、比較快、在前面，遠的小而淡，大多避開中間；地球合起來時它們從上面離開。"
+      },
+      "still": {
+        "wait": 20000
+      }
+    },
+    {
+      "id": "journey-luxe-develop",
+      "href": "journey-luxe-develop.html",
+      "group": "luxe",
+      "title": {
+        "en": "The print develops (after Odyssée and Jon McCormack)",
+        "zh": "顯影（來自 Odyssée 和 Jon McCormack）"
+      },
+      "desc": {
+        "en": "From Odyssée's few colours and Jon McCormack's stillness. The map arrives as a monochrome print, soft warm grey on paper with the routes in ink, and as it curves into the globe its colour comes up from Taiwan outward, like a print in the developing tray.",
+        "zh": "來自 Odyssée 很少的顏色和 Jon McCormack 的安靜。一進來地圖是一張單色的版畫，淡淡的暖灰色印在紙上，只有路線是墨色；地圖彎成地球的時候，顏色從台灣開始往外慢慢浮出來，像照片在顯影盤裡顯影。"
+      },
+      "still": {
+        "wait": 20000
+      }
+    },
+    {
       "id": "journey-gores",
       "href": "journey-gores.html",
       "group": "strips",

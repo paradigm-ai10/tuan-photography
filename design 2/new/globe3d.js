@@ -133,6 +133,17 @@ const CFG = {
   'luxe-unveil': { ...LUXE, photos: 'through', unveil: true },
   'luxe-print': { ...LUXE, bleed: false, tiles: [1, 1], photos: 'tileBacks', hang: { gap: 0.05, lift: 0.08, axis: 'x', photo: 'matterhorn-lake' } },
   'luxe-hang': { ...LUXE, bleed: false, tiles: [6, 3], photos: 'tileBacks', hang: { gap: 0.12, lift: 0.1, axis: 'y' } },
+  // the references round (2026-11-05, he left the choice to me: "你自己看你覺得哪幾個不錯 你就用那個概念來design",
+  // for the change from the flat map to the globe): one idea each, from the sites on journey-references.html
+  // clouds   (Velaa's descent from the clouds into the sea) three banks of paper-white mist pass the eye, one
+  //          after another, nearer and larger; the map bends behind them, and when they clear the globe is whole
+  // drift    (Cartier's gemstones at different depths) five of his photographs rise slowly past at three
+  //          depths, the near ones larger and quicker, round the globe as it forms, and leave at the top
+  // develop  (Odyssée's few colours and Jon McCormack's stillness) the map arrives as a monochrome print,
+  //          warm grey on paper, and its colour comes up from Taiwan outward as each part curves onto the ball
+  'luxe-clouds': { ...LUXE, mist: 3 },
+  'luxe-drift': { ...LUXE, drift: ['matterhorn-lake', 'roys-peak', 'fuji-lake', 'sapa-terraces', 'tekapo-lupins'] },
+  'luxe-develop': { ...LUXE, mono: true },
 }[V];
 const HOME_LL = [S.flightsFrom[1], S.flightsFrom[0]];
 const CRAFT = 'craft' in document.body.dataset;
@@ -281,12 +292,12 @@ const MORPH = /* glsl */`
   varying vec2 vGore;
   varying float vGoreId;
   varying vec2 vTile, vTileC;
-  varying float vLand, vW, vShade;
+  varying float vLand, vW, vShade, vDev;
   ${CFG.gores ? 'attribute float aGore;' : 'const float aGore = 0.5;'}
   ${CFG.tiles ? 'attribute vec2 aTile;' : 'const vec2 aTile = vec2(0.5);'}
   vec3 sheet(vec2 q, float h, out vec3 n) {
     float u = (q.x - 0.5) * 6.2831853 * uR, v = (q.y - 0.5) * 3.1415927 * uR;
-    vGore = vec2(0.0, 1.0); vGoreId = 0.0; vTile = vec2(0.0); vLand = 1.0; vTileC = vec2(0.5); vW = 1.0; vShade = 1.0;
+    vGore = vec2(0.0, 1.0); vGoreId = 0.0; vTile = vec2(0.0); vLand = 1.0; vTileC = vec2(0.5); vW = 1.0; vShade = 1.0; vDev = 1.0;
     if (uTiles > 0.5) {
       // a print on the wall (tilePlace in the JS): lifted off whole, turned to face out from its place on
       // the ball and laid there, then pressed down onto it as the gaps close
@@ -495,7 +506,7 @@ const MORPH = /* glsl */`
       float lon = a + uCenter;
       float d = acos(clamp(sin(b) * sin(uHome.y) + cos(b) * cos(uHome.y) * cos(lon - uHome.x), -1.0, 1.0)) / 3.1415927;
       float w = smoothstep(0.0, 1.0, clamp(uFold * 1.7 - d * 0.7, 0.0, 1.0));
-      n = normalize(mix(vec3(0.0, 0.0, 1.0), ns, w));
+      n = normalize(mix(vec3(0.0, 0.0, 1.0), ns, w)); vDev = w;
       return mix(vec3(u, v, uR + h * uR), ns * uR * (1.0 + h), w);
     }
     float kx = max(uKx, 1e-3), ky = max(uKy, 1e-3);
@@ -1053,7 +1064,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     uEarth: { value: CFG.earth ? 1 : 0 }, uAlive: { value: 0 }, uBleed: { value: CFG.bleed ? 1 : 0 }, uPaperC: { value: new THREE.Color(rgb('--paper')) },
     uDevelop: { value: CFG.develop ? 1 : 0 }, uDevTint: { value: new THREE.Color(rgb('oklch(78% 0.07 70)')) },
     uGores: { value: CFG.gores ? 1 : 0 }, uGore0: { value: GORE0 }, uPen: { value: CFG.pen ? 1 : 0 },
-    uTiles: { value: CFG.tiles ? 1 : 0 }, uTilePhotos: { value: { tileBacks: 1, tileEdges: 2 }[CFG.photos] || 0 }, uAtlasN: { value: 6 }, uTileN: { value: new THREE.Vector2(...TILES) }, uTileGap: { value: TILE_GAP }, uTileLift: { value: TILE_LIFT }, uTileFlip: { value: TILE_FLIP }, uTileScatter: { value: TILE_SCATTER }, uTileRate: { value: TILE_RATE }, uTileMode: { value: CFG.stay ? 1 : CFG.hold ? 2 : CFG.keep ? 3 : CFG.window ? 4 : CFG.wind ? 5 : HANG ? 6 : 0 }, uHang: { value: new THREE.Vector4(HANG ? HANG.gap : 0, HANG ? HANG.lift : 0, HANG && HANG.axis === 'x' ? 1 : 0, HANG ? 1 : 0) }, uHangM: { value: new THREE.Vector2(0.06, 0.06) }, uUnveil: { value: CFG.unveil ? 1 : 0 }, uTime: { value: 0 }, uWind: { value: new THREE.Vector4(0.55, 0.9, 1, ['gust', 'murmur', 'deck', 'vortex', 'tide'].indexOf(CFG.wind)) }, uTileKeep: { value: CFG.keep || 0 }, uTurn: { value: 0 }, uWin: { value: new THREE.Vector4(23.5 * RAD, 23.5 * RAD, 1, (CFG.window || 1) * RAD) },
+    uTiles: { value: CFG.tiles ? 1 : 0 }, uTilePhotos: { value: { tileBacks: 1, tileEdges: 2 }[CFG.photos] || 0 }, uAtlasN: { value: 6 }, uTileN: { value: new THREE.Vector2(...TILES) }, uTileGap: { value: TILE_GAP }, uTileLift: { value: TILE_LIFT }, uTileFlip: { value: TILE_FLIP }, uTileScatter: { value: TILE_SCATTER }, uTileRate: { value: TILE_RATE }, uTileMode: { value: CFG.stay ? 1 : CFG.hold ? 2 : CFG.keep ? 3 : CFG.window ? 4 : CFG.wind ? 5 : HANG ? 6 : 0 }, uHang: { value: new THREE.Vector4(HANG ? HANG.gap : 0, HANG ? HANG.lift : 0, HANG && HANG.axis === 'x' ? 1 : 0, HANG ? 1 : 0) }, uHangM: { value: new THREE.Vector2(0.06, 0.06) }, uUnveil: { value: CFG.unveil ? 1 : 0 }, uMono: { value: CFG.mono ? 1 : 0 }, uTime: { value: 0 }, uWind: { value: new THREE.Vector4(0.55, 0.9, 1, ['gust', 'murmur', 'deck', 'vortex', 'tide'].indexOf(CFG.wind)) }, uTileKeep: { value: CFG.keep || 0 }, uTurn: { value: 0 }, uWin: { value: new THREE.Vector4(23.5 * RAD, 23.5 * RAD, 1, (CFG.window || 1) * RAD) },
     uBacks: { value: 0 }, uBackTex: { value: texes[0] },
     uMask: { value: maskTex ? maskTex[0] : texes[0] }, uMaskPrev: { value: maskTex ? maskTex[1] : texes[0] },
   };
@@ -1078,7 +1089,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
       .replace('#include <beginnormal_vertex>', 'vec3 nrm; float rz = raiseAt(uv); vQ = uv; vRz = uRaise > 0.0 ? rz / uRaise : 0.0;\nvec3 morphed = sheet(uv, rz, nrm);\nvec3 objectNormal = nrm;')
       .replace('#include <begin_vertex>', 'vec3 transformed = morphed;');
     sh.fragmentShader = sh.fragmentShader
-      .replace('#include <common>', '#include <common>\nuniform sampler2D uPrev, uMask, uMaskPrev; uniform float uMix, uLit, uPlate, uFold, uWalls, uDevelop, uCenter, uReveal, uEarth, uAlive, uBleed, uGores, uPen, uBacks, uTiles, uTilePhotos, uAtlasN, uTileFlip; uniform vec2 uTileN; uniform sampler2D uBackTex; uniform vec3 uBack, uEdge, uDevTint, uPaperC; uniform vec4 uHang; uniform vec2 uHangM; uniform float uUnveil; varying vec2 vQ; varying float vRz; varying vec2 vGore; varying float vGoreId; varying vec2 vTile, vTileC; varying float vLand, vW, vShade;')
+      .replace('#include <common>', '#include <common>\nuniform sampler2D uPrev, uMask, uMaskPrev; uniform float uMix, uLit, uPlate, uFold, uWalls, uDevelop, uCenter, uReveal, uEarth, uAlive, uBleed, uGores, uPen, uBacks, uTiles, uTilePhotos, uAtlasN, uTileFlip; uniform vec2 uTileN; uniform sampler2D uBackTex; uniform vec3 uBack, uEdge, uDevTint, uPaperC; uniform vec4 uHang; uniform vec2 uHangM; uniform float uUnveil, uMono; varying float vDev; varying vec2 vQ; varying float vRz; varying vec2 vGore; varying float vGoreId; varying vec2 vTile, vTileC; varying float vLand, vW, vShade;')
       .replace('#include <map_fragment>', `#include <map_fragment>
         #ifdef USE_MAP
           diffuseColor.rgb = mix(texture2D(uPrev, vMapUv).rgb, diffuseColor.rgb, uMix);
@@ -1124,6 +1135,12 @@ window.JourneyMap = async function makeGlobe(svgEl) {
         }
         // (hang, print) a little shade as a print stands edge on, applied with the photographs below
         float shade = vShade;
+        // (develop) a monochrome print, soft warm grey on paper (the sea a pale grey, the land the paper, where
+        // he has been a little deeper), whose colour comes up as each part curves onto the ball, Taiwan first
+        if (uMono > 0.5) {
+          float lum = 0.45 + 0.58 * dot(diffuseColor.rgb, vec3(0.299, 0.587, 0.114));
+          diffuseColor.rgb = mix(vec3(lum) * vec3(1.0, 0.982, 0.955), diffuseColor.rgb, smoothstep(0.2, 0.95, vDev));
+        }
         // the printed plate: on arrival the map is trimmed to its band, 80N to 56S
         if (uPlate > 0.5) { float la = (vQ.y - 0.5) * 180.0, o = smoothstep(0.15, 0.6, uFold); if (la > mix(80.0, 91.0, o) || la < mix(-56.0, -91.0, o)) discard; }
         // the cut sides of a raised country, a deeper clay than its top
@@ -1200,6 +1217,47 @@ window.JourneyMap = async function makeGlobe(svgEl) {
       im.srcset = `${K.src(sl.file, 1280)} 1280w, ${K.src(sl.file)} 2400w`; im.sizes = '100vw'; im.src = K.src(sl.file, 1280);
       under.appendChild(im);
       return im;
+    });
+  }
+  // (clouds, drift) a layer over the map's drawing, inside its box
+  let over = null, mists = [], drifts = [];
+  if (CFG.mist || CFG.drift) { over = document.createElement('div'); over.className = 'g3-over'; box.appendChild(over); }
+  if (CFG.mist) {
+    // each bank: soft discs of the paper's own white gathered into a few drifts with clear sky between, each
+    // drift with a faint grey underside first, so it reads as cloud seen from above, not a haze (seeded, so the
+    // same every visit)
+    const paper = rgb('--paper').replace('rgb(', 'rgba('), under = rgb('--hair').replace('rgb(', 'rgba(');
+    mists = Array.from({ length: CFG.mist }, (_, k) => {
+      let sd = 7919 * (k + 3);
+      const rnd = () => ((sd = (sd * 16807) % 2147483647) - 1) / 2147483646;
+      const c = Object.assign(document.createElement('canvas'), { width: 800, height: 500 }), g = c.getContext('2d');
+      const disc = (x, y, rad, col, a) => {
+        const gr = g.createRadialGradient(x, y, 0, x, y, rad);
+        gr.addColorStop(0, col.replace(')', `, ${a.toFixed(3)})`)); gr.addColorStop(0.55, col.replace(')', `, ${(a * 0.6).toFixed(3)})`)); gr.addColorStop(1, col.replace(')', ', 0)'));
+        g.fillStyle = gr; g.beginPath(); g.arc(x, y, rad, 0, TAU); g.fill();
+      };
+      for (let b = 0; b < 4; b++) {
+        const cx = (b + 0.2 + rnd() * 0.6) * 200, cy = 90 + rnd() * 320, sp = 70 + rnd() * 90;
+        const blobs = Array.from({ length: 55 }, () => [cx + (rnd() - 0.5) * sp * 2.4, cy + (rnd() - 0.5) * sp * 0.7, 16 + rnd() * 52, 0.24 + rnd() * 0.26]);
+        for (const [x, y, rad, a] of blobs) disc(x + 4, y + 12, rad * 1.05, under, a * 0.6);
+        for (const [x, y, rad, a] of blobs) disc(x, y, rad, paper, a);
+      }
+      const m = document.createElement('div');
+      m.className = 'g3-mist'; m.style.backgroundImage = `url(${c.toDataURL()})`;
+      over.appendChild(m);
+      return m;
+    });
+  }
+  if (CFG.drift) {
+    // [left (share of the box), depth (0 far, 1 near), width (share of the box)]: near ones larger, starting
+    // further below so they rise quicker, and in front; kept mostly off the middle, where the globe forms
+    const AT = [[0.04, 1, 0.2], [0.27, 0.3, 0.09], [0.84, 0.75, 0.13], [0.7, 0.35, 0.08], [0.13, 0.12, 0.055]];
+    drifts = CFG.drift.filter((id) => S.slides[id]).slice(0, AT.length).map((id, i) => {
+      const el = document.createElement('figure'), im = new Image();
+      el.className = 'g3-print'; im.alt = ''; im.decoding = 'async';
+      im.srcset = `${K.src(S.slides[id].file, 640)} 640w, ${K.src(S.slides[id].file, 1280)} 1280w`; im.sizes = '25vw'; im.src = K.src(S.slides[id].file, 640);
+      el.appendChild(im); over.appendChild(el);
+      return { el, at: AT[i] };
     });
   }
   // (the wind versions) the adjust tab's values: when the prints start back, the wind, the rocking
@@ -1640,6 +1698,30 @@ window.JourneyMap = async function makeGlobe(svgEl) {
       set('--show', show.toFixed(3));
       set('--t', `${r.y * open}px`); set('--l', `${r.x * open}px`); set('--w', `${r.w}px`); set('--h', `${r.h}px`);
       set('--r', `${(W - r.x - r.w) * open}px`); set('--b', `${(H - r.y - r.h) * open}px`);
+    }
+    if (over) {
+      const f = st.fold;
+      over.style.setProperty('--t', `${r.y}px`); over.style.setProperty('--l', `${r.x}px`);
+      over.style.setProperty('--r', `${W - r.x - r.w}px`); over.style.setProperty('--b', `${H - r.y - r.h}px`);
+      // (clouds) each bank's passage: it comes up, grows as the eye goes through it, and is gone; the
+      // three overlap so the veil is thickest while the sheet is bent the most
+      mists.forEach((m, i) => {
+        const k = clamp((f - 0.1 - i * 0.16) / 0.5, 0, 1);
+        m.style.setProperty('--op', (0.92 * Math.pow(Math.sin(Math.PI * k), 1.4)).toFixed(3));
+        m.style.setProperty('--ms', (1 + 0.8 * k * k).toFixed(3));
+        m.style.setProperty('--mx', `${((i % 2 ? -1 : 1) * 5 * k).toFixed(2)}%`);
+        m.style.setProperty('--my', `${(-4 * k).toFixed(2)}%`);
+      });
+      // (drift) each print rises from below the box to above it over the change, the near ones the furthest
+      const p = smoother(clamp((f - 0.03) / 0.95, 0, 1));
+      drifts.forEach(({ el, at: [x, z, w] }) => {
+        const pw = w * r.w, y0 = r.h * (1.02 + 0.55 * z), y1 = -pw * 1.6;
+        el.style.setProperty('--pw', `${pw.toFixed(1)}px`);
+        el.style.setProperty('--tx', `${(r.x + x * r.w + (z - 0.5) * 0.04 * r.w * p).toFixed(1)}px`);
+        el.style.setProperty('--ty', `${(r.y + y0 + (y1 - y0) * p).toFixed(1)}px`);
+        el.style.setProperty('--po', (0.72 + 0.28 * z).toFixed(2));
+        el.style.setProperty('--pz', Math.round(z * 10));
+      });
     }
     renderer.setScissorTest(false);
     renderer.clear();

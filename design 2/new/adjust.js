@@ -1,6 +1,7 @@
 /* The adjust tab (his ask, 2026-11-04: "給我一個 adjustment tab 讓我能掌控 scroll 的速度"), for the
    wind versions of the Journey (data-globe="gallery-wind", "-murmur", "-deck", "-vortex", "-tide"), and
-   the 高級感 versions ("luxe-unveil", "-print", "-hang"), which have only the scroll length.
+   the 高級感 versions ("luxe-unveil", "-print", "-hang", "-clouds", "-drift", "-develop"), which have only the
+   scroll length.
    window.JourneyTweak holds the values the page and the globe read: how much scroll the change takes
    (journey.js, dockCraft), when the prints start back, the wind, the rocking, how strongly his
    photographs show behind (globe3d.js). On his Mac only, a word at the bottom left opens sliders; what
@@ -9,7 +10,7 @@
 (() => {
   const page = document.body.dataset.globe || 'journey';
   const luxe = page.startsWith('luxe-');
-  const DEF = { fold: luxe && page !== 'luxe-unveil' ? 2.6 : 2.2, hold: page === 'gallery-tide' ? 0.6 : 0.55, wind: 0.9, rock: 1, photos: 1 };
+  const DEF = { fold: page === 'luxe-print' || page === 'luxe-hang' ? 2.6 : 2.2, hold: page === 'gallery-tide' ? 0.6 : 0.55, wind: 0.9, rock: 1, photos: 1 };
   const T = (window.JourneyTweak = { ...DEF });
   const changed = () => dispatchEvent(new CustomEvent('journeytweak'));
   if (!/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname)) return;
