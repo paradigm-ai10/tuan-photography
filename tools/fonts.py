@@ -22,7 +22,7 @@ ROOT = Path(__file__).resolve().parent.parent
 FONTS = ROOT / "design 1" / "fonts"
 SHEET = ROOT / "design 1" / "css" / "fonts.css"
 
-FAMILIES = ("family=Bebas+Neue&family=Playfair+Display&family=Geist:wght@400..600"
+FAMILIES = ("family=Bebas+Neue&family=Cormorant+Garamond:wght@300;500&family=Playfair+Display&family=Geist:wght@400..600"
             "&family=Noto+Serif+TC:wght@500..600&family=Noto+Sans+TC:wght@400..600")
 SOURCE = f"https://fonts.googleapis.com/css2?{FAMILIES}&display=swap"
 # Google sends the small modern format (woff2, sliced) only to a browser it recognises.
@@ -34,6 +34,7 @@ LICENCES = "https://raw.githubusercontent.com/google/fonts/main/ofl/{}/OFL.txt"
 # Latin slices are labelled by a comment ("latin"); Chinese slices by a number in the address.
 FACE = re.compile(r"(?:/\* (?P<label>[^*]+?) \*/\s*)?@font-face \{(?P<body>.*?)\}", re.S)
 FAMILY = re.compile(r"font-family: '([^']+)'")
+WEIGHT = re.compile(r"font-weight: ([^;]+);")
 URL = re.compile(r"url\((https://fonts\.gstatic\.com/[^)]+?(?:\.(\d+))?\.woff2)\)")
 
 
@@ -46,12 +47,18 @@ def fetch(url):
 def main():
     css = fetch(SOURCE).decode("utf-8")
     out, got, kept, seen = [], 0, 0, set()
+    # a family that comes in separate weights (Cormorant, the logo's face) carries the weight in each file name
+    weights = {}
+    for m in FACE.finditer(css):
+        weights.setdefault(FAMILY.search(m.group("body")).group(1), set()).add(WEIGHT.search(m.group("body")).group(1))
     for m in FACE.finditer(css):
         body = m.group("body")
         family = FAMILY.search(body).group(1)
         url, number = URL.search(body).groups()
         slug = family.lower().replace(" ", "-")
         part = m.group("label") or f"{int(number):03d}"
+        if len(weights[family]) > 1:
+            part = WEIGHT.search(body).group(1) + "-" + part
         target = FONTS / slug / f"{slug}-{part}.woff2"
         if target in seen:
             raise SystemExit(f"two slices would share one name: {target.name}")

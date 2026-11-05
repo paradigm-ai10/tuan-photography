@@ -364,7 +364,7 @@ window.pageI18n = {page};
 """
 
 
-def write(path, title, zh_title, desc, current, body, en, zh, over=False, foot=True, scripts=()):
+def write(path, title, zh_title, desc, current, body, en, zh, over=False, foot=True, scripts=(), first=""):
     root = "../" * (len(Path(path).parts) - 1)
     en["docTitle"], zh["docTitle"] = title, zh_title
     for k in list(en):
@@ -382,7 +382,7 @@ def write(path, title, zh_title, desc, current, body, en, zh, over=False, foot=T
     body = re.sub(r'aria-label="[^"]*" data-i18n-aria="([^"]+)"',
                   lambda m: f'aria-label="{e(en[m.group(1)])}" data-i18n-aria="{m.group(1)}"', body)
     used = list(dict.fromkeys(re.findall(r'data-slide="([^"]+)"', body)))
-    out = head(title, desc, root) + header(root, current, over) + '<main id="main" tabindex="-1">\n' + body + "\n</main>\n" \
+    out = head(title, desc, root) + first + header(root, current, over) + '<main id="main" tabindex="-1">\n' + body + "\n</main>\n" \
         + footer(root, used, en, zh, foot, scripts)
     (OUT / path).write_text(out, encoding="utf-8")
     print("  wrote", path)
@@ -550,6 +550,24 @@ def timed_cards(root, en, zh):
 
 # ------------------------------------------------------------------ pages
 
+def loader():
+    """The loading screen of the home page: the logo (TUAN, a line, PHOTOGRAPHY) on the paper,
+    the line filling as the opening photograph loads; then the paper thins, the photograph shows
+    through soft, and it opens as the photograph comes into focus. Version 21 of the logo motion
+    round, his choice on 2026-11-05. Once per visit, never under "reduce motion"; a click skips it.
+    The small script runs before anything is drawn, so the page never shows first. js/loader.js plays it."""
+    tuan = "".join(f'<span style="--i: {i}">{c}</span>' for i, c in enumerate("TUAN"))
+    return f"""<div class="loader" aria-hidden="true">
+  <div class="loader__mark">
+    <span class="loader__name">{tuan}</span>
+    <span class="loader__line"></span>
+    <span class="loader__sub">{"".join(f"<span>{c}</span>" for c in "photography")}</span>
+  </div>
+</div>
+<script>try {{ if (!sessionStorage.getItem("tuan-opening") && !matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("loading"); }} catch (e) {{}}</script>
+"""
+
+
 def build_home():
     en, zh = {}, {}
     root = ""
@@ -618,7 +636,7 @@ def build_home():
     write("index.html", f"{SITE} - Landscape photographs and how each one was made",
           f"{SITE} - 風景攝影，以及每一張是怎麼拍的",
           "Landscape photographs by 陳亮元 Thomas Chen, each with the account of how it was made: camera data, where to stand, and the guide to the place.",
-          None, body, en, zh, over=True)
+          None, body, en, zh, over=True, scripts=("loader.js",), first=loader())
 
 
 def build_gallery():

@@ -12,10 +12,18 @@
   <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
   <meta name="apple-mobile-web-app-title" content="PT">
   <link rel="manifest" href="site.webmanifest">
-  <link rel="stylesheet" href="css/fonts.css?v=202610160858">
-  <link rel="stylesheet" href="css/style.css?v=202610160858">
+  <link rel="stylesheet" href="css/fonts.css?v=202611051709">
+  <link rel="stylesheet" href="css/style.css?v=202611051709">
 </head>
 <body>
+<div class="loader" aria-hidden="true">
+  <div class="loader__mark">
+    <span class="loader__name"><span style="--i: 0">T</span><span style="--i: 1">U</span><span style="--i: 2">A</span><span style="--i: 3">N</span></span>
+    <span class="loader__line"></span>
+    <span class="loader__sub"><span>p</span><span>h</span><span>o</span><span>t</span><span>o</span><span>g</span><span>r</span><span>a</span><span>p</span><span>h</span><span>y</span></span>
+  </div>
+</div>
+<script>try { if (!sessionStorage.getItem("tuan-opening") && !matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("loading"); } catch (e) {}</script>
 <a class="skip btn" href="#main" data-i18n="skip">Skip to the content</a>
 <header class="wrap top top--over">
   <a class="name" href="index.html">tuan photography <span>陳亮元</span></a>
@@ -291,6 +299,7 @@ window.pageI18n = {
  }
 };
 </script>
-<script src="js/main.js?v=202610160858"></script>
+<script src="js/main.js?v=202611051709"></script>
+<script src="js/loader.js?v=202611051709"></script>
 </body>
 </html>

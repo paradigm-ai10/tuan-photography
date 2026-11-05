@@ -50,7 +50,7 @@ updating in the same commit. The short version:
 | Colour | eleven tokens in `design 1/css/style.css` `:root`. Never hard-code a colour |
 | Earth colours | clay, olive, slate: whole flat blocks only (the three doors, the footer) |
 | Links | deep clay is the only colour that means "this can be followed" |
-| Names and headings | Playfair Display, weight 400, centred (中文: Noto Serif TC, 500) |
+| Names and headings | Playfair Display, weight 400, centred (中文: Noto Serif TC, 500). His logo alone is Cormorant Garamond, on the home loading screen (2026-11-05) |
 | Reading text | Geist (中文: Noto Sans TC) |
 | Labels, menu, buttons | Geist in small spaced capitals. No mono face |
 | Corners | square, everywhere, except the Guides cards on the home page (rounded, with a soft shadow; his call, 2026-10-13) |

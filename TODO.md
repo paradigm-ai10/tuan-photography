@@ -34,13 +34,6 @@ Word 版：雙擊專案資料夾裡的 `建置進度.command` 就會更新並打
 - 狀態: 等你決定
 - 說明: 你看了足跡（評分頁第 13 行，http://localhost:8642/journey/new/journey-atlas.html ）和彩色足跡（第 14 行，http://localhost:8642/journey/new/journey-atlas-bold.html ），覺得還沒到你的標準。你要五個版本，可以改的地方：一、出場的方式（地球怎麼出現）；二、立體動畫怎麼走；三、地球本身的樣子。你會先去找幾個地球範本傳過來，收到後再開始做。第 13、14 行保留不動。
 
-### 首頁：TUAN photography 標誌與載入畫面
-- 類型: 功能
-- 日期: 2026-10-31
-- 重點: 標誌（1C）和載入動態（第 21 版，照片慢慢對焦）都定了，下一步放上首頁
-- 狀態: 進行中
-- 說明: 你看了 16 個 Awwwards 參考網站，喜歡 Per Appelgren、Tommaso D'intino、Tengile MalaMala，三個都是一打開先有安靜的載入畫面。你想要自己的標誌「TUAN photography」，用它當首頁的載入畫面，帶人進網站。第一步選字體：http://localhost:8642/journey/new/logo.html 有 12 種字體，每格就是載入畫面，按喜歡或不是、寫筆記（存在 ideas/reviews/logo-fonts.json）。之後再定排法和動態。 10/31 你在 12 個裡選了三個：Cormorant Garamond、Cinzel、Cormorant 加手寫 photography。最後五個（這三個加上新的 Castoro Titling、Forum）在 http://localhost:8642/journey/new/logo-final.html ，選一個（存在 ideas/reviews/logo-final.json）。 給朋友看的頁面（Claude Artifact，只展示五個，不投票）：https://claude.ai/artifact/TtRWBXgWkSXAfSa1w8ixcB ，從頁面的 Share 選單分享連結。 11/4 你留下 Cormorant 和 Cinzel，各做了六種調法（http://localhost:8642/journey/new/logo-vary.html），朋友連結改成十二個版本、請朋友回傳代號。你選了 **1C**：Cormorant，TUAN 比原本小 8%，中間一條線，下面的 PHOTOGRAPHY 用大寫、拉開到跟 TUAN 一樣寬。下一步：載入畫面的動態。 11/4 做了六種動法（一個一個、從線裡出來、顯影、收攏、沿線分開、線就是進度），每一種最後都打開到你的照片：http://localhost:8642/journey/new/logo-motion/ ，在每一版打 1 到 5 分、寫筆記（存在 ideas/reviews/logo-motion.json）。 11/5 前四種你給了「不要」；你喜歡線從左畫到右，像重新載入的計時器，所以第二輪六版（第 7 到 12 版）線都照樣跑，只換字出現和打開的方式：先跑線再出名字、線寫出名字、沿線打開、線變成地平線、像計時器跑完、照片透出來。評分頁也多了「並排比較」，可以選兩到六版一起播。 你也喜歡上半（TUAN）先出來、下半（PHOTOGRAPHY）慢一點，所以第三輪四版（第 13 到 16 版）都是先跑線、TUAN 先、PHOTOGRAPHY 後，只換打開的方式：沿線分開（上面先）、變成地平線、像計時器跑完、照片透出來。 11/5 你選了 **第 16 版**：線從左畫到右，TUAN 先出來、PHOTOGRAPHY 慢一拍，然後紙慢慢變薄、照片透出來，再打開到首頁照片（並排時也選它勝過第 14 版地平線）。 你想先微調再放上首頁，所以第四輪五版（第 17 到 21 版）都是第 16 版，只改一個地方：慢一點、快一點、透多一點、一路慢慢溶開、照片慢慢對焦。 11/5 你選了 **第 21 版「照片慢慢對焦」** 當主要版本：線從左畫到右，TUAN 先、PHOTOGRAPHY 後，紙變薄、透出模糊的照片，打開時照片慢慢對焦清楚。
-
 ### 旅程頁地球重新設計
 - 類型: 功能
 - 日期: 2026-10-30
@@ -142,6 +135,13 @@ Word 版：雙擊專案資料夾裡的 `建置進度.command` 就會更新並打
 - 說明: 2026-08-08 你決定先不公開，GitHub Pages 維持關閉。2026-09-30 改用 Claude Artifact 發布（見做完的那段），要給誰看由你在頁面上開分享。
 
 ## 二、做完的 Done
+
+### 首頁：TUAN photography 標誌與載入畫面
+- 類型: 已完成
+- 日期: 2026-10-31
+- 重點: 標誌（1C）和載入動態（第 21 版）已放上首頁
+- 狀態: 完成
+- 說明: 你看了 16 個 Awwwards 參考網站，喜歡 Per Appelgren、Tommaso D'intino、Tengile MalaMala，三個都是一打開先有安靜的載入畫面。你想要自己的標誌「TUAN photography」，用它當首頁的載入畫面，帶人進網站。第一步選字體：http://localhost:8642/journey/new/logo.html 有 12 種字體，每格就是載入畫面，按喜歡或不是、寫筆記（存在 ideas/reviews/logo-fonts.json）。之後再定排法和動態。 10/31 你在 12 個裡選了三個：Cormorant Garamond、Cinzel、Cormorant 加手寫 photography。最後五個（這三個加上新的 Castoro Titling、Forum）在 http://localhost:8642/journey/new/logo-final.html ，選一個（存在 ideas/reviews/logo-final.json）。 給朋友看的頁面（Claude Artifact，只展示五個，不投票）：https://claude.ai/artifact/TtRWBXgWkSXAfSa1w8ixcB ，從頁面的 Share 選單分享連結。 11/4 你留下 Cormorant 和 Cinzel，各做了六種調法（http://localhost:8642/journey/new/logo-vary.html），朋友連結改成十二個版本、請朋友回傳代號。你選了 **1C**：Cormorant，TUAN 比原本小 8%，中間一條線，下面的 PHOTOGRAPHY 用大寫、拉開到跟 TUAN 一樣寬。下一步：載入畫面的動態。 11/4 做了六種動法（一個一個、從線裡出來、顯影、收攏、沿線分開、線就是進度），每一種最後都打開到你的照片：http://localhost:8642/journey/new/logo-motion/ ，在每一版打 1 到 5 分、寫筆記（存在 ideas/reviews/logo-motion.json）。 11/5 前四種你給了「不要」；你喜歡線從左畫到右，像重新載入的計時器，所以第二輪六版（第 7 到 12 版）線都照樣跑，只換字出現和打開的方式：先跑線再出名字、線寫出名字、沿線打開、線變成地平線、像計時器跑完、照片透出來。評分頁也多了「並排比較」，可以選兩到六版一起播。 你也喜歡上半（TUAN）先出來、下半（PHOTOGRAPHY）慢一點，所以第三輪四版（第 13 到 16 版）都是先跑線、TUAN 先、PHOTOGRAPHY 後，只換打開的方式：沿線分開（上面先）、變成地平線、像計時器跑完、照片透出來。 11/5 你選了 **第 16 版**：線從左畫到右，TUAN 先出來、PHOTOGRAPHY 慢一拍，然後紙慢慢變薄、照片透出來，再打開到首頁照片（並排時也選它勝過第 14 版地平線）。 你想先微調再放上首頁，所以第四輪五版（第 17 到 21 版）都是第 16 版，只改一個地方：慢一點、快一點、透多一點、一路慢慢溶開、照片慢慢對焦。 11/5 你選了 **第 21 版「照片慢慢對焦」** 當主要版本：線從左畫到右，TUAN 先、PHOTOGRAPHY 後，紙變薄、透出模糊的照片，打開時照片慢慢對焦清楚。 11/5 放上正式首頁（http://localhost:8642/ ）：每次來訪的第一頁播一次，點一下或按任何鍵可以直接打開；同一次來訪再回首頁不會再播，系統設定「減少動態」的人不會看到。
 
 ### 旅程頁換風格
 - 類型: 已完成
