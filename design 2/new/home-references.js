@@ -3,8 +3,10 @@
    (POST /__reviews/home-references). Claude reads that file directly. */
 (() => {
   'use strict';
-  const URL_ = '/__reviews/home-references';
-  const SITES = [
+  // a later round names its own notes file, sites and stills (window.REFS_PAGE, set by its own small script)
+  const PAGE = window.REFS_PAGE || {};
+  const URL_ = '/__reviews/' + (PAGE.name || 'home-references');
+  const SITES = PAGE.sites || [
     { group: '新的十個 Ten new' },
     { id: 'gregor-collienne', name: 'Gregor Collienne', url: 'https://gregorcollienne.com/',
       kind: '比利時攝影師 Belgian photographer',
@@ -125,6 +127,18 @@
       const a = el('a', '', s.name);
       a.href = s.url; a.target = '_blank'; a.rel = 'noopener';
       h.appendChild(a); li.appendChild(h);
+      if (PAGE.stills) {   // the site's first screen and a little further down, taken by Claude
+        const pics = el('a', 'refs-shots');
+        pics.href = s.url; pics.target = '_blank'; pics.rel = 'noopener';
+        pics.setAttribute('aria-label', s.name);
+        [0, 1].forEach((k) => {
+          const im = el('img');
+          im.src = URL_ + '/thumbs/' + s.id + '-' + k + '.jpg';
+          im.alt = ''; im.loading = 'lazy'; im.width = 960; im.height = 600;
+          pics.appendChild(im);
+        });
+        li.appendChild(pics);
+      }
       li.appendChild(el('p', 'refs-look', s.look));
       const pair = el('div', 'refs-pair');
       const p1 = el('p'); p1.appendChild(el('b', '', '合 Fits')); p1.appendChild(document.createTextNode(s.fits));
