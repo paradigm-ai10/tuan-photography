@@ -293,7 +293,8 @@
       "desc": {
         "en": "As 16, but the photograph behind is soft while it shows through, and comes into focus as it opens, like a lens finding it.",
         "zh": "跟第 16 版一樣，但透出來的照片一開始是模糊的，打開時慢慢對焦清楚，像鏡頭在對焦。"
-      }
+      },
+      "main": true
     }
   ],
   "tags": [
