@@ -48,6 +48,10 @@
       noStill: 'No picture yet',
       nothingHere: 'Nothing here with this choice.',
       lastNoted: 'Last noted {when}',
+      // the versions Claude asks him to look at and score (manifest "ask")
+      askTitle: 'Your pick', askTag: 'Your pick', askDoneTag: 'Scored',
+      askLeft: '{n} of {total} still to score', askDone: 'All scored, thank you. Claude will read them.',
+      askOnly: 'Show only these',
     },
     zh: {
       prev: '上一版', next: '下一版',
@@ -93,6 +97,9 @@
       noStill: '還沒有縮圖',
       nothingHere: '這個選擇下沒有版本。',
       lastNoted: '最近寫於 {when}',
+      askTitle: '請你挑', askTag: '請你挑', askDoneTag: '已打分',
+      askLeft: '還有 {n} 版沒打分（共 {total} 版）', askDone: '都打好分了，謝謝。Claude 會去讀。',
+      askOnly: '只看這幾版',
     },
   };
 

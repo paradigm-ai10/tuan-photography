@@ -29,6 +29,11 @@
     if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
   }), { rootMargin: '0px 0px -10% 0px' });
   document.querySelectorAll('.hr-in').forEach((el) => io.observe(el));
+  // F: a pencil drawing turns into its photograph once it is well in view
+  const real = new IntersectionObserver((es) => es.forEach((e) => {
+    if (e.isIntersecting) { e.target.classList.add('is-real'); real.unobserve(e.target); }
+  }), { threshold: 0.55 });
+  document.querySelectorAll('.hr-sk').forEach((el) => real.observe(el));
 
   const screen = document.querySelector('.hr-load');
   const video = document.querySelector('.hr-open video');

@@ -200,3 +200,72 @@ html[lang="zh-Hant"] .hr-cap__one b { font-weight: 500; }
 /* a soft shade along the foot of the film, as the top one, so the captions read over a bright scene */
 [data-counts] .hr-open::after { content: ""; position: absolute; z-index: 1; left: 0; right: 0; bottom: 0; height: 15rem; pointer-events: none;
   background: linear-gradient(to top, color-mix(in oklch, var(--text) 50%, transparent), transparent); }
+
+/* ================= Round two: the rest of the page under E's opening (his ask, 2026-11-05) ================= */
+/* the caption's second line now carries where and when */
+
+/* F: each photograph arrives as its own pencil drawing and turns real once it is well in view */
+.hr-sk a { position: relative; }
+.hr-sk__pencil { display: none; }
+html.hr-js .hr-sk__pencil { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; pointer-events: none;
+  transition: opacity 1.9s cubic-bezier(0.45, 0, 0.3, 1) 0.45s; }
+html.hr-js .hr-sk.is-real .hr-sk__pencil { opacity: 0; }
+
+/* G: one photograph to a screen, each laid over the last like prints in a pile */
+.hr-pile { padding: 0 var(--edge); }
+.hr-pile__one { position: sticky; top: 0; display: grid; place-content: center; justify-items: center; gap: 0;
+  min-height: 100svh; margin: 0 0 22svh; padding: 7svh 0; background: var(--bg); }
+.hr-pile__one:last-child { margin-bottom: 0; }
+.hr-pile__one + .hr-pile__one { box-shadow: 0 -1px 0 var(--line); }
+.hr-pile__one a { display: block; }
+.hr-pile__one img { display: block; width: auto; height: auto; max-width: min(100%, 80rem); max-height: 74svh; }
+.hr-pile__one figcaption { justify-content: center; text-align: center; }
+.hr-pdoors { width: min(100%, 76rem); margin-inline: auto; padding: var(--s-5) var(--edge) var(--s-6); }
+.hr-pdoors ul { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--col-gap); margin: 0; padding: 0; list-style: none; }
+.hr-pdoor { display: grid; gap: 0.6rem; color: var(--text); text-decoration: none; }
+.hr-pdoor__img { display: block; aspect-ratio: 4 / 5; overflow: hidden; margin-bottom: 0.6rem; }
+.hr-pdoor__img img { width: 100%; height: 100%; object-fit: cover; transition: transform 700ms cubic-bezier(0.23, 1, 0.32, 1); }
+.hr-pdoor b { font-family: var(--serif); font-weight: 400; font-size: clamp(1.6rem, 1.1rem + 1.6vw, 2.6rem); line-height: 1.1; }
+:lang(zh-Hant) .hr-pdoor b { font-weight: 500; letter-spacing: 0.08em; }
+.hr-pdoor > span:last-child { font-size: var(--t-s); color: var(--text-2); }
+@media (hover: hover) and (pointer: fine) {
+  .hr-pdoor:hover .hr-pdoor__img img { transform: scale(1.03); }
+  .hr-pdoor:hover b { color: var(--accent); }
+}
+
+/* H: the journal, spreads of a printed travel journal; the photograph on one page, its place, when and
+   how it was made on the other */
+.hr-journal { display: grid; gap: clamp(6rem, 14vw, 12rem); width: min(100%, 80rem); margin-inline: auto; padding: var(--s-4) var(--edge) var(--s-5); }
+.hr-spread { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); row-gap: var(--s-3); align-items: end; }
+.hr-spread__photo { grid-column: 1 / span 8; margin: 0; }
+.hr-spread__photo a { display: block; }
+.hr-spread__photo img { display: block; width: 100%; height: auto; }
+.hr-spread__words { grid-column: 10 / span 3; display: grid; gap: 0.7rem; padding-bottom: 0.3rem; }
+.hr-spread--tall .hr-spread__photo { grid-column: 2 / span 5; }
+.hr-spread--tall .hr-spread__words { grid-column: 8 / span 4; }
+.hr-spread--flip .hr-spread__photo { grid-column: 5 / span 8; order: 2; }
+.hr-spread--flip .hr-spread__words { grid-column: 1 / span 3; order: 1; }
+.hr-spread--tall.hr-spread--flip .hr-spread__photo { grid-column: 7 / span 5; }
+.hr-spread--tall.hr-spread--flip .hr-spread__words { grid-column: 2 / span 4; }
+.hr-spread h2 { margin: 0; font-family: var(--serif); font-weight: 400; font-size: clamp(1.7rem, 1.2rem + 1.6vw, 2.7rem); line-height: 1.12; text-align: left; text-wrap: balance; }
+:lang(zh-Hant) .hr-spread h2 { font-weight: 500; letter-spacing: 0.06em; line-height: 1.4; }
+.hr-spread__when { margin: 0; font-size: var(--t-s); color: var(--text-2); }
+.hr-spread__how { display: grid; gap: 0.45rem; margin: var(--s-2) 0 0; padding-top: var(--s-2); border-top: 1px solid var(--line); }
+.hr-spread__how div { display: grid; grid-template-columns: 7.5rem 1fr; gap: 1rem; align-items: baseline; }
+.hr-spread__how dt { margin: 0; }
+.hr-spread__how dd { margin: 0; font-size: var(--t-s); font-variant-numeric: tabular-nums; }
+.hr-spread__more { justify-self: start; margin-top: var(--s-1); font-size: var(--t-s); color: var(--accent); }
+.hr-contents .hr-door > span { display: grid; gap: 0.2rem; }
+.hr-contents .hr-door small { font-size: var(--t-xs); color: var(--text-2); font-variant-numeric: tabular-nums; }
+
+@media (max-width: 48rem) {
+  .hr-pile__one { padding: 9svh 0; }
+  .hr-pdoors ul { grid-template-columns: minmax(0, 1fr); }
+  .hr-pdoor__img { aspect-ratio: 3 / 2; }
+  .hr-spread, .hr-spread--tall, .hr-spread--flip { grid-template-columns: minmax(0, 1fr); }
+  .hr-spread .hr-spread__photo, .hr-spread .hr-spread__words { grid-column: 1; order: 0; }
+  .hr-spread--tall .hr-spread__photo { width: 78%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html.hr-js .hr-sk__pencil { display: none; }
+}

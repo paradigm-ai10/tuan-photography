@@ -19,6 +19,13 @@
         "en": "First round: three directions",
         "zh": "第一輪：三個方向"
       }
+    },
+    {
+      "id": "round2",
+      "title": {
+        "en": "Second round: the rest of the page, under E's opening",
+        "zh": "第二輪：E 的開場之後，首頁其餘的部分"
+      }
     }
   ],
   "items": [
@@ -101,6 +108,51 @@
         "wait": 2500
       },
       "main": true
+    },
+    {
+      "href": "f-drawn-down.html",
+      "group": "round2",
+      "title": {
+        "en": "Drawn, then real, all the way down",
+        "zh": "一路先畫再變真"
+      },
+      "desc": {
+        "en": "E's opening, then the same move as the opening all the way down: each photograph first appears as its own pencil drawing and turns into the photograph once it is well in view. Five photographs at changing sizes, two quiet sentences, the three doors.",
+        "zh": "E 的開場之後，整頁都用開場同一招：每張照片先以鉛筆素描出現，捲到畫面中間時才變成真的照片。五張照片大小交錯，兩句安靜的話，最後三個入口。"
+      },
+      "still": {
+        "wait": 2500
+      }
+    },
+    {
+      "href": "g-pile.html",
+      "group": "round2",
+      "title": {
+        "en": "Prints on the table",
+        "zh": "桌上的照片"
+      },
+      "desc": {
+        "en": "E's opening, then one photograph to a screen: as you scroll, each print slides up and lies on top of the last, like prints in a pile, each with its place and when beneath. The way in becomes three photographs, Gallery, Journey and Guides.",
+        "zh": "E 的開場之後，一個畫面一張照片：往下捲，每張照片滑上來蓋住上一張，像桌上一疊照片，下面寫地點和時間。最後的入口變成三張照片：作品集、旅程、攻略。"
+      },
+      "still": {
+        "wait": 2500
+      }
+    },
+    {
+      "href": "h-journal.html",
+      "group": "round2",
+      "title": {
+        "en": "The journal",
+        "zh": "旅行手帳"
+      },
+      "desc": {
+        "en": "E's opening, then four spreads of a printed travel journal: the photograph on one page, and on the other its place, when, and how it was made (camera, lens, aperture, shutter, ISO, read from the file), with a link to more from that country. The way in becomes a contents page with real counts.",
+        "zh": "E 的開場之後，像一本印出來的旅行手帳翻開四頁：一邊是照片，另一邊寫地點、時間和怎麼拍的（相機、鏡頭、光圈、快門、ISO，從照片檔案讀出來），再連到那個國家的更多照片。最後的入口變成目錄，附上真實的數字。"
+      },
+      "still": {
+        "wait": 2500
+      }
     }
   ],
   "tags": [
@@ -175,5 +227,16 @@
     "--rv-label": "\"Geist\", \"Noto Sans TC\", sans-serif",
     "--rv-name": "\"Playfair Display\", \"Noto Serif TC\", serif"
   },
-  "words": {}
+  "words": {},
+  "ask": {
+    "ids": [
+      "f-drawn-down",
+      "g-pile",
+      "h-journal"
+    ],
+    "question": {
+      "en": "Which way should the rest of the home page go? Give each a score.",
+      "zh": "首頁剩下的部分要走哪個方向？每個打個分數。"
+    }
+  }
 }

@@ -112,7 +112,45 @@ CAPTIONS = [
 ]
 
 
-def page(home, name, title_en, title_zh, opening, body, extra="", attrs=""):
+MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+COUNTRY = {c["id"]: c for c in SITE["countries"]}
+
+
+def when(sid):
+    """When the photograph's country was visited, from data/site.json: '2025.1' reads 'January 2025'."""
+    d = COUNTRY.get(SLIDES[sid]["country"], {}).get("date", {})
+    en, zh = d.get("en", ""), d.get("zh", "")
+    if en.count(".") == 1 and en.replace(".", "").isdigit():
+        y, m = en.split(".")
+        return f"{MONTHS[int(m) - 1]} {y}", f"{y} 年 {int(m)} 月"
+    if en.endswith(" summer"):
+        return f"Summer {en.split()[0]}", f"{en.split()[0]} 年夏天"
+    return en, zh
+
+
+def srcset(sid):
+    s = SLIDES[sid]
+    f = s["file"]
+    return f'{IMG}640/{f} 640w, {IMG}1280/{f} 1280w, {IMG}{f} {max(s["w"], s["h"])}w'
+
+
+def caption(sid):
+    s = SLIDES[sid]
+    w_en, w_zh = when(sid)
+    return (f'<figcaption><b>{both(e(s["place"]["en"]), e(s["place"]["zh"]))}</b>'
+            f'<span>{both(e(s["where"]["en"]) + ", " + w_en, e(s["where"]["zh"]) + "，" + w_zh)}</span></figcaption>')
+
+
+def sketched(sid, cls="", sizes="(max-width: 48rem) 92vw, 60vw"):
+    """F: a photograph that is first its own pencil drawing (media/sketch/<id>.jpg), then turns real in view."""
+    s = SLIDES[sid]
+    alt = e(s["alt"]["en"]) if "alt" in s else ""
+    return (f'<figure class="hr-fig hr-sk hr-in {cls}"><a href="{PAGES}gallery.html">'
+            f'<img src="{IMG}1280/{s["file"]}" srcset="{srcset(sid)}" sizes="{sizes}" width="{s["w"]}" height="{s["h"]}" alt="{alt}" loading="lazy" decoding="async">'
+            f'<img class="hr-sk__pencil" src="media/sketch/{sid}.jpg" alt="" loading="lazy" decoding="async"></a>{caption(sid)}</figure>')
+
+
+def page(home, name, title_en, title_zh, opening, body, extra="", attrs="", way=None):
     return f"""<!doctype html>
 <html lang="en" data-home="{home}"{attrs}>
 <head>
@@ -131,7 +169,7 @@ def page(home, name, title_en, title_zh, opening, body, extra="", attrs=""):
 {opening}
 <div class="hr-leaf">
 {body}
-{doors()}
+{doors() if way is None else way}
 {foot()}
 </div>
 </main>
@@ -222,7 +260,70 @@ def build():
                    for a, b, name, where in CAPTIONS)
     film_e = FILM.replace("</video></section>", f'</video><p class="hr-cap" aria-hidden="true">{caps}</p></section>')
     (OUT / "c-counted.html").write_text(page("d", "c-counted", "Traced and counted", "勾出來，數一數", film_e, c, counted, " data-counts"), encoding="utf-8")
-    print("wrote a-film.html, b-prints.html, c-drawn.html, c-traced.html, c-counted.html")
+    # Round two (his ask, 2026-11-05: "continue designing the rest of the home page"): E's opening kept,
+    # three ways for everything under the film.
+    rest = lambda r: " data-counts" + f' data-rest="{r}"'
+
+    # F, drawn, then real, all the way down: each photograph arrives as its pencil drawing and turns real
+    f = "\n".join([
+        say(*SAY1),
+        '<div class="hr-seq">',
+        sketched("matterhorn-lake", "hr-wide", "(max-width: 48rem) 92vw, 76rem"),
+        f'<div class="hr-pair">{sketched("calanque-tall", sizes="(max-width: 48rem) 66vw, 22vw")}{sketched("fuji-lake", sizes="(max-width: 48rem) 92vw, 54vw")}</div>',
+        "</div>",
+        say(*SAY2),
+        '<div class="hr-seq">',
+        sketched("roys-peak", "hr-bleed", "100vw"),
+        sketched("golden-gate-fog", "hr-right", "(max-width: 48rem) 92vw, 56rem"),
+        "</div>",
+    ])
+    (OUT / "f-drawn-down.html").write_text(page("d", "f-drawn-down", "Drawn, then real, all the way down", "一路先畫再變真", film_e, f, counted, rest("f")), encoding="utf-8")
+
+    # G, prints on the table: one photograph to a screen, each laid over the last like prints in a pile;
+    # the way in as three photographs
+    pile = ["matterhorn-lake", "fuji-lake", "roys-peak", "sapa-valley", "golden-gate-fog"]
+    prints_g = "".join(
+        f'<figure class="hr-fig hr-pile__one"><a href="{PAGES}gallery.html"><img src="{IMG}1280/{SLIDES[p]["file"]}" srcset="{srcset(p)}" '
+        f'sizes="(max-width: 48rem) 92vw, 80rem" width="{SLIDES[p]["w"]}" height="{SLIDES[p]["h"]}" alt="{e(SLIDES[p]["alt"]["en"]) if "alt" in SLIDES[p] else ""}" loading="lazy" decoding="async"></a>{caption(p)}</figure>'
+        for p in pile)
+    g = say(*SAY1) + f'\n<div class="hr-pile">{prints_g}</div>\n' + say(*SAY2)
+    ways = [(SITE["lead"], DOORS[0]), ("hoi-an-night", DOORS[1]), ("sagrada-plaza", DOORS[2])]
+    way_g = '<nav class="hr-pdoors" aria-label="The way in"><ul>' + "".join(
+        f'<li><a class="hr-pdoor hr-in" href="{PAGES}{href}"><span class="hr-pdoor__img"><img src="{IMG}640/{SLIDES[p]["file"]}" alt="" loading="lazy" decoding="async"></span>'
+        f'<b>{both(en, zh)}</b><span>{both(den, dzh)}</span></a></li>'
+        for p, (href, en, zh, den, dzh) in ways) + "</ul></nav>"
+    (OUT / "g-pile.html").write_text(page("d", "g-pile", "Prints on the table", "桌上的照片", film_e, g, counted, rest("g"), way_g), encoding="utf-8")
+
+    # H, the journal: spreads of a printed travel journal, the photograph on one page and on the other
+    # its place, when, and how it was made (the camera data read from the file); the way in as contents
+    HOW = [("camera", "Camera", "相機"), ("lens", "Lens", "鏡頭"), ("focal", "Focal length", "焦距"),
+           ("aperture", "Aperture", "光圈"), ("shutter", "Shutter", "快門"), ("iso", "ISO", "ISO")]
+    spreads = []
+    for k, sid in enumerate(["fuji-lake", "sapa-terraces", "matterhorn-lake", "tekapo-stars"]):
+        s = SLIDES[sid]
+        tall = s["h"] > s["w"]
+        w_en, w_zh = when(sid)
+        cn = COUNTRY[s["country"]]
+        how = "".join(f'<div><dt class="caps">{both(en, zh)}</dt><dd>{e(s[key])}</dd></div>' for key, en, zh in HOW if s.get(key))
+        spreads.append(
+            f'<article class="hr-spread hr-in{" hr-spread--tall" if tall else ""}{" hr-spread--flip" if k % 2 else ""}">'
+            f'<figure class="hr-spread__photo"><a href="{PAGES}gallery.html"><img src="{IMG}1280/{s["file"]}" srcset="{srcset(sid)}" sizes="(max-width: 48rem) 92vw, 60vw" '
+            f'width="{s["w"]}" height="{s["h"]}" alt="{e(s["alt"]["en"]) if "alt" in s else ""}" loading="lazy" decoding="async"></a></figure>'
+            f'<div class="hr-spread__words"><p class="caps">{both(e(s["where"]["en"]), e(s["where"]["zh"]))}</p>'
+            f'<h2>{both(e(s["place"]["en"]), e(s["place"]["zh"]))}</h2><p class="hr-spread__when">{both(w_en, w_zh)}</p>'
+            f'<dl class="hr-spread__how">{how}</dl>'
+            f'<a class="hr-spread__more" href="{PAGES}countries/{cn["id"]}.html">{both("More from " + e(cn["en"]), "更多" + e(cn["zh"]) + "的照片")}</a></div></article>')
+    h = say(*SAY1) + '\n<div class="hr-journal">' + "".join(spreads) + "</div>\n" + say(*SAY2)
+    n_photos, n_countries = len(SITE["slides"]), len(SITE["countries"])
+    n_guides = len(SITE["guides"])
+    contents = [(DOORS[0], f"{n_photos} photographs", f"{n_photos} 張照片"),
+                (DOORS[1], f"{n_countries} countries, {counts[1][0]} flights", f"{n_countries} 個國家，{counts[1][0]} 趟航班"),
+                (DOORS[2], f"{n_guides} guide so far, Barcelona" if n_guides == 1 else f"{n_guides} guides", "目前一篇，巴塞隆納" if n_guides == 1 else f"{n_guides} 篇")]
+    way_h = '<nav class="hr-doors hr-contents" aria-label="The way in"><ul>' + "".join(
+        f'<li><a class="hr-door hr-in" href="{PAGES}{href}"><b>{both(en, zh)}</b><span>{both(den, dzh)}<small>{both(cen, czh)}</small></span></a></li>'
+        for (href, en, zh, den, dzh), cen, czh in contents) + "</ul></nav>"
+    (OUT / "h-journal.html").write_text(page("d", "h-journal", "The journal", "旅行手帳", film_e, h, counted, rest("h"), way_h), encoding="utf-8")
+    print("wrote a-film.html, b-prints.html, c-drawn.html, c-traced.html, c-counted.html, f-drawn-down.html, g-pile.html, h-journal.html")
 
 
 if __name__ == "__main__":
