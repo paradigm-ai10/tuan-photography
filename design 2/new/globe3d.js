@@ -28,7 +28,7 @@ const V = document.body.dataset.globe || 'paper';
 // the globemaker's globe (see gores below), shared by its photograph variations
 const GORE = { lift: 0.03, seg: [720, 360], frame1: 3.05, look: 0.3, paint: 'globe', wave: true, gores: true, rise: true, pen: true, unlit: true, bleed: true, gloss: true, noGrat: true };
 const GALLERY = { ...GORE, gores: false, tiles: [24, 12] };
-const LUXE = { ...GORE, gores: false, glide: 0.07 };
+const LUXE = { ...GORE, gores: false, glide: 0.07, fit: true };
 const WIND = { ...GALLERY, photos: 'tileBacks', flip: true, backdrop: ['matterhorn-lake', 'roys-peak', 'fuji-lake', 'sapa-valley'] };
 const CFG = {
   paper: { lift: 0.07, seg: [360, 180] },
@@ -1576,6 +1576,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     const pl = parseFloat(cs.paddingLeft), pr = parseFloat(cs.paddingRight), pt = parseFloat(cs.paddingTop), pb = parseFloat(cs.paddingBottom);
     return { x: fr.left + pl - b.left, y: fr.top + pt - b.top, w: fr.width - pl - pr, h: fr.height - pt - pb };
   }
+  const fitAt = new THREE.Vector3();
   function frameCamera() {
     const f = st.fold, r = target();
     // the world's frame: the flat map's band (80N to 56S, all the way round) or the globe and its air
@@ -1594,11 +1595,31 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     camera.aspect = W / H;
     camera.position.set(0, cy + Math.sin(lookDown) * d, plane + Math.cos(lookDown) * d);
     camera.lookAt(0, cy, plane);
+    camera.zoom = 1;
     camera.updateProjectionMatrix();
     // a lens shift, so the frame's middle lands in the middle of the box it is given
     const tx = ((r.x + r.w / 2) / W) * 2 - 1, ty = 1 - ((r.y + r.h / 2) / H) * 2;
     camera.projectionMatrix.elements[8] = -tx;
     camera.projectionMatrix.elements[9] = -ty;
+    // (the 高級感 versions, fit) the forming globe is kept whole inside the part of its box that is on
+    // screen: drawn smaller if it would be taller than that, and moved down or up if it would spill over
+    const wf = CFG.fit ? (HANG ? smooth(0.7, 0.85, f) : smooth(0.25, 0.5, f)) : 0;
+    if (wf > 0) {
+      camera.updateMatrixWorld();
+      const top = Math.max(r.y, 0) + 16, bot = Math.min(r.y + r.h, H) - 16, fpx = H / 2 / Math.tan(fov / 2);
+      const C = fitAt.copy(group.position), dist = camera.position.distanceTo(C);
+      const rad = fpx * Math.tan(Math.asin(Math.min(0.99, (R * 1.06) / dist)));
+      const z = 1 + (Math.min(1, (bot - top) / (2 * rad)) - 1) * wf;
+      if (z < 1) {
+        camera.zoom = z;
+        camera.updateProjectionMatrix();
+        camera.projectionMatrix.elements[8] = -tx;
+        camera.projectionMatrix.elements[9] = -ty;
+      }
+      const sy = ((1 - C.project(camera).y) / 2) * H, rz = rad * z;
+      const dy = sy - rz < top ? top - (sy - rz) : sy + rz > bot ? bot - (sy + rz) : 0;
+      camera.projectionMatrix.elements[9] += ((2 * dy) / H) * wf;
+    }
     camera.projectionMatrixInverse.copy(camera.projectionMatrix).invert();
   }
 
