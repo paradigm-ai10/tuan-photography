@@ -33,6 +33,13 @@
         "en": "Third round: from Singita, Belmond and Jimmy Chin, which you marked Good",
         "zh": "第三輪：從你標喜歡的 Singita、Belmond、Jimmy Chin 來做"
       }
+    },
+    {
+      "id": "round4",
+      "title": {
+        "en": "Fourth round: bold makeovers of 12, with the Queensboro train",
+        "zh": "第四輪：大膽改造第 12 個，主角是皇后區那張列車"
+      }
     }
   ],
   "items": [
@@ -223,6 +230,81 @@
       "still": {
         "wait": 2500
       }
+    },
+    {
+      "href": "m-chapters.html",
+      "group": "round4",
+      "title": {
+        "en": "Chapters",
+        "zh": "一章一個地方"
+      },
+      "desc": {
+        "en": "Each place is a chapter on its own flat colour, its name set very large beside the photograph: New York in clay with the Queensboro train, Zermatt in slate, Sa Pa in olive, Mount Fuji on stone. Each photograph is uncovered upward as it arrives, like a print pulled from the tray. Then the three words under the aurora.",
+        "zh": "每個地方是一章，各有一整片顏色，地名很大地放在照片旁邊：紐約配陶土色和皇后區列車、策馬特配石板藍、沙壩配橄欖綠、富士山配石頭色。照片出現時由下往上露出來，像從顯影盤拿起一張相片。最後是極光下的三個大字。"
+      },
+      "still": {
+        "wait": 2500
+      }
+    },
+    {
+      "href": "n-covers.html",
+      "group": "round4",
+      "title": {
+        "en": "Covers",
+        "zh": "封面"
+      },
+      "desc": {
+        "en": "One photograph to a screen like a magazine cover, its name set huge and split around it: Queensboro | Plaza, Mount | Fuji, Roys | Peak, Lake | Tekapo. The two halves slide in toward the photograph as it arrives. Then the three words under the Matterhorn.",
+        "zh": "一個畫面一張照片，像雜誌封面，名字很大地拆在照片兩邊：Queensboro | Plaza、Mount | Fuji、Roys | Peak、Lake | Tekapo，捲到時兩半往照片靠過來。最後是馬特洪峰下的三個大字。"
+      },
+      "still": {
+        "wait": 2500
+      }
+    },
+    {
+      "href": "o-light-table.html",
+      "group": "round4",
+      "title": {
+        "en": "The light table",
+        "zh": "看片桌"
+      },
+      "desc": {
+        "en": "Like a photographer's light table: one big print held on the left, your picks laid out beside it. Point at or tap any of them and it becomes the big print. The Queensboro train is on the table first. Then the three words under Roys Peak.",
+        "zh": "像攝影師的看片桌：左邊一張大照片，右邊排著你的精選。滑過或點任何一張，它就變成大的那張。皇后區列車先放在桌上。最後是羅伊峰下的三個大字。"
+      },
+      "still": {
+        "wait": 2500
+      }
+    },
+    {
+      "href": "p-split.html",
+      "group": "round4",
+      "title": {
+        "en": "Split",
+        "zh": "一半照片一半字"
+      },
+      "desc": {
+        "en": "Half the screen holds the photograph, the other half reads place by place: the place, its name, one line about what is in the photograph, when, and a link. As each place reaches the middle, its photograph takes over the held half. Queensboro Plaza first, then Zermatt at dusk, Sa Pa, Tekapo, the Calanque. Then the three words under Fuji.",
+        "zh": "畫面一半放照片，另一半一個地方一個地方讀下去：地點、名稱、一句照片裡有什麼、時間、連結。每個地方捲到中間時，它的照片就換上那一半。先是皇后區廣場站，接著暮色的策馬特、沙壩、蒂卡波、昂沃峽灣。最後是富士山下的三個大字。"
+      },
+      "still": {
+        "wait": 2500
+      }
+    },
+    {
+      "href": "q-doors-first.html",
+      "group": "round4",
+      "title": {
+        "en": "The way in first",
+        "zh": "入口先來"
+      },
+      "desc": {
+        "en": "Straight after the film, the way in: three tall windows with the three words large beneath them, the Milky Way for Gallery, the Queensboro train for Journey, the Sagrada Família for Guides. Then your picks at changing sizes, and one last line.",
+        "zh": "影片一結束就是入口：三扇直的窗，下面是三個大字，銀河是作品集，皇后區列車是旅程，聖家堂是攻略。接著是你的精選照片大小交錯，最後一句話。"
+      },
+      "still": {
+        "wait": 2500
+      }
     }
   ],
   "tags": [
@@ -300,14 +382,15 @@
   "words": {},
   "ask": {
     "ids": [
-      "i-beside",
-      "j-windows",
-      "k-three-words",
-      "l-current-words"
+      "m-chapters",
+      "n-covers",
+      "o-light-table",
+      "p-split",
+      "q-doors-first"
     ],
     "question": {
-      "en": "Which of these three should the rest of the home page be? Give each a score.",
-      "zh": "首頁其餘的部分要用這三個裡的哪一個？每個打個分數。"
+      "en": "Five bold makeovers of 12. Give each a score; say which parts to keep.",
+      "zh": "第 12 個的五個大膽改造。每個打分數，告訴我哪些部分要留。"
     }
   }
 }

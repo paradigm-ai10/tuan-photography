@@ -410,8 +410,107 @@ def build():
         "d", "l-current-words", "Your current home and the three words", "現在的首頁加三個字", film_e, l_body, counted,
         rest("l") + f' data-root="{PAGES}"', words("matterhorn-flag"), rel(live_foot),
         data + f'\n<script src="{PAGES}js/main.js"></script>\n'), encoding="utf-8")
-    print("wrote a-film.html, b-prints.html, c-drawn.html, c-traced.html, c-counted.html, f-drawn-down.html, g-pile.html, h-journal.html,",
-          "i-beside.html, j-windows.html, k-three-words.html, l-current-words.html")
+    # Round four (his ask, 2026-11-06): L is "not bad" but wants major changes, bold, several versions, my picks
+    # of photographs over the live wall, and the Queensboro Plaza train (his favourite) featured. Five ways for
+    # everything between E's opening and the three words; each ends with the three words and the live footer.
+    # Pacing from the editorial-portfolio-chapters skill: the work first, each place its own chapter, the three
+    # words as the large handoff, a final chapter that feels final.
+    foot_l = rel(live_foot)
+    live_js = data + f'\n<script src="{PAGES}js/main.js"></script>\n'   # the live footer's words in both languages
+    rest4 = lambda r: rest(r) + f' data-root="{PAGES}"'
+    QUEENS = "queensboro-train"
+
+    def name(sid):
+        x = SLIDES[sid]
+        return e(x["place"]["en"]), e(x["place"]["zh"])
+
+    def where_when(sid):
+        x = SLIDES[sid]
+        w_en, w_zh = when(sid)
+        return f'{e(x["where"]["en"])}, {w_en}', f'{e(x["where"]["zh"])}，{w_zh}'
+
+    def more(sid):
+        cn = COUNTRY[SLIDES[sid]["country"]]
+        return (f'<a class="hr-more" href="{PAGES}countries/{cn["id"]}.html">'
+                f'{both("Every photograph from " + e(cn["en"]), e(cn["zh"]) + "的所有照片")}</a>')
+
+    # M, chapters: each place a chapter of its own on one flat field (clay, slate, olive, stone), its name set
+    # large, the photograph uncovered upward as it arrives
+    chapters = [(QUEENS, "clay", ("New York", "紐約")), ("matterhorn-lake", "slate", ("Zermatt", "策馬特")),
+                ("sapa-terraces", "olive", ("Sa Pa", "沙壩")), ("fuji-lake", "stone", ("Mount Fuji", "富士山"))]
+    m_body = '<div class="hr-chapters">' + "".join(
+        f'<section class="hr-ch hr-ch--{field}{" hr-ch--tall" if SLIDES[sid]["h"] > SLIDES[sid]["w"] else ""}{" hr-ch--flip" if k % 2 else ""}">'
+        f'<h2 class="hr-ch__name hr-in">{both(*title)}</h2>'
+        f'<figure class="hr-ch__photo hr-reveal"><a href="{PAGES}gallery.html">{img(sid, "(max-width: 48rem) 92vw, 50vw")}</a></figure>'
+        f'<div class="hr-ch__meta hr-in"><p class="hr-ch__place">{both(*name(sid))}</p><p>{both(*where_when(sid))}</p>{more(sid)}</div></section>'
+        for k, (sid, field, title) in enumerate(chapters)) + "</div>"
+    (OUT / "m-chapters.html").write_text(page("d", "m-chapters", "Chapters", "一章一個地方", film_e, m_body, counted,
+        rest4("m"), words("aurora"), foot_l, live_js), encoding="utf-8")
+
+    # N, covers: one photograph to a screen like a magazine cover, its name set huge and split around it,
+    # the two halves drawing in toward the photograph as it arrives
+    covers = [(QUEENS, ("Queensboro", "皇后區"), ("Plaza", "廣場站")), ("fuji-lake", ("Mount", "富士"), ("Fuji", "山")),
+              ("roys-peak", ("Roys", "羅伊"), ("Peak", "峰")), ("tekapo-stars", ("Lake", "蒂卡波"), ("Tekapo", "銀河"))]
+    n_body = "".join(
+        f'<section class="hr-cover hr-reveal{" hr-cover--wide" if SLIDES[sid]["w"] > SLIDES[sid]["h"] else ""}{" hr-cover--long" if max(len(a[0]), len(b[0])) > 7 else ""}">'
+        f'<p class="hr-cover__w hr-cover__w--a" aria-hidden="true">{both(*a)}</p>'
+        f'<figure class="hr-cover__photo"><a href="{PAGES}gallery.html">{img(sid, "(max-width: 48rem) 92vw, 46vw")}</a>'
+        f'<figcaption><b>{both(*name(sid))}</b><span>{both(*where_when(sid))}</span></figcaption></figure>'
+        f'<p class="hr-cover__w hr-cover__w--b" aria-hidden="true">{both(*b)}</p></section>'
+        for sid, a, b in covers)
+    (OUT / "n-covers.html").write_text(page("d", "n-covers", "Covers", "封面", film_e, n_body, counted,
+        rest4("n"), words("matterhorn-lake"), foot_l, live_js), encoding="utf-8")
+
+    # O, the light table: one big print held on the left, his picks laid out beside it; choose one (hover,
+    # focus or tap) and it becomes the big print. The Queensboro train is on the table first.
+    table = [QUEENS, "matterhorn-lake", "fuji-lake", "sapa-terraces", "roys-peak", "tekapo-stars", "calanque-tall",
+             "golden-gate-fog", "tekapo-church", "dumbo-bridge"]
+    bigs = "".join(f'<figure class="hr-lt__big{" is-on" if k == 0 else ""}" data-k="{k}"><a href="{PAGES}gallery.html">{img(sid, "(max-width: 48rem) 92vw, 52vw")}</a>'
+                   f'<figcaption><b>{both(*name(sid))}</b><span>{both(*where_when(sid))}</span></figcaption></figure>'
+                   for k, sid in enumerate(table))
+    smalls = "".join(f'<li><button class="hr-lt__print hr-in" type="button" data-k="{k}" style="--i: {k}" aria-pressed="{str(k == 0).lower()}">'
+                     f'<img src="{IMG}640/{SLIDES[sid]["file"]}" alt="" loading="lazy" decoding="async">'
+                     f'<span>{both(*name(sid))}</span></button></li>' for k, sid in enumerate(table))
+    o_body = (say(*SAY2) + f'<section class="hr-lt" aria-label="Photographs"><div class="hr-lt__stage">{bigs}</div>'
+              f'<ul class="hr-lt__prints">{smalls}</ul></section>')
+    (OUT / "o-light-table.html").write_text(page("d", "o-light-table", "The light table", "看片桌", film_e, o_body, counted,
+        rest4("o"), words("roys-peak"), foot_l, live_js), encoding="utf-8")
+
+    # P, split: one half of the screen holds the photograph, the other half reads place by place; as each
+    # place reaches the middle its photograph takes over the held half
+    split = [QUEENS, "zermatt-dusk", "sapa-terraces", "tekapo-stars", "calanque-tall"]
+    photos_p = "".join(f'<img class="hr-split__img{" is-on" if k == 0 else ""}" data-k="{k}" src="{IMG}1280/{SLIDES[sid]["file"]}" srcset="{srcset(sid)}" '
+                       f'sizes="50vw" alt="" decoding="async">' for k, sid in enumerate(split))
+    words_p = "".join(
+        f'<article class="hr-split__one" data-k="{k}"><figure class="hr-split__inline">{img(sid, "92vw")}</figure>'
+        f'<p class="caps">{both(e(SLIDES[sid]["where"]["en"]), e(SLIDES[sid]["where"]["zh"]))}</p>'
+        f'<h2>{both(*name(sid))}</h2><p class="hr-split__line">{both(e(SLIDES[sid]["alt"]["en"]) + ".", e(SLIDES[sid]["alt"]["zh"]) + "。")}</p>'
+        f'<p class="hr-split__when">{both(*when(sid))}</p>{more(sid)}</article>'
+        for k, sid in enumerate(split))
+    p_body = f'<section class="hr-split"><div class="hr-split__hold" aria-hidden="true">{photos_p}</div><div class="hr-split__read">{words_p}</div></section>'
+    (OUT / "p-split.html").write_text(page("d", "p-split", "Split", "一半照片一半字", film_e, p_body, counted,
+        rest4("p"), words("fuji-lake"), foot_l, live_js), encoding="utf-8")
+
+    # Q, the way in first: straight after the film, three tall windows with the three words set large beneath,
+    # the Queensboro train as Journey; then his picks at changing sizes, and the last word
+    doors_q = [("tekapo-stars", "gallery.html", DOORS[0]), (QUEENS, "journey/", DOORS[1]), ("sagrada-plaza", "guides.html", DOORS[2])]
+    q_way = '<nav class="hr-qdoors" aria-label="The way in"><ul>' + "".join(
+        f'<li><a class="hr-qdoor hr-in" href="{PAGES}{href}" style="--i: {k}"><span class="hr-window__img">{img(sid, "(max-width: 48rem) 92vw, 30vw")}</span>'
+        f'<b>{both(d[1], d[2])}</b><span>{both(d[3], d[4])}</span></a></li>'
+        for k, (sid, href, d) in enumerate(doors_q)) + "</ul></nav>"
+    q_body = "\n".join([
+        q_way,
+        say(*SAY1),
+        '<div class="hr-seq">',
+        plain("matterhorn-lake", "hr-wide hr-in", "(max-width: 48rem) 92vw, 76rem"),
+        f'<div class="hr-pair">{plain("calanque-tall", "hr-in", "(max-width: 48rem) 66vw, 22vw")}{plain("fuji-lake", "hr-in", "(max-width: 48rem) 92vw, 54vw")}</div>',
+        plain("roys-peak", "hr-bleed hr-in", "100vw"),
+        "</div>",
+    ])
+    q_end = say(*SAY2)
+    (OUT / "q-doors-first.html").write_text(page("d", "q-doors-first", "The way in first", "入口先來", film_e, q_body, counted,
+        rest4("q"), q_end, foot_l, live_js), encoding="utf-8")
+    print("wrote a to l, and m-chapters.html, n-covers.html, o-light-table.html, p-split.html, q-doors-first.html")
 
 
 if __name__ == "__main__":

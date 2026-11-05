@@ -31,7 +31,30 @@
   const io = new IntersectionObserver((es) => es.forEach((e) => {
     if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
   }), { rootMargin: '0px 0px -10% 0px' });
-  document.querySelectorAll('.hr-in').forEach((el) => io.observe(el));
+  document.querySelectorAll('.hr-in, .hr-reveal').forEach((el) => io.observe(el));
+
+  // O: the light table; a print chosen by hover, focus or tap becomes the big print
+  document.querySelectorAll('.hr-lt').forEach((lt) => {
+    const bigs = [...lt.querySelectorAll('.hr-lt__big')], prints = [...lt.querySelectorAll('.hr-lt__print')];
+    const show = (k) => {
+      bigs.forEach((b) => b.classList.toggle('is-on', b.dataset.k === k));
+      prints.forEach((p) => p.setAttribute('aria-pressed', String(p.dataset.k === k)));
+    };
+    prints.forEach((p) => {
+      p.addEventListener('click', () => show(p.dataset.k));
+      p.addEventListener('focus', () => show(p.dataset.k));
+      if (matchMedia('(hover: hover) and (pointer: fine)').matches) p.addEventListener('mouseenter', () => show(p.dataset.k));
+    });
+  });
+
+  // P: the place reaching the middle of the screen takes over the held half
+  document.querySelectorAll('.hr-split').forEach((sp) => {
+    const imgs = [...sp.querySelectorAll('.hr-split__img')];
+    const mid = new IntersectionObserver((es) => es.forEach((e) => {
+      if (e.isIntersecting) imgs.forEach((im) => im.classList.toggle('is-on', im.dataset.k === e.target.dataset.k));
+    }), { rootMargin: '-45% 0px -45% 0px' });
+    sp.querySelectorAll('.hr-split__one').forEach((el) => mid.observe(el));
+  });
   // F: a pencil drawing turns into its photograph once it is well in view
   const real = new IntersectionObserver((es) => es.forEach((e) => {
     if (e.isIntersecting) { e.target.classList.add('is-real'); real.unobserve(e.target); }
