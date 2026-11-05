@@ -105,13 +105,13 @@
   // shaded in pencil under the lines, and the film begins
   async function openD() {
     await fill();
-    await wait(1300); if (done) return;
+    await wait(900); if (done) return;
     const line = screen.querySelector('.hr-load__line');
     screen.style.setProperty('--wide', (innerWidth / Math.max(1, line.offsetWidth) * 1.02).toFixed(3));
     html.classList.add('hr-horizon');
-    await wait(1000); if (done) return;
+    await wait(700); if (done) return;
     html.classList.add('hr-trace');
-    await wait(4300); if (done) return;   // the shading starts as the last lines land
+    await wait(2200); if (done) return;   // the shading starts as the last lines land (the lines run at --pace 0.5)
     html.classList.add('hr-shade');
     await wait(900); if (done) return;    // and the film follows close behind (his ask, 2026-11-05)
     if (video) { video.currentTime = 0; video.play().catch(() => {}); }
