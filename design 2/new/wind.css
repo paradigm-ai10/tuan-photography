@@ -9,6 +9,8 @@
 .g3-under__img.is-on { opacity: 1; }
 /* (luxe-unveil) a sheet of paper over the photograph while the page is in the air, lifted as the globe docks */
 .g3-under::after { content: ""; position: absolute; inset: 0; background: var(--paper); opacity: var(--veil, 0); }
+/* (unveil-develop) the photograph beneath is a grey print at first, its colour coming up as the globe forms */
+.g3-under.is-mono .g3-under__img { filter: grayscale(var(--mono, 0)) sepia(calc(var(--mono, 0) * 0.08)); }
 
 /* the adjust tab: a word at the bottom left, on his Mac only */
 .adj { position: fixed; left: 16px; bottom: 16px; z-index: 2147481000; font: 400 0.8125rem/1.4 var(--f-text); color: var(--ink); }

@@ -10,7 +10,7 @@
 (() => {
   const page = document.body.dataset.globe || 'journey';
   const luxe = page.startsWith('luxe-');
-  const DEF = { fold: page === 'luxe-print' || page === 'luxe-hang' ? 2.6 : 2.2, hold: page === 'gallery-tide' ? 0.6 : 0.55, wind: 0.9, rock: 1, photos: 1 };
+  const DEF = { fold: page === 'luxe-print' || page.startsWith('luxe-hang') ? 2.6 : 2.2, hold: page === 'gallery-tide' ? 0.6 : 0.55, wind: 0.9, rock: 1, photos: 1 };
   const T = (window.JourneyTweak = { ...DEF });
   const changed = () => dispatchEvent(new CustomEvent('journeytweak'));
   if (!/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname)) return;

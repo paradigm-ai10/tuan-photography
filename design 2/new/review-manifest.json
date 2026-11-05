@@ -12,6 +12,17 @@
     "en": "Open one to look. On the page, the comma and full stop keys (, .) move to the previous or next version, N opens your notes, M marks a spot, B comes back here. Scores here or there.",
     "zh": "打開一版來看。在頁面上，逗號和句號鍵（, .）換到上一版或下一版，N 打開筆記，M 標記一個地方，B 回到這裡。分數在這裡或頁面上都可以打。"
   },
+  "ask": {
+    "ids": [
+      "journey-luxe-unveil-develop",
+      "journey-luxe-hang-develop",
+      "journey-luxe-hang-whole"
+    ],
+    "question": {
+      "en": "Three mixes of the versions you gave 4 stars. Give each a score; press M on anything you like or want changed.",
+      "zh": "你給 4 星的三版，兩兩混合成三個新版本。每版給個分數就好，喜歡或想改的地方按 M 標記。"
+    }
+  },
   "lang": {
     "from": "html[lang]",
     "event": "langchange"
@@ -29,6 +40,13 @@
       "title": {
         "en": "High-end: six quiet versions",
         "zh": "高級感：六個安靜的版本"
+      }
+    },
+    {
+      "id": "luxe-mix",
+      "title": {
+        "en": "High-end: the three you liked, mixed",
+        "zh": "高級感：你喜歡的三版，兩兩混合"
       }
     },
     {
@@ -212,6 +230,42 @@
       },
       "still": {
         "wait": 20000
+      }
+    },
+    {
+      "href": "journey-luxe-unveil-develop.html",
+      "group": "luxe-mix",
+      "title": {
+        "en": "Unveil + develop",
+        "zh": "掀開＋顯影"
+      },
+      "desc": {
+        "en": "The map is a grey print; its colour comes up from Taiwan as it curls into the globe, and its edges thin away onto the trip's photograph beneath, which also comes up from grey to colour.",
+        "zh": "地圖是一張灰色的相片，捲成地球時顏色從台灣開始顯出來；邊緣慢慢散開，露出底下那趟旅行的照片，照片也從灰色慢慢變成彩色。"
+      }
+    },
+    {
+      "href": "journey-luxe-hang-develop.html",
+      "group": "luxe-mix",
+      "title": {
+        "en": "The hang + develop",
+        "zh": "畫廊＋顯影"
+      },
+      "desc": {
+        "en": "Eighteen prints turn over one after another to your photographs, grey at first, their colour coming up while they hang; they turn back to a grey map, whose colour comes up from Taiwan as it folds into the globe.",
+        "zh": "十八張照片一張接一張翻過來，先是灰的，掛著的時候慢慢顯出顏色；再翻回灰色的地圖，折成地球時顏色從台灣開始顯出來。"
+      }
+    },
+    {
+      "href": "journey-luxe-hang-whole.html",
+      "group": "luxe-mix",
+      "title": {
+        "en": "The hang + unveil: one photograph",
+        "zh": "畫廊＋掀開：十八張拼成一張照片"
+      },
+      "desc": {
+        "en": "The eighteen prints turn over to one photograph between them, the trip's; they turn back to the map, and the globe folds over that same photograph, which then fills the page for the reading.",
+        "zh": "十八張一張接一張翻過來，合起來是同一張照片，就是這趟旅行的照片；再翻回地圖，折成地球時，底下就是剛剛那張照片，接著鋪滿整頁讓你讀這趟旅行。"
       }
     },
     {

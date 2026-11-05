@@ -145,6 +145,16 @@ const CFG = {
   'luxe-clouds': { ...LUXE, mist: 3 },
   'luxe-drift': { ...LUXE, drift: ['matterhorn-lake', 'roys-peak', 'fuji-lake', 'sapa-terraces', 'tekapo-lupins'] },
   'luxe-develop': { ...LUXE, mono: true },
+  // the three he scored 4 (unveil, hang, develop; 2026-11-05), mixed two by two:
+  // unveil-develop  the map a monochrome print whose colour comes up from Taiwan as it curls, its edges
+  //                 thinning onto the trip's photograph, which itself comes up from grey as the globe forms
+  // hang-develop    the eighteen prints turn to his photographs, which come up from grey while they hold;
+  //                 they turn back to a grey map, whose colour comes up from Taiwan as it folds
+  // hang-whole      the eighteen prints turn over to one photograph between them, the trip's; they turn back,
+  //                 and the globe folds over that same photograph, which then fills the page for the reading
+  'luxe-unveil-develop': { ...LUXE, photos: 'through', unveil: true, mono: true },
+  'luxe-hang-develop': { ...LUXE, bleed: false, tiles: [6, 3], photos: 'tileBacks', mono: true, hang: { gap: 0.12, lift: 0.1, axis: 'y' } },
+  'luxe-hang-whole': { ...LUXE, bleed: false, tiles: [6, 3], photos: 'through', hang: { gap: 0.12, lift: 0.1, axis: 'y', whole: true } },
 }[V];
 const HOME_LL = [S.flightsFrom[1], S.flightsFrom[0]];
 const CRAFT = 'craft' in document.body.dataset;
@@ -328,7 +338,7 @@ const MORPH = /* glsl */`
         float dw = acos(clamp(sin(g.y) * sin(uHome.y) + cos(g.y) * cos(uHome.y) * cos(g.x + uCenter - uHome.x), -1.0, 1.0)) / 3.1415927;
         float w = smoothstep(0.0, 1.0, clamp((uFold - 0.7) / 0.3 * 1.7 - dw * 0.7, 0.0, 1.0));
         vTile = vec2(a - ac, b - bc) / vec2(3.1415927 / uTileN.x, 1.5707963 / uTileN.y);
-        vLand = w; vTileC = aTile; vShade = 0.86 + 0.14 * abs(co);
+        vLand = w; vTileC = aTile; vShade = 0.86 + 0.14 * abs(co); vDev = w;
         n = normalize(mix(nf, ns, w));
         return mix(wall, ns * uR * (1.0 + h), w);
       }
@@ -1065,7 +1075,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     uEarth: { value: CFG.earth ? 1 : 0 }, uAlive: { value: 0 }, uBleed: { value: CFG.bleed ? 1 : 0 }, uPaperC: { value: new THREE.Color(rgb('--paper')) },
     uDevelop: { value: CFG.develop ? 1 : 0 }, uDevTint: { value: new THREE.Color(rgb('oklch(78% 0.07 70)')) },
     uGores: { value: CFG.gores ? 1 : 0 }, uGore0: { value: GORE0 }, uPen: { value: CFG.pen ? 1 : 0 },
-    uTiles: { value: CFG.tiles ? 1 : 0 }, uTilePhotos: { value: { tileBacks: 1, tileEdges: 2 }[CFG.photos] || 0 }, uAtlasN: { value: 6 }, uTileN: { value: new THREE.Vector2(...TILES) }, uTileGap: { value: TILE_GAP }, uTileLift: { value: TILE_LIFT }, uTileFlip: { value: TILE_FLIP }, uTileScatter: { value: TILE_SCATTER }, uTileRate: { value: TILE_RATE }, uTileMode: { value: CFG.stay ? 1 : CFG.hold ? 2 : CFG.keep ? 3 : CFG.window ? 4 : CFG.wind ? 5 : HANG ? 6 : 0 }, uHang: { value: new THREE.Vector4(HANG ? HANG.gap : 0, HANG ? HANG.lift : 0, HANG && HANG.axis === 'x' ? 1 : 0, HANG ? 1 : 0) }, uHangM: { value: new THREE.Vector2(0.06, 0.06) }, uUnveil: { value: CFG.unveil ? 1 : 0 }, uMono: { value: CFG.mono ? 1 : 0 }, uTime: { value: 0 }, uWind: { value: new THREE.Vector4(0.55, 0.9, 1, ['gust', 'murmur', 'deck', 'vortex', 'tide'].indexOf(CFG.wind)) }, uTileKeep: { value: CFG.keep || 0 }, uTurn: { value: 0 }, uWin: { value: new THREE.Vector4(23.5 * RAD, 23.5 * RAD, 1, (CFG.window || 1) * RAD) },
+    uTiles: { value: CFG.tiles ? 1 : 0 }, uTilePhotos: { value: { tileBacks: 1, tileEdges: 2 }[CFG.photos] || (HANG && HANG.whole ? 1 : 0) }, uWhole: { value: HANG && HANG.whole ? 1 : 0 }, uAtlasN: { value: 6 }, uTileN: { value: new THREE.Vector2(...TILES) }, uTileGap: { value: TILE_GAP }, uTileLift: { value: TILE_LIFT }, uTileFlip: { value: TILE_FLIP }, uTileScatter: { value: TILE_SCATTER }, uTileRate: { value: TILE_RATE }, uTileMode: { value: CFG.stay ? 1 : CFG.hold ? 2 : CFG.keep ? 3 : CFG.window ? 4 : CFG.wind ? 5 : HANG ? 6 : 0 }, uHang: { value: new THREE.Vector4(HANG ? HANG.gap : 0, HANG ? HANG.lift : 0, HANG && HANG.axis === 'x' ? 1 : 0, HANG ? 1 : 0) }, uHangM: { value: new THREE.Vector2(0.06, 0.06) }, uUnveil: { value: CFG.unveil ? 1 : 0 }, uMono: { value: CFG.mono ? 1 : 0 }, uTime: { value: 0 }, uWind: { value: new THREE.Vector4(0.55, 0.9, 1, ['gust', 'murmur', 'deck', 'vortex', 'tide'].indexOf(CFG.wind)) }, uTileKeep: { value: CFG.keep || 0 }, uTurn: { value: 0 }, uWin: { value: new THREE.Vector4(23.5 * RAD, 23.5 * RAD, 1, (CFG.window || 1) * RAD) },
     uBacks: { value: 0 }, uBackTex: { value: texes[0] },
     uMask: { value: maskTex ? maskTex[0] : texes[0] }, uMaskPrev: { value: maskTex ? maskTex[1] : texes[0] },
   };
@@ -1090,7 +1100,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
       .replace('#include <beginnormal_vertex>', 'vec3 nrm; float rz = raiseAt(uv); vQ = uv; vRz = uRaise > 0.0 ? rz / uRaise : 0.0;\nvec3 morphed = sheet(uv, rz, nrm);\nvec3 objectNormal = nrm;')
       .replace('#include <begin_vertex>', 'vec3 transformed = morphed;');
     sh.fragmentShader = sh.fragmentShader
-      .replace('#include <common>', '#include <common>\nuniform sampler2D uPrev, uMask, uMaskPrev; uniform float uMix, uLit, uPlate, uFold, uWalls, uDevelop, uCenter, uReveal, uEarth, uAlive, uBleed, uGores, uPen, uBacks, uTiles, uTilePhotos, uAtlasN, uTileFlip; uniform vec2 uTileN; uniform sampler2D uBackTex; uniform vec3 uBack, uEdge, uDevTint, uPaperC; uniform vec4 uHang; uniform vec2 uHangM; uniform float uUnveil, uMono; varying float vDev; varying vec2 vQ; varying float vRz; varying vec2 vGore; varying float vGoreId; varying vec2 vTile, vTileC; varying float vLand, vW, vShade;')
+      .replace('#include <common>', '#include <common>\nuniform sampler2D uPrev, uMask, uMaskPrev; uniform float uMix, uLit, uPlate, uFold, uWalls, uDevelop, uCenter, uReveal, uEarth, uAlive, uBleed, uGores, uPen, uBacks, uTiles, uTilePhotos, uAtlasN, uTileFlip; uniform vec2 uTileN; uniform sampler2D uBackTex; uniform vec3 uBack, uEdge, uDevTint, uPaperC; uniform vec4 uHang; uniform vec2 uHangM; uniform float uUnveil, uMono, uWhole; varying float vDev; varying vec2 vQ; varying float vRz; varying vec2 vGore; varying float vGoreId; varying vec2 vTile, vTileC; varying float vLand, vW, vShade;')
       .replace('#include <map_fragment>', `#include <map_fragment>
         #ifdef USE_MAP
           diffuseColor.rgb = mix(texture2D(uPrev, vMapUv).rgb, diffuseColor.rgb, uMix);
@@ -1172,6 +1182,10 @@ window.JourneyMap = async function makeGlobe(svgEl) {
             vec2 pu = (l - m) / (1.0 - 2.0 * m);
             pu.x = 0.5 + (pu.x - 0.5) * vW;
             vec3 ph = texture2D(uBackTex, (vec2(mod(id, uAtlasN), floor(id / uAtlasN)) + clamp(pu, 0.002, 0.998)) / uAtlasN).rgb;
+            // (hang-whole) one photograph across the whole wall, each print its own part of it
+            if (uWhole > 0.5) ph = texture2D(uBackTex, (vec2(tc, tr) + clamp(pu, 0.002, 0.998)) / uTileN).rgb;
+            // (hang-develop) the photographs turn over grey and come up to colour while they hold
+            if (uMono > 0.5) ph = mix(vec3(0.45 + 0.58 * dot(ph, vec3(0.299, 0.587, 0.114))) * vec3(1.0, 0.982, 0.955), ph, smoothstep(0.3, 0.5, uFold));
             float inside = step(m.x, l.x) * step(l.x, 1.0 - m.x) * step(m.y, l.y) * step(l.y, 1.0 - m.y);
             vec3 print = mix(uPaperC, ph, inside);
             diffuseColor.rgb = uTilePhotos < 1.5 || !gl_FrontFacing ? print : mix(diffuseColor.rgb, print, smoothstep(0.02, 0.2, vLand) * (1.0 - smoothstep(0.7, 0.95, vLand)));
@@ -1206,7 +1220,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
   if (CFG.photos === 'through' || CFG.photos === 'prints' || CFG.backdrop) {
     // a layer under the map's drawing, shown only inside the map's own box
     under = document.createElement('div');
-    under.className = `g3-under g3-under--${CFG.backdrop ? 'drift' : CFG.photos}`;
+    under.className = `g3-under g3-under--${CFG.backdrop ? 'drift' : CFG.photos}${CFG.mono ? ' is-mono' : ''}`;
     box.prepend(under);
   }
   // (the wind versions) his landscapes behind the prints while they are in the air, one after another
@@ -1331,7 +1345,23 @@ window.JourneyMap = async function makeGlobe(svgEl) {
       im.src = K.src(S.slides[id].file, 640);
     });
   }
-  if (HANG && HANG.photo && S.slides[HANG.photo]) {
+  const wholeId = HANG && HANG.whole ? pickOf(K.trips[0]) : null;
+  if (wholeId && S.slides[wholeId]) {
+    // (hang-whole) the trip's photograph cut to the wall's shape, two across to one down, a thin even margin on
+    // each print so they still read as prints
+    const im = new Image();
+    im.onload = () => {
+      const cv = Object.assign(document.createElement('canvas'), { width: 2048, height: 1024 });
+      const k = Math.max(cv.width / im.naturalWidth, cv.height / im.naturalHeight), w = im.naturalWidth * k, h = im.naturalHeight * k;
+      // (cut a little below the middle: a landscape's sky is the part to lose)
+      cv.getContext('2d').drawImage(im, (cv.width - w) / 2, (cv.height - h) * 0.7, w, h);
+      const tex = new THREE.CanvasTexture(cv);
+      tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 4;
+      U.uBackTex.value = tex; U.uAtlasN.value = 1; U.uHangM.value.set(0.035, 0.035);
+      kick();
+    };
+    im.src = K.src(S.slides[wholeId].file);
+  } else if (HANG && HANG.photo && S.slides[HANG.photo]) {
     // (print) one photograph, whole, on the back of the one print: the margin is set from its shape, an
     // even margin top and bottom and the rest at the sides
     const sl = S.slides[HANG.photo], im = new Image();
@@ -1708,6 +1738,10 @@ window.JourneyMap = async function makeGlobe(svgEl) {
       let show = smooth(0.1, 0.3, st.fold) * (through ? 1 : 1 - smooth(0.15, 0.6, dk));
       // (unveil) there from the first lift of the page, settling from a little large as it is uncovered
       // and veiled in a little paper while the page is in the air, so the globe sits on a quiet picture
+      // (hang-whole) the same photograph the prints made, there only once the wall folds, veiled like unveil's
+      if (HANG && HANG.whole) { show = smooth(0.7, 0.88, st.fold); set('--kb', (1.04 - 0.04 * smooth(0.7, 1, st.fold)).toFixed(4)); set('--veil', (0.42 * (1 - smooth(0.1, 0.9, dk))).toFixed(3)); }
+      // (unveil-develop) the photograph beneath comes up from grey as the globe forms, as the map does
+      if (CFG.mono) set('--mono', (1 - smooth(0.45, 1, st.fold)).toFixed(3));
       if (CFG.unveil) { show = smooth(0.02, 0.2, st.fold); set('--kb', (1.06 - 0.06 * smooth(0.02, 1, st.fold)).toFixed(4)); set('--veil', (0.42 * (1 - smooth(0.1, 0.9, dk))).toFixed(3)); }
       if (CFG.backdrop) {
         // (the wind versions) shown as the map comes apart, one landscape per stretch of the change,
