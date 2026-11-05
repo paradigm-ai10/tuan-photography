@@ -323,7 +323,67 @@ def build():
         f'<li><a class="hr-door hr-in" href="{PAGES}{href}"><b>{both(en, zh)}</b><span>{both(den, dzh)}<small>{both(cen, czh)}</small></span></a></li>'
         for (href, en, zh, den, dzh), cen, czh in contents) + "</ul></nav>"
     (OUT / "h-journal.html").write_text(page("d", "h-journal", "The journal", "旅行手帳", film_e, h, counted, rest("h"), way_h), encoding="utf-8")
-    print("wrote a-film.html, b-prints.html, c-drawn.html, c-traced.html, c-counted.html, f-drawn-down.html, g-pile.html, h-journal.html")
+    # Round three (2026-11-06), from the references he marked Good on home-lower.html: Singita (one sentence
+    # beside one big photograph, sides swapping), Belmond (tall photographs like windows, one place each) and
+    # Jimmy Chin (one big photograph, the way in as three huge words). Each keeps E's opening.
+    def img(sid, sizes, cls=""):
+        x = SLIDES[sid]
+        alt = e(x["alt"]["en"]) if "alt" in x else ""
+        return (f'<img{f" class={chr(34)}{cls}{chr(34)}" if cls else ""} src="{IMG}1280/{x["file"]}" srcset="{srcset(sid)}" sizes="{sizes}" '
+                f'width="{x["w"]}" height="{x["h"]}" alt="{alt}" loading="lazy" decoding="async">')
+
+    def plain(sid, cls="", sizes="(max-width: 48rem) 92vw, 60vw"):
+        return f'<figure class="hr-fig {cls}"><a href="{PAGES}gallery.html">{img(sid, sizes)}</a>{caption(sid)}</figure>'
+
+    def windows(items, cls):
+        """Tall photographs like windows, one place or one way in each, the name beneath."""
+        return f'<ul class="hr-windows {cls}">' + "".join(
+            f'<li><a class="hr-window hr-in" href="{href}" style="--i: {k}"><span class="hr-window__img">{img(sid, "(max-width: 48rem) 46vw, 18vw")}</span>'
+            f'<b>{both(*name)}</b><span>{both(*line)}</span></a></li>'
+            for k, (sid, href, name, line) in enumerate(items)) + "</ul>"
+
+    def words(lead_sid):
+        """The way in as three huge words on the paper just under one big photograph (after Jimmy Chin)."""
+        items = "".join(f'<li><a class="hr-word" href="{PAGES}{href}">{both(en, zh)}</a></li>' for href, en, zh, _, _ in DOORS)
+        return (f'<nav class="hr-words" aria-label="The way in"><figure class="hr-words__photo">{img(lead_sid, "100vw")}</figure>'
+                f'<ul>{items}</ul></nav>')
+
+    n_c = len(SITE["countries"])
+    SAY_HOME = (f"{n_c} countries so far, from a home in Taiwan.", f"以台灣為家，到目前為止走過 {n_c} 個國家。")
+    win_doors = [("tekapo-stars", f"{PAGES}gallery.html", ("Gallery", "作品集"), ("Every photograph.", "所有的照片。")),
+                 ("fuji-shinkansen", f"{PAGES}journey/", ("Journey", "旅程"), ("Every trip, along its route.", "每一趟旅程，沿著路線看。")),
+                 ("sagrada-plaza", f"{PAGES}guides.html", ("Guides", "攻略"), ("Where to stand and when, place by place.", "每個地方，站在哪裡、什麼時候去。"))]
+
+    # I, words beside photographs: three big photographs, one short line beside each, sides swapping;
+    # the way in as three tall windows
+    rows = [("matterhorn-lake", SAY1, ""), ("sapa-terraces", SAY_HOME, " hr-beside__row--tall hr-beside__row--flip"), ("roys-peak", SAY2, "")]
+    i = '<div class="hr-beside">' + "".join(
+        f'<section class="hr-beside__row{cls}">{plain(sid, "hr-in", "(max-width: 48rem) 92vw, 56vw")}<p class="hr-in">{both(*say_)}</p></section>'
+        for sid, say_, cls in rows) + "</div>"
+    way_i = '<nav class="hr-windows-way" aria-label="The way in">' + windows(win_doors, "hr-windows--3") + "</nav>"
+    (OUT / "i-beside.html").write_text(page("d", "i-beside", "Words beside photographs", "照片旁邊一句話", film_e, i, counted, rest("i"), way_i), encoding="utf-8")
+
+    # J, windows: one row of tall photographs, one place each, the country and when beneath; then the three words
+    places = ["matterhorn-lake", "fuji-lake", "tekapo-church", "sapa-terraces", "calanque-tall", "golden-gate-fog"]
+    place_items = []
+    for sid in places:
+        cn = COUNTRY[SLIDES[sid]["country"]]
+        place_items.append((sid, f"{PAGES}countries/{cn['id']}.html", (e(cn["en"]), e(cn["zh"])), when(sid)))
+    j = say(*SAY1) + '\n<section class="hr-windows-row">' + windows(place_items, "hr-windows--6") + "</section>\n" + say(*SAY2)
+    (OUT / "j-windows.html").write_text(page("d", "j-windows", "Windows", "一扇一扇窗", film_e, j, counted, rest("j"), words("roys-peak")), encoding="utf-8")
+
+    # K, three words: a few big photographs, then one that fills the screen with GALLERY, JOURNEY, GUIDES
+    # set huge on the paper just beneath it
+    k_body = "\n".join([
+        say(*SAY1),
+        '<div class="hr-seq">',
+        plain("matterhorn-lake", "hr-wide hr-in", "(max-width: 48rem) 92vw, 76rem"),
+        plain("fuji-lake", "hr-right hr-in", "(max-width: 48rem) 92vw, 56rem"),
+        "</div>",
+    ])
+    (OUT / "k-three-words.html").write_text(page("d", "k-three-words", "Three words", "三個字", film_e, k_body, counted, rest("k"), words(SITE["lead"])), encoding="utf-8")
+    print("wrote a-film.html, b-prints.html, c-drawn.html, c-traced.html, c-counted.html, f-drawn-down.html, g-pile.html, h-journal.html,",
+          "i-beside.html, j-windows.html, k-three-words.html")
 
 
 if __name__ == "__main__":

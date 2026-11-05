@@ -26,6 +26,13 @@
         "en": "Second round: the rest of the page, under E's opening",
         "zh": "第二輪：E 的開場之後，首頁其餘的部分"
       }
+    },
+    {
+      "id": "round3",
+      "title": {
+        "en": "Third round: from Singita, Belmond and Jimmy Chin, which you marked Good",
+        "zh": "第三輪：從你標喜歡的 Singita、Belmond、Jimmy Chin 來做"
+      }
     }
   ],
   "items": [
@@ -156,6 +163,51 @@
         "wait": 2500
       },
       "out": true
+    },
+    {
+      "href": "i-beside.html",
+      "group": "round3",
+      "title": {
+        "en": "Words beside photographs",
+        "zh": "照片旁邊一句話"
+      },
+      "desc": {
+        "en": "After Singita. E's opening, then three big photographs, each with one short line beside it, never on it, the sides swapping. The way in is three tall photographs like windows (after Belmond): Gallery, Journey, Guides, each name beneath.",
+        "zh": "從 Singita 來的。E 的開場之後，三張大照片，每張旁邊一句短短的話（不寫在照片上），左右交換。最後的入口是三張直的照片，像窗戶（從 Belmond 來的）：作品集、旅程、攻略，名字寫在下面。"
+      },
+      "still": {
+        "wait": 2500
+      }
+    },
+    {
+      "href": "j-windows.html",
+      "group": "round3",
+      "title": {
+        "en": "Windows",
+        "zh": "一扇一扇窗"
+      },
+      "desc": {
+        "en": "After Belmond. E's opening, then one row of six tall photographs across the whole width, one place each, the country and when beneath; each opens that country. Then the three words (after Jimmy Chin) under one photograph that fills the screen.",
+        "zh": "從 Belmond 來的。E 的開場之後，一整排六張直的照片橫跨整個畫面，一張一個地方，下面寫國家和時間，點了就到那個國家。最後是三個大字（從 Jimmy Chin 來的），在一張撐滿畫面的照片下面。"
+      },
+      "still": {
+        "wait": 2500
+      }
+    },
+    {
+      "href": "k-three-words.html",
+      "group": "round3",
+      "title": {
+        "en": "Three words",
+        "zh": "三個字"
+      },
+      "desc": {
+        "en": "After Jimmy Chin. E's opening, two big photographs, then one that fills the screen with GALLERY, JOURNEY, GUIDES set huge and wide-spaced on the paper just beneath it, as the only way in. Nothing is written on the photograph.",
+        "zh": "從 Jimmy Chin 來的。E 的開場之後，兩張大照片，然後一張撐滿畫面的照片，下面紙上只有三個很大、很開的字：作品集、旅程、攻略，這就是入口。照片上不寫字。"
+      },
+      "still": {
+        "wait": 2500
+      }
     }
   ],
   "tags": [
@@ -230,5 +282,16 @@
     "--rv-label": "\"Geist\", \"Noto Sans TC\", sans-serif",
     "--rv-name": "\"Playfair Display\", \"Noto Serif TC\", serif"
   },
-  "words": {}
+  "words": {},
+  "ask": {
+    "ids": [
+      "i-beside",
+      "j-windows",
+      "k-three-words"
+    ],
+    "question": {
+      "en": "Which of these three should the rest of the home page be? Give each a score.",
+      "zh": "首頁其餘的部分要用這三個裡的哪一個？每個打個分數。"
+    }
+  }
 }

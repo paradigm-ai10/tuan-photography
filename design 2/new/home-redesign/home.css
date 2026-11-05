@@ -269,3 +269,67 @@ html.hr-js .hr-sk.is-real .hr-sk__pencil { opacity: 0; }
 @media (prefers-reduced-motion: reduce) {
   html.hr-js .hr-sk__pencil { display: none; }
 }
+
+/* ================= Round three (2026-11-06): from Singita, Belmond and Jimmy Chin, which he marked Good ================= */
+
+/* I: one short line beside one big photograph, never on it, sides swapping (after Singita) */
+.hr-beside { display: grid; gap: clamp(6rem, 15vw, 13rem); width: min(100%, 86rem); margin-inline: auto; padding: var(--s-6) var(--edge); }
+.hr-beside__row { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); align-items: center; }
+.hr-beside__row .hr-fig { grid-column: 1 / span 7; }
+.hr-beside__row p { grid-column: 9 / span 4; margin: 0; font-family: var(--serif); font-weight: 400;
+  font-size: clamp(1.6rem, 1rem + 1.9vw, 2.8rem); line-height: 1.22; text-wrap: balance; }
+:lang(zh-Hant) .hr-beside__row p { font-weight: 500; font-size: clamp(1.4rem, 1rem + 1.4vw, 2.2rem); line-height: 1.6; letter-spacing: 0.06em; }
+.hr-beside__row--flip .hr-fig { grid-column: 6 / span 7; order: 2; }
+.hr-beside__row--flip p { grid-column: 1 / span 4; order: 1; }
+.hr-beside__row--tall .hr-fig { grid-column: 7 / span 4; }
+.hr-beside__row--tall p { grid-column: 2 / span 4; }
+
+/* Windows: tall photographs side by side, one place or one way in each, the name beneath (after Belmond) */
+.hr-windows { display: grid; gap: clamp(0.8rem, 1.6vw, 1.6rem); margin: 0; padding: 0; list-style: none; }
+.hr-windows--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.hr-windows--6 { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0.5rem; }
+.hr-windows--6 .hr-window__img { aspect-ratio: 9 / 16; }
+.hr-window { display: grid; gap: 0.35rem; color: var(--text); text-decoration: none; }
+html.hr-js .hr-window.hr-in { transition-delay: calc(var(--i, 0) * 70ms); }
+.hr-window__img { display: block; aspect-ratio: 2 / 3; overflow: hidden; margin-bottom: 0.65rem; background: var(--band); }
+.hr-window__img img { width: 100%; height: 100%; object-fit: cover; transition: transform 700ms cubic-bezier(0.23, 1, 0.32, 1); }
+.hr-window b { font-family: var(--serif); font-weight: 400; font-size: clamp(1.05rem, 0.9rem + 0.5vw, 1.4rem); line-height: 1.2; }
+:lang(zh-Hant) .hr-window b { font-weight: 500; letter-spacing: 0.06em; }
+.hr-window > span:last-child { font-size: var(--t-xs); color: var(--text-2); }
+.hr-windows--3 .hr-window b { font-size: clamp(1.6rem, 1.1rem + 1.6vw, 2.6rem); }
+.hr-windows--3 .hr-window > span:last-child { font-size: var(--t-s); }
+.hr-windows-way { width: min(100%, 76rem); margin-inline: auto; padding: var(--s-5) var(--edge) var(--s-6); }
+.hr-windows-row { padding: var(--s-3) 0.5rem var(--s-4); }
+.hr-windows-row .hr-window > :not(.hr-window__img) { padding-inline: 0.4rem; }
+@media (hover: hover) and (pointer: fine) {
+  .hr-window:hover .hr-window__img img { transform: scale(1.03); }
+  .hr-window:hover b { color: var(--accent); }
+}
+
+/* The way in as three huge words on the paper just under one photograph that fills the screen (after Jimmy Chin) */
+.hr-words { display: grid; grid-template-rows: minmax(0, 1fr) auto; height: 100svh; min-height: 34rem; padding-bottom: clamp(1.5rem, 3vw, 2.5rem); }
+.hr-words__photo { position: relative; margin: 0; overflow: hidden; min-height: 0; }
+.hr-words__photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 35%; }
+.hr-words ul { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin: 0; padding: clamp(1.4rem, 3vw, 2.6rem) var(--edge) 0; list-style: none; }
+.hr-word { display: inline-block; color: var(--text); text-decoration: none; font-family: var(--serif); font-weight: 400;
+  font-size: min(5.1vw, 6.2rem); line-height: 1; letter-spacing: 0.16em; text-transform: uppercase;
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; padding-bottom: 0.12em;
+  transition: color 280ms cubic-bezier(0.23, 1, 0.32, 1), background-size 280ms cubic-bezier(0.23, 1, 0.32, 1); }
+.hr-words li:last-child .hr-word { margin-right: -0.16em; }
+:lang(zh-Hant) .hr-word { font-weight: 500; letter-spacing: 0.3em; font-size: min(4.6vw, 5rem); }
+.hr-word:focus-visible { color: var(--accent); background-size: 100% 1px; }
+@media (hover: hover) and (pointer: fine) {
+  .hr-word:hover { color: var(--accent); background-size: 100% 1px; }
+}
+
+@media (max-width: 48rem) {
+  .hr-beside__row, .hr-beside__row--flip, .hr-beside__row--tall { grid-template-columns: minmax(0, 1fr); row-gap: var(--s-3); }
+  .hr-beside__row .hr-fig, .hr-beside__row p { grid-column: 1; order: 0; }
+  .hr-beside__row p { order: -1; }
+  .hr-beside__row--tall .hr-fig { width: 78%; }
+  .hr-windows--6 { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: var(--s-4); }
+  .hr-windows--3 { grid-template-columns: minmax(0, 1fr); row-gap: var(--s-4); }
+  .hr-windows--3 .hr-window__img { aspect-ratio: 4 / 5; }
+  .hr-words ul { flex-direction: column; align-items: flex-start; gap: 0.9rem; }
+  .hr-word, :lang(zh-Hant) .hr-word { font-size: clamp(2rem, 9vw, 3rem); }
+}
