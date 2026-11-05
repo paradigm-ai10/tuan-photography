@@ -12,18 +12,6 @@
     "en": "Open one to look. On the page, the comma and full stop keys (, .) move to the previous or next version, N opens your notes, M marks a spot, B comes back here. Scores here or there.",
     "zh": "打開一版來看。在頁面上，逗號和句號鍵（, .）換到上一版或下一版，N 打開筆記，M 標記一個地方，B 回到這裡。分數在這裡或頁面上都可以打。"
   },
-  "ask": {
-    "ids": [
-      "journey-luxe-hang",
-      "journey-luxe-clouds",
-      "journey-luxe-drift",
-      "journey-luxe-develop"
-    ],
-    "question": {
-      "en": "Four of the high-end versions have no score yet. Give each one a score; press M on anything you like or want changed.",
-      "zh": "高級感還有四版沒打分：每版給個分數就好，喜歡或想改的地方按 M 標記。"
-    }
-  },
   "lang": {
     "from": "html[lang]",
     "event": "langchange"
