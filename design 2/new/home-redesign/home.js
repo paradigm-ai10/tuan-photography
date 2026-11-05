@@ -124,21 +124,22 @@
   // shaded in pencil under the lines, and the film begins
   async function openD() {
     await fill();
-    await wait(900); if (done) return;
+    await wait(1800); if (done) return;   // the whole logo holds a moment before the name goes (his ask, 2026-11-05)
     const line = screen.querySelector('.hr-load__line');
     screen.style.setProperty('--wide', (innerWidth / Math.max(1, line.offsetWidth) * 1.02).toFixed(3));
     html.classList.add('hr-horizon');
-    await wait(700); if (done) return;
+    await wait(1100); if (done) return;
     html.classList.add('hr-trace');
     if (tally.length) count(2100);
-    await wait(2200); if (done) return;   // the shading starts as the last lines land (the lines run at --pace 0.5)
+    await wait(1900); if (done) return;   // the shading starts as the last lines land (the lines run at --pace 0.5)
     html.classList.add('hr-shade');
-    await wait(900); if (done) return;    // and the film follows close behind (his ask, 2026-11-05)
-    if (video) { video.currentTime = 0; video.play().catch(() => {}); }
+    if (video) { video.currentTime = 0; video.play().catch(() => {}); }   // the film is already moving under the paper
+    await wait(700); if (done) return;    // then lines, shading and film dissolve as one move, no hold between
     html.classList.add('hr-out');
-    await wait(1900);
+    await wait(2300);
     finish();
   }
+
 
   // B: the prints come in along the diagonal, settle in a row under the name, and one grows into the opening
   const layer = screen.querySelector('.hr-prints');

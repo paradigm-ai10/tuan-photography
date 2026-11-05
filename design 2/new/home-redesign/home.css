@@ -53,6 +53,7 @@ html.hr-out .hr-load__mark, html.hr-out .hr-load__paper { opacity: 0; }
   -webkit-mask-image: linear-gradient(to bottom, transparent calc(50% - var(--r) * 64%), #000 calc(50% - var(--r) * 50%), #000 calc(50% + var(--r) * 50%), transparent calc(50% + var(--r) * 64%));
   mask-image: linear-gradient(to bottom, transparent calc(50% - var(--r) * 64%), #000 calc(50% - var(--r) * 50%), #000 calc(50% + var(--r) * 50%), transparent calc(50% + var(--r) * 64%)); }
 html.hr-horizon .hr-load__name, html.hr-horizon .hr-load__sub { opacity: 0; transition: opacity 0.6s ease; }
+[data-home="d"].hr-horizon :is(.hr-load__name, .hr-load__sub) { transition: opacity 1.5s ease-in-out; }   /* D and E: the name leaves slowly */
 html.hr-horizon .hr-load__line { transform-origin: center; transform: scaleX(var(--wide, 4)); transition: transform 1s var(--part) 0.25s; }
 html.hr-draw .hr-load__sketch { --r: 1; transition: --r 2.4s cubic-bezier(0.45, 0, 0.2, 1); }
 html.hr-draw .hr-load__line { opacity: 0; transition: transform 1s var(--part) 0.25s, opacity 1.4s ease 0.9s; }
@@ -68,11 +69,11 @@ html.hr-draw .hr-load__line { opacity: 0; transition: transform 1s var(--part) 0
 [data-home="d"] .hr-load__trace { --pace: 0.5; }
 html.hr-trace .hr-load__trace path { animation: hr-ink calc(var(--t, 0.6s) * var(--pace, 1)) calc(var(--d, 0s) * var(--pace, 1)) cubic-bezier(0.4, 0, 0.2, 1) forwards; }
 @keyframes hr-ink { to { stroke-dashoffset: 0; } }
-[data-home="d"] .hr-load__sketch { position: absolute; inset: 0; z-index: 1; display: block; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1.1s ease; }
+[data-home="d"] .hr-load__sketch { position: absolute; inset: 0; z-index: 1; display: block; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1s ease-out; }
 html.hr-trace .hr-load__line { opacity: 0; transition: transform 1s var(--part) 0.25s, opacity 1.2s ease 0.6s; }
 html.hr-shade .hr-load__sketch { opacity: 1; }
-html.hr-shade .hr-load__trace { opacity: 0.5; }
-[data-home="d"].hr-out :is(.hr-load__sketch, .hr-load__trace) { opacity: 0; transition: opacity 1.3s ease; }
+html.hr-shade .hr-load__trace { opacity: 0.85; }
+[data-home="d"].hr-out :is(.hr-load__sketch, .hr-load__trace) { opacity: 0; transition: opacity 2.1s cubic-bezier(0.45, 0, 0.3, 1); }
 [data-home="d"].hr-out .hr-load__paper { transition: opacity 0.2s linear; }
 
 /* ---------------- the top: the logo small, the menu, the two languages ---------------- */
