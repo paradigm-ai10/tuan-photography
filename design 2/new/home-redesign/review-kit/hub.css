@@ -161,3 +161,10 @@
   .rvc-mid { position: static; padding-top: 0; grid-template-columns: 1fr 1fr; }
   .rvc-mid .rvh-w, .rvc-mid .rvh-state { grid-column: 1 / -1; }
 }
+
+/* a version he has decided against: a red cross drawn across its picture, so he knows it is not in the running */
+.rvh-card.is-out .rvh-still img { opacity: 0.55; filter: grayscale(0.6); }
+.rvh-x { position: absolute; inset: 6% 5%; width: 90%; height: 88%; pointer-events: none; overflow: visible; }
+.rvh-x path { fill: none; stroke: var(--rv-out, #c0392b); stroke-width: 7; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.rvh-out { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.13em; text-transform: uppercase; color: var(--rv-out, #c0392b); margin-top: -0.35rem; }
+:lang(zh-Hant) .rvh-out { text-transform: none; font-size: 0.8rem; }

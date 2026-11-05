@@ -35,7 +35,8 @@
       },
       "still": {
         "wait": 1500
-      }
+      },
+      "out": true
     },
     {
       "href": "b-prints.html",
@@ -50,7 +51,8 @@
       },
       "still": {
         "wait": 800
-      }
+      },
+      "out": true
     },
     {
       "href": "c-drawn.html",
@@ -65,7 +67,8 @@
       },
       "still": {
         "wait": 1500
-      }
+      },
+      "out": true
     },
     {
       "href": "c-traced.html",

@@ -99,14 +99,15 @@
     const picked = !!ui.picked && ui.picked.includes(v.id);
     // while choosing, the picture itself says it is chosen, and in what order
     const tag = ui.picked ? (picked ? `<span class="rvh-chosen">${esc(t('chosenN', { n: ui.picked.indexOf(v.id) + 1 }))}</span>` : `<span class="rvh-choose">${esc(t('choose'))}</span>`) : '';
-    return `<article class="rvh-card${liked(v.id) ? ' is-liked' : ''}${away(v.id) ? ' is-low' : ''}${ui.picked ? ' is-choosing' : ''}${picked ? ' is-picked' : ''}" id="v-${esc(v.id)}" data-id="${esc(v.id)}">
+    return `<article class="rvh-card${liked(v.id) ? ' is-liked' : ''}${away(v.id) ? ' is-low' : ''}${ui.picked ? ' is-choosing' : ''}${picked ? ' is-picked' : ''}${v.out ? ' is-out' : ''}" id="v-${esc(v.id)}" data-id="${esc(v.id)}">
       <a class="rvh-still" href="${esc(v.href)}" tabindex="-1" aria-hidden="true">
         ${src ? `<img src="${esc(src)}" alt="" loading="lazy" decoding="async" width="960" height="600">` : `<span class="rvh-blank"><span>${v.n}</span><small>${esc(t('noStill'))}</small></span>`}
-        ${dots}${tag}
+        ${dots}${tag}${v.out ? `<svg class="rvh-x" viewBox="0 0 100 62" preserveAspectRatio="none" aria-hidden="true"><path d="M7 6 C 30 20, 62 40, 94 57"/><path d="M92 5 C 66 22, 38 40, 6 58"/></svg>` : ''}
       </a>
       <div class="rvh-meta">
         <h3 class="rvh-name"><a href="${esc(v.href)}"><span class="rvh-num">${v.n}</span>${esc(title)}</a></h3>
         ${v.main ? `<p class="rvh-main">${esc(t('main'))}</p>` : ''}
+        ${v.out ? `<p class="rvh-out">${esc(t('out'))}</p>` : ''}
         <div class="rvh-line">
           <span class="rvh-sc" role="group" aria-label="${esc(t('score'))}: ${esc(title)}">${[1, 2, 3, 4, 5].map((k) =>
             `<button type="button" class="rvh-sq" data-h="score" data-n="${k}" aria-pressed="${s === k}" title="${esc(t('scores')[k])}" aria-label="${k}, ${esc(t('scores')[k])}"></button>`).join('')}</span>
