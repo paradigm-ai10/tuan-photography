@@ -111,9 +111,9 @@
     html.classList.add('hr-horizon');
     await wait(1000); if (done) return;
     html.classList.add('hr-trace');
-    await wait(5000); if (done) return;
+    await wait(4300); if (done) return;   // the shading starts as the last lines land
     html.classList.add('hr-shade');
-    await wait(2000); if (done) return;
+    await wait(900); if (done) return;    // and the film follows close behind (his ask, 2026-11-05)
     if (video) { video.currentTime = 0; video.play().catch(() => {}); }
     html.classList.add('hr-out');
     await wait(1900);
