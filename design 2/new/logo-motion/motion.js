@@ -10,7 +10,8 @@
     gather: [3500, 1700], part: [3100, 1700], loading: [0, 1700]
   };
   // the line-loads family (6, and round two from 2026-11-05): how long each holds once the line is full
-  const LOAD = { loading: 600, 'l-first': 2000, 'l-write': 800, 'l-part': 500, 'l-slit': 1100, 'l-runout': 400, 'l-through': 500 };
+  const LOAD = { loading: 600, 'l-first': 2000, 'l-write': 800, 'l-part': 500, 'l-slit': 1100, 'l-runout': 400, 'l-through': 500,
+    'r3-part': 2000, 'r3-horizon': 2000, 'r3-runout': 2000, 'r3-through': 2600 };
   const photo = document.querySelector('.lm-photo');
   const rule = document.querySelector('.lm-rule');
   let timers = [];

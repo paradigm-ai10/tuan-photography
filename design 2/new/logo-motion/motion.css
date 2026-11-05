@@ -162,6 +162,47 @@ html.lm-out .lm-photo { transform: none; }
 [data-motion="l-through"].lm-in .lm-tuan, [data-motion="l-through"].lm-in .lm-ph { animation: lm-fade 1s ease both 0.1s; }
 [data-motion="l-through"].lm-in:not(.lm-out) :is(.lm-top, .lm-bottom) { opacity: calc(1 - var(--p, 0) * var(--p, 0) * 0.08); transition: none; }
 
+/* ---- Round three (2026-11-05): he likes the line drawing across and the top half coming before the
+   bottom half. So all four arrive as 7 (the line alone, then TUAN letter by letter, then PHOTOGRAPHY)
+   and differ only in how they open onto the photograph. */
+[data-motion^="r3-"] .lm-rule { transform-origin: left center; transform: scaleX(var(--p, 0)); }
+[data-motion^="r3-"].lm-still .lm-rule { transform: none; }
+[data-motion^="r3-"] .lm-tuan span, [data-motion^="r3-"] .lm-ph { opacity: 0; }
+[data-motion^="r3-"].lm-still .lm-tuan span, [data-motion^="r3-"].lm-still .lm-ph { opacity: 1; }
+[data-motion^="r3-"].lm-full .lm-tuan span { animation: lm-rise 0.9s var(--out) both; animation-delay: calc(var(--i) * 110ms); }
+[data-motion^="r3-"].lm-full .lm-ph { animation: lm-fade 0.9s ease both 0.55s; }
+
+/* 13 part: the paper parts along the line, the top half (with TUAN) first, the bottom half a beat later */
+[data-motion="r3-part"] .lm-top, [data-motion="r3-part"] .lm-tuan { transition: transform 1.3s var(--part) 0.15s; }
+[data-motion="r3-part"] .lm-bottom, [data-motion="r3-part"] .lm-ph { transition: transform 1.3s var(--part) 0.5s; }
+[data-motion="r3-part"].lm-out .lm-mark { opacity: 1; transition: none; }
+[data-motion="r3-part"].lm-out .lm-rule { opacity: 0; transition: opacity 0.25s ease; }
+[data-motion="r3-part"].lm-out .lm-top { opacity: 1; transform: translateY(-100%); }
+[data-motion="r3-part"].lm-out .lm-bottom { opacity: 1; transform: translateY(100%); }
+[data-motion="r3-part"].lm-out .lm-tuan { transform: translateY(-50vh); }
+[data-motion="r3-part"].lm-out .lm-ph { transform: translateY(50vh); }
+[data-motion="r3-part"] .lm-photo { transform: scale(1.08); }
+
+/* 14 horizon: TUAN goes, then PHOTOGRAPHY; the line runs on to both edges and the photograph opens out of it */
+[data-motion="r3-horizon"].lm-out .lm-mark { opacity: 1; transition: none; }
+[data-motion="r3-horizon"].lm-out .lm-tuan { opacity: 0; transition: opacity 0.45s ease; }
+[data-motion="r3-horizon"].lm-out .lm-ph { opacity: 0; transition: opacity 0.45s ease 0.2s; }
+[data-motion="r3-horizon"] .lm-rule { transition: none; }
+[data-motion="r3-horizon"].lm-out .lm-rule { transform-origin: center; transform: scaleX(var(--wide, 4)); transition: transform 0.9s var(--part) 0.35s; }
+[data-motion="r3-horizon"] .lm-photo { z-index: 1; clip-path: inset(50% 0 50% 0); transition: clip-path 1.5s var(--part) 1.15s, transform 1.8s var(--out) 1.15s; }
+[data-motion="r3-horizon"].lm-out .lm-photo { clip-path: inset(0); }
+[data-motion="r3-horizon"] .lm-top, [data-motion="r3-horizon"] .lm-bottom { transition: opacity 0.4s ease 2.6s; }
+
+/* 15 runout: TUAN fades, then PHOTOGRAPHY, while the line empties from the left and runs off to the right; then the paper */
+[data-motion="r3-runout"].lm-out .lm-mark { opacity: 1; transition: none; }
+[data-motion="r3-runout"].lm-out .lm-tuan { opacity: 0; transition: opacity 0.6s ease; }
+[data-motion="r3-runout"].lm-out .lm-ph { opacity: 0; transition: opacity 0.6s ease 0.25s; }
+[data-motion="r3-runout"].lm-out .lm-rule { transform-origin: right center; transform: scaleX(0); transition: transform 0.9s cubic-bezier(0.65, 0, 0.35, 1) 0.2s; }
+[data-motion="r3-runout"] .lm-top, [data-motion="r3-runout"] .lm-bottom { transition: opacity 0.9s ease 0.9s; }
+
+/* 16 through: while the name settles, the paper thins and the photograph shows faintly behind it; then it opens */
+[data-motion="r3-through"].lm-full:not(.lm-out) :is(.lm-top, .lm-bottom) { opacity: 0.92; transition: opacity 2s ease 0.6s; }
+
 @media (prefers-reduced-motion: reduce) {
   html.lm-in *, html.lm-out * { animation: none !important; }
   .lm-top, .lm-bottom, .lm-photo, .lm-tuan, .lm-ph, .lm-tuan span, .lm-ph span, .lm-rule { transition: opacity 0.4s ease !important; transform: none !important; }

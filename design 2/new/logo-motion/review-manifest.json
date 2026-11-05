@@ -26,6 +26,13 @@
         "en": "Second round: the line keeps loading, the rest changes",
         "zh": "第二輪：線照樣跑，其他地方換"
       }
+    },
+    {
+      "id": "round3",
+      "title": {
+        "en": "Third round: the line, TUAN first, then four ways to open",
+        "zh": "第三輪：先跑線、TUAN 先出來，四種打開的方式"
+      }
     }
   ],
   "items": [
@@ -171,6 +178,54 @@
       "desc": {
         "en": "As the line fills, the paper thins a little, so the photograph shows faintly behind the logo before it opens.",
         "zh": "線越跑越滿，紙也慢慢變薄一點，打開之前就隱約看得到後面的照片。"
+      }
+    },
+    {
+      "href": "r3-part.html",
+      "group": "round3",
+      "title": {
+        "en": "Then it parts, top first",
+        "zh": "再沿線分開，上面先"
+      },
+      "desc": {
+        "en": "Arrives as 7. Then the paper parts along the line: the top half with TUAN goes up first, the bottom half with PHOTOGRAPHY follows a beat later.",
+        "zh": "出現跟第 7 版一樣。接著紙沿著線分開：上半張帶著 TUAN 先往上走，下半張帶著 PHOTOGRAPHY 慢一拍往下。"
+      }
+    },
+    {
+      "href": "r3-horizon.html",
+      "group": "round3",
+      "title": {
+        "en": "Then the horizon",
+        "zh": "再變成地平線"
+      },
+      "desc": {
+        "en": "Arrives as 7. TUAN fades, then PHOTOGRAPHY; the line runs on to both edges of the screen and the photograph opens out of it.",
+        "zh": "出現跟第 7 版一樣。TUAN 先淡掉，PHOTOGRAPHY 再淡掉；線延伸到螢幕兩邊，照片從線裡打開。"
+      }
+    },
+    {
+      "href": "r3-runout.html",
+      "group": "round3",
+      "title": {
+        "en": "Then it runs out",
+        "zh": "再像計時器跑完"
+      },
+      "desc": {
+        "en": "Arrives as 7. TUAN fades, then PHOTOGRAPHY, while the line empties from the left and runs off to the right; then the paper fades.",
+        "zh": "出現跟第 7 版一樣。TUAN 先淡掉、PHOTOGRAPHY 再淡掉，同時線從左邊收、往右跑掉；紙再淡掉。"
+      }
+    },
+    {
+      "href": "r3-through.html",
+      "group": "round3",
+      "title": {
+        "en": "Then the photograph shows through",
+        "zh": "再讓照片透出來"
+      },
+      "desc": {
+        "en": "Arrives as 7. While the name settles, the paper thins and the photograph shows faintly behind it, then it opens.",
+        "zh": "出現跟第 7 版一樣。名字出來之後，紙慢慢變薄，隱約看到後面的照片，然後打開。"
       }
     }
   ],
