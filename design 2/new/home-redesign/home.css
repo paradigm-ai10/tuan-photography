@@ -1,0 +1,162 @@
+/* Home redesign, three directions (2026-11-05). His brief: sophisticated, elevated, never AI-made.
+   The home's job (PRODUCT.md): hold the visitor with the photographs, then show the way in; the craft
+   is in pacing, scale and sequence. All three open with the live loading screen (logo 1C, motion 21)
+   and then differ: A a short film (from Martha King), B prints gather (from Mathilde de Chiara),
+   C drawn, then real (from Belgrade Arbor). Built on design 1's tokens, fonts and base (style.css).
+   html.hr-loading while the opening plays; hr-full when the line is full; hr-out as it opens;
+   C adds hr-horizon (the line runs to both edges) and hr-draw (the drawing spreads from it). */
+:root {
+  --part: cubic-bezier(0.7, 0, 0.2, 1);
+  --mark: "Cormorant Garamond", Georgia, serif;
+}
+html[lang="en"] [lang="zh-Hant"], html[lang="zh-Hant"] [lang="en"] { display: none; }
+html.hr-loading { overflow: hidden; }
+body { display: block; }
+
+/* ---------------- the loading screen: the live one, logo 1C and motion 21 ---------------- */
+.hr-load { display: none; }
+html.hr-loading .hr-load { position: fixed; inset: 0; z-index: 20; display: block; cursor: pointer; }
+.hr-load__paper { position: absolute; inset: 0; background: var(--bg); transition: opacity 0.9s ease-in-out 0.4s; }
+.hr-load__mark { position: absolute; inset: 0; z-index: 2; display: grid; grid-template-columns: max-content; grid-template-rows: 1fr auto 1fr;
+  justify-content: center; color: var(--text); transition: opacity 0.6s ease; }
+.hr-load__name, .hr-load__sub { display: flex; line-height: 1; }
+.hr-load__name span, .hr-load__sub span { display: inline-block; }
+.hr-load__name { align-self: end; margin-bottom: clamp(0.6rem, 0.4rem + 0.6vw, 0.95rem);
+  font: 300 clamp(2.4rem, 0.9rem + 5.5vw, 5.5rem)/1 var(--mark); letter-spacing: 0.28em; }
+.hr-load__name span { opacity: 0; }
+.hr-load__name span:last-child { margin-right: -0.28em; }
+.hr-load__line { height: 1px; background: var(--text); transform-origin: left center; transform: scaleX(var(--p, 0)); }
+.hr-load__sub { align-self: start; justify-content: space-between; margin-top: clamp(0.55rem, 0.35rem + 0.5vw, 0.85rem);
+  font: 500 clamp(0.75rem, 0.6rem + 0.5vw, 1.05rem)/1 var(--mark); text-transform: uppercase; color: var(--text-2); opacity: 0; }
+html.hr-full .hr-load__name span { animation: hr-rise 0.9s var(--out) both; animation-delay: calc(var(--i, 0) * 110ms); }
+html.hr-full .hr-load__sub { animation: hr-fade 0.9s ease both 0.55s; }
+html.hr-out .hr-load { pointer-events: none; }
+html.hr-out .hr-load__mark, html.hr-out .hr-load__paper { opacity: 0; }
+@keyframes hr-rise { from { opacity: 0; transform: translateY(0.12em); } to { opacity: 1; transform: none; } }
+@keyframes hr-fade { from { opacity: 0; } to { opacity: 1; } }
+
+/* A: as the live page, the paper thins and the film behind is soft, then it comes into focus */
+[data-home="a"].hr-full:not(.hr-out) .hr-load__paper { opacity: 0.84; transition: opacity 2.4s ease 0.6s; }
+[data-home="a"] .hr-open video { transition: filter 2.2s var(--out), transform 2.6s var(--out); }
+[data-home="a"].hr-loading:not(.hr-out) .hr-open video { filter: blur(14px); transform: scale(1.06); }
+
+/* B: the prints fly in along the diagonal and settle in a row under the name; one grows into the opening */
+.hr-prints { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+.hr-print { position: absolute; overflow: hidden; background: var(--band); opacity: 0; }
+.hr-print img { width: 100%; height: 100%; object-fit: cover; }
+[data-home="b"].hr-out .hr-load__paper { opacity: 1; }
+
+/* C: the name goes, the line runs to both edges, the drawing spreads up and down from it, then turns real */
+@property --r { syntax: "<number>"; inherits: false; initial-value: 0; }
+.hr-load__sketch { display: none; }
+[data-home="c"] .hr-load__sketch { position: absolute; inset: 0; z-index: 1; display: block; width: 100%; height: 100%; object-fit: cover;
+  -webkit-mask-image: linear-gradient(to bottom, transparent calc(50% - var(--r) * 64%), #000 calc(50% - var(--r) * 50%), #000 calc(50% + var(--r) * 50%), transparent calc(50% + var(--r) * 64%));
+  mask-image: linear-gradient(to bottom, transparent calc(50% - var(--r) * 64%), #000 calc(50% - var(--r) * 50%), #000 calc(50% + var(--r) * 50%), transparent calc(50% + var(--r) * 64%)); }
+html.hr-horizon .hr-load__name, html.hr-horizon .hr-load__sub { opacity: 0; transition: opacity 0.6s ease; }
+html.hr-horizon .hr-load__line { transform-origin: center; transform: scaleX(var(--wide, 4)); transition: transform 1s var(--part) 0.25s; }
+html.hr-draw .hr-load__sketch { --r: 1; transition: --r 2.4s cubic-bezier(0.45, 0, 0.2, 1); }
+html.hr-draw .hr-load__line { opacity: 0; transition: transform 1s var(--part) 0.25s, opacity 1.4s ease 0.9s; }
+[data-home="c"].hr-out .hr-load__sketch { opacity: 0; transition: opacity 1.8s ease; }
+[data-home="c"].hr-out .hr-load__paper { transition: opacity 0.2s linear; }
+
+/* ---------------- the top: the logo small, the menu, the two languages ---------------- */
+.hr-top { position: absolute; z-index: 3; top: 0; left: 0; right: 0; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
+  gap: 1rem 2rem; padding: clamp(1.1rem, 2.4vw, 1.8rem) var(--edge); color: var(--paper); transition: opacity 0.9s ease 0.5s; }
+html.hr-loading:not(.hr-out) .hr-top { opacity: 0; }
+.hr-mark { display: inline-grid; color: inherit; text-decoration: none; }
+.hr-mark:hover { color: inherit; }
+.hr-mark__name { font: 300 1.4rem/1 var(--mark); letter-spacing: 0.28em; margin-right: -0.28em; }
+.hr-mark__line { height: 1px; margin: 0.4rem 0 0.35rem; background: currentColor; }
+.hr-mark__sub { display: flex; justify-content: space-between; font: 500 0.5rem/1 var(--mark); text-transform: uppercase; }
+.hr-menu { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem clamp(1rem, 2.4vw, 2.2rem); }
+.hr-menu a { color: inherit; text-decoration: none; }
+.hr-menu a:hover { color: inherit; text-decoration: underline; text-decoration-color: currentColor; }
+.hr-lang { display: flex; gap: 0.6rem; }
+.hr-lang button { padding: 0.3rem 0; border: 0; background: none; color: inherit; cursor: pointer; opacity: 0.6; }
+.hr-lang button[aria-pressed="true"] { opacity: 1; }
+
+/* ---------------- the opening: the film or the photograph, held while the page is drawn over it ---------------- */
+.hr-open { position: sticky; top: 0; z-index: 0; height: 100svh; min-height: 30rem; overflow: hidden; background: var(--slate); }
+.hr-open video, .hr-open > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.hr-open::before { content: ""; position: absolute; z-index: 1; top: 0; left: 0; right: 0; height: 12rem; pointer-events: none;
+  background: linear-gradient(to bottom, oklch(20% 0.02 60 / 0.42), oklch(20% 0.02 60 / 0)); }
+.hr-leaf { position: relative; z-index: 1; background: var(--bg); }
+
+/* ---------------- a sentence, alone on its screen ---------------- */
+.hr-say { display: grid; place-items: center; min-height: 70svh; padding: var(--s-6) var(--edge); text-align: center; }
+.hr-say p { max-width: 19ch; font-family: var(--serif); font-weight: 400; font-size: clamp(1.9rem, 1.1rem + 2.8vw, 3.6rem); line-height: 1.2; text-wrap: balance; }
+:lang(zh-Hant) .hr-say p { max-width: 14em; font-weight: 500; font-size: clamp(1.6rem, 1rem + 2.2vw, 2.9rem); line-height: 1.55; letter-spacing: 0.06em; }
+
+/* ---------------- photographs: bare, the name beneath ---------------- */
+.hr-fig { margin: 0; }
+.hr-fig a { display: block; text-decoration: none; }
+.hr-fig a:hover { color: inherit; }
+.hr-fig img { width: 100%; height: auto; }
+.hr-fig figcaption { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.15rem 0.9rem; margin-top: 0.9rem; }
+.hr-fig figcaption b { font-family: var(--serif); font-weight: 400; font-size: 1.05rem; line-height: 1.3; }
+:lang(zh-Hant) .hr-fig figcaption b { font-weight: 500; letter-spacing: 0.05em; }
+.hr-fig figcaption span { font-size: var(--t-xs); color: var(--text-2); }
+
+/* A: the sequence, sizes and places changing like pages of a printed book */
+.hr-seq { display: grid; gap: clamp(5rem, 12vw, 11rem); padding: 0 var(--edge) var(--s-6); }
+.hr-wide { justify-self: center; width: min(100%, 76rem); }
+.hr-right { justify-self: end; width: min(100%, 56rem); }
+.hr-bleed { margin-inline: calc(-1 * var(--edge)); }
+.hr-bleed figcaption { padding-inline: var(--edge); }
+.hr-pair { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); align-items: end; }
+.hr-pair > :first-child { grid-column: 2 / span 3; }
+.hr-pair > :last-child { grid-column: 6 / span 7; margin-bottom: clamp(4rem, 10vw, 9rem); }
+.hr-pair--flip > :first-child { grid-column: 1 / span 7; order: 2; margin-bottom: clamp(4rem, 10vw, 9rem); }
+.hr-pair--flip > :last-child { grid-column: 9 / span 3; order: 1; margin-bottom: 0; }
+.hr-pair--flip { grid-auto-flow: dense; }
+
+/* B: one column down the middle of the paper, a sentence now and then */
+.hr-col { display: grid; gap: clamp(4.5rem, 11vw, 9rem); width: min(100%, 44rem); margin-inline: auto; padding: var(--s-5) var(--edge) var(--s-6); }
+.hr-col .hr-tall { justify-self: center; width: min(100%, 27rem); }
+.hr-col .hr-say { min-height: 0; padding: var(--s-4) 0; }
+
+/* C: whole blocks of the earth colours, one thought on each, the photographs set into them */
+.hr-block { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); row-gap: var(--s-4); align-items: center;
+  padding: var(--s-6) var(--edge); background: var(--olive); color: var(--paper); }
+.hr-block--slate { background: var(--slate); }
+.hr-block p { grid-column: 1 / span 5; font-family: var(--serif); font-weight: 400; font-size: clamp(1.8rem, 1.1rem + 2.4vw, 3.2rem); line-height: 1.22; text-wrap: balance; }
+:lang(zh-Hant) .hr-block p { font-weight: 500; font-size: clamp(1.5rem, 1rem + 1.9vw, 2.6rem); line-height: 1.6; letter-spacing: 0.06em; }
+.hr-block .hr-fig figcaption span { color: color-mix(in oklch, var(--paper) 72%, transparent); }
+.hr-block .hr-fig:nth-child(2) { grid-column: 7 / span 3; align-self: start; }
+.hr-block .hr-fig:nth-child(3) { grid-column: 10 / span 3; align-self: end; margin-top: clamp(4rem, 12vw, 10rem); }
+.hr-block--slate .hr-fig:nth-child(2) { grid-column: 7 / span 6; align-self: center; margin-top: 0; }
+.hr-block ::selection { background: var(--paper); color: var(--text); }
+.hr-paper { display: grid; gap: clamp(5rem, 12vw, 11rem); padding: var(--s-6) var(--edge); }
+
+/* ---------------- the way in: three doors, words only ---------------- */
+.hr-doors { width: min(100%, 72rem); margin-inline: auto; padding: var(--s-5) var(--edge) var(--s-6); }
+.hr-door { position: relative; display: grid; grid-template-columns: 1fr auto; align-items: baseline; gap: 0.5rem 2rem;
+  padding: clamp(1.6rem, 3vw, 2.4rem) 0; border-top: 1px solid var(--line); color: var(--text); text-decoration: none; }
+.hr-doors li:last-child .hr-door { border-bottom: 1px solid var(--line); }
+.hr-door::after { content: ""; position: absolute; left: 0; right: 0; top: -1px; height: 1px; background: var(--text);
+  transform: scaleX(0); transform-origin: left center; transition: transform 0.9s var(--out); }
+.hr-door:hover::after, .hr-door:focus-visible::after { transform: scaleX(1); }
+.hr-door b { font-family: var(--serif); font-weight: 400; font-size: clamp(2rem, 1.2rem + 3vw, 4rem); line-height: 1.05; transition: color 300ms var(--out); }
+:lang(zh-Hant) .hr-door b { font-weight: 500; letter-spacing: 0.08em; }
+.hr-door:hover b, .hr-door:focus-visible b { color: var(--accent); }
+.hr-door span { max-width: 22rem; font-size: var(--t-s); color: var(--text-2); text-align: right; }
+
+/* ---------------- the foot: the logo small, Instagram ---------------- */
+.hr-foot { display: grid; justify-items: center; gap: 1.6rem; padding: var(--s-5) var(--edge) var(--s-3); border-top: 1px solid var(--line); color: var(--text); }
+.hr-foot small { font-size: var(--t-xs); color: var(--text-2); }
+
+/* things rise into place as they come into view */
+html.hr-js .hr-in { opacity: 0; transform: translateY(2rem); transition: opacity 1.2s var(--out), transform 1.4s var(--out); }
+html.hr-js .hr-in.is-in { opacity: 1; transform: none; }
+
+@media (max-width: 48rem) {
+  .hr-pair, .hr-block { grid-template-columns: minmax(0, 1fr); row-gap: var(--s-5); }
+  .hr-pair > *, .hr-pair--flip > *, .hr-block p, .hr-block .hr-fig:nth-child(n), .hr-block--slate .hr-fig:nth-child(2) { grid-column: 1; margin: 0; }
+  .hr-pair > :first-child, .hr-pair--flip > :last-child { width: 72%; }
+  .hr-pair--flip > :first-child { order: 0; }
+  .hr-door { grid-template-columns: 1fr; }
+  .hr-door span { text-align: left; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html.hr-js .hr-in { opacity: 1; transform: none; }
+}

@@ -1,0 +1,54 @@
+{
+  "name": "home-redesign",
+  "endpoint": "/__reviews/home-redesign",
+  "stills": "/__reviews/home-redesign/thumbs/",
+  "hub": "index.html",
+  "title": { "en": "Home page, three directions", "zh": "首頁：三個方向" },
+  "siteTitle": "tuan photography 陳亮元",
+  "intro": {
+    "en": "Three whole home pages, each from a site you liked, each opening with your TUAN loading screen. Scroll all the way down on each. The loading screen plays every time here (on the real site it plays once per visit); click or press any key to skip it, R to see it again. On a page, , and . move between versions, 1 to 5 scores, N opens your notes, M marks a spot, B comes back here. Compare side by side plays them together.",
+    "zh": "三個完整的首頁，各自來自一個你喜歡的網站，都用你的 TUAN 載入畫面開場。每一個都捲到最下面看看。這裡每次都會播載入畫面（正式網站每次來訪只播一次）；點一下或按任何鍵跳過，按 R 再看一次。在頁面上，逗號和句號鍵（, .）換版本，1 到 5 打分數，N 打開筆記，M 標記一個地方，B 回到這裡。「並排比較」可以一起播。"
+  },
+  "groups": [
+    { "id": "round1", "title": { "en": "First round: three directions", "zh": "第一輪：三個方向" } }
+  ],
+  "items": [
+    { "href": "a-film.html", "group": "round1",
+      "title": { "en": "A short film", "zh": "一段短片" },
+      "desc": { "en": "From Martha King. Your Barcelona clips as one 12-second film with nothing written on it, coming into focus as the logo opens. Then the page is drawn over it: one sentence on its own screen, photographs at changing sizes like pages of a printed book, a second sentence, three doors in words.", "zh": "來自 Martha King。你的巴賽隆納影片剪成一段 12 秒的短片，上面不寫字，標誌打開時慢慢對焦。接著頁面從上面蓋過來：一句話佔一整個畫面，照片大小和位置變化，像一本印刷的書，第二句話，最後是三個用字做的入口。" },
+      "still": { "wait": 1500 } },
+    { "href": "b-prints.html", "group": "round1",
+      "title": { "en": "Prints gather", "zh": "照片聚集" },
+      "desc": { "en": "From Mathilde de Chiara. After the logo, twenty-one of your photographs fly in along the diagonal and settle in a row under it; Aoraki grows from the row into the whole window. Then one column down the middle of the paper, a sentence now and then.", "zh": "來自 Mathilde de Chiara。標誌出來之後，你的二十一張照片沿著斜線飛進來，在標誌下面排成一排；Aoraki 從那一排長大到整個畫面。接著是紙中間的一條直欄照片，偶爾一句話。" },
+      "still": { "wait": 800 } },
+    { "href": "c-drawn.html", "group": "round1",
+      "title": { "en": "Drawn, then real", "zh": "先畫出來，再變成真的" },
+      "desc": { "en": "From Belgrade Arbor. The logo's line runs to both edges and becomes a horizon; a pencil drawing of the road to the Sagrada Família spreads up and down from it, then turns into your film. Then whole blocks of olive and slate, one thought on each with photographs set into it, and paper between.", "zh": "來自 Belgrade Arbor。標誌的那條線延伸到兩邊變成地平線，聖家堂前面那條路的鉛筆素描從線往上下展開，再變成你的影片。接著是整塊橄欖綠和石板藍，每一塊一句話、照片嵌在裡面，中間是紙。" },
+      "still": { "wait": 1500 } }
+  ],
+  "tags": [
+    { "id": "opening", "en": "The opening", "zh": "開場" },
+    { "id": "photos", "en": "The photographs", "zh": "照片" },
+    { "id": "words", "en": "The words", "zh": "文字" },
+    { "id": "rhythm", "en": "Pace and space", "zh": "節奏和留白" },
+    { "id": "doors", "en": "The way in", "zh": "入口" },
+    { "id": "film", "en": "The film", "zh": "影片" }
+  ],
+  "phrases": [
+    { "id": "elevated", "en": "Elevated", "zh": "有高級感" },
+    { "id": "ai", "en": "Looks AI-made", "zh": "有 AI 感" },
+    { "id": "too-long", "en": "Too long", "zh": "太長" },
+    { "id": "too-much", "en": "Too much", "zh": "太多了" },
+    { "id": "more", "en": "More of this", "zh": "多一點" },
+    { "id": "lovely", "en": "Lovely", "zh": "很美" }
+  ],
+  "theme": {
+    "--rv-paper": "oklch(96.6% 0.011 82)",
+    "--rv-ink": "oklch(25% 0.012 60)",
+    "--rv-mark": "oklch(46% 0.092 47)",
+    "--rv-hair": "oklch(84.5% 0.015 78)",
+    "--rv-label": "\"Geist\", \"Noto Sans TC\", sans-serif",
+    "--rv-name": "\"Playfair Display\", \"Noto Serif TC\", serif"
+  },
+  "words": {}
+}
