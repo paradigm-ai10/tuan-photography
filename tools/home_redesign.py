@@ -191,7 +191,12 @@ def build():
         f'<section class="hr-block hr-block--slate"><p class="hr-in">{both(*SAY2)}</p>{fig("golden-gate-fog", sizes="(max-width: 48rem) 92vw, 50vw")}</section>',
     ])
     (OUT / "c-drawn.html").write_text(page("c", "c-drawn", "Drawn, then real", "先畫出來，再變成真的", FILM, c, sketch), encoding="utf-8")
-    print("wrote a-film.html, b-prints.html, c-drawn.html")
+    # D, traced, then real: as C, the drawing traced line by line (media/road-lines.svg, made by
+    # tools/home_redesign_trace.py), then shaded, then the film
+    lines = (OUT / "media" / "road-lines.svg").read_text(encoding="utf-8")
+    traced = '\n  <img class="hr-load__sketch" src="media/road-sketch.jpg" alt="">\n  ' + lines
+    (OUT / "c-traced.html").write_text(page("d", "c-traced", "Traced, then real", "一筆一筆勾出來，再變成真的", FILM, c, traced), encoding="utf-8")
+    print("wrote a-film.html, b-prints.html, c-drawn.html, c-traced.html")
 
 
 if __name__ == "__main__":

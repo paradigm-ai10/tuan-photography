@@ -18,7 +18,7 @@ Word 版：雙擊專案資料夾裡的 `建置進度.command` 就會更新並打
 - 日期: 2026-11-05
 - 重點: 三個方向做好了（短片、照片聚集、先畫再變真），等你評分
 - 狀態: 等你決定
-- 說明: 你覺得現在的首頁普通，想要精緻、有高級感，而且絕對不能像 AI 做的。這次不先猜設計，順序是：一、從參考網站找出你說的「高級感」是什麼；二、老實檢討現在的首頁；三、用一句話定首頁的工作；四、才做三個方向給你評分。新的 TUAN 載入畫面會留著當入口。參考網站頁：http://localhost:8642/journey/new/home-elevated.html （六個新的、加上你上次喜歡的 Per Appelgren、Tommaso D'intino、Tengile，每個附兩張截圖，存在 ideas/reviews/home-elevated.json）。 11/5 你的筆記：Odyssée 的想法適合放在作品集；喜歡 Mathilde de Chiara 很多照片配標誌進場的開場、Belgrade Arbor（想用聖家堂前那條路的影片）、Martha King（一段短片）；A24 很酷但要想怎麼用；Per Appelgren 太時尚、Ondo 沒感覺。所以做了三個完整首頁：A 一段短片（你的四段巴賽隆納影片剪成 12 秒）、B 照片聚集（二十一張照片飛進來排在標誌下面，Aoraki 長大成整個畫面）、C 先畫出來再變成真的（標誌的線變地平線，聖家堂前那條路的鉛筆素描展開，再變成影片）。評分頁：http://localhost:8642/journey/new/home-redesign/ （存在 ideas/reviews/home-redesign.json）。現在的首頁沒動。
+- 說明: 你覺得現在的首頁普通，想要精緻、有高級感，而且絕對不能像 AI 做的。這次不先猜設計，順序是：一、從參考網站找出你說的「高級感」是什麼；二、老實檢討現在的首頁；三、用一句話定首頁的工作；四、才做三個方向給你評分。新的 TUAN 載入畫面會留著當入口。參考網站頁：http://localhost:8642/journey/new/home-elevated.html （六個新的、加上你上次喜歡的 Per Appelgren、Tommaso D'intino、Tengile，每個附兩張截圖，存在 ideas/reviews/home-elevated.json）。 11/5 你的筆記：Odyssée 的想法適合放在作品集；喜歡 Mathilde de Chiara 很多照片配標誌進場的開場、Belgrade Arbor（想用聖家堂前那條路的影片）、Martha King（一段短片）；A24 很酷但要想怎麼用；Per Appelgren 太時尚、Ondo 沒感覺。所以做了三個完整首頁：A 一段短片（你的四段巴賽隆納影片剪成 12 秒）、B 照片聚集（二十一張照片飛進來排在標誌下面，Aoraki 長大成整個畫面）、C 先畫出來再變成真的（標誌的線變地平線，聖家堂前那條路的鉛筆素描展開，再變成影片）。評分頁：http://localhost:8642/journey/new/home-redesign/ （存在 ideas/reviews/home-redesign.json）。你覺得 C 很酷，想要線條一筆一筆慢慢勾出來再呈現，所以加了第四版「一筆一筆勾出來，再變成真的」（評分頁第 4 個）：線變地平線之後，從塔開始往外一筆一筆畫出那條路，畫完再上鉛筆陰影，再變成影片。現在的首頁沒動。
 
 ### 設計五：全新網站，三個方向
 - 類型: 功能

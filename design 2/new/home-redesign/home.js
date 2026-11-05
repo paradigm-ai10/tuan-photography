@@ -1,6 +1,6 @@
 /* Home redesign, three directions (2026-11-05): the opening of each, the two languages, and the
    photographs rising into view. <html data-home> names the direction: a (a short film), b (prints
-   gather), c (drawn, then real). The loading screen is the live one (logo 1C, motion 21); here it
+   gather), c (drawn, then real), d (traced line by line, then real). The loading screen is the live one (logo 1C, motion 21); here it
    plays on every load so each version can be judged. A click or a key skips to the end; R plays it
    again; ?still shows the end at once (for the list page's pictures); "reduce motion" skips it. */
 (() => {
@@ -40,7 +40,7 @@
     if (done) return;
     done = true;
     if (screen) screen.remove();
-    html.classList.remove('hr-loading', 'hr-full', 'hr-out', 'hr-horizon', 'hr-draw');
+    html.classList.remove('hr-loading', 'hr-full', 'hr-out', 'hr-horizon', 'hr-draw', 'hr-trace', 'hr-shade');
     if (video) video.play().catch(() => {});
   }
   document.addEventListener('keydown', (e) => {
@@ -56,7 +56,7 @@
   document.fonts.load('300 1em "Cormorant Garamond"').then(() => { face = true; }, () => { face = true; });
   const seen = (img) => !img || (img.complete && img.naturalWidth > 0);
   const media = () => (HOME === 'a' ? !video || video.readyState >= 3
-    : HOME === 'c' ? seen(sketch) && (!video || video.readyState >= 2)
+    : HOME === 'c' || HOME === 'd' ? seen(sketch) && (!video || video.readyState >= 2)
     : seen(cover));
   function fill() {
     return new Promise((res) => {
@@ -95,6 +95,25 @@
     await wait(1100); if (done) return;
     html.classList.add('hr-draw');
     await wait(3100); if (done) return;
+    if (video) { video.currentTime = 0; video.play().catch(() => {}); }
+    html.classList.add('hr-out');
+    await wait(1900);
+    finish();
+  }
+
+  // D: the name goes, the line runs to both edges, then the drawing is traced from the towers outward,
+  // shaded in pencil under the lines, and the film begins
+  async function openD() {
+    await fill();
+    await wait(1300); if (done) return;
+    const line = screen.querySelector('.hr-load__line');
+    screen.style.setProperty('--wide', (innerWidth / Math.max(1, line.offsetWidth) * 1.02).toFixed(3));
+    html.classList.add('hr-horizon');
+    await wait(1000); if (done) return;
+    html.classList.add('hr-trace');
+    await wait(5000); if (done) return;
+    html.classList.add('hr-shade');
+    await wait(2000); if (done) return;
     if (video) { video.currentTime = 0; video.play().catch(() => {}); }
     html.classList.add('hr-out');
     await wait(1900);
@@ -150,5 +169,5 @@
     finish();
   }
 
-  ({ a: openA, b: openB, c: openC })[HOME]();
+  ({ a: openA, b: openB, c: openC, d: openD })[HOME]();
 })();
