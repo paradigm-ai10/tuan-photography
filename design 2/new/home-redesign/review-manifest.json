@@ -208,6 +208,21 @@
       "still": {
         "wait": 2500
       }
+    },
+    {
+      "href": "l-current-words.html",
+      "group": "round3",
+      "title": {
+        "en": "Your current home and the three words",
+        "zh": "現在的首頁加三個字"
+      },
+      "desc": {
+        "en": "Your ask: the three words merged with your current home. E's opening, then your live home page's own sections exactly as they are now (the line and its two buttons, the aurora, the Photographs wall with its viewer, Fuji, the Guides cards), then its last photograph, the Matterhorn and the flag, fills the screen with GALLERY, JOURNEY, GUIDES beneath it, and your Instagram footer closes it. The sections are read from the live page each time it is built, so they stay current.",
+        "zh": "照你說的：三個字和現在的首頁合在一起。E 的開場之後，接上現在正式首頁的內容，原封不動（那句話和兩個按鈕、極光、照片牆和點開的看圖、富士山、攻略卡片），最後那張馬特洪峰和國旗撐滿畫面，下面是作品集、旅程、攻略三個大字，再接你的 Instagram 頁尾。這些內容每次建置都從正式首頁讀進來，所以會跟著更新。"
+      },
+      "still": {
+        "wait": 2500
+      }
     }
   ],
   "tags": [
@@ -287,7 +302,8 @@
     "ids": [
       "i-beside",
       "j-windows",
-      "k-three-words"
+      "k-three-words",
+      "l-current-words"
     ],
     "question": {
       "en": "Which of these three should the rest of the home page be? Give each a score.",

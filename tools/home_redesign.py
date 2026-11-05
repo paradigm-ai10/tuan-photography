@@ -150,7 +150,7 @@ def sketched(sid, cls="", sizes="(max-width: 48rem) 92vw, 60vw"):
             f'<img class="hr-sk__pencil" src="media/sketch/{sid}.jpg" alt="" loading="lazy" decoding="async"></a>{caption(sid)}</figure>')
 
 
-def page(home, name, title_en, title_zh, opening, body, extra="", attrs="", way=None):
+def page(home, name, title_en, title_zh, opening, body, extra="", attrs="", way=None, foot_html=None, scripts=""):
     return f"""<!doctype html>
 <html lang="en" data-home="{home}"{attrs}>
 <head>
@@ -170,11 +170,11 @@ def page(home, name, title_en, title_zh, opening, body, extra="", attrs="", way=
 <div class="hr-leaf">
 {body}
 {doors() if way is None else way}
-{foot()}
+{foot() if foot_html is None else foot_html}
 </div>
 </main>
 <script src="home.js"></script>
-<link rel="stylesheet" href="review-kit/bar.css">
+{scripts}<link rel="stylesheet" href="review-kit/bar.css">
 <script src="review-kit/words.js"></script>
 <script src="review-kit/store.js"></script>
 <script src="review-kit/bar.js" data-name="home-redesign"></script>
@@ -382,8 +382,36 @@ def build():
         "</div>",
     ])
     (OUT / "k-three-words.html").write_text(page("d", "k-three-words", "Three words", "三個字", film_e, k_body, counted, rest("k"), words(SITE["lead"])), encoding="utf-8")
+    # L, his current home and the three words (his ask, 2026-11-06: "merging the three words and my current
+    # ones"): E's opening, then the live home page's own sections as design 1 builds them (the line and its
+    # two buttons, the aurora, the Photographs wall, Fuji, the Guides cards), read from design 1/index.html
+    # at build time so they stay current; its last photograph, the Matterhorn and the flag, becomes the
+    # three-words screen; the live footer with Instagram closes it. design 1's main.js runs the wall's viewer
+    # and the Guides cards (data-root points it at design 1's folders).
+    import re
+    live = (ROOT / "design 1" / "index.html").read_text(encoding="utf-8")
+    leaf = live.split('<div class="leaf">', 1)[1].split("</main>", 1)[0]
+    leaf = leaf[: leaf.rfind("</div>")]                                          # the leaf's own closing tag
+    leaf = re.sub(r'\n<figure class="window"><a href="gallery.html#s-matterhorn-flag".*?</figure>', "", leaf, flags=re.S)
+    live_foot = re.search(r'<footer class="foot">.*?</footer>', live, re.S).group(0)
+
+    def rel(html):
+        """design 1's addresses, which are relative to design 1/, as seen from design 2/new/home-redesign/."""
+        keep = ("http", "#", "/", "mailto:", "data:", "../", "javascript:")
+        fix = lambda u: u if u.startswith(keep) else PAGES + u
+        html = re.sub(r'\b(href|src)="([^"]*)"', lambda m: f'{m.group(1)}="{fix(m.group(2))}"', html)
+        html = re.sub(r'\bsrcset="([^"]*)"', lambda m: 'srcset="' + ", ".join(fix(part.strip()) for part in m.group(1).split(",")) + '"', html)
+        html = re.sub(r'"srcset":\s*"([^"]*)"', lambda m: '"srcset":"' + ", ".join(fix(part.strip()) for part in m.group(1).split(",")) + '"', html)
+        return re.sub(r'"href":\s*"([^"]*)"', lambda m: f'"href":"{fix(m.group(1))}"', html)
+
+    data = rel("\n".join(re.findall(r'<script type="application/json" id="slides-data">.*?</script>|<script>\nwindow\.pageI18n = .*?</script>', live, re.S)))
+    l_body = rel(leaf)
+    (OUT / "l-current-words.html").write_text(page(
+        "d", "l-current-words", "Your current home and the three words", "現在的首頁加三個字", film_e, l_body, counted,
+        rest("l") + f' data-root="{PAGES}"', words("matterhorn-flag"), rel(live_foot),
+        data + f'\n<script src="{PAGES}js/main.js"></script>\n'), encoding="utf-8")
     print("wrote a-film.html, b-prints.html, c-drawn.html, c-traced.html, c-counted.html, f-drawn-down.html, g-pile.html, h-journal.html,",
-          "i-beside.html, j-windows.html, k-three-words.html")
+          "i-beside.html, j-windows.html, k-three-words.html, l-current-words.html")
 
 
 if __name__ == "__main__":

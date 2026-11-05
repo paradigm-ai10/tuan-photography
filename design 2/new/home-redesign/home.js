@@ -21,7 +21,10 @@
   let saved = 'en';
   try { saved = localStorage.getItem('tlap-lang') || 'en'; } catch (e) { /* private window */ }
   setLang(saved);
-  words.forEach((b) => b.addEventListener('click', () => setLang(b.dataset.lang)));
+  words.forEach((b) => b.addEventListener('click', () => {
+    setLang(b.dataset.lang);
+    if (typeof window.setLang === 'function') window.setLang(b.dataset.lang);   // L: the live sections' own words
+  }));
 
   // photographs and sentences rise into place as they come into view
   html.classList.add('hr-js');
