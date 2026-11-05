@@ -1,7 +1,7 @@
 /* Version Review kit: the hub, a contact sheet of every version.
 
    <script src="review-kit/hub.js" data-manifest="review-manifest.json" data-mount="#main"></script>
-   (after words.js and store.js; compare.js beside it for ?compare=a,b)
+   (after words.js and store.js; compare.js beside it for ?compare=a,b,c)
 
    Each version is a card: its still (made by review_thumbs.py; a numbered paper block until then),
    his marks as dots on it, the score as five squares he can press here, the count of marks, the
@@ -23,7 +23,8 @@
   const typing = (el) => el && el.closest && el.closest('input, textarea, select, [contenteditable=""], [contenteditable="true"]');
 
   let M = null, R = null, list = [], stills = {}, mount = null;
-  const ui = { filter: 0, sort: 0, scroll: 0, earlier: false, keeps: false, by: null, picking: null, open: {} };
+  const ui = { filter: 0, sort: 0, scroll: 0, earlier: false, keeps: false, by: null, picked: null, open: {} };
+  const MAXPICK = () => (window.ReviewCompare && window.ReviewCompare.MAX) || 6;
   const KEY = () => `rv-hub-${M.name}`;
   function remember() {
     try { localStorage.setItem(KEY(), JSON.stringify({ filter: ui.filter, sort: ui.sort, scroll: Math.round(scrollY), earlier: ui.earlier })); } catch (e) { /* storage blocked */ }
@@ -95,7 +96,7 @@
     const it = itemOf(v.id), s = it.stars || 0, ms = R.marksOf(v.id), title = pick(v.title), src = stillUrl(v.id);
     const dots = ms.filter((m) => m.where).map((m) => `<span class="rvh-pin${m.kind ? ` is-${m.kind}` : ''}" style="--x: ${(+m.where.x).toFixed(4)}; --y: ${(+m.where.y).toFixed(4)}"></span>`).join('');
     const last = lastWords(v.id);
-    const picked = ui.picking === v.id;
+    const picked = !!ui.picked && ui.picked.includes(v.id);
     return `<article class="rvh-card${liked(v.id) ? ' is-liked' : ''}${away(v.id) ? ' is-low' : ''}${picked ? ' is-picked' : ''}" id="v-${esc(v.id)}" data-id="${esc(v.id)}">
       <a class="rvh-still" href="${esc(v.href)}" tabindex="-1" aria-hidden="true">
         ${src ? `<img src="${esc(src)}" alt="" loading="lazy" decoding="async" width="960" height="600">` : `<span class="rvh-blank"><span>${v.n}</span><small>${esc(t('noStill'))}</small></span>`}
@@ -115,7 +116,7 @@
         <p class="rvh-acts">
           <a class="rvh-w" href="${esc(v.href)}">${esc(t('open'))}</a>
           <button type="button" class="rvh-w" data-h="what" aria-expanded="${!!ui.open[v.id]}">${esc(ui.open[v.id] ? t('less') : t('what'))}</button>
-          <button type="button" class="rvh-w${picked ? ' is-on' : ''}" data-h="cmp">${esc(picked ? t('pickCancel') : t('compare'))}</button>
+          <button type="button" class="rvh-w${picked ? ' is-on' : ''}" data-h="cmp"${ui.picked ? ` aria-pressed="${picked}"` : ''}>${esc(ui.picked ? (picked ? t('chosen') : t('choose')) : t('compare'))}</button>
         </p>
         ${ui.open[v.id] ? `<p class="rvh-desc">${esc(pick(v.desc))}</p>` : ''}
       </div>
@@ -170,11 +171,13 @@
         <span class="rvh-tg" role="group" aria-label="${esc(t('filterLabel'))}">${filters.map((f, i) => `<button type="button" class="rvh-w" data-h="filter" data-i="${i}" aria-pressed="${!ui.by && ui.filter === i}">${esc(f)}</button>`).join('')}</span>
         <span class="rvh-tg" role="group" aria-label="${esc(t('sortLabel'))}">${sorts.map((f, i) => `<button type="button" class="rvh-w" data-h="sort" data-i="${i}" aria-pressed="${ui.sort === i}">${esc(f)}</button>`).join('')}</span>
         <span class="rvh-tg">
-          <button type="button" class="rvh-w" data-h="pick" aria-pressed="${!!ui.picking || ui.picking === ''}">${esc(t('compareTwo'))}</button>
+          <button type="button" class="rvh-w" data-h="pick" aria-pressed="${!!ui.picked}">${esc(t('compareSome'))}</button>
           <button type="button" class="rvh-w" data-h="keeps" aria-expanded="${ui.keeps}">${esc(t('keeps'))}</button>
         </span>
       </div>
-      ${ui.picking != null ? `<p class="rvh-banner">${esc(ui.picking ? t('pickOne') : t('pickTwo'))} <button type="button" class="rvh-w" data-h="unpick">${esc(t('pickCancel'))}</button></p>` : ''}
+      ${ui.picked ? `<p class="rvh-banner is-pick">${esc(ui.picked.length ? t('pickedList', { list: ui.picked.map((id) => { const x = list.find((y) => y.id === id); return x ? x.n : id; }).join(', ') }) : t('pickSome'))}${ui.picked.length >= MAXPICK() ? ` <span class="rvh-quiet">${esc(t('pickMax'))}</span>` : ''}
+        ${ui.picked.length >= 2 ? `<button type="button" class="rvh-go" data-h="sbs">${esc(t('showSide', { n: ui.picked.length }))}</button>` : ''}
+        <button type="button" class="rvh-w" data-h="unpick">${esc(t('pickCancel'))}</button></p>` : ''}
       ${ui.by ? `<p class="rvh-banner">${esc(ui.byLabel || '')} <button type="button" class="rvh-w" data-h="clear">${esc(t('clearFilter'))}</button></p>` : ''}
       ${ui.keeps ? `<div class="rvh-keeps">${say.length ? ['like', 'change', ''].map((kind) => {
           const rows = say.filter((x) => x.kind === kind);
@@ -230,8 +233,18 @@
   }
 
   // ---- what he does ------------------------------------------------------------------------------
+  function choose(id) {
+    const i = ui.picked.indexOf(id);
+    if (i >= 0) ui.picked.splice(i, 1);
+    else if (ui.picked.length < MAXPICK()) ui.picked.push(id);
+    redraw();
+  }
+
   document.addEventListener('click', (e) => {
     if (!mount || !mount.contains(e.target)) return;
+    // while choosing, a tap on a picture chooses it instead of opening it
+    const still = ui.picked && e.target.closest('.rvh-card .rvh-still');
+    if (still) { e.preventDefault(); choose(still.closest('.rvh-card').dataset.id); return; }
     const b = e.target.closest('[data-h]');
     if (!b) return;
     const k = b.dataset.h, c = b.closest('.rvh-card'), id = c && c.dataset.id;
@@ -240,17 +253,17 @@
     else if (k === 'sort') { ui.sort = +b.dataset.i; remember(); redraw(); }
     else if (k === 'what') { ui.open[id] = !ui.open[id]; redraw(); }
     else if (k === 'keeps') { ui.keeps = !ui.keeps; redraw(); }
-    else if (k === 'pick') { ui.picking = ui.picking == null ? '' : null; redraw(); }
-    else if (k === 'unpick') { ui.picking = null; redraw(); }
+    else if (k === 'pick') { ui.picked = ui.picked ? null : []; redraw(); }
+    else if (k === 'unpick') { ui.picked = null; redraw(); }
+    else if (k === 'sbs') { location.href = `${location.pathname}?compare=${ui.picked.map(encodeURIComponent).join(',')}`; }
     else if (k === 'clear') { ui.by = null; redraw(); }
     else if (k === 'by') {
       const x = (ui._say || [])[+b.dataset.i];
       if (x) { ui.by = x.ids; ui.byLabel = sayingText(x); redraw(); scrollTo({ top: 0, behavior: 'instant' }); }
     }
     else if (k === 'cmp') {
-      if (ui.picking === id) { ui.picking = null; redraw(); }
-      else if (ui.picking) { location.href = `${location.pathname}?compare=${encodeURIComponent(ui.picking)},${encodeURIComponent(id)}`; }
-      else { ui.picking = id; redraw(); }
+      if (!ui.picked) { ui.picked = [id]; redraw(); }
+      else choose(id);
     }
   });
   document.addEventListener('toggle', (e) => {
@@ -263,7 +276,7 @@
   });
   document.addEventListener('keydown', (e) => {
     if (e.metaKey || e.ctrlKey || e.altKey || typing(e.target) || /[?&]compare=/.test(location.search)) return;
-    if (e.key === 'Escape' && (ui.by || ui.filter || ui.picking != null)) { ui.by = null; ui.filter = 0; ui.picking = null; remember(); redraw(); }
+    if (e.key === 'Escape' && (ui.by || ui.filter || ui.picked)) { ui.by = null; ui.filter = 0; ui.picked = null; remember(); redraw(); }
     if (e.key === '?') { const q = document.createElement('p'); q.className = 'rvh-keys'; q.textContent = t('keysHub'); document.body.appendChild(q); setTimeout(() => q.remove(), 4000); }
   });
   let scrollT = 0;
@@ -285,6 +298,9 @@
       window.Review = window.Review || R;
       list = window.ReviewStore.ordered(m);
       list.forEach((v) => R.name(v.id, RW.pick('en', v.title)));
+      // ?pick=a,b: back from side by side to choose one more, with those already chosen
+      const pk = new URLSearchParams(location.search).get('pick');
+      if (pk != null) ui.picked = pk.split(',').filter((id) => list.some((v) => v.id === id)).slice(0, MAXPICK());
       try { const k = JSON.parse(localStorage.getItem(KEY())) || {}; ui.filter = k.filter | 0; ui.sort = k.sort | 0; ui.scroll = k.scroll | 0; ui.earlier = !!k.earlier; } catch (e) { /* storage blocked */ }
       const thumbs = m.stills ? fetch(`${m.stills}thumbs.json`, { cache: 'no-store' }).then((r) => (r.ok ? r.json() : {})).catch(() => ({})) : Promise.resolve({});
       return Promise.all([thumbs, R.pull()]);
