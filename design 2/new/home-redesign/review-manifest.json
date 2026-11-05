@@ -40,6 +40,13 @@
         "en": "Fourth round: bold makeovers of 12, with the Queensboro train",
         "zh": "第四輪：大膽改造第 12 個，主角是皇后區那張列車"
       }
+    },
+    {
+      "id": "round5",
+      "title": {
+        "en": "Fifth round: the live site's layering, taken further",
+        "zh": "第五輪：把正式網站的層疊捲動做得更多"
+      }
     }
   ],
   "items": [
@@ -184,7 +191,8 @@
       },
       "still": {
         "wait": 2500
-      }
+      },
+      "out": true
     },
     {
       "href": "j-windows.html",
@@ -199,7 +207,8 @@
       },
       "still": {
         "wait": 2500
-      }
+      },
+      "out": true
     },
     {
       "href": "k-three-words.html",
@@ -214,7 +223,8 @@
       },
       "still": {
         "wait": 2500
-      }
+      },
+      "out": true
     },
     {
       "href": "l-current-words.html",
@@ -244,7 +254,8 @@
       },
       "still": {
         "wait": 2500
-      }
+      },
+      "out": true
     },
     {
       "href": "n-covers.html",
@@ -259,7 +270,8 @@
       },
       "still": {
         "wait": 2500
-      }
+      },
+      "out": true
     },
     {
       "href": "o-light-table.html",
@@ -274,7 +286,8 @@
       },
       "still": {
         "wait": 2500
-      }
+      },
+      "out": true
     },
     {
       "href": "p-split.html",
@@ -289,7 +302,8 @@
       },
       "still": {
         "wait": 2500
-      }
+      },
+      "out": true
     },
     {
       "href": "q-doors-first.html",
@@ -301,6 +315,52 @@
       "desc": {
         "en": "Straight after the film, the way in: three tall windows with the three words large beneath them, the Milky Way for Gallery, the Queensboro train for Journey, the Sagrada Família for Guides. Then your picks at changing sizes, and one last line.",
         "zh": "影片一結束就是入口：三扇直的窗，下面是三個大字，銀河是作品集，皇后區列車是旅程，聖家堂是攻略。接著是你的精選照片大小交錯，最後一句話。"
+      },
+      "still": {
+        "wait": 2500
+      },
+      "out": true
+    },
+    {
+      "href": "r-windows.html",
+      "group": "round5",
+      "title": {
+        "en": "Windows in the paper",
+        "zh": "紙上的窗"
+      },
+      "desc": {
+        "en": "The live site's windows (a hole cut in the page, the photograph fixed behind it, drifting slowly as you pass) in more shapes: the Queensboro train fills a whole screen, the Milky Way shows through a tall hole framed by paper, Mount Fuji through two holes side by side onto one photograph, rows of your picks between. The three words sit under Roys Peak, itself a window.",
+        "zh": "正式網站的「窗」（頁面上挖一個洞，照片固定在後面，捲動時慢慢飄）做成更多形狀：皇后區列車撐滿一整個畫面，銀河從一個被紙框住的直窗看出去，富士山從並排的兩個洞看到同一張照片，中間是你的精選照片。三個大字在羅伊峰下面，那張也是一扇窗。"
+      },
+      "still": {
+        "wait": 2500
+      }
+    },
+    {
+      "href": "s-prints-over.html",
+      "group": "round5",
+      "title": {
+        "en": "Prints over a photograph",
+        "zh": "照片上飄過的照片"
+      },
+      "desc": {
+        "en": "One photograph holds the whole screen while your prints float up over it, some faster than others: first the Queensboro train behind Matterhorn, Sa Pa, Fuji and the church at Tekapo; then the aurora behind Roys Peak, the Calanque, the Golden Gate and the Milky Way. Then the three words under the Matterhorn.",
+        "zh": "一張照片撐住整個畫面，你的照片一張張從上面飄過，有快有慢：先是皇后區列車在後面，飄過馬特洪峰、沙壩、富士山、蒂卡波的教堂；再換極光在後面，飄過羅伊峰、昂沃峽灣、金門大橋、銀河。最後是馬特洪峰下的三個大字。"
+      },
+      "still": {
+        "wait": 2500
+      }
+    },
+    {
+      "href": "u-layered.html",
+      "group": "round5",
+      "title": {
+        "en": "12, layered more",
+        "zh": "第 12 個，多幾層"
+      },
+      "desc": {
+        "en": "Version 12 with more layers: your live line and buttons, then the Queensboro train as a full window, the photo wall with your picks, Mount Fuji with the bullet train through two holes, your Guides cards, the Tekapo church through a framed hole, and the three words under the Matterhorn and the flag, now a window too. Your Instagram footer closes it.",
+        "zh": "第 12 個多加幾層：正式首頁那句話和按鈕，接著皇后區列車一整扇窗，照片牆換成你的精選，富士山和新幹線從兩個洞看，攻略卡片，蒂卡波的教堂從一個被紙框住的洞看，最後是馬特洪峰和國旗下的三個大字，那張現在也是一扇窗，再接 Instagram 頁尾。"
       },
       "still": {
         "wait": 2500
@@ -382,15 +442,13 @@
   "words": {},
   "ask": {
     "ids": [
-      "m-chapters",
-      "n-covers",
-      "o-light-table",
-      "p-split",
-      "q-doors-first"
+      "r-windows",
+      "s-prints-over",
+      "u-layered"
     ],
     "question": {
-      "en": "Five bold makeovers of 12. Give each a score; say which parts to keep.",
-      "zh": "第 12 個的五個大膽改造。每個打分數，告訴我哪些部分要留。"
+      "en": "Three ways to push the layering further. Give each a score.",
+      "zh": "三種把層疊做得更多的方式，每個打個分數。"
     }
   }
 }

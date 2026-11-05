@@ -460,3 +460,63 @@ html.hr-js .hr-qdoor.hr-in { transition-delay: calc(var(--i, 0) * 70ms); }
   html.hr-js .hr-cover__w { opacity: 1; transform: none; }
   .hr-split__img, .hr-lt__big { transition: none; }
 }
+
+/* ================= Round five (2026-11-06): the live site's layering, taken further ================= */
+/* design 1's .window (style.css) is a hole cut in the paper, its photograph fixed behind and drifting
+   (main.js sets --drift). These add shapes of hole; nothing here moves the photograph itself. */
+.hr-win--low img { object-position: center 72%; }
+.hr-hole { width: min(100% - 2 * var(--edge), 64rem); margin: var(--s-6) auto; }
+.hr-hole .window { height: 74svh; min-height: 0; max-height: none; }
+.hr-hole .window::after { display: none; }
+.hr-hole--tall { width: min(100% - 2 * var(--edge), 34rem); }
+.hr-hole--tall .window { height: 88svh; }
+.hr-twin { width: min(100% - 2 * var(--edge), 84rem); }
+.hr-twin__pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1rem, 3vw, 3rem); }
+.hr-twin .window { height: 70svh; }
+.hr-hole__cap { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.15rem 0.9rem; margin: 0.9rem 0 0; }
+.hr-hole__cap b { font-family: var(--serif); font-weight: 400; font-size: 1.05rem; }
+:lang(zh-Hant) .hr-hole__cap b { font-weight: 500; letter-spacing: 0.05em; }
+.hr-hole__cap span { font-size: var(--t-xs); color: var(--text-2); }
+
+/* the three words under a photograph that is itself a window */
+.hr-words--win .hr-words__win { height: auto; min-height: 0; max-height: none; margin: 0; }
+.hr-words--win .hr-words__win::after { display: none; }
+
+/* S: a photograph holds the screen while prints float up over it, at two speeds */
+.hr-float { position: relative; }
+.hr-float__back { position: sticky; top: 0; z-index: 0; height: 100svh; overflow: hidden; background: var(--slate); }
+.hr-float__back img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.hr-float__back--low img { object-position: center 72%; }
+.hr-float__prints { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); row-gap: 34svh;
+  margin-top: -100svh; padding: 92svh var(--edge) 64svh; }
+.hr-print3 { margin: 0; padding: 0.55rem 0.55rem 0; background: var(--paper); color: var(--text); }
+.hr-print3 a { display: block; }
+.hr-print3 img { display: block; width: 100%; height: auto; }
+.hr-print3 figcaption { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.1rem 0.8rem; padding: 0.6rem 0.15rem 0.75rem; }
+.hr-print3 figcaption b { font-family: var(--serif); font-weight: 400; font-size: 0.98rem; }
+:lang(zh-Hant) .hr-print3 figcaption b { font-weight: 500; letter-spacing: 0.05em; }
+.hr-print3 figcaption span { font-size: var(--t-xs); color: var(--text-2); }
+.hr-print3--l { grid-column: 2 / span 5; }
+.hr-print3--r { grid-column: 7 / span 5; }
+.hr-print3--l.hr-print3--tall { grid-column: 3 / span 3; }
+.hr-print3--r.hr-print3--tall { grid-column: 8 / span 3; }
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .hr-print3--fast { animation: hr-drift-fast linear both; animation-timeline: view(); }
+    .hr-print3--slow { animation: hr-drift-slow linear both; animation-timeline: view(); }
+  }
+}
+@keyframes hr-drift-fast { from { transform: translateY(22vh); } to { transform: translateY(-22vh); } }
+@keyframes hr-drift-slow { from { transform: translateY(6vh); } to { transform: translateY(-6vh); } }
+
+@media (max-width: 48rem) {
+  .hr-hole, .hr-hole--tall, .hr-twin { width: calc(100% - 2 * var(--edge)); }
+  .hr-twin__pair { grid-template-columns: minmax(0, 1fr); }
+  .hr-twin .window { height: 46svh; }
+  .hr-float__prints { row-gap: 26svh; }
+  .hr-print3--l, .hr-print3--r, .hr-print3--l.hr-print3--tall, .hr-print3--r.hr-print3--tall { grid-column: 1 / -1; width: 82%; }
+  .hr-print3--r { justify-self: end; }
+}
+/* the window above the three words fills only the top of the screen, so show the lower part of its photograph */
+.hr-words--win .hr-words__win img { object-position: center 85%; }
+.hr-float__back--low img { object-position: center 64%; }

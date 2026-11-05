@@ -510,7 +510,100 @@ def build():
     q_end = say(*SAY2)
     (OUT / "q-doors-first.html").write_text(page("d", "q-doors-first", "The way in first", "入口先來", film_e, q_body, counted,
         rest4("q"), q_end, foot_l, live_js), encoding="utf-8")
-    print("wrote a to l, and m-chapters.html, n-covers.html, o-light-table.html, p-split.html, q-doors-first.html")
+    # Round five (his word, 2026-11-06: "none of them really catch my eyes, i like the layering scrolling
+    # effects on the original site"). The live site's layering: the page is paper drawn over photographs
+    # that stay where they are; a .window is a hole cut in the paper with its photograph fixed to the screen,
+    # drifting slowly (design 1's main.js sets --drift). Three ways to take that further, his picks and the
+    # Queensboro train throughout.
+    def win(sid, cls=""):
+        """design 1's window: a hole in the page, the photograph fixed behind it, its place on it as live."""
+        x = SLIDES[sid]
+        return (f'<figure class="window {cls}"><a href="{PAGES}gallery.html#s-{sid}" data-slide="{sid}" aria-label="{e(x["place"]["en"])}">'
+                f'{img(sid, "100vw")}</a><figcaption><b>{both(*name(sid))}</b>'
+                f'<span>{both(e(x["where"]["en"]), e(x["where"]["zh"]))}</span></figcaption></figure>')
+
+    def hole(sid, cls=""):
+        """A smaller hole cut in the paper, framed by it, the photograph fixed behind; its name on the paper below."""
+        return (f'<div class="hr-hole {cls}"><figure class="window hr-hole__win"><a href="{PAGES}gallery.html#s-{sid}" data-slide="{sid}" '
+                f'aria-label="{e(SLIDES[sid]["place"]["en"])}">{img(sid, "100vw")}</a></figure>'
+                f'<p class="hr-hole__cap"><b>{both(*name(sid))}</b><span>{both(*where_when(sid))}</span></p></div>')
+
+    def twin(sid):
+        """Two holes side by side onto one photograph fixed behind them."""
+        one = (f'<figure class="window hr-hole__win"><a href="{PAGES}gallery.html#s-{sid}" data-slide="{sid}" '
+               f'aria-label="{e(SLIDES[sid]["place"]["en"])}">{img(sid, "100vw")}</a></figure>')
+        return (f'<div class="hr-hole hr-twin"><div class="hr-twin__pair">{one}{one.replace(" data-slide", " tabindex=" + chr(34) + "-1" + chr(34) + " data-slide")}</div>'
+                f'<p class="hr-hole__cap"><b>{both(*name(sid))}</b><span>{both(*where_when(sid))}</span></p></div>')
+
+    def wall(rows):
+        """design 1's photo wall (rows keep each photograph's shape), with his picks and both languages."""
+        out = '<div class="wall">'
+        for row in rows:
+            out += '<div class="wall__row">'
+            for sid in row:
+                x = SLIDES[sid]
+                out += (f'<figure class="piece" style="--ar: {x["w"] / x["h"]:.4f}"><a href="{PAGES}gallery.html#s-{sid}" data-slide="{sid}" aria-label="{e(x["place"]["en"])}">'
+                        f'{img(sid, "(max-width: 40rem) 92vw, 45vw")}</a><figcaption><b>{both(*name(sid))}</b>'
+                        f'<span>{both(e(x["where"]["en"]), e(x["where"]["zh"]))}</span></figcaption></figure>')
+            out += "</div>"
+        return out + "</div>"
+
+    def words_win(sid):
+        """The three words under a photograph that is itself a window, fixed behind the page."""
+        items = "".join(f'<li><a class="hr-word" href="{PAGES}{href}">{both(en, zh)}</a></li>' for href, en, zh, _, _ in DOORS)
+        return (f'<nav class="hr-words hr-words--win" aria-label="The way in"><figure class="window hr-words__win"><a href="{PAGES}gallery.html#s-{sid}" '
+                f'data-slide="{sid}" aria-label="{e(SLIDES[sid]["place"]["en"])}">{img(sid, "100vw")}</a></figure><ul>{items}</ul></nav>')
+
+    # R, windows: more holes in the paper and in more shapes; the train a whole screen, the Milky Way a tall
+    # hole framed by paper, Fuji seen through two holes side by side, rows of his picks between
+    r_body = "\n".join([
+        say(*SAY1),
+        win(QUEENS, "hr-win--low"),
+        '<section class="wrap part">' + wall([["matterhorn-lake", "sapa-terraces", "fuji-lake"]]) + "</section>",
+        hole("tekapo-stars", "hr-hole--tall"),
+        '<section class="wrap part">' + wall([["roys-peak", "calanque-tall", "golden-gate-fog"]]) + "</section>",
+        twin("fuji-shinkansen"),
+        say(*SAY2),
+    ])
+    (OUT / "r-windows.html").write_text(page("d", "r-windows", "Windows in the paper", "紙上的窗", film_e, r_body, counted,
+        rest4("r"), words_win("roys-peak"), foot_l, live_js), encoding="utf-8")
+
+    # S, prints over a photograph: a photograph holds the screen while his prints float up over it, some
+    # faster than others; then a second photograph does the same
+    def float_(back, prints, pos):
+        ps = "".join(
+            f'<figure class="hr-print3 hr-print3--{side}{" hr-print3--tall" if SLIDES[sid]["h"] > SLIDES[sid]["w"] else ""} hr-print3--{speed}">'
+            f'<a href="{PAGES}gallery.html#s-{sid}" data-slide="{sid}" aria-label="{e(SLIDES[sid]["place"]["en"])}">{img(sid, "(max-width: 48rem) 80vw, 34vw")}</a>'
+            f'<figcaption><b>{both(*name(sid))}</b><span>{both(*where_when(sid))}</span></figcaption></figure>'
+            for sid, side, speed in prints)
+        return (f'<section class="hr-float"><div class="hr-float__back hr-float__back--{pos}">{img(back, "100vw")}</div>'
+                f'<div class="hr-float__prints">{ps}</div></section>')
+    s_body = "\n".join([
+        say(*SAY1),
+        float_(QUEENS, [("matterhorn-lake", "l", "slow"), ("sapa-terraces", "r", "fast"), ("fuji-lake", "l", "fast"), ("tekapo-church", "r", "slow")], "low"),
+        say(*SAY2),
+        float_("aurora", [("roys-peak", "r", "slow"), ("calanque-tall", "l", "fast"), ("golden-gate-fog", "r", "fast"), ("tekapo-stars", "l", "slow")], "mid"),
+    ])
+    (OUT / "s-prints-over.html").write_text(page("d", "s-prints-over", "Prints over a photograph", "照片上飄過的照片", film_e, s_body, counted,
+        rest4("s"), words_win("matterhorn-lake"), foot_l, live_js), encoding="utf-8")
+
+    # U, 12 layered more: the live home's line and its Guides cards kept, his picks in the wall, the train
+    # as a window, Fuji through two holes, and the three words under a window too
+    intro_live = rel(re.search(r'<section class="wrap intro arrive">.*?</section>', leaf, re.S).group(0))
+    band_live = rel(re.search(r'<div class="band">.*?</section>\s*</div>', leaf, re.S).group(0))
+    u_body = "\n".join([
+        intro_live,
+        win(QUEENS, "hr-win--low"),
+        f'<section class="wrap part"><div class="part__head"><h2>{both("Photographs", "作品")}</h2></div>'
+        + wall([["matterhorn-lake", "sapa-terraces", "fuji-lake"], ["roys-peak", "tekapo-stars", "golden-gate-fog"]])
+        + f'<p class="part__more"><a class="btn btn--line" href="{PAGES}gallery.html">{both("See the gallery", "看所有作品")}</a></p></section>',
+        twin("fuji-shinkansen"),
+        band_live,
+        hole("tekapo-church"),
+    ])
+    (OUT / "u-layered.html").write_text(page("d", "u-layered", "12, layered more", "第 12 個，多幾層", film_e, u_body, counted,
+        rest4("u"), words_win("matterhorn-flag"), foot_l, live_js), encoding="utf-8")
+    print("wrote a to q, and r-windows.html, s-prints-over.html, u-layered.html")
 
 
 if __name__ == "__main__":
