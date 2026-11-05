@@ -11,7 +11,10 @@
   };
   // the line-loads family (6, and round two from 2026-11-05): how long each holds once the line is full
   const LOAD = { loading: 600, 'l-first': 2000, 'l-write': 800, 'l-part': 500, 'l-slit': 1100, 'l-runout': 400, 'l-through': 500,
-    'r3-part': 2000, 'r3-horizon': 2000, 'r3-runout': 2000, 'r3-through': 2600 };
+    'r3-part': 2000, 'r3-horizon': 2000, 'r3-runout': 2000, 'r3-through': 2600,
+    'r4-slow': 3400, 'r4-quick': 1800, 'r4-more': 2800, 'r4-dissolve': 2600, 'r4-focus': 2800 };
+  // how long the line takes to fill, where a version changes it (2.2 s otherwise)
+  const LINE = { 'r4-slow': 3000, 'r4-quick': 1600 };
   const photo = document.querySelector('.lm-photo');
   const rule = document.querySelector('.lm-rule');
   let timers = [];
@@ -34,11 +37,11 @@
 
   function open() { html.classList.add('lm-out'); }
 
-  // the line is the loading bar; it runs at least 2.2 s so it reads, and waits for the photograph.
+  // the line is the loading bar; it runs at least 2.2 s (LINE) so it reads, and waits for the photograph.
   // --p (0 to 1) is set on the page, so the words, the paper and the line can all follow it
   function load(t0) {
     const ready = photo.complete && photo.naturalWidth > 0;
-    const t = (performance.now() - t0) / 2200;
+    const t = (performance.now() - t0) / (LINE[M] || 2200);
     const p = Math.min(1, ready ? t : Math.min(t, 0.85));
     html.style.setProperty('--p', (1 - Math.pow(1 - p, 2)).toFixed(4));   // a number for the stylesheet
     if (p < 1) frame = requestAnimationFrame(() => load(t0));

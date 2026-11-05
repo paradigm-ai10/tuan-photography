@@ -203,6 +203,35 @@ html.lm-out .lm-photo { transform: none; }
 /* 16 through: while the name settles, the paper thins and the photograph shows faintly behind it; then it opens */
 [data-motion="r3-through"].lm-full:not(.lm-out) :is(.lm-top, .lm-bottom) { opacity: 0.92; transition: opacity 2s ease 0.6s; }
 
+/* round four (2026-11-05): 16 fine-tuned. The same steps as 16; each version changes only these numbers */
+[data-motion^="r4-"] { --rise: 0.9s; --step: 110ms; --ph-at: 0.55s; --thin: 0.92; --thin-for: 2s; --thin-at: 0.6s;
+  --mark-out: 0.6s; --paper-out: 0.9s; --paper-out-at: 0.4s; --settle: 1.8s; }
+[data-motion^="r4-"] .lm-rule { transform-origin: left center; transform: scaleX(var(--p, 0)); }
+[data-motion^="r4-"].lm-still .lm-rule { transform: none; }
+[data-motion^="r4-"] .lm-tuan span, [data-motion^="r4-"] .lm-ph { opacity: 0; }
+[data-motion^="r4-"].lm-still .lm-tuan span, [data-motion^="r4-"].lm-still .lm-ph { opacity: 1; }
+[data-motion^="r4-"].lm-full .lm-tuan span { animation: lm-rise var(--rise) var(--out) both; animation-delay: calc(var(--i) * var(--step)); }
+[data-motion^="r4-"].lm-full .lm-ph { animation: lm-fade var(--rise) ease both var(--ph-at); }
+[data-motion^="r4-"] :is(.lm-top, .lm-bottom) { transition: opacity var(--paper-out) ease-in-out var(--paper-out-at); }
+[data-motion^="r4-"].lm-full:not(.lm-out) :is(.lm-top, .lm-bottom) { opacity: var(--thin); transition: opacity var(--thin-for) ease var(--thin-at); }
+[data-motion^="r4-"].lm-out .lm-mark { transition: opacity var(--mark-out) ease; }
+[data-motion^="r4-"] .lm-photo { transition: transform var(--settle) var(--out), filter var(--settle) var(--out); }
+
+/* 17 slower: every step about a third longer */
+[data-motion="r4-slow"] { --rise: 1.2s; --step: 150ms; --ph-at: 0.8s; --thin-for: 2.6s; --thin-at: 0.8s;
+  --mark-out: 0.9s; --paper-out: 1.4s; --paper-out-at: 0.5s; --settle: 2.6s; }
+/* 18 quicker: the whole screen in about five seconds */
+[data-motion="r4-quick"] { --rise: 0.7s; --step: 80ms; --ph-at: 0.35s; --thin-for: 1.4s; --thin-at: 0.4s;
+  --mark-out: 0.45s; --paper-out: 0.7s; --paper-out-at: 0.3s; --settle: 1.4s; }
+/* 19 more through: the paper thins further, so the photograph is plainly there behind the name */
+[data-motion="r4-more"] { --thin: 0.72; --thin-for: 2.4s; }
+/* 20 one long dissolve: arrives as 16, then the paper melts away slowly instead of in a step */
+[data-motion="r4-dissolve"] { --thin: 0.84; --thin-for: 2.6s; --thin-at: 0.3s; --mark-out: 1.1s; --paper-out: 2.4s; --paper-out-at: 0.2s; --settle: 3s; }
+/* 21 comes into focus: the photograph behind is soft while it shows through, and sharpens as it opens */
+[data-motion="r4-focus"] { --thin: 0.84; --thin-for: 2.4s; --settle: 2.2s; }
+[data-motion="r4-focus"] .lm-photo { transform: scale(1.1); filter: blur(14px); }
+[data-motion="r4-focus"].lm-out .lm-photo { transform: none; filter: none; }
+
 @media (prefers-reduced-motion: reduce) {
   html.lm-in *, html.lm-out * { animation: none !important; }
   .lm-top, .lm-bottom, .lm-photo, .lm-tuan, .lm-ph, .lm-tuan span, .lm-ph span, .lm-rule { transition: opacity 0.4s ease !important; transform: none !important; }

@@ -33,6 +33,13 @@
         "en": "Third round: the line, TUAN first, then four ways to open",
         "zh": "第三輪：先跑線、TUAN 先出來，四種打開的方式"
       }
+    },
+    {
+      "id": "round4",
+      "title": {
+        "en": "Fourth round: 16, fine-tuned",
+        "zh": "第四輪：微調第 16 版"
+      }
     }
   ],
   "items": [
@@ -226,6 +233,66 @@
       "desc": {
         "en": "Arrives as 7. While the name settles, the paper thins and the photograph shows faintly behind it, then it opens.",
         "zh": "出現跟第 7 版一樣。名字出來之後，紙慢慢變薄，隱約看到後面的照片，然後打開。"
+      }
+    },
+    {
+      "href": "r4-slow.html",
+      "group": "round4",
+      "title": {
+        "en": "Slower",
+        "zh": "慢一點"
+      },
+      "desc": {
+        "en": "As 16, every step about a third longer: the line, the letters, the paper thinning and the opening.",
+        "zh": "跟第 16 版一樣，每一步都慢大約三分之一：線、字、紙變薄、打開。"
+      }
+    },
+    {
+      "href": "r4-quick.html",
+      "group": "round4",
+      "title": {
+        "en": "Quicker",
+        "zh": "快一點"
+      },
+      "desc": {
+        "en": "As 16, tighter: the whole loading screen is over in about five seconds.",
+        "zh": "跟第 16 版一樣，但更緊湊：整個載入畫面大約五秒就結束。"
+      }
+    },
+    {
+      "href": "r4-more.html",
+      "group": "round4",
+      "title": {
+        "en": "More see-through",
+        "zh": "透多一點"
+      },
+      "desc": {
+        "en": "As 16, but the paper thins further, so the photograph is plainly there behind the name before it opens.",
+        "zh": "跟第 16 版一樣，但紙變得更薄，打開之前就清楚看到名字後面的照片。"
+      }
+    },
+    {
+      "href": "r4-dissolve.html",
+      "group": "round4",
+      "title": {
+        "en": "One long dissolve",
+        "zh": "一路慢慢溶開"
+      },
+      "desc": {
+        "en": "Arrives as 16, then the paper melts away slowly in one long fade instead of a step.",
+        "zh": "出現跟第 16 版一樣，然後紙慢慢溶掉，一路淡出，不是一下子打開。"
+      }
+    },
+    {
+      "href": "r4-focus.html",
+      "group": "round4",
+      "title": {
+        "en": "Comes into focus",
+        "zh": "照片慢慢對焦"
+      },
+      "desc": {
+        "en": "As 16, but the photograph behind is soft while it shows through, and comes into focus as it opens, like a lens finding it.",
+        "zh": "跟第 16 版一樣，但透出來的照片一開始是模糊的，打開時慢慢對焦清楚，像鏡頭在對焦。"
       }
     }
   ],
