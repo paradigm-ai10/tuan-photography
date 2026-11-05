@@ -75,13 +75,15 @@
   if (still || !screen) { finish(); return; }
   screen.addEventListener('click', finish);
 
-  // the line is the loading bar: at least 2.2 s, and it waits at 85% for the logo's face and the opening's picture
+  // the line is the loading bar: at least FILL ms, and it waits at 85% for the logo's face and the opening's picture
   let face = false;
   document.fonts.load('300 1em "Cormorant Garamond"').then(() => { face = true; }, () => { face = true; });
   const seen = (img) => !img || (img.complete && img.naturalWidth > 0);
   const media = () => (HOME === 'a' ? !video || video.readyState >= 3
     : HOME === 'c' || HOME === 'd' ? seen(sketch) && (!video || video.readyState >= 2)
     : seen(cover));
+  // how long the line takes to run under the name: D and E draw it in 1 s (his ask, 2026-11-05), the others 2.2 s
+  const FILL = HOME === 'd' ? 1000 : 2200;
   function fill() {
     return new Promise((res) => {
       const t0 = performance.now();
@@ -89,7 +91,7 @@
       const step = (now) => {
         if (done) return;
         const ready = now - t0 > 8000 || (face && media());
-        p = Math.min(ready ? 1 : 0.85, p + (now - (last || now)) / 2200);
+        p = Math.min(ready ? 1 : 0.85, p + (now - (last || now)) / FILL);
         last = now;
         screen.style.setProperty('--p', (1 - Math.pow(1 - p, 2)).toFixed(4));   // a number for the stylesheet
         if (p < 1) requestAnimationFrame(step);

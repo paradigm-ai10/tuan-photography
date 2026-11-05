@@ -122,7 +122,8 @@
       },
       "still": {
         "wait": 2500
-      }
+      },
+      "out": true
     },
     {
       "href": "g-pile.html",
@@ -137,7 +138,8 @@
       },
       "still": {
         "wait": 2500
-      }
+      },
+      "out": true
     },
     {
       "href": "h-journal.html",
@@ -152,7 +154,8 @@
       },
       "still": {
         "wait": 2500
-      }
+      },
+      "out": true
     }
   ],
   "tags": [
@@ -227,16 +230,5 @@
     "--rv-label": "\"Geist\", \"Noto Sans TC\", sans-serif",
     "--rv-name": "\"Playfair Display\", \"Noto Serif TC\", serif"
   },
-  "words": {},
-  "ask": {
-    "ids": [
-      "f-drawn-down",
-      "g-pile",
-      "h-journal"
-    ],
-    "question": {
-      "en": "Which way should the rest of the home page go? Give each a score.",
-      "zh": "首頁剩下的部分要走哪個方向？每個打個分數。"
-    }
-  }
+  "words": {}
 }
