@@ -4,12 +4,8 @@
 
 ## 現在狀態 Where things stand
 
-- **Design 4, the 3D site, is built and waiting for his verdict** (2026-11-02):
-  http://localhost:8642/world/ . One three.js world, a misted paper atlas; every photograph stands as a
-  print where it was taken; scroll lands, walks along the prints, takes off and flies to the next place
-  while an ink route draws; sky and mist take colour from each place's photo; a print flies out into a
-  large viewer. Folder `design 4/` (bible `design 4/DESIGN.md`), served through the link `design 1/world`.
-  Notes box on the page saves to `ideas/reviews/world.json`.
+- **Designs 4 and 5 were dropped** (2026-11-05, his word): `/world/` and `/next/` are gone; code at the tags
+  `design4-dropped-2026-11-05`, `design5-dropped-2026-11-05`.
 - **Design 1 on localhost:8642 is the site.** Its Journey tab is now the new page,
   `design 2/new/journey.html` (`/journey/` forwards there): flat map, click a country for its latest
   trip, the map folds into a globe over the trip's photograph, a frosted list where the trip in view
@@ -53,13 +49,6 @@ trials; what he said that decides the next step:
 
 ## 接下來 Next up
 
-Design 5: Glass block was dropped (2026-11-04, "I don't like this version"; tag
-`glass-block-dropped-2026-11-04`). Ask him where the new website goes next: Relief, Orrery, or a fresh direction.
-
-Read `ideas/reviews/world.json` (his score and notes on Design 4), then open
-http://localhost:8642/world/ with him. Code: `design 4/world.js` (poses: `stopPose`, `flight`,
-`openPose`, `endPose`; prints and the atlas near the top), `design 4/world.css`.
-
 Open http://localhost:8642/journey/new/index.html: the three he gave 5 stars (the live page, marked
 Main; 2 Sea chart, scroll-craft; 3 Paper, the whole page wraps). Next he **brings 2 or 3 references**
 (or asks for an Awwwards shortlist), and the globe is designed from those. Code: `design 2/new/`
@@ -68,12 +57,6 @@ Main; 2 Sea chart, scroll-craft; 3 Paper, the whole page wraps). Next he **bring
 
 ## 等你決定 Waiting on you
 
-- **Design 5: Glass block dropped** (2026-11-04, at his word; the full site is at tag
-  `glass-block-dropped-2026-11-04`). Next direction for the new website: his call.
-- (earlier) **Design 5, three directions** (2026-11-02):
-  http://localhost:8642/next/ (Relief and Orrery left; his marks and notes save to
-  `ideas/reviews/design5.json`). Then build the full site from the pick. Brief: `design 5/BRIEF.md`.
-- **Design 4** (2026-11-02): keep developing it, or not? http://localhost:8642/world/
 - **Journey globe** (2026-10-30): kept the three with 5 stars, the live one as main; next, references
   for the globe's look, the wrap and the arrival. Front-end research report (skills, fonts, techniques, workflow, reference sites), 2026-10-30: https://claude.ai/artifact/9HiVVp4ySh6ih3izJeJXG3 Removed trials are at tags
   `globe3d-five-versions-2026-10-29`, `journey-panels-three-2026-10-29`, `journey-artists-a1-a3-2026-10-29`,

@@ -11,6 +11,15 @@ is at the tag `design3-dropped-2026-10-28` (earlier home versions at `home-film-
 `counting-openings-ten-2026-10-19`, `counting-openings-three-2026-10-19`). Do not propose it again.
 Design 1 on 8642 is the site, and the rules below are in force.
 
+## Designs 4 and 5 were dropped (his call, 2026-11-05)
+
+Design 4 ("Where they were taken", the three.js atlas on `/world/`, built 2026-11-02) and design 5 (the
+whole new site, three directions on `/next/`: Relief, Glass block, Orrery) were removed at his word:
+"這個不做了 關掉" and "這個也不做了 刪掉". The folders `design 4/`, `design 5/` and the links
+`design 1/world`, `design 1/next` are gone; the code is at the tags `design4-dropped-2026-11-05` and
+`design5-dropped-2026-11-05` (earlier: `before-design4-2026-11-02`, `before-design5-2026-11-02`,
+`glass-block-dropped-2026-11-04`). Do not propose them again.
+
 ## The brief (owner-decided — these win over any generic guidance)
 
 - **Who he is:** a landscape photographer (旅途中的風景 — nature and cities). Not a travel
@@ -79,7 +88,6 @@ Arranged on 2026-09-28 at his request, so the top level reads at a glance. Keep 
 | `originals/`, `ideas/`, `IDEAS.md`, `TODO.md`, `我的筆記.txt`, `experiments/` | his | his photos, his ideas, his to-do list, his own notes, trials |
 | `design 1/` | visitors' | **the current website (was `site/`) and nothing else.** Served on 8642 |
 | `design 2/` | visitors' | **the complete redesign**, built beside it. Since 2026-10-13 it is the site's Journey page: `design 1/journey` is a link to this folder, so it is served on 8642 at `/journey/` and has no server of its own |
-| `design 4/` | visitors' | **the 3D design "Where they were taken"** (his ask, 2026-11-02: completely new, 3D, immersive, bold, no AI slop). One three.js world, a misted paper atlas with every photograph standing as a print where it was taken; scroll is the journey. `design 1/world` is a link to it: served on 8642 at `/world/`. Its world bible is `design 4/DESIGN.md`. Built from design 2's `data.js` and vendor (three r186, d3, Natural Earth) and design 1's photos and fonts, so nothing is copied. Waiting for his verdict; before it, tag `before-design4-2026-11-02` |
 | `data/`, `content/`, `tools/` | Claude's | what the pages are built from, and the scripts |
 | `elements/` | visitors' (tests) | **single elements tried on their own**, apart from both designs, to be merged later if kept (his plan, 2026-10-07). Served on 8647 (`elements` in launch.json). Links to design 1's photos, fonts and css and to design 2's `data.js`, so nothing is copied. The first, `gallery/` (the photo wall), was merged into design 1's Gallery page on 2026-10-07 and the test copy removed the next day at his word; `design 1/js/wall.js` is the only copy. The second, `trip/` (the trip along its route), joined the Journey page on 2026-10-15 and the test copy was removed the same day at his word |
 | `CLAUDE.md`, `DESIGN.md`, `PRODUCT.md`, `PROGRESS.md` | Claude's | notes. They stay at the top: tools look for them there |
