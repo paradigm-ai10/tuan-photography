@@ -69,6 +69,15 @@
 .rvh-card.is-low:hover, .rvh-card.is-low:focus-within { opacity: 0.85; }
 .rvh-card.is-back { outline: 1px solid var(--h-ink); outline-offset: 0.6rem; }
 .rvh-card.is-picked { outline: 1px solid var(--h-mark); outline-offset: 0.6rem; }
+/* choosing for side by side: a chosen picture is framed and labelled with its order */
+.rvh-card.is-choosing .rvh-still { cursor: pointer; }
+.rvh-card.is-picked .rvh-still::after { content: ""; position: absolute; inset: 0; border: 3px solid var(--h-mark); pointer-events: none; }
+.rvh-chosen, .rvh-choose {
+  position: absolute; left: 0; top: 0; padding: 0.5rem 0.85rem; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.08em; line-height: 1;
+}
+.rvh-chosen { background: var(--h-mark); color: var(--h-paper); }
+.rvh-choose { background: var(--h-paper); color: var(--h-ink-2); opacity: 0; transition: opacity 0.15s ease-out; }
+.rvh-card.is-choosing .rvh-still:hover .rvh-choose, .rvh-card.is-choosing .rvh-still:focus-visible .rvh-choose { opacity: 1; }
 .rvh-still { position: relative; display: block; aspect-ratio: 16 / 10; background: var(--h-paper-2); overflow: hidden; }
 .rvh-still img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .rvh-blank { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: 0.3rem; color: var(--h-ink-3); }

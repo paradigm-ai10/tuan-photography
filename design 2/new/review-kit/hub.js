@@ -97,10 +97,12 @@
     const dots = ms.filter((m) => m.where).map((m) => `<span class="rvh-pin${m.kind ? ` is-${m.kind}` : ''}" style="--x: ${(+m.where.x).toFixed(4)}; --y: ${(+m.where.y).toFixed(4)}"></span>`).join('');
     const last = lastWords(v.id);
     const picked = !!ui.picked && ui.picked.includes(v.id);
-    return `<article class="rvh-card${liked(v.id) ? ' is-liked' : ''}${away(v.id) ? ' is-low' : ''}${picked ? ' is-picked' : ''}" id="v-${esc(v.id)}" data-id="${esc(v.id)}">
+    // while choosing, the picture itself says it is chosen, and in what order
+    const tag = ui.picked ? (picked ? `<span class="rvh-chosen">${esc(t('chosenN', { n: ui.picked.indexOf(v.id) + 1 }))}</span>` : `<span class="rvh-choose">${esc(t('choose'))}</span>`) : '';
+    return `<article class="rvh-card${liked(v.id) ? ' is-liked' : ''}${away(v.id) ? ' is-low' : ''}${ui.picked ? ' is-choosing' : ''}${picked ? ' is-picked' : ''}" id="v-${esc(v.id)}" data-id="${esc(v.id)}">
       <a class="rvh-still" href="${esc(v.href)}" tabindex="-1" aria-hidden="true">
         ${src ? `<img src="${esc(src)}" alt="" loading="lazy" decoding="async" width="960" height="600">` : `<span class="rvh-blank"><span>${v.n}</span><small>${esc(t('noStill'))}</small></span>`}
-        ${dots}
+        ${dots}${tag}
       </a>
       <div class="rvh-meta">
         <h3 class="rvh-name"><a href="${esc(v.href)}"><span class="rvh-num">${v.n}</span>${esc(title)}</a></h3>
