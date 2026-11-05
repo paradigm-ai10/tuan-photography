@@ -1,0 +1,100 @@
+/* Pins and thread 圖釘與紅線 (2026-11-06): a paper wall map, pins, a red wool thread, a pinned card.
+   The colours of this version, once; everything else is base.css. */
+:root {
+  --pn-land: oklch(93.2% 0.01 80);
+  --pn-land-edge: oklch(83.5% 0.013 75);
+  --pn-wash: oklch(88.4% 0.03 68);
+  --pn-wash-edge: oklch(78.5% 0.04 60);
+  --pn-ochre: oklch(73% 0.115 80);
+  --pn-card: oklch(99.2% 0.003 85);
+  --pn-s: 1;
+}
+
+.fp--pins .fp-stage { overflow: hidden; }
+.pn-svg { position: absolute; inset: 0; display: block; }
+
+/* the printed map */
+.pn-grat { fill: none; stroke: var(--hair); stroke-width: 0.6; }
+.pn-sphere { fill: none; stroke: var(--ink-3); stroke-width: 0.6; opacity: 0.5; }
+.pn-frame { fill: none; stroke: var(--ink-2); stroke-width: 0.9; }
+.pn-frame--outer { stroke: var(--ink-3); stroke-width: 0.5; }
+.pn-land { fill: var(--pn-land); stroke: var(--pn-land-edge); stroke-width: 0.45; stroke-linejoin: round; }
+.pn-visited { fill: var(--pn-wash); stroke: var(--pn-wash-edge); transition: fill 0.2s; }
+.pn-visited:hover { fill: color-mix(in oklch, var(--pn-wash), var(--clay) 20%); }
+
+/* the thread: red wool, a little twist of light along it, a faint shadow on the paper */
+.pn-thread, .pn-thread-twist, .pn-thread-shadow { fill: none; stroke-linecap: round; stroke-linejoin: round; pointer-events: none; }
+.pn-thread { stroke: var(--route); stroke-width: calc(1.5px * var(--pn-s) + 0.2px); opacity: 0.92; }
+.pn-thread-twist { stroke: color-mix(in oklch, var(--route), var(--paper) 50%); stroke-width: calc(0.55px * var(--pn-s) + 0.1px); stroke-dasharray: 1.2 2.4; opacity: 0.75; }
+.pn-thread-shadow { stroke: var(--ink); stroke-width: calc(3.2px * var(--pn-s) + 0.4px); opacity: 0.06; }
+.pn-thread-shadow--core { stroke-width: calc(1.3px * var(--pn-s) + 0.2px); opacity: 0.12; }
+
+/* the pins */
+.pn-pin-shadows, .pn-shanks { pointer-events: none; }
+.pn-pin-shadow { fill: var(--ink); opacity: 0.3; }
+.pn-pin-shadow-shank { stroke: var(--ink); stroke-width: 0.8; opacity: 0.32; }
+.pn-shank { stroke: var(--ink-2); stroke-width: 0.8; stroke-linecap: round; }
+.pn-pin { --bead: var(--slate); }
+.pn-head { fill: var(--bead); stroke: color-mix(in oklch, var(--bead), var(--ink) 38%); stroke-width: 0.6; }
+.pn-hi { fill: var(--paper); opacity: 0.72; pointer-events: none; }
+.pn-hit { fill: transparent; stroke: none; cursor: default; }
+
+.pn-era-0 { --bead: var(--slate); }
+.pn-era-1 { --bead: var(--olive); }
+.pn-era-2 { --bead: var(--pn-ochre); }
+.pn-era-3 { --bead: var(--clay); }
+.pn-era-4 { --bead: var(--link); }
+.pn-pin--home, .pn-bead--home { --bead: var(--route); }
+
+/* the card, pinned to the map */
+.pn-card {
+  position: absolute; left: 0; top: 0; z-index: 2;
+  transform: translate(var(--x, 0), var(--y, 0));
+  width: max-content; max-width: calc(100vw - 32px);
+  background: var(--pn-card); border: 1px solid var(--hair);
+  padding: clamp(18px, 2.2vh, 24px) clamp(18px, 1.6vw, 24px) clamp(14px, 1.8vh, 20px);
+  display: grid; gap: 0; justify-items: start;
+}
+.pn-card__pin {
+  position: absolute; left: 50%; top: 7px; width: 11px; height: 11px; margin-left: -5.5px;
+  border-radius: 50%; background: var(--ink-2);
+  border: 0.6px solid color-mix(in oklch, var(--ink-2), var(--ink) 40%);
+}
+.pn-card__pin::before { /* its little highlight */
+  content: ""; position: absolute; left: 2px; top: 1.6px; width: 3.4px; height: 3.4px; border-radius: 50%; background: var(--paper); opacity: 0.7;
+}
+.pn-card__pin::after { /* its shadow on the card */
+  content: ""; position: absolute; left: 4px; top: 7px; width: 10px; height: 10px; border-radius: 50%; background: var(--ink); opacity: 0.18; filter: blur(1.4px); z-index: -1;
+}
+.pn-card__title {
+  margin: 4px 0 0; font-family: var(--f-name); font-weight: 400; font-size: clamp(1.05rem, 1.25vw + 0.35rem, 1.375rem); line-height: 1.2; color: var(--ink);
+}
+html[lang="zh-Hant"] .pn-card__title { font-weight: 500; }
+.pn-card__span { margin: 4px 0 0; color: var(--ink-3); }
+.pn-card__counts { margin: clamp(10px, 1.6vh, 16px) 0 0; display: grid; gap: clamp(2px, 0.5vh, 5px); }
+.pn-count { margin: 0; display: flex; align-items: baseline; gap: 10px; }
+.pn-count__n { font-family: var(--f-name); font-size: clamp(1.5rem, 1.6vw + 0.55rem, 2.125rem); line-height: 1.05; color: var(--ink); font-variant-numeric: lining-nums; min-width: 1.5ch; }
+.pn-count__l { font: 500 0.6875rem/1.3 var(--f-text); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-2); }
+html[lang="zh-Hant"] .pn-count__l { text-transform: none; letter-spacing: 0.12em; font-size: 0.75rem; }
+
+.pn-card__key { list-style: none; margin: clamp(10px, 1.6vh, 16px) 0 0; padding: clamp(8px, 1.2vh, 12px) 0 0; border-top: 1px solid var(--hair); display: grid; grid-template-rows: repeat(3, auto); grid-auto-flow: column; justify-content: start; gap: 4px 22px; width: 100%; }
+.pn-card__key li { display: flex; align-items: center; gap: 7px; font: 400 0.75rem/1.3 var(--f-text); color: var(--ink-2); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.pn-bead { position: relative; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--bead); border: 0.6px solid color-mix(in oklch, var(--bead), var(--ink) 38%); flex: none; }
+.pn-bead::before { content: ""; position: absolute; left: 1.3px; top: 1.1px; width: 2.4px; height: 2.4px; border-radius: 50%; background: var(--paper); opacity: 0.7; }
+.pn-bead--home { width: 10px; height: 10px; }
+
+/* short windows: the card a little tighter */
+@media (max-height: 640px) and (min-width: 720px) {
+  .pn-card { padding: 14px 16px 12px; }
+  .pn-card__counts { margin-top: 8px; gap: 0; }
+  .pn-count__n { font-size: 1.375rem; }
+  .pn-card__key { margin-top: 8px; padding-top: 7px; gap: 2px 14px; }
+  .pn-card__key li { font-size: 0.6875rem; }
+}
+
+/* a phone: the card under the map, the counts side by side */
+.fp-stage.is-narrow .pn-card { padding: 20px 20px 16px; justify-items: center; text-align: center; }
+.fp-stage.is-narrow .pn-card__counts { grid-auto-flow: column; gap: 18px; }
+.fp-stage.is-narrow .pn-count { flex-direction: column; align-items: center; gap: 2px; }
+.fp-stage.is-narrow .pn-count__n { min-width: 0; }
+.fp-stage.is-narrow .pn-card__key { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 16px; }

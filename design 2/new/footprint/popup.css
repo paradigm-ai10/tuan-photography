@@ -1,0 +1,68 @@
+/* Paper pop-up 立體紙地圖 (2026-11-06): a printed sheet on a table, the countries he has been to cut
+   from card and standing up. The colours of this version, once; popup.js reads them from here. */
+:root {
+  --pp-table: var(--paper-2);                 /* the table the sheet lies on */
+  --pp-land: oklch(92.8% 0.011 80);           /* the world, printed pale */
+  --pp-coast: oklch(70% 0.02 70);             /* its fine coastline */
+  --pp-border: oklch(85% 0.012 75);
+  --pp-wall: oklch(96.6% 0.008 85);           /* the card's cut edge */
+  --pp-edge: oklch(95% 0.008 85);             /* the sheet's own edge */
+  --pp-ochre: oklch(70% 0.105 76);
+  --pp-umber: oklch(56% 0.06 55);
+  --pp-asia: var(--olive);
+  --pp-europe: var(--slate);
+  --pp-north-america: var(--pp-umber);
+  --pp-oceania: var(--pp-ochre);
+  --pp-home: var(--clay);
+}
+
+.fp--popup { background: var(--pp-table); }
+.fp--popup .fp-stage { overflow: hidden; }
+.pp-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
+/* the title block. On a wide window it is laid on the sheet's bottom margin in perspective (popup.js
+   writes the matrix as --m, the size as --bw, --bh, and --u, a thousandth of its width); on a phone
+   it is set flat below the sheet. */
+.pp-block {
+  position: absolute; left: 16px; right: 16px; top: 0; transform: translateY(var(--y, 0));
+  display: grid; justify-items: center; text-align: center; pointer-events: none; color: var(--ink);
+}
+.pp-title { margin: 0; font-family: var(--f-name); font-weight: 400; font-size: 1.5rem; line-height: 1.2; }
+html[lang="zh-Hant"] .pp-title { font-weight: 500; }
+.pp-span { margin: 6px 0 0; font: 500 0.6875rem/1.3 var(--f-text); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-2); }
+.pp-nums { margin: 18px 0 0; display: flex; gap: 26px; justify-content: center; order: 2; }
+.pp-count { margin: 0; display: grid; justify-items: center; gap: 4px; }
+.pp-count__n { font-family: var(--f-name); font-size: 2.25rem; line-height: 1; font-variant-numeric: lining-nums; }
+.pp-count__l { font: 500 0.6875rem/1.3 var(--f-text); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-2); white-space: nowrap; }
+html[lang="zh-Hant"] :is(.pp-count__l, .pp-span) { text-transform: none; letter-spacing: 0.12em; }
+html[lang="zh-Hant"] .pp-count__l { font-size: 0.75rem; }
+.pp-key { list-style: none; margin: 18px 0 0; padding: 12px 0 0; border-top: 1px solid var(--hair); display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 16px; max-width: 340px; order: 3; }
+.pp-key li { display: flex; align-items: center; gap: 7px; font: 400 0.75rem/1.3 var(--f-text); color: var(--ink-2); white-space: nowrap; }
+.pp-sw { display: inline-block; width: 9px; height: 9px; background: var(--sw); flex: none; }
+.pp-sw--asia { --sw: var(--pp-asia); }
+.pp-sw--europe { --sw: var(--pp-europe); }
+.pp-sw--north-america { --sw: var(--pp-north-america); }
+.pp-sw--oceania { --sw: var(--pp-oceania); }
+.pp-sw--home { --sw: var(--pp-home); }
+
+/* printed on the sheet: the name on the left, the key in the middle, the counts on the right */
+.pp-block.is-printed {
+  left: 0; right: auto; width: var(--bw); height: var(--bh);
+  transform-origin: 0 0; transform: var(--m);
+  grid-template-columns: 1fr auto auto; align-items: end; justify-items: start; text-align: left;
+  column-gap: calc(var(--u) * 64px);
+}
+.is-printed .pp-title { font-size: calc(var(--u) * 33px); line-height: 1; white-space: nowrap; }
+.is-printed .pp-span { margin-top: calc(var(--u) * 9px); font-size: max(calc(var(--u) * 10px), 9px); }
+.is-printed .pp-key {
+  order: 0; margin: 0 0 calc(var(--u) * 2px); padding: 0; border: 0; max-width: none;
+  display: grid; grid-template-columns: auto auto; gap: calc(var(--u) * 4px) calc(var(--u) * 24px);
+}
+.is-printed .pp-key li { font-size: max(calc(var(--u) * 10.5px), 9.5px); gap: calc(var(--u) * 7px); }
+.is-printed .pp-sw { width: calc(var(--u) * 9px); height: calc(var(--u) * 9px); }
+.is-printed .pp-nums { order: 0; margin: 0; gap: calc(var(--u) * 40px); }
+.is-printed .pp-count { justify-items: center; gap: calc(var(--u) * 6px); }
+.is-printed .pp-count__n { font-size: calc(var(--u) * 44px); }
+.is-printed .pp-count__l { font-size: max(calc(var(--u) * 9.5px), 9px); }
+html[lang="zh-Hant"] .is-printed .pp-count__l { font-size: max(calc(var(--u) * 11px), 10px); }
+html[lang="zh-Hant"] .is-printed .pp-span { font-size: max(calc(var(--u) * 11px), 10px); }

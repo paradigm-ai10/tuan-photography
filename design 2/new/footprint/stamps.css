@@ -1,0 +1,64 @@
+/* Footprint, passport stamps (2026-11-06). The world printed light; on it, an entry stamp for
+   every country he has been to. Inks from the earth palette plus one stamp blue; home in red.
+   The stamps keep their own physical shapes; everything else stays square. */
+:root {
+  --st-blue: oklch(46% 0.115 258);
+  --st-umber: oklch(41% 0.075 48);
+}
+
+.st-svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.st-title { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; margin: 0; }
+
+/* ---- the map, printed light ---- */
+.st-land { fill: var(--paper-2); }
+.st-borders { fill: none; stroke: var(--hair); stroke-width: 0.5; stroke-linejoin: round; }
+.st-coast { fill: none; stroke: var(--ink-3); stroke-opacity: 0.5; stroke-width: 0.55; stroke-linejoin: round; }
+.st-tint { fill: transparent; opacity: 0; transition: opacity 0.35s var(--ease); }
+.st-tint.is-on { opacity: 1; }
+.tint-clay { fill: color-mix(in oklch, var(--clay) 20%, var(--paper-2)); }
+.tint-olive { fill: color-mix(in oklch, var(--olive) 20%, var(--paper-2)); }
+.tint-slate { fill: color-mix(in oklch, var(--slate) 20%, var(--paper-2)); }
+.tint-umber { fill: color-mix(in oklch, var(--st-umber) 18%, var(--paper-2)); }
+.tint-blue { fill: color-mix(in oklch, var(--st-blue) 16%, var(--paper-2)); }
+.tint-home { fill: color-mix(in oklch, var(--route) 26%, var(--paper-2)); }
+
+/* ---- the inks ---- */
+.ink-clay { color: var(--clay); }
+.ink-olive { color: var(--olive); }
+.ink-slate { color: var(--slate); }
+.ink-umber { color: var(--st-umber); }
+.ink-blue { color: var(--st-blue); }
+.ink-home { color: var(--route); }
+
+/* where he arrived, a dot of the same ink under the stamp */
+.st-at { opacity: 0; transition: opacity 0.3s; }
+.st-at.is-on { opacity: 0.9; }
+
+/* ---- a stamp ---- */
+.st-press { opacity: 0; mix-blend-mode: multiply; }
+.st-press.is-on { opacity: 1; }
+.st-edge { fill: none; stroke: currentColor; stroke-width: var(--st-heavy, 2.6px); stroke-linejoin: round; }
+.st-line { fill: none; stroke: currentColor; stroke-width: var(--st-thin, 0.9px); }
+.st-fill { fill: currentColor; }
+.st-name { fill: currentColor; font-family: var(--f-text); font-weight: 600; letter-spacing: 0.1em; }
+.st-big { fill: currentColor; font-family: var(--f-name); font-weight: 400; letter-spacing: 0.03em; font-variant-numeric: lining-nums; }
+.st-date { fill: currentColor; font-family: var(--f-text); font-weight: 500; letter-spacing: 0.08em; }
+.st-mark { fill: currentColor; font-family: var(--f-text); font-weight: 600; letter-spacing: 0.16em; }
+html[lang="zh-Hant"] .st-name { letter-spacing: 0.14em; }
+html[lang="zh-Hant"] .st-big { font-weight: 600; }
+.st-hit { fill: transparent; pointer-events: all; }
+.st { cursor: default; }
+.st--count .st-edge { stroke-width: calc(var(--st-heavy, 2.6px) * 1.25); }
+
+/* ---- phones: the passport page under the map ---- */
+.st-page-rule { stroke: var(--hair); stroke-width: 1; }
+.st-at circle { fill: currentColor; }
+.st-lead { stroke: currentColor; stroke-width: 0.7; stroke-opacity: 0.55; }
+
+/* on a phone the map is small: the countries he has been to are inked a little stronger */
+.is-narrow .tint-clay { fill: color-mix(in oklch, var(--clay) 66%, var(--paper-2)); }
+.is-narrow .tint-olive { fill: color-mix(in oklch, var(--olive) 66%, var(--paper-2)); }
+.is-narrow .tint-slate { fill: color-mix(in oklch, var(--slate) 66%, var(--paper-2)); }
+.is-narrow .tint-umber { fill: color-mix(in oklch, var(--st-umber) 58%, var(--paper-2)); }
+.is-narrow .tint-blue { fill: color-mix(in oklch, var(--st-blue) 56%, var(--paper-2)); }
+.is-narrow .tint-home { fill: var(--route); }

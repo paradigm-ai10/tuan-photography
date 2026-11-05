@@ -25,6 +25,13 @@
       }
     },
     {
+      "id": "footprint",
+      "title": {
+        "en": "Where I have been: ten maps",
+        "zh": "足跡地圖：十個版本"
+      }
+    },
+    {
       "id": "luxe",
       "title": {
         "en": "High-end: six quiet versions",
@@ -108,6 +115,166 @@
       },
       "still": {
         "wait": 20000
+      }
+    },
+    {
+      "id": "footprint-scratch",
+      "href": "footprint-scratch.html",
+      "group": "footprint",
+      "title": {
+        "en": "Scratch map",
+        "zh": "刮刮地圖"
+      },
+      "desc": {
+        "en": "The world under a thin foil, like the scratch-off poster. The countries you have been to are scratched clean, one by one in the order you went, showing the coloured map beneath. The corner box says how many of the world's 195 you have scratched.",
+        "zh": "整個世界蓋在一層薄薄的金屬膜下，像刮刮地圖海報。你去過的國家照你去的先後一個一個刮開，露出底下彩色的地圖。角落的小框寫著全世界 195 個國家你刮開了幾個。"
+      },
+      "still": {
+        "wait": 9000
+      }
+    },
+    {
+      "id": "footprint-tinted",
+      "href": "footprint-tinted.html",
+      "group": "footprint",
+      "title": {
+        "en": "Hand-tinted atlas",
+        "zh": "手工上色地圖"
+      },
+      "desc": {
+        "en": "An old engraved world map, every country in fine ink line only. The ones you have been to are coloured by hand in watercolour, laid one by one in the order you went, each with its name and the year. The counts sit in the title box.",
+        "zh": "一張老式的雕版世界地圖，每個國家只有細細的墨線。你去過的國家用水彩一個一個手工上色，照你去的先後，旁邊寫著國名和年份。數字在標題框裡。"
+      },
+      "still": {
+        "wait": 9000
+      }
+    },
+    {
+      "id": "footprint-fromhome",
+      "href": "footprint-fromhome.html",
+      "group": "footprint",
+      "title": {
+        "en": "The world from home",
+        "zh": "從台灣量起"
+      },
+      "desc": {
+        "en": "The whole world drawn as one round chart centred on Taipei, every place at its true distance from home, with rings every few thousand km. A straight line goes out to each country you have been to; the farthest place and the total flown are written beside.",
+        "zh": "以台北為中心，把整個世界畫成一張圓形的圖，每個地方離家多遠就畫多遠，每隔幾千公里一圈。從台北拉一條直線到你去過的每個國家；最遠的地方和總共飛了多少公里寫在旁邊。"
+      },
+      "still": {
+        "wait": 9000
+      }
+    },
+    {
+      "id": "footprint-only",
+      "href": "footprint-only.html",
+      "group": "footprint",
+      "title": {
+        "en": "Only where I have been",
+        "zh": "只有去過的地方"
+      },
+      "desc": {
+        "en": "Only the countries you have been to are drawn, solid, at their true places; the rest of the world is left out. They read like islands of your own world, with the number of countries set very large beside them.",
+        "zh": "地圖上只畫你去過的國家，實心的，放在它們真正的位置；世界其他地方都不畫。看起來像一片屬於你自己的群島，旁邊用很大的字寫著去過幾個國家。"
+      },
+      "still": {
+        "wait": 9000
+      }
+    },
+    {
+      "id": "footprint-popup",
+      "href": "footprint-popup.html",
+      "group": "footprint",
+      "title": {
+        "en": "Paper pop-up",
+        "zh": "立體紙地圖"
+      },
+      "desc": {
+        "en": "The world printed on a sheet of paper on a table, seen at an angle. The countries you have been to are cut from card and stand up off the sheet, taller where you went more often, with their shadows on the paper. They rise one by one in the order you went.",
+        "zh": "世界印在桌上的一張紙上，斜斜地看過去。你去過的國家用卡紙剪下來立在紙上，去得越多次越高，影子落在紙上。照你去的先後一個一個立起來。"
+      },
+      "still": {
+        "wait": 9000
+      }
+    },
+    {
+      "id": "footprint-years",
+      "href": "footprint-years.html",
+      "group": "footprint",
+      "title": {
+        "en": "Year by year",
+        "zh": "一年一年"
+      },
+      "desc": {
+        "en": "The map fills in as the years go by: a year ruler runs once from 2010 to 2026 and each country takes its colour the year you first went, while the year and the count beside it turn like pages. Then you can drag to any year to see your map as it was.",
+        "zh": "地圖隨著年份慢慢填滿：下面的年份尺從 2010 走到 2026，每個國家在你第一次去的那一年上色，旁邊的年份和國家數一頁一頁翻過去。走完之後可以拖到任何一年，看那時候你的地圖。"
+      },
+      "still": {
+        "wait": 9000
+      }
+    },
+    {
+      "id": "footprint-names",
+      "href": "footprint-names.html",
+      "group": "footprint",
+      "title": {
+        "en": "The map in names",
+        "zh": "名字地圖"
+      },
+      "desc": {
+        "en": "No outlines at all: every country is only its name, at its place. The countries you have been to are set large and dark, the rest small and pale, and the count is the largest word on the page. In 中文 every name turns Chinese.",
+        "zh": "完全沒有邊界線：每個國家只用它的名字放在它的位置。你去過的國家字大而深，其他的小而淡，去過幾個國家是整頁最大的字。切到中文，所有國名都變成中文。"
+      },
+      "still": {
+        "wait": 9000
+      }
+    },
+    {
+      "id": "footprint-stamps",
+      "href": "footprint-stamps.html",
+      "group": "footprint",
+      "title": {
+        "en": "Passport stamps",
+        "zh": "護照印章"
+      },
+      "desc": {
+        "en": "A light printed map with an entry stamp pressed on every country you have been to: different stamp shapes and inks, each with the country, the date you first went and the airport you landed at. Taiwan gets a Home stamp; a big stamp in the corner holds the count.",
+        "zh": "一張淡淡的地圖，你去過的每個國家都蓋上一個入境章：形狀和墨色都不一樣，上面有國名、第一次去的日期和降落的機場。台灣蓋的是「家」；角落一個大章寫著你去過幾個國家。"
+      },
+      "still": {
+        "wait": 9000
+      }
+    },
+    {
+      "id": "footprint-pins",
+      "href": "footprint-pins.html",
+      "group": "footprint",
+      "title": {
+        "en": "Pins and thread",
+        "zh": "圖釘與紅線"
+      },
+      "desc": {
+        "en": "A paper wall map with a pin pushed in at every place you have been, and a red thread running from the home pin in Taipei out along each trip and back. The counts are on a small card pinned in the corner.",
+        "zh": "一張貼在牆上的紙地圖，你去過的每個地方都插了一根圖釘，一條紅線從台北的家出發，沿著每一趟旅行繞出去再回來。數字寫在角落一張釘著的小卡片上。"
+      },
+      "still": {
+        "wait": 9000
+      }
+    },
+    {
+      "id": "footprint-stitch",
+      "href": "footprint-stitch.html",
+      "group": "footprint",
+      "title": {
+        "en": "Cross-stitch sampler",
+        "zh": "十字繡"
+      },
+      "desc": {
+        "en": "The world as an embroidery sampler on linen: every bit of land is a pattern still to be sewn, and the countries you have been to are stitched in coloured thread, sewn one by one in the order you went. The count is stitched in big numbers.",
+        "zh": "世界變成一塊亞麻布上的十字繡：所有陸地都只有還沒繡的圖樣，你去過的國家用彩色的線繡上去，照你去的先後一個一個繡。去過幾個國家也用十字繡繡成大大的數字。"
+      },
+      "still": {
+        "wait": 9000
       }
     },
     {
@@ -708,5 +875,23 @@
     "--rv-label": "\"Geist\", \"Noto Sans TC\", sans-serif",
     "--rv-name": "\"Playfair Display\", \"Noto Serif TC\", serif"
   },
-  "words": {}
+  "words": {},
+  "ask": {
+    "ids": [
+      "footprint-scratch",
+      "footprint-tinted",
+      "footprint-fromhome",
+      "footprint-only",
+      "footprint-popup",
+      "footprint-years",
+      "footprint-names",
+      "footprint-stamps",
+      "footprint-pins",
+      "footprint-stitch"
+    ],
+    "question": {
+      "en": "Ten maps that show where you have been (only the first screen, not the fold into the globe). Give each a score; press M on anything you like or want changed.",
+      "zh": "十張「我去過哪裡」的地圖（只有一打開的畫面，捲成地球之後的先不管）。每版給個分數，喜歡或想改的地方按 M 標記。"
+    }
+  }
 }

@@ -1,0 +1,48 @@
+/* The footprint maps (2026-11-06): what the ten versions share. The tokens are design 2's
+   (kit.css), plus the earth colours of design 1, for the countries he has been to. */
+:root {
+  --paper: oklch(97.6% 0.006 85);
+  --paper-2: oklch(94.2% 0.008 85);
+  --ink: oklch(22% 0.01 60);
+  --ink-2: oklch(44% 0.012 60);
+  --ink-3: oklch(64% 0.012 60);
+  --hair: oklch(87% 0.01 80);
+  --route: oklch(55% 0.17 33);
+  --link: oklch(42% 0.11 38);
+  --clay: oklch(58% 0.12 45);
+  --olive: oklch(56% 0.07 115);
+  --slate: oklch(50% 0.04 240);
+  --f-name: "Playfair Display", "Noto Serif TC", serif;
+  --f-text: "Geist", "Noto Sans TC", sans-serif;
+  --edge: clamp(1rem, 3.2vw, 2.5rem);
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --bar: 36px; /* the review bar, on his Mac only */
+}
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body { background: var(--paper); color: var(--ink); font-family: var(--f-text); font-size: 1rem; line-height: 1.5; -webkit-font-smoothing: antialiased; overflow: hidden; }
+html[lang="zh-Hant"] body { letter-spacing: 0.02em; }
+
+.fp-top { position: fixed; inset: 0 0 auto 0; z-index: 20; display: flex; align-items: center; justify-content: space-between; padding: 18px var(--edge); pointer-events: none; }
+.fp-top > * { pointer-events: auto; }
+.fp-top__name { color: var(--ink); text-decoration: none; font-family: var(--f-text); font-size: 1rem; font-weight: 500; white-space: nowrap; }
+.fp-top__name span { font-family: "Noto Sans TC", sans-serif; font-size: 0.8rem; letter-spacing: 0.2em; color: var(--ink-2); margin-left: 0.35rem; }
+.fp-lang { display: flex; gap: 2px; }
+.fp-lang button { font: 500 0.6875rem/1 var(--f-text); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); background: none; border: 0; padding: 8px 8px; cursor: pointer; }
+.fp-lang button[aria-pressed="true"] { color: var(--ink); }
+.fp-lang button:hover { color: var(--ink); }
+.fp-lang button:focus-visible, .fp-top__name:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+
+/* the stage: the whole window under the top bar, above the review bar */
+.fp-stage { position: fixed; inset: 0 0 var(--bar) 0; }
+
+/* labels in small spaced capitals */
+.fp-label { font: 500 0.6875rem/1.3 var(--f-text); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-2); }
+html[lang="zh-Hant"] .fp-label { text-transform: none; letter-spacing: 0.12em; }
+
+.fp-tip { position: fixed; left: 0; top: 0; z-index: 30; transform: translate(var(--x, 0), var(--y, 0)); pointer-events: none; opacity: 0; transition: opacity 0.15s; background: var(--paper); border: 1px solid var(--hair); padding: 8px 10px; font-size: 0.8125rem; line-height: 1.35; display: grid; gap: 1px; max-width: 260px; }
+.fp-tip.is-on { opacity: 1; }
+.fp-tip b { font-family: var(--f-name); font-weight: 400; font-size: 1rem; }
+.fp-tip span { color: var(--ink-2); }
+
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }

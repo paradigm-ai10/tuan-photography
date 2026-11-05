@@ -1,0 +1,59 @@
+/* Scratch map 刮刮地圖 (2026-11-06): the world printed under a champagne foil, the countries he
+   has been to scratched clean. The foil's three tones and the fourth earth colour are this
+   version's own; everything else is base.css. */
+:root {
+  --foil: oklch(85.5% 0.032 86);    /* the foil itself, champagne close to pewter */
+  --foil-lo: oklch(74% 0.028 78);   /* the lines printed on the foil, the cut edge */
+  --foil-hi: oklch(97% 0.02 92);   /* the light catching the grain */
+  --ochre: oklch(69% 0.105 78);
+}
+
+/* the poster: a printed sheet with a double neatline */
+.sc-sheet { position: absolute; left: var(--sx, 16px); top: var(--sy, 60px); width: var(--sw, 100%); height: var(--sh, 100%); }
+.sc-sheet::before, .sc-sheet::after { content: ""; position: absolute; pointer-events: none; }
+.sc-sheet::before { inset: 0; border: 1px solid var(--ink-2); }
+.sc-sheet::after { inset: 4px; border: 1px solid var(--hair); }
+.sc-sheet canvas { position: absolute; left: 0; top: 0; display: block; }
+.sc-edge { transform: translate(0.55px, 0.75px); }
+.sc-dust { cursor: default; }
+
+/* the poster's title, in the band above the map */
+.sc-title { position: absolute; left: 0; right: 0; top: var(--ty, 0); margin: 0; text-align: center; font: 400 1.75rem/1.2 var(--f-name); color: var(--ink); visibility: hidden; }
+.has-title .sc-title { visibility: visible; }
+.has-title .sc-key > .fp-label { display: none; }
+@media (max-width: 699px) { .sc-title { font-size: 1.5rem; } }
+
+/* Taiwan's mark */
+.sc-home { position: absolute; left: var(--hx, 0); top: var(--hy, 0); margin: 0; display: flex; align-items: center; gap: 6px; color: var(--ink); pointer-events: none; white-space: nowrap; }
+.sc-home::before { content: ""; width: 18px; height: 1px; background: var(--ink-2); }
+.sc-home.is-under { flex-direction: column; gap: 2px; transform: translateX(-50%); }
+.sc-home.is-under::before { width: 1px; height: 9px; }
+
+/* the legend box, in a corner of the poster */
+.sc-key { position: absolute; left: var(--kx, 0); top: var(--ky, 0); width: var(--kw, auto); z-index: 1; margin: 0; background: var(--paper); border: 1px solid var(--ink-2); padding: 16px 18px 15px; display: grid; gap: 10px; }
+.sc-key p { margin: 0; }
+.sc-key__count { display: flex; align-items: center; gap: 12px; }
+.sc-key__n { font: 400 clamp(2.6rem, 3.9vw, 3.6rem)/0.9 var(--f-name); font-variant-numeric: lining-nums; color: var(--ink); }
+.sc-key__of { display: grid; font-size: 0.8125rem; line-height: 1.35; color: var(--ink-2); }
+.sc-key__of span:first-child { color: var(--ink); }
+.sc-key__trips { font-size: 0.8125rem; line-height: 1.35; color: var(--ink-2); padding-top: 9px; border-top: 1px solid var(--hair); }
+.sc-key__list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 5px 16px; }
+.sc-key__list li { display: flex; align-items: center; gap: 7px; font-size: 0.75rem; line-height: 1.3; color: var(--ink-2); white-space: nowrap; }
+.sc-key__list b { font-weight: 400; color: var(--ink-3); font-variant-numeric: tabular-nums; margin-left: auto; }
+.sc-sw { flex: none; width: 10px; height: 10px; }
+.sc-sw--asia { background: var(--clay); }
+.sc-sw--europe { background: var(--slate); }
+.sc-sw--oceania { background: var(--olive); }
+.sc-sw--north-america { background: var(--ochre); }
+.sc-sw--home { background: var(--route); }
+.sc-sw--foil { background: var(--foil); outline: 1px solid var(--foil-lo); outline-offset: -1px; }
+html[lang="zh-Hant"] .sc-key__of, html[lang="zh-Hant"] .sc-key__trips { font-size: 0.84rem; }
+
+/* small windows: the legend shows only the count */
+.sc-key.is-compact { padding: 12px 14px 11px; gap: 8px; }
+.sc-key.is-compact .sc-key__list { display: none; }
+.sc-key.is-compact .sc-key__n { font-size: 2.5rem; }
+
+/* phones: the legend sits under the map, inside the sheet */
+.sc-key.is-below { border: 0; border-top: 1px solid var(--ink-2); background: none; padding: 16px 2px 0; }
+.sc-key.is-below .sc-key__list { gap: 6px 16px; }

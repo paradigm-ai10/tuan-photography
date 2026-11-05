@@ -1,0 +1,59 @@
+/* Footprint, "Only where I have been / 只有去過的地方" (2026-11-06): only his countries drawn, the
+   rest of the world a faint dotted coast on the paper, the count set enormous where the map is empty. */
+:root {
+  --on-shape: var(--ink);
+  --on-home: var(--clay);
+  --on-ghost: oklch(83% 0.012 75); /* the dotted coast: just there */
+}
+
+.on-map { position: absolute; inset: 0; display: block; overflow: visible; }
+
+/* the rest of the world: a dotted line round every coast */
+.on-coast { fill: none; stroke: var(--on-ghost); stroke-width: 1.15; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 0 calc(var(--dot, 3.4) * 1px); vector-effect: non-scaling-stroke; }
+
+/* his countries */
+.on-c path { fill: var(--on-shape); stroke: var(--paper); stroke-width: 0.6; stroke-linejoin: round; paint-order: stroke; }
+.on-c.is-home path { fill: var(--on-home); }
+.on-ring { fill: none; stroke: var(--on-shape); stroke-width: 1.1; }
+.on-c.is-home .on-ring { stroke: var(--on-home); }
+.on-c { transition: opacity 0.2s; }
+.on-map.is-on .on-c:not(.is-on) { opacity: 0.5; }
+.on-hit { fill: transparent; stroke: none; cursor: default; pointer-events: all; }
+
+/* the count, set in the emptiest part of the page */
+.on-count {
+  --f: 280px;
+  position: absolute; left: 0; top: 0;
+  transform: translate(var(--x, 0), var(--y, 0));
+  display: flex; align-items: flex-end; gap: calc(var(--f) * 0.07);
+  pointer-events: none;
+}
+.on-count__n {
+  font-family: var(--f-name); font-weight: 400; font-size: var(--f); line-height: 0.74;
+  font-variant-numeric: lining-nums; letter-spacing: -0.02em; color: var(--ink);
+  padding-top: calc(var(--f) * 0.02);
+}
+.on-count__side { display: grid; gap: calc(var(--f) * 0.035); padding-bottom: calc(var(--f) * 0.005); }
+.on-count__w { font-family: var(--f-name); font-weight: 400; font-size: max(1.5rem, calc(var(--f) * 0.135)); line-height: 1; color: var(--ink); }
+html[lang="zh-Hant"] .on-count__w { font-weight: 500; letter-spacing: 0.06em; }
+.on-count__line { margin: 0; color: var(--ink-2); line-height: 1.6; white-space: nowrap; }
+.on-count__line span { display: block; }
+
+/* on a phone: the number, then its words beneath */
+.on-count.is-stacked { flex-direction: column; align-items: flex-start; gap: calc(var(--f) * 0.09); }
+.on-count.is-stacked .on-count__side { max-width: calc(100vw - 32px); }
+
+.on-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; margin: 0; }
+
+/* arrival: the shapes one at a time in the order he first went, each fading in and settling */
+.is-arriving .on-c { opacity: 0; transform: translateY(-5px); }
+.is-arriving .on-count { opacity: 0; }
+.is-arriving.is-in .on-c {
+  opacity: 1; transform: none;
+  transition: opacity 0.55s var(--ease) calc(0.25s + var(--i) * 0.1s), transform 0.8s var(--ease) calc(0.25s + var(--i) * 0.1s);
+}
+.is-arriving.is-in .on-count { opacity: 1; transition: opacity 0.9s var(--ease) 0.05s; }
+
+/* small countries: a ring with a paper edge, so it reads on the paper and on the ink */
+.on-halo { fill: none; stroke: var(--paper); stroke-width: 3.2; }
+.on-home { fill: var(--on-home); font-size: 10px; dominant-baseline: middle; }

@@ -1,0 +1,30 @@
+/* Cross-stitch sampler 十字繡 (2026-11-06): the world sewn on aida cloth. The linen and the fourth
+   earth colour are this version's own; the threads are drawn from the tokens in base.css. */
+:root {
+  --linen: oklch(95.2% 0.013 84);   /* the aida cloth */
+  --ochre: oklch(69% 0.105 78);
+}
+
+/* the cloth, laid on the page */
+.st-cloth { position: absolute; left: var(--cx, 16px); top: var(--cy, 60px); width: var(--cw, 100%); height: var(--ch, 100%); }
+.st-cloth canvas { position: absolute; left: 0; top: 0; display: block; }
+.st-cloth > :is(p, div, ul) { position: absolute; margin: 0; left: var(--x, 0); top: var(--y, 0); }
+
+/* Taiwan's mark */
+.st-home { display: flex; align-items: center; gap: 6px; color: var(--ink); pointer-events: none; white-space: nowrap; }
+.st-home::before { content: ""; width: 16px; height: 1px; background: var(--ink-2); }
+.st-home.is-under { flex-direction: column; gap: 2px; transform: translateX(-50%); }
+.st-home.is-under::before { width: 1px; height: 9px; }
+
+/* the words beside the stitched count */
+.st-where { white-space: nowrap; transform: translateY(-50%); }
+.st-words { display: grid; gap: 2px; width: max-content; }
+.st-words__what { font: 400 1.375rem/1.15 var(--f-name); color: var(--ink); }
+.st-words__span, .st-words__trips { font-size: 0.8125rem; line-height: 1.4; color: var(--ink-2); }
+.st-words__trips { margin-top: 4px; }
+html[lang="zh-Hant"] .st-words__what { font-size: 1.3rem; }
+
+/* the key: one stitch of each thread, its name beside it on the same row of the cloth */
+.st-key { list-style: none; padding: 0; width: 0; height: 0; }
+.st-key li { position: absolute; left: var(--x, 0); top: var(--y, 0); transform: translateY(-50%); display: flex; gap: 8px; width: var(--w, 9rem); font-size: 0.75rem; line-height: 1.2; color: var(--ink-2); white-space: nowrap; }
+.st-key b { font-weight: 400; color: var(--ink-3); font-variant-numeric: tabular-nums; margin-left: auto; }
