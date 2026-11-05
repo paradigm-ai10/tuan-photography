@@ -75,11 +75,26 @@
         "zh": "一筆一筆勾出來，再變成真的"
       },
       "desc": {
-        "en": "C as you asked: the logo's line runs to both edges, then the road to the Sagrada Família is traced line by line, starting at the towers and spreading out, as if drawn by hand; the pencil shading comes in under the lines, then it turns into your film. About 13 seconds; a click skips it.",
-        "zh": "照你說的改 C：標誌的線延伸到兩邊，接著聖家堂前那條路一筆一筆勾出來，從塔開始往外畫，像手在畫；畫完鉛筆的陰影慢慢出現在線條下面，再變成你的影片。大約 13 秒，點一下可以跳過。"
+        "en": "C as you asked: the logo's line runs to both edges, then the road to the Sagrada Família is traced line by line, starting at the towers and spreading out, as if drawn by hand; the pencil shading comes in under the lines, then it turns into your film. Now quicker: the drawing takes about 2 seconds and the film is up in about 7; a click skips it.",
+        "zh": "照你說的改 C：標誌的線延伸到兩邊，接著聖家堂前那條路一筆一筆勾出來，從塔開始往外畫，像手在畫；畫完鉛筆的陰影慢慢出現在線條下面，再變成你的影片。現在比較快：大約 2 秒畫完，7 秒左右就進到影片，點一下可以跳過。"
       },
       "still": {
         "wait": 1500
+      }
+    },
+    {
+      "href": "c-counted.html",
+      "group": "round1",
+      "title": {
+        "en": "Traced and counted",
+        "zh": "勾出來，數一數"
+      },
+      "desc": {
+        "en": "D as you asked: while the road is drawn, the trip so far counts up along the foot of the drawing (21 countries, 41 flights, 93 photographs, read from the site's own data), then each scene of the film gets a small caption, the place and when, fading in and out with the scene.",
+        "zh": "照你說的改 D：畫路的同時，畫面下方數出到目前為止的旅程（21 個國家、41 趟航班、93 張照片，直接從網站的資料算出來），接著影片的每一個場景都有一行小字幕，寫地方和時間，跟著場景淡入淡出。"
+      },
+      "still": {
+        "wait": 2500
       }
     }
   ],

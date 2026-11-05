@@ -1,6 +1,7 @@
 /* Home redesign, three directions (2026-11-05): the opening of each, the two languages, and the
    photographs rising into view. <html data-home> names the direction: a (a short film), b (prints
-   gather), c (drawn, then real), d (traced line by line, then real). The loading screen is the live one (logo 1C, motion 21); here it
+   gather), c (drawn, then real), d (traced line by line, then real); with data-counts on <html> it is E,
+   the trip so far counting up under the drawing and a caption for each scene of the film. The loading screen is the live one (logo 1C, motion 21); here it
    plays on every load so each version can be judged. A click or a key skips to the end; R plays it
    again; ?still shows the end at once (for the list page's pictures); "reduce motion" skips it. */
 (() => {
@@ -34,6 +35,24 @@
   const cover = document.querySelector('.hr-open > img');
   const sketch = document.querySelector('.hr-load__sketch');
   let done = false;
+
+  // E: the trip so far counts up while the lines are drawn (the numbers come from the site's own data)
+  const tally = [...document.querySelectorAll('.hr-load__counts b')];
+  function count(ms) {
+    const t0 = performance.now();
+    const step = (now) => {
+      const k = Math.min(1, (now - t0) / ms), e = 1 - Math.pow(1 - k, 3);
+      tally.forEach((b) => { b.textContent = String(Math.round(e * Number(b.dataset.to))); });
+      if (k < 1 && !done) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+  // E: a caption for each scene of the film, shown while its scene plays
+  const caps = [...document.querySelectorAll('.hr-cap__one')];
+  if (video && caps.length) video.addEventListener('timeupdate', () => {
+    const t = video.currentTime;
+    caps.forEach((c) => c.classList.toggle('is-on', t >= Number(c.dataset.from) && t < Number(c.dataset.to)));
+  });
 
   // the end state at once: the loading screen gone, the film playing
   function finish() {
@@ -111,6 +130,7 @@
     html.classList.add('hr-horizon');
     await wait(700); if (done) return;
     html.classList.add('hr-trace');
+    if (tally.length) count(2100);
     await wait(2200); if (done) return;   // the shading starts as the last lines land (the lines run at --pace 0.5)
     html.classList.add('hr-shade');
     await wait(900); if (done) return;    // and the film follows close behind (his ask, 2026-11-05)

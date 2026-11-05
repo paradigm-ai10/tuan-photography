@@ -176,3 +176,26 @@ html.hr-js .hr-in.is-in { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) {
   html.hr-js .hr-in { opacity: 1; transform: none; }
 }
+
+/* ---------------- E: as D, the trip so far counting up along the foot of the drawing, then a caption
+   for each scene of the film (his ask, 2026-11-05) ---------------- */
+.hr-load__counts { display: none; }
+[data-counts] .hr-load__counts { position: absolute; z-index: 3; left: 0; right: 0; bottom: 0; display: flex; justify-content: center;
+  gap: clamp(2.5rem, 1rem + 6vw, 7rem); padding: 5rem 16px clamp(1.6rem, 1rem + 2vw, 2.8rem);
+  background: linear-gradient(to top, var(--bg) 50%, transparent); color: var(--text); opacity: 0; transition: opacity 0.8s ease; }
+[data-counts] .hr-load__counts p { margin: 0; display: grid; justify-items: center; gap: 0.55rem; }
+[data-counts] .hr-load__counts b { font: 300 clamp(2rem, 1.3rem + 2.4vw, 3.4rem)/1 var(--mark); font-variant-numeric: lining-nums tabular-nums; }
+[data-counts] .hr-load__counts .caps { font-size: var(--t-xs); color: var(--text-2); }
+html.hr-trace .hr-load__counts { opacity: 1; }
+[data-counts].hr-out .hr-load__counts { opacity: 0; transition: opacity 0.9s ease; }
+.hr-cap { position: absolute; z-index: 2; left: 16px; right: 16px; bottom: clamp(2rem, 1.2rem + 3vw, 3.75rem); margin: 0;
+  display: grid; justify-items: center; pointer-events: none; color: var(--paper); }
+.hr-cap__one { grid-area: 1 / 1; display: grid; justify-items: center; gap: 0.5rem; text-align: center; opacity: 0; transform: translateY(0.4rem);
+  transition: opacity 0.9s ease, transform 1.2s var(--out); text-shadow: 0 1px 16px color-mix(in oklch, var(--text) 55%, transparent); }
+.hr-cap__one.is-on { opacity: 1; transform: none; }
+.hr-cap__one b { font: 300 clamp(1.5rem, 1.1rem + 1.3vw, 2.3rem)/1.15 "Cormorant Garamond", "Noto Serif TC", Georgia, serif; }
+html[lang="zh-Hant"] .hr-cap__one b { font-weight: 500; }
+.hr-cap__one small { font-size: var(--t-xs); }
+/* a soft shade along the foot of the film, as the top one, so the captions read over a bright scene */
+[data-counts] .hr-open::after { content: ""; position: absolute; z-index: 1; left: 0; right: 0; bottom: 0; height: 15rem; pointer-events: none;
+  background: linear-gradient(to top, color-mix(in oklch, var(--text) 50%, transparent), transparent); }

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Writes the three home-page directions of the home redesign (2026-11-05) into
-design 2/new/home-redesign/: a-film.html, b-prints.html, c-drawn.html.
+design 2/new/home-redesign/: a-film.html, b-prints.html, c-drawn.html,
+c-traced.html (D) and c-counted.html (E).
 
     python3 tools/home_redesign.py
 
@@ -100,9 +101,20 @@ FILM = ('<section class="hr-open" aria-label="Barcelona">'
         '<source src="media/barcelona.mp4" type="video/mp4"></video></section>')
 
 
-def page(home, name, title_en, title_zh, opening, body, extra=""):
+# The film's four scenes (media/barcelona.mp4, 12.1 s; the cuts are cross-fades near 3, 6 and 9 s):
+# when each caption shows, in seconds of the film, and its two lines.
+SPAIN = ("Barcelona, July 2026", "巴塞隆納，2026 年 7 月")
+CAPTIONS = [
+    (0.5, 2.6, ("Sagrada Família", "聖家堂"), SPAIN),
+    (3.5, 5.6, ("Barcelona from Tibidabo", "從提比達波看巴塞隆納"), SPAIN),
+    (6.5, 8.6, ("The wheel on Tibidabo", "提比達波的摩天輪"), SPAIN),
+    (9.5, 11.7, ("Inside the Sagrada Família", "聖家堂裡面"), SPAIN),
+]
+
+
+def page(home, name, title_en, title_zh, opening, body, extra="", attrs=""):
     return f"""<!doctype html>
-<html lang="en" data-home="{home}">
+<html lang="en" data-home="{home}"{attrs}>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -196,7 +208,21 @@ def build():
     lines = (OUT / "media" / "road-lines.svg").read_text(encoding="utf-8")
     traced = '\n  <img class="hr-load__sketch" src="media/road-sketch.jpg" alt="">\n  ' + lines
     (OUT / "c-traced.html").write_text(page("d", "c-traced", "Traced, then real", "一筆一筆勾出來，再變成真的", FILM, c, traced), encoding="utf-8")
-    print("wrote a-film.html, b-prints.html, c-drawn.html, c-traced.html")
+    # E, traced and counted: as D, the trip so far counting up while the lines are drawn, and a caption
+    # for each scene of the film (his ask, 2026-11-05). The counts are read from data/site.json, so they
+    # stay true as places, flights and photographs are added.
+    counts = [
+        (len(SITE["countries"]), "Countries", "國家"),
+        (sum(1 for j in SITE["journeys"] for l in j["legs"] if l["mode"] == "flight"), "Flights", "航班"),
+        (len(SITE["slides"]), "Photographs", "照片"),
+    ]
+    tally = "".join(f'<p><b data-to="{n}">0</b><span class="caps">{both(en, zh)}</span></p>' for n, en, zh in counts)
+    counted = traced + f'\n  <div class="hr-load__counts">{tally}</div>'
+    caps = "".join(f'<span class="hr-cap__one" data-from="{a}" data-to="{b}"><b>{both(*name)}</b><small class="caps">{both(*where)}</small></span>'
+                   for a, b, name, where in CAPTIONS)
+    film_e = FILM.replace("</video></section>", f'</video><p class="hr-cap" aria-hidden="true">{caps}</p></section>')
+    (OUT / "c-counted.html").write_text(page("d", "c-counted", "Traced and counted", "勾出來，數一數", film_e, c, counted, " data-counts"), encoding="utf-8")
+    print("wrote a-film.html, b-prints.html, c-drawn.html, c-traced.html, c-counted.html")
 
 
 if __name__ == "__main__":
