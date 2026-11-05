@@ -25,6 +25,13 @@
       }
     },
     {
+      "id": "luxe",
+      "title": {
+        "en": "High-end: three quiet versions",
+        "zh": "高級感：三個安靜的版本"
+      }
+    },
+    {
       "id": "strips",
       "title": {
         "en": "Strips",
@@ -43,13 +50,6 @@
       "title": {
         "en": "Atlas",
         "zh": "地圖集"
-      }
-    },
-    {
-      "id": "air",
-      "title": {
-        "en": "Prints in the air, five figures",
-        "zh": "空中的相片，五種動態"
       }
     }
   ],
@@ -101,6 +101,69 @@
       },
       "still": {
         "wait": 20000
+      }
+    },
+    {
+      "id": "journey-luxe-unveil",
+      "href": "journey-luxe-unveil.html",
+      "group": "luxe",
+      "title": {
+        "en": "Unveil: the page lifts off a photograph",
+        "zh": "揭開：整頁地圖從照片上掀起"
+      },
+      "desc": {
+        "en": "Nothing comes apart: the map is the page itself, and it folds up into the globe in one slow movement, the scroll carrying more weight. Its edges thin away as it lifts, and beneath it lies the photograph of the trip, softened by a sheet of paper and settling as it is uncovered; it stays for the reading.",
+        "zh": "什麼都不拆開：地圖就是這一頁本身，用一個慢慢的動作折成地球，捲動帶一點重量。掀起時四邊慢慢淡掉，底下是這趟旅程的照片，蓋著一層薄紙，掀開時慢慢沉穩下來，開始讀旅程時就留在背後。"
+      },
+      "still": {
+        "wait": 20000,
+        "view": {
+          "state": {
+            "y": 1.1
+          }
+        }
+      }
+    },
+    {
+      "id": "journey-luxe-print",
+      "href": "journey-luxe-print.html",
+      "group": "luxe",
+      "title": {
+        "en": "One print: the map turns over to the Matterhorn",
+        "zh": "一幅：地圖翻過來是馬特洪峰"
+      },
+      "desc": {
+        "en": "The map hangs as one fine print on the wall. It turns over once, slowly, to a single photograph of yours in a wide paper margin (the Matterhorn in the lake), holds there, turns back, and only then folds into the globe. One thing moves at a time.",
+        "zh": "地圖像一幅掛在牆上的版畫。往下捲，它慢慢翻過來一次，背面是你的一張照片（湖裡的馬特洪峰倒影），四周留寬寬的紙邊；停一下，再翻回來，然後才折成地球。一次只動一件事。"
+      },
+      "still": {
+        "wait": 20000,
+        "view": {
+          "state": {
+            "y": 1.17
+          }
+        }
+      }
+    },
+    {
+      "id": "journey-luxe-hang",
+      "href": "journey-luxe-hang.html",
+      "group": "luxe",
+      "title": {
+        "en": "The hang: eighteen prints, one wall",
+        "zh": "畫廊：十八張照片掛成一面牆"
+      },
+      "desc": {
+        "en": "The map parts into eighteen prints hung like a gallery wall. They turn over in a slow diagonal from the top left to your photographs (one per trip, newest first), hold as an even wall, turn back in the same order, close up, and the sheet folds into the globe. Nothing random, nothing flying.",
+        "zh": "地圖分成十八張，像畫廊牆上掛的照片。從左上角開始斜斜地一張接一張翻過來，變成你的照片（每趟旅程一張，最新的在前），整齊地停成一面牆；再照同樣順序翻回地圖，合起來，折成地球。沒有亂數，沒有亂飛。"
+      },
+      "still": {
+        "wait": 20000,
+        "view": {
+          "state": {
+            "y": 1.17
+          }
+        }
       }
     },
     {
@@ -293,111 +356,6 @@
       },
       "still": {
         "wait": 20000
-      }
-    },
-    {
-      "id": "journey-gallery-wind",
-      "href": "journey-gallery-wind.html",
-      "group": "air",
-      "title": {
-        "en": "In the air: a gust",
-        "zh": "空中：一陣風"
-      },
-      "desc": {
-        "en": "The map comes apart into its prints and a wind blows them off, west first; they tumble over and hang in a drifting cloud of your photographs, rocking in the air, then spiral back round the globe, Taiwan's first, turning back to the map as they come. Your landscapes show behind them, and the Adjust word at the bottom left sets the scroll length and timing.",
-        "zh": "地圖拆成一張張相片，被一陣風從西邊吹散，在空中翻過來，變成一大片飄著、輕輕晃動的照片雲；之後從台灣那幾張開始，繞著地球慢慢捲回去，邊捲邊翻回地圖。背後是你的風景照；左下角的「調整」可以改捲動長度和時間。"
-      },
-      "still": {
-        "wait": 20000,
-        "view": {
-          "state": {
-            "y": 0.9
-          }
-        }
-      }
-    },
-    {
-      "id": "journey-gallery-murmur",
-      "href": "journey-gallery-murmur.html",
-      "group": "air",
-      "title": {
-        "en": "In the air: a murmuration",
-        "zh": "空中：一群鳥"
-      },
-      "desc": {
-        "en": "The prints rise one after another and stream along one long ribbon that sweeps and folds across the screen, thick and thin by turns, flashing as they bank like starlings turning, then pour into the globe. Your landscapes show behind them, and the Adjust word at the bottom left sets the scroll length and timing.",
-        "zh": "相片一張接一張飛起來，排成一條長長的帶子在畫面上掃過、轉彎，時粗時細，轉向時像椋鳥群一樣一閃一閃，最後湧進地球。背後是你的風景照；左下角的「調整」可以改捲動長度和時間。"
-      },
-      "still": {
-        "wait": 20000,
-        "view": {
-          "state": {
-            "y": 0.9
-          }
-        }
-      }
-    },
-    {
-      "id": "journey-gallery-deck",
-      "href": "journey-gallery-deck.html",
-      "group": "air",
-      "title": {
-        "en": "In the air: a deck of cards",
-        "zh": "空中：一副牌"
-      },
-      "desc": {
-        "en": "Every print is gathered into one pile in the middle, turned face up on the way; the pile is fanned out in three rows like a hand of cards, and they are dealt back onto the globe, Taiwan's first. Your landscapes show behind them, and the Adjust word at the bottom left sets the scroll length and timing.",
-        "zh": "所有相片先收成中間一疊，收的時候翻成照片朝上；接著像一手牌一樣攤成三排扇形，再從台灣那幾張開始一張張發回地球上。背後是你的風景照；左下角的「調整」可以改捲動長度和時間。"
-      },
-      "still": {
-        "wait": 20000,
-        "view": {
-          "state": {
-            "y": 0.9
-          }
-        }
-      }
-    },
-    {
-      "id": "journey-gallery-vortex",
-      "href": "journey-gallery-vortex.html",
-      "group": "air",
-      "title": {
-        "en": "In the air: a whirlwind",
-        "zh": "空中：龍捲風"
-      },
-      "desc": {
-        "en": "The prints are pulled up off the map, the bottom first, into a turning column that widens to the top like a whirlwind, each facing out with its photograph, and the column closes down into the globe. Your landscapes show behind them, and the Adjust word at the bottom left sets the scroll length and timing.",
-        "zh": "相片從地圖下面開始被捲起來，變成一根旋轉、越往上越寬的龍捲風柱，每張都照片朝外；最後柱子收進地球。背後是你的風景照；左下角的「調整」可以改捲動長度和時間。"
-      },
-      "still": {
-        "wait": 20000,
-        "view": {
-          "state": {
-            "y": 0.9
-          }
-        }
-      }
-    },
-    {
-      "id": "journey-gallery-tide",
-      "href": "journey-gallery-tide.html",
-      "group": "air",
-      "title": {
-        "en": "In the air: a tide",
-        "zh": "空中：一道浪"
-      },
-      "desc": {
-        "en": "A wave runs out from Taiwan and turns each print over where it lies, so the map becomes a contact sheet of your photographs; it ripples like cloth in the wind and rolls up into the globe, turning back to the map. Your landscapes show behind them, and the Adjust word at the bottom left sets the scroll length and timing.",
-        "zh": "一道浪從台灣往外跑，把每張相片就地翻過來，地圖變成一整張你的照片印樣；它像布被風吹一樣起伏，然後捲成地球，邊捲邊翻回地圖。背後是你的風景照；左下角的「調整」可以改捲動長度和時間。"
-      },
-      "still": {
-        "wait": 20000,
-        "view": {
-          "state": {
-            "y": 0.9
-          }
-        }
       }
     },
     {

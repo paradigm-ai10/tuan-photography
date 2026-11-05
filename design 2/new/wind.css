@@ -7,6 +7,8 @@
 .g3-under { position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: var(--show, 0); clip-path: inset(var(--t, 0) var(--r, 0) var(--b, 0) var(--l, 0)); overflow: hidden; }
 .g3-under__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(var(--kb, 1)); transition: opacity 1.4s var(--ease); }
 .g3-under__img.is-on { opacity: 1; }
+/* (luxe-unveil) a sheet of paper over the photograph while the page is in the air, lifted as the globe docks */
+.g3-under::after { content: ""; position: absolute; inset: 0; background: var(--paper); opacity: var(--veil, 0); }
 
 /* the adjust tab: a word at the bottom left, on his Mac only */
 .adj { position: fixed; left: 16px; bottom: 16px; z-index: 2147481000; font: 400 0.8125rem/1.4 var(--f-text); color: var(--ink); }

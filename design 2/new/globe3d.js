@@ -28,6 +28,7 @@ const V = document.body.dataset.globe || 'paper';
 // the globemaker's globe (see gores below), shared by its photograph variations
 const GORE = { lift: 0.03, seg: [720, 360], frame1: 3.05, look: 0.3, paint: 'globe', wave: true, gores: true, rise: true, pen: true, unlit: true, bleed: true, gloss: true, noGrat: true };
 const GALLERY = { ...GORE, gores: false, tiles: [24, 12] };
+const LUXE = { ...GORE, gores: false, glide: 0.07 };
 const WIND = { ...GALLERY, photos: 'tileBacks', flip: true, backdrop: ['matterhorn-lake', 'roys-peak', 'fuji-lake', 'sapa-valley'] };
 const CFG = {
   paper: { lift: 0.07, seg: [360, 180] },
@@ -119,6 +120,19 @@ const CFG = {
   'gallery-deck': { ...WIND, wind: 'deck' },
   'gallery-vortex': { ...WIND, wind: 'vortex' },
   'gallery-tide': { ...WIND, wind: 'tide' },
+  // the 高級感 round (2026-11-05, his word after the five figures: "forbid all of these designs ... keep it
+  // very 高級感"): few things move, slowly, one after another and in order, nothing random, and the fold
+  // follows the scroll with more weight (glide). The three:
+  // unveil   the map is the page itself: it folds up into the globe off the trip's photograph lying beneath
+  //          it, which settles as it is uncovered and stays for the reading
+  // print    the map is one fine print on the wall: it turns over once, slowly, to a single photograph of his
+  //          in a wide paper margin, holds, turns back, and only then folds into the globe
+  // hang     the map parts into eighteen prints hung like a gallery wall; they turn over in a slow diagonal
+  //          from the top left to his photographs (one per trip, newest first), hold, turn back in the same
+  //          order, close up, and the sheet folds into the globe
+  'luxe-unveil': { ...LUXE, photos: 'through', unveil: true },
+  'luxe-print': { ...LUXE, bleed: false, tiles: [1, 1], photos: 'tileBacks', hang: { gap: 0.05, lift: 0.08, axis: 'x', photo: 'matterhorn-lake' } },
+  'luxe-hang': { ...LUXE, bleed: false, tiles: [6, 3], photos: 'tileBacks', hang: { gap: 0.12, lift: 0.1, axis: 'y' } },
 }[V];
 const HOME_LL = [S.flightsFrom[1], S.flightsFrom[0]];
 const CRAFT = 'craft' in document.body.dataset;
@@ -186,12 +200,23 @@ const TILES = CFG.tiles || [1, 1], TILE_GAP = 0.06, TILE_LIFT = CFG.tileLift || 
 // until 0.82; each is thrown aside its own way, and turns over about its across (0, 2) or its up and
 // down (1, 3), so it lands the same shape; the shader works both out the same way
 const TILE_RATE = CFG.flip ? 2.2 : 1.6;
+const HANG = CFG.hang || null;
 const tileSlant = (c, r) => ((c * 7 + r * 13) * 2.39996) % TAU, tileTurn = (c, r) => (c * 7 + r * 13) % 4;
 const smoother = (x) => x * x * x * (x * (x * 6 - 15) + 10);
 function tilePlace(q, b, h, f, center, out) {
   const [cols, rows] = TILES, qy = b / Math.PI + 0.5;
   const col = Math.min(cols - 1, Math.floor(q * cols)), row = Math.min(rows - 1, Math.max(0, Math.floor(qy * rows)));
   const ac = ((col + 0.5) / cols - 0.5) * TAU, bc = ((row + 0.5) / rows - 0.5) * Math.PI;
+  if (HANG) {
+    // (hang, print) the turns are the shader's alone (the dots are put away meanwhile); the gaps close and
+    // the sheet folds as one, round Taiwan, as the shader does it
+    const gp = HANG.gap * smooth(0, 0.1, f) * (1 - smooth(0.68, 0.8, f));
+    const a2 = ac + ((q - 0.5) * TAU - ac) * (1 - gp), b2 = bc + (b - bc) * (1 - gp), hp = HOME_LL[1] * RAD;
+    const dw = Math.acos(clamp(Math.sin(b2) * Math.sin(hp) + Math.cos(b2) * Math.cos(hp) * Math.cos(a2 + center - HOME_LL[0] * RAD), -1, 1)) / Math.PI;
+    const w = smooth(0, 1, clamp(((f - 0.7) / 0.3) * 1.7 - dw * 0.7, 0, 1)), k = R * (1 + h);
+    const px = Math.cos(b2) * Math.sin(a2) * k, py = Math.sin(b2) * k, pz = Math.cos(b2) * Math.cos(a2) * k;
+    return out.set(a2 * R + (px - a2 * R) * w, b2 * R + (py - b2 * R) * w, k + (pz - k) * w);
+  }
   if (CFG.wind) {
     // (wind) the prints' flight is the shader's alone: the routes and dots are put away while they are in the air
     const a = (q - 0.5) * TAU, k = R * (1 + h);
@@ -248,7 +273,7 @@ function place(lon, lat, h, st, out = new THREE.Vector3()) {
 }
 const MORPH = /* glsl */`
   uniform float uKx, uKy, uR, uCenter, uRaise, uMix, uWave, uFold, uRise, uReveal, uSoft, uGores, uGore0, uTiles, uTileGap, uTileLift, uTileFlip, uTileScatter, uTileRate, uTileMode, uTileKeep, uTurn, uTime;
-  uniform vec4 uWin, uWind;
+  uniform vec4 uWin, uWind, uHang;
   uniform vec2 uHome, uTileN;
   uniform sampler2D uMask, uMaskPrev;
   varying vec2 vQ;
@@ -256,18 +281,45 @@ const MORPH = /* glsl */`
   varying vec2 vGore;
   varying float vGoreId;
   varying vec2 vTile, vTileC;
-  varying float vLand, vW;
+  varying float vLand, vW, vShade;
   ${CFG.gores ? 'attribute float aGore;' : 'const float aGore = 0.5;'}
   ${CFG.tiles ? 'attribute vec2 aTile;' : 'const vec2 aTile = vec2(0.5);'}
   vec3 sheet(vec2 q, float h, out vec3 n) {
     float u = (q.x - 0.5) * 6.2831853 * uR, v = (q.y - 0.5) * 3.1415927 * uR;
-    vGore = vec2(0.0, 1.0); vGoreId = 0.0; vTile = vec2(0.0); vLand = 1.0; vTileC = vec2(0.5); vW = 1.0;
+    vGore = vec2(0.0, 1.0); vGoreId = 0.0; vTile = vec2(0.0); vLand = 1.0; vTileC = vec2(0.5); vW = 1.0; vShade = 1.0;
     if (uTiles > 0.5) {
       // a print on the wall (tilePlace in the JS): lifted off whole, turned to face out from its place on
       // the ball and laid there, then pressed down onto it as the gaps close
       float a = u / uR, b = v / uR;
       float ac = (aTile.x - 0.5) * 6.2831853, bc = (aTile.y - 0.5) * 3.1415927;
       float d = acos(clamp(sin(bc) * sin(uHome.y) + cos(bc) * cos(uHome.y) * cos(ac + uCenter - uHome.x), -1.0, 1.0)) / 3.1415927;
+      if (uTileMode > 5.5) {
+        // (hang and print) the wall parts into prints that stay on it and turn over one after another, in a
+        // diagonal from the top left (x: the gap, y: the lift while turning, z: about the across, w: on), to
+        // his photographs; they hold, turn back in the same order, close up, and the sheet then folds round
+        // Taiwan as one. A little shade as each stands edge on is the only light.
+        vec2 tc = floor(aTile * uTileN);
+        float many = step(1.5, uTileN.x * uTileN.y);
+        float k = many * (tc.x + (uTileN.y - 1.0 - tc.y) * 0.5) / max(1.0, uTileN.x - 1.0 + (uTileN.y - 1.0) * 0.5);
+        float t1 = clamp((uFold - 0.08 - k * 0.16 * many) / (0.32 - 0.16 * many), 0.0, 1.0);
+        float t2 = clamp((uFold - 0.52 - k * 0.08 * many) / (0.2 - 0.08 * many), 0.0, 1.0);
+        t1 = t1 * t1 * t1 * (t1 * (t1 * 6.0 - 15.0) + 10.0); t2 = t2 * t2 * t2 * (t2 * (t2 * 6.0 - 15.0) + 10.0);
+        float th = 3.1415927 * (t1 + t2), co = cos(th), sn = sin(th);
+        float gp = uHang.x * smoothstep(0.0, 0.1, uFold) * (1.0 - smoothstep(0.68, 0.8, uFold));
+        vec2 o = vec2(a - ac, b - bc) * (1.0 - gp);
+        vec3 L = vec3(o, h) * uR;
+        L = uHang.z > 0.5 ? vec3(L.x, L.y * co - L.z * sn, L.y * sn + L.z * co) : vec3(L.x * co + L.z * sn, L.y, L.z * co - L.x * sn);
+        vec3 nf = uHang.z > 0.5 ? vec3(0.0, -sn, co) : vec3(sn, 0.0, co);
+        vec3 wall = vec3(ac * uR, bc * uR, uR) + L + vec3(0.0, 0.0, uHang.y * uR * (sin(3.1415927 * t1) + sin(3.1415927 * t2)));
+        vec2 g = vec2(ac, bc) + o;
+        vec3 ns = vec3(cos(g.y) * sin(g.x), sin(g.y), cos(g.y) * cos(g.x));
+        float dw = acos(clamp(sin(g.y) * sin(uHome.y) + cos(g.y) * cos(uHome.y) * cos(g.x + uCenter - uHome.x), -1.0, 1.0)) / 3.1415927;
+        float w = smoothstep(0.0, 1.0, clamp((uFold - 0.7) / 0.3 * 1.7 - dw * 0.7, 0.0, 1.0));
+        vTile = vec2(a - ac, b - bc) / vec2(3.1415927 / uTileN.x, 1.5707963 / uTileN.y);
+        vLand = w; vTileC = aTile; vShade = 0.86 + 0.14 * abs(co);
+        n = normalize(mix(nf, ns, w));
+        return mix(wall, ns * uR * (1.0 + h), w);
+      }
       if (uTileMode > 4.5) {
         // (the wind versions) each print leaves the wall on its own clock, turns over to show its
         // photograph and hangs in the air in its version's figure; then, in its version's order, it is
@@ -1001,7 +1053,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     uEarth: { value: CFG.earth ? 1 : 0 }, uAlive: { value: 0 }, uBleed: { value: CFG.bleed ? 1 : 0 }, uPaperC: { value: new THREE.Color(rgb('--paper')) },
     uDevelop: { value: CFG.develop ? 1 : 0 }, uDevTint: { value: new THREE.Color(rgb('oklch(78% 0.07 70)')) },
     uGores: { value: CFG.gores ? 1 : 0 }, uGore0: { value: GORE0 }, uPen: { value: CFG.pen ? 1 : 0 },
-    uTiles: { value: CFG.tiles ? 1 : 0 }, uTilePhotos: { value: { tileBacks: 1, tileEdges: 2 }[CFG.photos] || 0 }, uAtlasN: { value: 6 }, uTileN: { value: new THREE.Vector2(...TILES) }, uTileGap: { value: TILE_GAP }, uTileLift: { value: TILE_LIFT }, uTileFlip: { value: TILE_FLIP }, uTileScatter: { value: TILE_SCATTER }, uTileRate: { value: TILE_RATE }, uTileMode: { value: CFG.stay ? 1 : CFG.hold ? 2 : CFG.keep ? 3 : CFG.window ? 4 : CFG.wind ? 5 : 0 }, uTime: { value: 0 }, uWind: { value: new THREE.Vector4(0.55, 0.9, 1, ['gust', 'murmur', 'deck', 'vortex', 'tide'].indexOf(CFG.wind)) }, uTileKeep: { value: CFG.keep || 0 }, uTurn: { value: 0 }, uWin: { value: new THREE.Vector4(23.5 * RAD, 23.5 * RAD, 1, (CFG.window || 1) * RAD) },
+    uTiles: { value: CFG.tiles ? 1 : 0 }, uTilePhotos: { value: { tileBacks: 1, tileEdges: 2 }[CFG.photos] || 0 }, uAtlasN: { value: 6 }, uTileN: { value: new THREE.Vector2(...TILES) }, uTileGap: { value: TILE_GAP }, uTileLift: { value: TILE_LIFT }, uTileFlip: { value: TILE_FLIP }, uTileScatter: { value: TILE_SCATTER }, uTileRate: { value: TILE_RATE }, uTileMode: { value: CFG.stay ? 1 : CFG.hold ? 2 : CFG.keep ? 3 : CFG.window ? 4 : CFG.wind ? 5 : HANG ? 6 : 0 }, uHang: { value: new THREE.Vector4(HANG ? HANG.gap : 0, HANG ? HANG.lift : 0, HANG && HANG.axis === 'x' ? 1 : 0, HANG ? 1 : 0) }, uHangM: { value: new THREE.Vector2(0.06, 0.06) }, uUnveil: { value: CFG.unveil ? 1 : 0 }, uTime: { value: 0 }, uWind: { value: new THREE.Vector4(0.55, 0.9, 1, ['gust', 'murmur', 'deck', 'vortex', 'tide'].indexOf(CFG.wind)) }, uTileKeep: { value: CFG.keep || 0 }, uTurn: { value: 0 }, uWin: { value: new THREE.Vector4(23.5 * RAD, 23.5 * RAD, 1, (CFG.window || 1) * RAD) },
     uBacks: { value: 0 }, uBackTex: { value: texes[0] },
     uMask: { value: maskTex ? maskTex[0] : texes[0] }, uMaskPrev: { value: maskTex ? maskTex[1] : texes[0] },
   };
@@ -1026,7 +1078,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
       .replace('#include <beginnormal_vertex>', 'vec3 nrm; float rz = raiseAt(uv); vQ = uv; vRz = uRaise > 0.0 ? rz / uRaise : 0.0;\nvec3 morphed = sheet(uv, rz, nrm);\nvec3 objectNormal = nrm;')
       .replace('#include <begin_vertex>', 'vec3 transformed = morphed;');
     sh.fragmentShader = sh.fragmentShader
-      .replace('#include <common>', '#include <common>\nuniform sampler2D uPrev, uMask, uMaskPrev; uniform float uMix, uLit, uPlate, uFold, uWalls, uDevelop, uCenter, uReveal, uEarth, uAlive, uBleed, uGores, uPen, uBacks, uTiles, uTilePhotos, uAtlasN, uTileFlip; uniform vec2 uTileN; uniform sampler2D uBackTex; uniform vec3 uBack, uEdge, uDevTint, uPaperC; varying vec2 vQ; varying float vRz; varying vec2 vGore; varying float vGoreId; varying vec2 vTile, vTileC; varying float vLand, vW;')
+      .replace('#include <common>', '#include <common>\nuniform sampler2D uPrev, uMask, uMaskPrev; uniform float uMix, uLit, uPlate, uFold, uWalls, uDevelop, uCenter, uReveal, uEarth, uAlive, uBleed, uGores, uPen, uBacks, uTiles, uTilePhotos, uAtlasN, uTileFlip; uniform vec2 uTileN; uniform sampler2D uBackTex; uniform vec3 uBack, uEdge, uDevTint, uPaperC; uniform vec4 uHang; uniform vec2 uHangM; uniform float uUnveil; varying vec2 vQ; varying float vRz; varying vec2 vGore; varying float vGoreId; varying vec2 vTile, vTileC; varying float vLand, vW, vShade;')
       .replace('#include <map_fragment>', `#include <map_fragment>
         #ifdef USE_MAP
           diffuseColor.rgb = mix(texture2D(uPrev, vMapUv).rgb, diffuseColor.rgb, uMix);
@@ -1070,6 +1122,8 @@ window.JourneyMap = async function makeGlobe(svgEl) {
           float edge = smoothstep(0.93, 1.0, max(abs(vTile.x), abs(vTile.y)));
           diffuseColor.rgb *= 1.0 - 0.13 * edge * smoothstep(0.0, 0.1, uFold) * (1.0 - smoothstep(0.75, 1.0, vLand));
         }
+        // (hang, print) a little shade as a print stands edge on, applied with the photographs below
+        float shade = vShade;
         // the printed plate: on arrival the map is trimmed to its band, 80N to 56S
         if (uPlate > 0.5) { float la = (vQ.y - 0.5) * 180.0, o = smoothstep(0.15, 0.6, uFold); if (la > mix(80.0, 91.0, o) || la < mix(-56.0, -91.0, o)) discard; }
         // the cut sides of a raised country, a deeper clay than its top
@@ -1092,16 +1146,20 @@ window.JourneyMap = async function makeGlobe(svgEl) {
           if (uTilePhotos < 1.5 ? !gl_FrontFacing : edgeRow) {
             vec2 l = vTile * 0.5 + 0.5;
             // seen from behind it reads mirrored across the way it turned over (scatter: across or up and down)
-            if (!gl_FrontFacing) { if (uTileFlip > 0.5 && mod(tc * 7.0 + tr * 13.0, 2.0) < 0.5) l.y = 1.0 - l.y; else l.x = 1.0 - l.x; }
-            float id = mod(tc * 7.0 + tr * 11.0, uAtlasN * uAtlasN);
-            vec2 pu = (l - 0.06) / 0.88;
+            // (hang, print) turned about the up and down, or (print) about the across; read top left first,
+            // in a margin of its own (uHangM: the print's is wider at the sides, so the photograph is whole)
+            if (!gl_FrontFacing) { if (uHang.w > 0.5 ? uHang.z > 0.5 : uTileFlip > 0.5 && mod(tc * 7.0 + tr * 13.0, 2.0) < 0.5) l.y = 1.0 - l.y; else l.x = 1.0 - l.x; }
+            float id = uHang.w > 0.5 ? mod((uTileN.y - 1.0 - tr) * uTileN.x + tc, uAtlasN * uAtlasN) : mod(tc * 7.0 + tr * 11.0, uAtlasN * uAtlasN);
+            vec2 m = uHang.w > 0.5 ? uHangM : vec2(0.06);
+            vec2 pu = (l - m) / (1.0 - 2.0 * m);
             pu.x = 0.5 + (pu.x - 0.5) * vW;
             vec3 ph = texture2D(uBackTex, (vec2(mod(id, uAtlasN), floor(id / uAtlasN)) + clamp(pu, 0.002, 0.998)) / uAtlasN).rgb;
-            float inside = step(0.06, l.x) * step(l.x, 0.94) * step(0.06, l.y) * step(l.y, 0.94);
+            float inside = step(m.x, l.x) * step(l.x, 1.0 - m.x) * step(m.y, l.y) * step(l.y, 1.0 - m.y);
             vec3 print = mix(uPaperC, ph, inside);
             diffuseColor.rgb = uTilePhotos < 1.5 || !gl_FrontFacing ? print : mix(diffuseColor.rgb, print, smoothstep(0.02, 0.2, vLand) * (1.0 - smoothstep(0.7, 0.95, vLand)));
           }
-        }`)
+        }
+        diffuseColor.rgb *= shade;`)
       .replace('#include <opaque_fragment>', `outgoingLight = mix(diffuseColor.rgb, outgoingLight, uLit);
         // the map fills the page, and its edges fade into the paper, so no sheet edge is ever seen
         if (uBleed > 0.5) {
@@ -1111,6 +1169,8 @@ window.JourneyMap = async function makeGlobe(svgEl) {
           // (the gores show their whole pointed shapes once the knife has cut them; a print at the wall's
           // faded edge comes up to full strength as it lifts off)
           outgoingLight = mix(outgoingLight, uPaperC, e * (1.0 - (uGores > 0.5 ? smoothstep(0.08, 0.3, uFold) : uTiles > 0.5 ? smoothstep(0.0, 0.25, vLand) : smoothstep(0.45, 0.92, uFold))));
+          // (unveil) as the page lifts, its faded edges thin away grain by grain onto the photograph beneath
+          if (uUnveil > 0.5 && e * smoothstep(0.0, 0.16, uFold) > fract(sin(dot(floor(gl_FragCoord.xy), vec2(12.9898, 78.233))) * 43758.5453)) discard;
         }
         #include <opaque_fragment>`);
   };
@@ -1212,9 +1272,24 @@ window.JourneyMap = async function makeGlobe(svgEl) {
       im.src = K.src(S.slides[id].file, 640);
     });
   }
-  if (CFG.photos === 'tileBacks' || CFG.photos === 'tileEdges') {
+  if (HANG && HANG.photo && S.slides[HANG.photo]) {
+    // (print) one photograph, whole, on the back of the one print: the margin is set from its shape, an
+    // even margin top and bottom and the rest at the sides
+    const sl = S.slides[HANG.photo], im = new Image();
+    im.onload = () => {
+      const ar = im.naturalWidth / im.naturalHeight, my = 0.08, mx = Math.max(0.04, 0.5 - ((1 - 2 * my) * ar) / 4);
+      const cv = Object.assign(document.createElement('canvas'), { width: 2048, height: Math.round(2048 / ar) });
+      cv.getContext('2d').drawImage(im, 0, 0, cv.width, cv.height);
+      const tex = new THREE.CanvasTexture(cv);
+      tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 4;
+      U.uBackTex.value = tex; U.uAtlasN.value = 1; U.uHangM.value.set(mx, my);
+      kick();
+    };
+    im.src = K.src(sl.file);
+  } else if (CFG.photos === 'tileBacks' || CFG.photos === 'tileEdges') {
     // thirty-six of his photographs, each cut square, in a six by six atlas; one per trip first
-    const N = 6, C = 256, atlas = Object.assign(document.createElement('canvas'), { width: N * C, height: N * C });
+    // (hang: larger cells, the prints being larger)
+    const N = 6, C = HANG ? 512 : 256, atlas = Object.assign(document.createElement('canvas'), { width: N * C, height: N * C });
     const ac = atlas.getContext('2d');
     ac.fillStyle = rgb('--paper'); ac.fillRect(0, 0, atlas.width, atlas.height);
     const tex = new THREE.CanvasTexture(atlas);
@@ -1232,7 +1307,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
         ac.restore();
         tex.needsUpdate = true; kick();
       };
-      im.src = K.src(S.slides[id].file, 640);
+      im.src = K.src(S.slides[id].file, HANG ? 1280 : 640);
     });
   }
   // the ring: one print per trip, in a paper border, always facing the eye
@@ -1398,7 +1473,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     }
     setLines(sets.past, past); setLines(sets.here, here); setLines(sets.now, now);
     // the gores and the prints: the lines are lifted off while they are apart, and laid back on the closed globe
-    const gate = CFG.gores || CFG.tiles ? Math.max(1 - smooth(0.02, 0.14, st.fold), smooth(CFG.wind ? 0.97 : TILE_TWO ? 0.8 : CFG.flip ? 0.95 : 0.9, 1, st.fold)) : 1;
+    const gate = CFG.gores || CFG.tiles ? Math.max(1 - smooth(0.02, 0.14, st.fold), smooth(CFG.wind || HANG ? 0.97 : TILE_TWO ? 0.8 : CFG.flip ? 0.95 : 0.9, 1, st.fold)) : 1;
     for (const k of Object.keys(ops)) if (sets[k].material.opacity !== opsNow[k] * gate) sets[k].material.opacity = opsNow[k] * gate;
   }
 
@@ -1418,7 +1493,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
   }
   function placeMarks() {
     // (wind) the dots are put away while the prints are in the air
-    const aloft = CFG.wind && st.fold > 0.06 && st.fold < 0.97;
+    const aloft = (CFG.wind || HANG) && st.fold > 0.06 && st.fold < 0.97;
     homeDot.visible = !aloft;
     for (const f of flights) { f.end.visible = f.end.on && f.first <= year && !rewound && !aloft; if (f.end.visible) lay(f.end, ...f.to, base + 0.001, f.end.r); }
     lay(homeDot, ...home, base + 0.002, homeDot.r);
@@ -1449,12 +1524,15 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     let s1 = CFG.frame1 || 2.3;
     // scroll-craft: at the peak, before the globe docks, it is shown large on the whole screen
     if (CRAFT) s1 = 2.05 + (s1 - 2.05) * (parseFloat(getComputedStyle(fig).getPropertyValue('--dock')) || 0);
-    const fw = (2 * Math.PI * (CFG.bleed ? 1 : 1.01)) * (1 - f) + s1 * f, fh = (CFG.bleed ? 0 : 136 * RAD * 1.06) * (1 - f) + s1 * f;
-    const cy = (CFG.bleed ? 8 : 12) * RAD * (1 - f), plane = R * (1 - f) + 0.25 * f;
+    // (hang, print) the whole wall stays in view, with paper round it, until the sheet folds
+    const g = HANG ? smooth(0.66, 1, f) : f;
+    const w0 = HANG ? TAU * 1.12 : 2 * Math.PI * (CFG.bleed ? 1 : 1.01), h0 = HANG ? Math.PI * 1.2 : CFG.bleed ? 0 : 136 * RAD * 1.06;
+    const fw = w0 * (1 - g) + s1 * g, fh = h0 * (1 - g) + s1 * g;
+    const cy = HANG ? 0 : (CFG.bleed ? 8 : 12) * RAD * (1 - f), plane = R * (1 - g) + 0.25 * g;
     const ppw = Math.min(r.w / fw, r.h / fh);
     const fov = camera.fov * RAD;
     const d = (H / ppw) / (2 * Math.tan(fov / 2));
-    const lookDown = (CFG.look || 0) * f + (CFG.wave ? 0.5 * Math.sin(Math.PI * f) : 0);
+    const lookDown = (CFG.look || 0) * g + (CFG.wave ? 0.5 * Math.sin(Math.PI * g) : 0);
     camera.aspect = W / H;
     camera.position.set(0, cy + Math.sin(lookDown) * d, plane + Math.cos(lookDown) * d);
     camera.lookAt(0, cy, plane);
@@ -1504,7 +1582,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     raf = 0;
     for (const tw of [...tweens]) if (tw(now) === false) tweens.delete(tw);
     // the fold carries a little weight: it follows the scroll instead of jumping with it
-    if (CFG.wave && st.fold !== st.want) { const d = st.want - st.fold; st.fold = Math.abs(d) < 0.0008 ? st.want : st.fold + d * 0.11; linesDirty = true; }
+    if (CFG.wave && st.fold !== st.want) { const d = st.want - st.fold; st.fold = Math.abs(d) < 0.0008 ? st.want : st.fold + d * (CFG.glide || 0.11); linesDirty = true; }
     U.uFold.value = st.fold; U.uTime.value = now / 1000;
     if (CFG.wave && !K.reduced) {
       if (st.fold > 0.985 && !st.closed) { st.closed = true; pulseHome(); }
@@ -1548,6 +1626,9 @@ window.JourneyMap = async function makeGlobe(svgEl) {
       const through = CFG.photos === 'through', open = through ? 1 - dk : 1;
       const set = (k, v) => under.style.setProperty(k, v);
       let show = smooth(0.1, 0.3, st.fold) * (through ? 1 : 1 - smooth(0.15, 0.6, dk));
+      // (unveil) there from the first lift of the page, settling from a little large as it is uncovered
+      // and veiled in a little paper while the page is in the air, so the globe sits on a quiet picture
+      if (CFG.unveil) { show = smooth(0.02, 0.2, st.fold); set('--kb', (1.06 - 0.06 * smooth(0.02, 1, st.fold)).toFixed(4)); set('--veil', (0.42 * (1 - smooth(0.1, 0.9, dk))).toFixed(3)); }
       if (CFG.backdrop) {
         // (the wind versions) shown as the map comes apart, one landscape per stretch of the change,
         // each pushing in slowly, gone as the globe glides aside

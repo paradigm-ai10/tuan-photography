@@ -1,5 +1,6 @@
 /* The adjust tab (his ask, 2026-11-04: "給我一個 adjustment tab 讓我能掌控 scroll 的速度"), for the
-   wind versions of the Journey (data-globe="gallery-wind", "-murmur", "-deck", "-vortex", "-tide").
+   wind versions of the Journey (data-globe="gallery-wind", "-murmur", "-deck", "-vortex", "-tide"), and
+   the 高級感 versions ("luxe-unveil", "-print", "-hang"), which have only the scroll length.
    window.JourneyTweak holds the values the page and the globe read: how much scroll the change takes
    (journey.js, dockCraft), when the prints start back, the wind, the rocking, how strongly his
    photographs show behind (globe3d.js). On his Mac only, a word at the bottom left opens sliders; what
@@ -7,7 +8,8 @@
    make it the page's own. Everywhere else the page keeps the values below. */
 (() => {
   const page = document.body.dataset.globe || 'journey';
-  const DEF = { fold: 2.2, hold: page === 'gallery-tide' ? 0.6 : 0.55, wind: 0.9, rock: 1, photos: 1 };
+  const luxe = page.startsWith('luxe-');
+  const DEF = { fold: luxe && page !== 'luxe-unveil' ? 2.6 : 2.2, hold: page === 'gallery-tide' ? 0.6 : 0.55, wind: 0.9, rock: 1, photos: 1 };
   const T = (window.JourneyTweak = { ...DEF });
   const changed = () => dispatchEvent(new CustomEvent('journeytweak'));
   if (!/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname)) return;
@@ -18,13 +20,14 @@
     zh: { tab: '調整', title: '調整這一版', now: '目前', through: '轉場進度', reset: '還原', close: '關閉',
       saved: '已存', saving: '存檔中', unsaved: '沒存到，本機伺服器沒有回應' },
   };
-  const ROWS = [
+  const ALL = [
     { k: 'fold', min: 1, max: 4, step: 0.1, en: ['Scroll length', 'higher is slower'], zh: ['捲動長度', '越大越慢'], show: (v) => `× ${v.toFixed(1)}` },
     { k: 'hold', min: 0.35, max: 0.75, step: 0.01, en: ['Prints start back at', 'later holds the cloud longer'], zh: ['相片開始飛回', '越晚，照片停在空中越久'], show: (v) => `${Math.round(v * 100)}%` },
     { k: 'wind', min: 0, max: 2, step: 0.05, en: ['Wind and speed', 'how far and fast they travel'], zh: ['風力和速度', '飛多遠、多快'], show: (v) => v.toFixed(2) },
     { k: 'rock', min: 0, max: 2, step: 0.05, en: ['Rocking in the air', 'while you stop scrolling'], zh: ['空中晃動', '停下來不捲時'], show: (v) => v.toFixed(2) },
     { k: 'photos', min: 0, max: 1, step: 0.05, en: ['Photographs behind', 'how strongly they show'], zh: ['背後的照片', '顯示的濃淡'], show: (v) => `${Math.round(v * 100)}%` },
   ];
+  const ROWS = luxe ? ALL.filter((r) => r.k === 'fold') : ALL;
   const lang = () => (document.documentElement.lang || '').startsWith('zh') ? 'zh' : 'en';
   const w = (k) => WORDS[lang()][k];
 
