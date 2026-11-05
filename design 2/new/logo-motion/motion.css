@@ -107,6 +107,61 @@ html.lm-out .lm-photo { transform: none; }
 [data-motion="loading"] .lm-rule { transform-origin: left center; transform: scaleX(var(--p, 0)); }
 [data-motion="loading"].lm-still .lm-rule { transform: none; }
 
+/* ---- Round two (2026-11-05): he kept the line drawing across, "like a reloading timer". In all six
+   the line fills left to right as the page loads, exactly as in 6; only the words and the opening change. */
+[data-motion^="l-"] .lm-rule { transform-origin: left center; transform: scaleX(var(--p, 0)); }
+[data-motion^="l-"].lm-still .lm-rule { transform: none; }
+
+/* 7 first: only the line, on bare paper; once it is full, TUAN rises letter by letter and PHOTOGRAPHY follows */
+[data-motion="l-first"] .lm-tuan span, [data-motion="l-first"] .lm-ph { opacity: 0; }
+[data-motion="l-first"].lm-still .lm-tuan span, [data-motion="l-first"].lm-still .lm-ph { opacity: 1; }
+[data-motion="l-first"].lm-full .lm-tuan span { animation: lm-rise 0.9s var(--out) both; animation-delay: calc(var(--i) * 110ms); }
+[data-motion="l-first"].lm-full .lm-ph { animation: lm-fade 0.9s ease both 0.55s; }
+
+/* 8 write: the words are uncovered just behind the tip of the line, as if it writes them */
+[data-motion="l-write"].lm-in:not(.lm-out) :is(.lm-tuan, .lm-ph) {
+  -webkit-mask-image: linear-gradient(90deg, #000 calc(var(--p, 0) * 112% - 12%), transparent calc(var(--p, 0) * 112%));
+  mask-image: linear-gradient(90deg, #000 calc(var(--p, 0) * 112% - 12%), transparent calc(var(--p, 0) * 112%));
+}
+
+/* 9 opens: the words come with the line; when it is full the paper parts along it,
+   TUAN going up with the top half and PHOTOGRAPHY down with the bottom (as 5) */
+[data-motion="l-part"].lm-in .lm-tuan, [data-motion="l-part"].lm-in .lm-ph { animation: lm-fade 1s ease both 0.1s; }
+[data-motion="l-part"] .lm-tuan, [data-motion="l-part"] .lm-ph { transition: transform 1.3s var(--part) 0.2s; }
+[data-motion="l-part"].lm-out .lm-mark { opacity: 0; transition: opacity 0.3s ease 1.4s; }
+[data-motion="l-part"].lm-out .lm-rule { opacity: 0; transition: opacity 0.25s ease; }
+[data-motion="l-part"].lm-out .lm-top { opacity: 1; transform: translateY(-100%); }
+[data-motion="l-part"].lm-out .lm-bottom { opacity: 1; transform: translateY(100%); }
+[data-motion="l-part"].lm-out .lm-tuan { transform: translateY(-50vh); }
+[data-motion="l-part"].lm-out .lm-ph { transform: translateY(50vh); }
+[data-motion="l-part"] .lm-photo { transform: scale(1.08); }
+
+/* 10 horizon: when the line is full the words go and the line runs on to both edges of the screen;
+   the photograph opens out of it, as a slit that widens to the whole screen */
+[data-motion="l-slit"].lm-in .lm-tuan, [data-motion="l-slit"].lm-in .lm-ph { animation: lm-fade 1s ease both 0.1s; }
+[data-motion="l-slit"] .lm-tuan, [data-motion="l-slit"] .lm-ph { transition: opacity 0.5s ease; }
+[data-motion="l-slit"].lm-full .lm-tuan, [data-motion="l-slit"].lm-full .lm-ph { opacity: 0; }
+[data-motion="l-slit"] .lm-rule { transform-origin: center; transition: transform 0.9s var(--part) 0.15s; }
+[data-motion="l-slit"]:not(.lm-full) .lm-rule { transform-origin: left center; transition: none; }
+[data-motion="l-slit"].lm-full .lm-rule { transform: scaleX(var(--wide, 4)); }
+[data-motion="l-slit"] .lm-photo { z-index: 1; clip-path: inset(50% 0 50% 0); transition: clip-path 1.5s var(--part), transform 1.8s var(--out); }
+[data-motion="l-slit"].lm-out .lm-photo { clip-path: inset(0); }
+[data-motion="l-slit"].lm-out .lm-mark { opacity: 1; transition: none; }
+[data-motion="l-slit"].lm-still .lm-photo { clip-path: inset(50% 0 50% 0); }
+
+/* 11 runout: when the line is full it empties from the left and runs off to the right, like a timer
+   starting over; the words fade with it, then the paper */
+[data-motion="l-runout"].lm-in .lm-tuan, [data-motion="l-runout"].lm-in .lm-ph { animation: lm-fade 1s ease both 0.1s; }
+[data-motion="l-runout"].lm-out .lm-mark { opacity: 1; transition: none; }
+[data-motion="l-runout"].lm-out :is(.lm-tuan, .lm-ph) { opacity: 0; transition: opacity 0.8s ease 0.2s; }
+[data-motion="l-runout"].lm-out .lm-tuan, [data-motion="l-runout"].lm-out .lm-ph { animation: none; }
+[data-motion="l-runout"].lm-out .lm-rule { transform-origin: right center; transform: scaleX(0); transition: transform 0.9s cubic-bezier(0.65, 0, 0.35, 1); }
+[data-motion="l-runout"] .lm-top, [data-motion="l-runout"] .lm-bottom { transition: opacity 0.9s ease 0.75s; }
+
+/* 12 through: as the line fills, the paper thins and the photograph shows faintly behind the logo */
+[data-motion="l-through"].lm-in .lm-tuan, [data-motion="l-through"].lm-in .lm-ph { animation: lm-fade 1s ease both 0.1s; }
+[data-motion="l-through"].lm-in:not(.lm-out) :is(.lm-top, .lm-bottom) { opacity: calc(1 - var(--p, 0) * var(--p, 0) * 0.08); transition: none; }
+
 @media (prefers-reduced-motion: reduce) {
   html.lm-in *, html.lm-out * { animation: none !important; }
   .lm-top, .lm-bottom, .lm-photo, .lm-tuan, .lm-ph, .lm-tuan span, .lm-ph span, .lm-rule { transition: opacity 0.4s ease !important; transform: none !important; }

@@ -3,50 +3,240 @@
   "endpoint": "/__reviews/logo-motion",
   "stills": "/__reviews/logo-motion/thumbs/",
   "hub": "index.html",
-  "title": {"en": "Logo, how it moves", "zh": "標誌：怎麼動"},
+  "title": {
+    "en": "Logo, how it moves",
+    "zh": "標誌：怎麼動"
+  },
   "siteTitle": "tuan photography 陳亮元",
   "intro": {
-    "en": "Your logo, 1C, as the loading screen: it arrives, then opens onto the site (your Aoraki photograph stands in for the home page). Click anywhere or press R to play it again. On a page, , and . move to the previous or next version, 1 to 5 scores it, N opens your notes, M marks a spot, B comes back here.",
-    "zh": "你選的標誌 1C 當載入畫面：它出現，接著打開進到網站（用你的 Aoraki 照片代表首頁）。點畫面任何地方或按 R 再看一次。在頁面上，逗號和句號鍵（, .）換上一版或下一版，1 到 5 打分數，N 打開筆記，M 標記一個地方，B 回到這裡。"
+    "en": "Your logo, 1C, as the loading screen: it arrives, then opens onto the site (your Aoraki photograph stands in for the home page). Click anywhere or press R to play it again. On a page, , and . move to the previous or next version, 1 to 5 scores it, N opens your notes, M marks a spot, B comes back here. To see several together, press Compare side by side and tap their pictures.",
+    "zh": "你選的標誌 1C 當載入畫面：它出現，接著打開進到網站（用你的 Aoraki 照片代表首頁）。點畫面任何地方或按 R 再看一次。在頁面上，逗號和句號鍵（, .）換上一版或下一版，1 到 5 打分數，N 打開筆記，M 標記一個地方，B 回到這裡。想一起看幾版：按「並排比較」，再點它們的縮圖。"
   },
   "groups": [
-    {"id": "round1", "title": {"en": "First round, six motions", "zh": "第一輪，六種動法"}}
+    {
+      "id": "round1",
+      "title": {
+        "en": "First round, six motions",
+        "zh": "第一輪，六種動法"
+      }
+    },
+    {
+      "id": "round2",
+      "title": {
+        "en": "Second round: the line keeps loading, the rest changes",
+        "zh": "第二輪：線照樣跑，其他地方換"
+      }
+    }
   ],
   "items": [
-    {"href": "letters.html", "group": "round1",
-     "title": {"en": "Letter by letter", "zh": "一個一個"},
-     "desc": {"en": "As on the font pages: the letters rise one by one, the line draws across, PHOTOGRAPHY fades in. Then the paper fades to the photograph.", "zh": "跟選字體時一樣：字母一個一個浮上來，線畫過去，PHOTOGRAPHY 淡入。接著紙淡掉，露出照片。"}},
-    {"href": "line.html", "group": "round1",
-     "title": {"en": "Out of the line", "zh": "從線裡出來"},
-     "desc": {"en": "The line opens from the middle; TUAN rises out of it and PHOTOGRAPHY drops out of it. Leaving, both sink back into the line and it closes.", "zh": "線從中間打開，TUAN 從線往上長出來，PHOTOGRAPHY 從線往下出來。離開時兩個都縮回線裡，線再收起來。"}},
-    {"href": "develop.html", "group": "round1",
-     "title": {"en": "Developing", "zh": "顯影"},
-     "desc": {"en": "The logo comes up slowly, like a print in the developing tray; then the photograph develops in from pale grey to full colour.", "zh": "標誌像暗房裡的相紙一樣慢慢顯出來；接著照片從淡淡的灰慢慢顯影成彩色。"}},
-    {"href": "gather.html", "group": "round1",
-     "title": {"en": "Gathering", "zh": "收攏"},
-     "desc": {"en": "The letters drift in from far apart to their places, then the line draws out from the middle.", "zh": "字母從很開的地方慢慢靠攏到位置，線再從中間往兩邊畫開。"}},
-    {"href": "part.html", "group": "round1",
-     "title": {"en": "Parting", "zh": "沿線分開"},
-     "desc": {"en": "It arrives letter by letter, a little quicker; then the paper parts along the line, TUAN going up and PHOTOGRAPHY down, and the photograph is there between them.", "zh": "字母一個一個出來，稍微快一點；接著紙沿著那條線分開，TUAN 往上、PHOTOGRAPHY 往下，照片就在中間出現。"}},
-    {"href": "loading.html", "group": "round1",
-     "title": {"en": "The line loads", "zh": "線就是進度"},
-     "desc": {"en": "TUAN and PHOTOGRAPHY are there at once; the line fills from left to right as the photograph really loads, then it opens.", "zh": "TUAN 和 PHOTOGRAPHY 一起出現；線從左到右填滿，就是照片真的在載入，滿了才打開。"}}
+    {
+      "href": "letters.html",
+      "group": "round1",
+      "title": {
+        "en": "Letter by letter",
+        "zh": "一個一個"
+      },
+      "desc": {
+        "en": "As on the font pages: the letters rise one by one, the line draws across, PHOTOGRAPHY fades in. Then the paper fades to the photograph.",
+        "zh": "跟選字體時一樣：字母一個一個浮上來，線畫過去，PHOTOGRAPHY 淡入。接著紙淡掉，露出照片。"
+      }
+    },
+    {
+      "href": "line.html",
+      "group": "round1",
+      "title": {
+        "en": "Out of the line",
+        "zh": "從線裡出來"
+      },
+      "desc": {
+        "en": "The line opens from the middle; TUAN rises out of it and PHOTOGRAPHY drops out of it. Leaving, both sink back into the line and it closes.",
+        "zh": "線從中間打開，TUAN 從線往上長出來，PHOTOGRAPHY 從線往下出來。離開時兩個都縮回線裡，線再收起來。"
+      }
+    },
+    {
+      "href": "develop.html",
+      "group": "round1",
+      "title": {
+        "en": "Developing",
+        "zh": "顯影"
+      },
+      "desc": {
+        "en": "The logo comes up slowly, like a print in the developing tray; then the photograph develops in from pale grey to full colour.",
+        "zh": "標誌像暗房裡的相紙一樣慢慢顯出來；接著照片從淡淡的灰慢慢顯影成彩色。"
+      }
+    },
+    {
+      "href": "gather.html",
+      "group": "round1",
+      "title": {
+        "en": "Gathering",
+        "zh": "收攏"
+      },
+      "desc": {
+        "en": "The letters drift in from far apart to their places, then the line draws out from the middle.",
+        "zh": "字母從很開的地方慢慢靠攏到位置，線再從中間往兩邊畫開。"
+      }
+    },
+    {
+      "href": "part.html",
+      "group": "round1",
+      "title": {
+        "en": "Parting",
+        "zh": "沿線分開"
+      },
+      "desc": {
+        "en": "It arrives letter by letter, a little quicker; then the paper parts along the line, TUAN going up and PHOTOGRAPHY down, and the photograph is there between them.",
+        "zh": "字母一個一個出來，稍微快一點；接著紙沿著那條線分開，TUAN 往上、PHOTOGRAPHY 往下，照片就在中間出現。"
+      }
+    },
+    {
+      "href": "loading.html",
+      "group": "round1",
+      "title": {
+        "en": "The line loads",
+        "zh": "線就是進度"
+      },
+      "desc": {
+        "en": "TUAN and PHOTOGRAPHY are there at once; the line fills from left to right as the photograph really loads, then it opens.",
+        "zh": "TUAN 和 PHOTOGRAPHY 一起出現；線從左到右填滿，就是照片真的在載入，滿了才打開。"
+      }
+    },
+    {
+      "href": "first.html",
+      "group": "round2",
+      "title": {
+        "en": "Line first, then the name",
+        "zh": "先跑線，再出名字"
+      },
+      "desc": {
+        "en": "Only the line, on bare paper. Once it is full, TUAN rises letter by letter and PHOTOGRAPHY follows, then it opens.",
+        "zh": "紙上先只有那條線在跑。跑滿了，TUAN 一個字一個字浮上來，PHOTOGRAPHY 跟著出現，然後打開。"
+      }
+    },
+    {
+      "href": "write.html",
+      "group": "round2",
+      "title": {
+        "en": "The line writes it",
+        "zh": "線寫出名字"
+      },
+      "desc": {
+        "en": "The words appear just behind the tip of the line as it runs, as if the line were writing them.",
+        "zh": "線往右跑的時候，字跟在線頭後面一點一點出現，好像是線把名字寫出來。"
+      }
+    },
+    {
+      "href": "opens.html",
+      "group": "round2",
+      "title": {
+        "en": "Opens along the line",
+        "zh": "沿線打開"
+      },
+      "desc": {
+        "en": "The words are there with the line. When it is full, the paper parts along it: TUAN goes up, PHOTOGRAPHY down, the photograph between.",
+        "zh": "字和線一起出現。線跑滿了，紙就沿著線分開：TUAN 往上、PHOTOGRAPHY 往下，照片在中間出現。"
+      }
+    },
+    {
+      "href": "horizon.html",
+      "group": "round2",
+      "title": {
+        "en": "The line becomes the horizon",
+        "zh": "線變成地平線"
+      },
+      "desc": {
+        "en": "When the line is full, the words go and the line runs on to both edges of the screen; the photograph opens out of it like a widening slit.",
+        "zh": "線跑滿了，字淡掉，線繼續往兩邊延伸到螢幕邊；照片從這條線裡打開，像一道縫慢慢張大。"
+      }
+    },
+    {
+      "href": "runout.html",
+      "group": "round2",
+      "title": {
+        "en": "Runs out like a timer",
+        "zh": "像計時器跑完"
+      },
+      "desc": {
+        "en": "When the line is full, it empties from the left and runs off to the right, like a timer starting over. The words fade with it, then the paper.",
+        "zh": "線跑滿了，接著從左邊開始收、往右邊跑掉，像計時器重新開始。字跟著淡掉，紙再淡掉。"
+      }
+    },
+    {
+      "href": "through.html",
+      "group": "round2",
+      "title": {
+        "en": "The photograph shows through",
+        "zh": "照片透出來"
+      },
+      "desc": {
+        "en": "As the line fills, the paper thins a little, so the photograph shows faintly behind the logo before it opens.",
+        "zh": "線越跑越滿，紙也慢慢變薄一點，打開之前就隱約看得到後面的照片。"
+      }
+    }
   ],
   "tags": [
-    {"id": "arrive", "en": "How it arrives", "zh": "出現的方式"},
-    {"id": "open", "en": "How it opens", "zh": "打開的方式"},
-    {"id": "speed", "en": "Speed", "zh": "速度"},
-    {"id": "line", "en": "The line", "zh": "線"},
-    {"id": "type", "en": "The letters", "zh": "字"},
-    {"id": "photo", "en": "The photograph", "zh": "照片"}
+    {
+      "id": "arrive",
+      "en": "How it arrives",
+      "zh": "出現的方式"
+    },
+    {
+      "id": "open",
+      "en": "How it opens",
+      "zh": "打開的方式"
+    },
+    {
+      "id": "speed",
+      "en": "Speed",
+      "zh": "速度"
+    },
+    {
+      "id": "line",
+      "en": "The line",
+      "zh": "線"
+    },
+    {
+      "id": "type",
+      "en": "The letters",
+      "zh": "字"
+    },
+    {
+      "id": "photo",
+      "en": "The photograph",
+      "zh": "照片"
+    }
   ],
   "phrases": [
-    {"id": "too-fast", "en": "Too fast", "zh": "太快"},
-    {"id": "too-slow", "en": "Too slow", "zh": "太慢"},
-    {"id": "too-much", "en": "Too much", "zh": "太多了"},
-    {"id": "more", "en": "More of this", "zh": "多一點"},
-    {"id": "smoother", "en": "Smoother", "zh": "更順"},
-    {"id": "lovely", "en": "Lovely", "zh": "很美"}
+    {
+      "id": "too-fast",
+      "en": "Too fast",
+      "zh": "太快"
+    },
+    {
+      "id": "too-slow",
+      "en": "Too slow",
+      "zh": "太慢"
+    },
+    {
+      "id": "too-much",
+      "en": "Too much",
+      "zh": "太多了"
+    },
+    {
+      "id": "more",
+      "en": "More of this",
+      "zh": "多一點"
+    },
+    {
+      "id": "smoother",
+      "en": "Smoother",
+      "zh": "更順"
+    },
+    {
+      "id": "lovely",
+      "en": "Lovely",
+      "zh": "很美"
+    }
   ],
   "theme": {
     "--rv-paper": "oklch(96.6% 0.011 82)",

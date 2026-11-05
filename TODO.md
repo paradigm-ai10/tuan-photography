@@ -37,9 +37,9 @@ Word 版：雙擊專案資料夾裡的 `建置進度.command` 就會更新並打
 ### 首頁：TUAN photography 標誌與載入畫面
 - 類型: 功能
 - 日期: 2026-10-31
-- 重點: 標誌定了（1C），下一步做載入動態
+- 重點: 標誌定了（1C），載入動態第二輪：線從左畫到右留著，其他地方選
 - 狀態: 進行中
-- 說明: 你看了 16 個 Awwwards 參考網站，喜歡 Per Appelgren、Tommaso D'intino、Tengile MalaMala，三個都是一打開先有安靜的載入畫面。你想要自己的標誌「TUAN photography」，用它當首頁的載入畫面，帶人進網站。第一步選字體：http://localhost:8642/journey/new/logo.html 有 12 種字體，每格就是載入畫面，按喜歡或不是、寫筆記（存在 ideas/reviews/logo-fonts.json）。之後再定排法和動態。 10/31 你在 12 個裡選了三個：Cormorant Garamond、Cinzel、Cormorant 加手寫 photography。最後五個（這三個加上新的 Castoro Titling、Forum）在 http://localhost:8642/journey/new/logo-final.html ，選一個（存在 ideas/reviews/logo-final.json）。 給朋友看的頁面（Claude Artifact，只展示五個，不投票）：https://claude.ai/artifact/TtRWBXgWkSXAfSa1w8ixcB ，從頁面的 Share 選單分享連結。 11/4 你留下 Cormorant 和 Cinzel，各做了六種調法（http://localhost:8642/journey/new/logo-vary.html），朋友連結改成十二個版本、請朋友回傳代號。你選了 **1C**：Cormorant，TUAN 比原本小 8%，中間一條線，下面的 PHOTOGRAPHY 用大寫、拉開到跟 TUAN 一樣寬。下一步：載入畫面的動態。 11/4 做了六種動法（一個一個、從線裡出來、顯影、收攏、沿線分開、線就是進度），每一種最後都打開到你的照片：http://localhost:8642/journey/new/logo-motion/ ，在每一版打 1 到 5 分、寫筆記（存在 ideas/reviews/logo-motion.json）。
+- 說明: 你看了 16 個 Awwwards 參考網站，喜歡 Per Appelgren、Tommaso D'intino、Tengile MalaMala，三個都是一打開先有安靜的載入畫面。你想要自己的標誌「TUAN photography」，用它當首頁的載入畫面，帶人進網站。第一步選字體：http://localhost:8642/journey/new/logo.html 有 12 種字體，每格就是載入畫面，按喜歡或不是、寫筆記（存在 ideas/reviews/logo-fonts.json）。之後再定排法和動態。 10/31 你在 12 個裡選了三個：Cormorant Garamond、Cinzel、Cormorant 加手寫 photography。最後五個（這三個加上新的 Castoro Titling、Forum）在 http://localhost:8642/journey/new/logo-final.html ，選一個（存在 ideas/reviews/logo-final.json）。 給朋友看的頁面（Claude Artifact，只展示五個，不投票）：https://claude.ai/artifact/TtRWBXgWkSXAfSa1w8ixcB ，從頁面的 Share 選單分享連結。 11/4 你留下 Cormorant 和 Cinzel，各做了六種調法（http://localhost:8642/journey/new/logo-vary.html），朋友連結改成十二個版本、請朋友回傳代號。你選了 **1C**：Cormorant，TUAN 比原本小 8%，中間一條線，下面的 PHOTOGRAPHY 用大寫、拉開到跟 TUAN 一樣寬。下一步：載入畫面的動態。 11/4 做了六種動法（一個一個、從線裡出來、顯影、收攏、沿線分開、線就是進度），每一種最後都打開到你的照片：http://localhost:8642/journey/new/logo-motion/ ，在每一版打 1 到 5 分、寫筆記（存在 ideas/reviews/logo-motion.json）。 11/5 前四種你給了「不要」；你喜歡線從左畫到右，像重新載入的計時器，所以第二輪六版（第 7 到 12 版）線都照樣跑，只換字出現和打開的方式：先跑線再出名字、線寫出名字、沿線打開、線變成地平線、像計時器跑完、照片透出來。評分頁也多了「並排比較」，可以選兩到六版一起播。
 
 ### 旅程頁地球重新設計
 - 類型: 功能
