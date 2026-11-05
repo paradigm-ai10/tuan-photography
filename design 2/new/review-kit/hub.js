@@ -6,7 +6,8 @@
    Each version is a card: its still (made by review_thumbs.py; a numbered paper block until then),
    his marks as dots on it, the score as five squares he can press here, the count of marks, the
    last thing he wrote. Filters, sort, "Keeps saying" (what he says most, counted), group notes,
-   and the versions no longer on the list, folded and read-only. */
+   and the versions no longer on the list, folded and read-only. The versions Claude asks him to
+   score this round (manifest "ask") are listed at the top and framed on the sheet until scored. */
 (() => {
   'use strict';
   const SCRIPT = document.currentScript;
@@ -36,6 +37,10 @@
   const away = (id) => { const it = itemOf(id); return it.stars ? it.stars <= 2 : it.verdict === 'bad'; };
   // a version he scored or wrote about has been seen, even from before the kit kept "seen"
   const seen = (id) => { const it = itemOf(id); return !!(it.seen || it.stars || it.verdict || it.note || (it.pins || []).length || (it.marks || []).length); };
+  // this round's versions Claude wants him to look at and score: {"ask": {"ids": [...], "question": {...}}}
+  const askIds = () => (M && M.ask && Array.isArray(M.ask.ids) ? M.ask.ids.filter((id) => list.some((v) => v.id === id)) : []);
+  const asked = (id) => askIds().includes(id);
+  const scored = (id) => { const it = itemOf(id); return !!(it.stars || it.verdict); };
   const stillUrl = (id) => (stills[id] && M.stills ? `${M.stills}${id}.jpg?v=${encodeURIComponent(stills[id].taken || '')}` : '');
   const scoreWord = (id) => {
     const it = itemOf(id);
@@ -82,6 +87,7 @@
     if (ui.filter === 1) return !seen(v.id);
     if (ui.filter === 2) return liked(v.id);
     if (ui.filter === 3) return away(v.id);
+    if (ui.filter === 4) return asked(v.id);
     return true;
   }
   function sorted(vs) {
@@ -98,8 +104,11 @@
     const last = lastWords(v.id);
     const picked = !!ui.picked && ui.picked.includes(v.id);
     // while choosing, the picture itself says it is chosen, and in what order
-    const tag = ui.picked ? (picked ? `<span class="rvh-chosen">${esc(t('chosenN', { n: ui.picked.indexOf(v.id) + 1 }))}</span>` : `<span class="rvh-choose">${esc(t('choose'))}</span>`) : '';
-    return `<article class="rvh-card${liked(v.id) ? ' is-liked' : ''}${away(v.id) ? ' is-low' : ''}${ui.picked ? ' is-choosing' : ''}${picked ? ' is-picked' : ''}" id="v-${esc(v.id)}" data-id="${esc(v.id)}">
+    // otherwise a version he is asked to score carries "Your pick" until he scores it
+    const ask = !ui.picked && asked(v.id), done = ask && scored(v.id);
+    const tag = ui.picked ? (picked ? `<span class="rvh-chosen">${esc(t('chosenN', { n: ui.picked.indexOf(v.id) + 1 }))}</span>` : `<span class="rvh-choose">${esc(t('choose'))}</span>`)
+      : ask ? `<span class="rvh-asktag${done ? ' is-done' : ''}">${esc(t(done ? 'askDoneTag' : 'askTag'))}</span>` : '';
+    return `<article class="rvh-card${liked(v.id) ? ' is-liked' : ''}${away(v.id) ? ' is-low' : ''}${ui.picked ? ' is-choosing' : ''}${picked ? ' is-picked' : ''}${ask && !done ? ' is-ask' : ''}" id="v-${esc(v.id)}" data-id="${esc(v.id)}">
       <a class="rvh-still" href="${esc(v.href)}" tabindex="-1" aria-hidden="true">
         ${src ? `<img src="${esc(src)}" alt="" loading="lazy" decoding="async" width="960" height="600">` : `<span class="rvh-blank"><span>${v.n}</span><small>${esc(t('noStill'))}</small></span>`}
         ${dots}${tag}
@@ -169,8 +178,9 @@
         <h1 class="rvh-title">${esc(pick(M.title))}</h1>
         ${M.intro ? `<p class="rvh-intro">${esc(pick(M.intro))}</p>` : ''}
       </header>
+      ${askBox()}
       <div class="rvh-tools">
-        <span class="rvh-tg" role="group" aria-label="${esc(t('filterLabel'))}">${filters.map((f, i) => `<button type="button" class="rvh-w" data-h="filter" data-i="${i}" aria-pressed="${!ui.by && ui.filter === i}">${esc(f)}</button>`).join('')}</span>
+        <span class="rvh-tg" role="group" aria-label="${esc(t('filterLabel'))}">${filters.map((f, i) => `<button type="button" class="rvh-w" data-h="filter" data-i="${i}" aria-pressed="${!ui.by && ui.filter === i}">${esc(f)}</button>`).join('')}${askIds().length ? `<button type="button" class="rvh-w" data-h="filter" data-i="4" aria-pressed="${!ui.by && ui.filter === 4}">${esc(t('askTag'))}</button>` : ''}</span>
         <span class="rvh-tg" role="group" aria-label="${esc(t('sortLabel'))}">${sorts.map((f, i) => `<button type="button" class="rvh-w" data-h="sort" data-i="${i}" aria-pressed="${ui.sort === i}">${esc(f)}</button>`).join('')}</span>
         <span class="rvh-tg">
           <button type="button" class="rvh-w" data-h="pick" aria-pressed="${!!ui.picked}">${esc(t('compareSome'))}</button>
@@ -205,6 +215,20 @@
     const g = mount.querySelector('#rvh-general');
     if (g) g.value = R.data.general || '';
     ui._say = say;
+  }
+
+  // the top of the list: what Claude asks this round, and which of those versions still wait for a score
+  function askBox() {
+    const ids = askIds();
+    if (!ids.length) return '';
+    const vs = list.filter((v) => ids.includes(v.id)), left = vs.filter((v) => !scored(v.id)).length;
+    return `<section class="rvh-ask${left ? '' : ' is-done'}" aria-label="${esc(t('askTitle'))}">
+      <p class="rvh-askh">${esc(t('askTitle'))}</p>
+      ${M.ask.question ? `<p class="rvh-askq">${esc(pick(M.ask.question))}</p>` : ''}
+      <ol class="rvh-askl">${vs.map((v) => `<li><a class="rvh-aska${scored(v.id) ? ' is-done' : ''}" href="${esc(v.href)}"><span class="rvh-num">${v.n}</span><span class="rvh-askn">${esc(pick(v.title))}</span><span class="rvh-asks">${esc(scoreWord(v.id))}</span></a></li>`).join('')}</ol>
+      <p class="rvh-askf"><span>${esc(left ? t('askLeft', { n: left, total: vs.length }) : t('askDone'))}</span>
+        <button type="button" class="rvh-w" data-h="filter" data-i="4" aria-pressed="${!ui.by && ui.filter === 4}">${esc(t('askOnly'))}</button></p>
+    </section>`;
   }
 
   function sayingText(x) {
@@ -304,6 +328,7 @@
       const pk = new URLSearchParams(location.search).get('pick');
       if (pk != null) ui.picked = pk.split(',').filter((id) => list.some((v) => v.id === id)).slice(0, MAXPICK());
       try { const k = JSON.parse(localStorage.getItem(KEY())) || {}; ui.filter = k.filter | 0; ui.sort = k.sort | 0; ui.scroll = k.scroll | 0; ui.earlier = !!k.earlier; } catch (e) { /* storage blocked */ }
+      if (ui.filter === 4 && !askIds().length) ui.filter = 0;
       const thumbs = m.stills ? fetch(`${m.stills}thumbs.json`, { cache: 'no-store' }).then((r) => (r.ok ? r.json() : {})).catch(() => ({})) : Promise.resolve({});
       return Promise.all([thumbs, R.pull()]);
     }).then(([th]) => {

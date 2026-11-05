@@ -92,11 +92,14 @@
     const n = idx + 1, total = list.length;
     const title = me ? pick(me.title) : (R.data.names || {})[ID] || document.title.split(' · ')[0];
     const back = OPT.back !== '' && list.length;
+    // one of the versions Claude asked him to score this round (manifest "ask"), not scored yet
+    const ask = !!(M.ask && Array.isArray(M.ask.ids) && M.ask.ids.includes(ID)) && !(it.stars || it.verdict);
+    bar.classList.toggle('is-ask', ask);
     bar.innerHTML = `
       <span class="rvk-hair" aria-hidden="true"${n > 0 ? ` data-n="${n}"` : ''}></span>
       <div class="rvk-row">
         ${total > 1 ? `<button type="button" class="rvk-w rvk-prev" data-k="prev">${esc(t('prev'))}</button>` : ''}
-        <span class="rvk-where">${n > 0 ? `<span class="rvk-n">${esc(t('of', { n, total }))}</span>` : ''}<span class="rvk-title">${esc(title)}</span></span>
+        <span class="rvk-where">${ask ? `<span class="rvk-ask">${esc(t('askTag'))}</span>` : ''}${n > 0 ? `<span class="rvk-n">${esc(t('of', { n, total }))}</span>` : ''}<span class="rvk-title">${esc(title)}</span></span>
         ${total > 1 ? `<button type="button" class="rvk-w rvk-next" data-k="next">${esc(t('next'))}</button>` : ''}
         <span class="rvk-sep" aria-hidden="true"></span>
         <span class="rvk-sc" role="group" aria-label="${esc(t('score'))}">${[1, 2, 3, 4, 5].map((k) =>

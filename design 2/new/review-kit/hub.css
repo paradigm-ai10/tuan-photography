@@ -151,6 +151,25 @@
 .rvh-banner.is-pick { padding: 0.6rem 0; border-bottom: 1px solid var(--h-hair); }
 .rvh-go { min-height: 2.2rem; padding: 0 1rem; border: 1px solid var(--h-ink); font-size: 0.85rem; font-weight: 500; }
 .rvh-go:hover { background: var(--h-ink); color: var(--h-paper); }
+/* this round's versions Claude asks him to score (manifest "ask"): a stone band at the top that lists
+   them, and on the sheet a frame and "Your pick" on the picture until it has a score */
+.rvh-ask { margin-top: 1.75rem; padding: 1rem 1.25rem 0.9rem; background: var(--h-paper-2); border-top: 2px solid var(--h-mark); display: grid; gap: 0.55rem; }
+.rvh-ask.is-done { border-top-color: var(--h-hair); }
+.rvh-askh { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.13em; text-transform: uppercase; color: var(--h-mark); }
+:lang(zh-Hant) .rvh-askh { text-transform: none; font-size: 0.85rem; }
+.rvh-askq { font-family: var(--h-name); font-size: 1.2rem; line-height: 1.35; max-width: 60ch; }
+.rvh-askl { display: flex; flex-wrap: wrap; gap: 0.2rem 1.8rem; }
+.rvh-aska { display: inline-flex; align-items: baseline; gap: 0.5rem; min-height: 2rem; color: var(--h-ink); text-decoration: none; }
+.rvh-aska .rvh-num { margin-right: 0; }
+.rvh-askn { font-family: var(--h-name); font-size: 1.05rem; }
+.rvh-aska:hover .rvh-askn { color: var(--h-link); text-decoration: underline; text-underline-offset: 0.3em; text-decoration-thickness: 1px; }
+.rvh-asks { font-size: 0.78rem; color: var(--h-mark); }
+.rvh-aska.is-done .rvh-asks { color: var(--h-ink-3); }
+.rvh-askf { display: flex; flex-wrap: wrap; align-items: center; gap: 0 1.2rem; font-size: 0.85rem; color: var(--h-ink-2); }
+.rvh-card.is-ask .rvh-still::after { content: ""; position: absolute; inset: 0; border: 3px solid var(--h-mark); pointer-events: none; }
+.rvh-asktag { position: absolute; left: 0; top: 0; padding: 0.5rem 0.85rem; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.08em; line-height: 1; background: var(--h-mark); color: var(--h-paper); }
+.rvh-asktag.is-done { background: var(--h-paper); color: var(--h-ink-2); }
+
 .rvc-marks { display: grid; gap: 0.35rem; font-size: 0.85rem; }
 .rvc-marks li { display: flex; flex-wrap: wrap; gap: 0 0.5rem; align-items: baseline; }
 .rvc-n { display: inline-grid; place-items: center; width: 1.1rem; height: 1.1rem; border: 1.5px solid var(--h-ink-2); border-radius: 50%; font-size: 0.65rem; }

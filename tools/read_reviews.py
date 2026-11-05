@@ -5,7 +5,8 @@
 
 For each version: its number, title, score word, when he saw it; his marks (Like or Change, tags,
 phrases, words, what was under the click); his overall note; what he kept it over in Compare.
-Then what he keeps saying, counted, and the marks not yet done.
+Then what he keeps saying, counted, and the marks not yet done. The versions the manifest's
+"ask" names come first, with which of them still have no score.
 """
 import argparse
 import json
@@ -63,6 +64,13 @@ def main():
     open_marks = []
     keeps = Counter()
     lines = [f"{M.get('title', {}).get('en', D.get('name', a.file)) if M else a.file}  (saved {D.get('_saved', '?')})", '']
+    # the versions this round asks him to score (manifest "ask"), and which still wait
+    ask = [x for x in (M.get('ask') or {}).get('ids', []) if x in num]
+    if ask:
+        left = [x for x in ask if not (items.get(x, {}).get('stars') or items.get(x, {}).get('verdict'))]
+        lines.append(f"Asked this round (Your pick): {len(ask) - len(left)} of {len(ask)} scored")
+        lines += [f"    {num[x]:>2} {title.get(x) or x}: {score(items.get(x, {}))}" for x in ask]
+        lines.append('')
     for iid in order + earlier:
         it = items.get(iid, {})
         ms = marks(it)
