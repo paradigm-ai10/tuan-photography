@@ -30,7 +30,7 @@ def main():
             M = json.load(fh)
     items = D.get('items', {})
     names = D.get('names', {})
-    order, title, num, words = [], {}, {}, {}
+    order, title, num, words, out = [], {}, {}, {}, set()
     # numbered as the hub numbers them: by group, in the order the groups are listed, then as written
     gpos = {g.get('id'): i for i, g in enumerate(M.get('groups', []))}
     ranked = sorted(enumerate(M.get('items', [])), key=lambda p: (gpos.get(p[1].get('group'), 10 ** 6), p[0]))
@@ -40,6 +40,8 @@ def main():
         num[iid] = i
         t = it.get('title')
         title[iid] = t.get('en') if isinstance(t, dict) else t
+        if it.get('out'):
+            out.add(iid)
     for g in M.get('tags', []) + M.get('phrases', []):
         words[g['id']] = g.get('en', g['id'])
     earlier = [k for k in items if k not in num]
@@ -77,6 +79,8 @@ def main():
         head = f"{num.get(iid, '-'):>2}  {title.get(iid) or names.get(iid, iid)}  [{iid}]"
         if iid in earlier:
             head += '  (removed from the list)'
+        elif iid in out:
+            head += '  (not using: crossed out on the list)'
         lines.append(head)
         # the hub's rule: a score, a note, a pin or a mark means he has seen it, dated or not
         if it.get('seen'):

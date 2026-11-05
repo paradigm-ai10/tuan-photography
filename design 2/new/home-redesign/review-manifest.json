@@ -83,7 +83,8 @@
       },
       "still": {
         "wait": 1500
-      }
+      },
+      "out": true
     },
     {
       "href": "c-counted.html",
@@ -98,7 +99,8 @@
       },
       "still": {
         "wait": 2500
-      }
+      },
+      "main": true
     }
   ],
   "tags": [
