@@ -74,7 +74,8 @@ const CFG = {
   // folding into the globe", after photoooooos' wall of prints that gathers into a ball): the same globe,
   // its map printed across a wall of small square prints, 24 across and 12 down; scrolling lifts each
   // print off the wall whole and lays it on the ball, Taiwan's first, and the gaps close as they land
-  gallery: GALLERY,
+  // (2026-11-05, his word: the top was cut off at his window size) kept whole on screen, as the 高級感 versions
+  gallery: { ...GALLERY, fit: true },
   // his photographs in the print wall (2026-10-31, his ask: "some images design"):
   // backs  every print is two-sided, the map on its face and one of his photographs on its back,
   //        seen as the prints turn over on their way round to the far side of the ball
@@ -1601,7 +1602,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     const tx = ((r.x + r.w / 2) / W) * 2 - 1, ty = 1 - ((r.y + r.h / 2) / H) * 2;
     camera.projectionMatrix.elements[8] = -tx;
     camera.projectionMatrix.elements[9] = -ty;
-    // (the 高級感 versions, fit) the forming globe is kept whole inside the part of its box that is on
+    // (fit: the 高級感 versions and the live page) the forming globe is kept whole inside the part of its box that is on
     // screen: drawn smaller if it would be taller than that, and moved down or up if it would spill over
     const wf = CFG.fit ? (HANG ? smooth(0.7, 0.85, f) : smooth(0.25, 0.5, f)) : 0;
     if (wf > 0) {
