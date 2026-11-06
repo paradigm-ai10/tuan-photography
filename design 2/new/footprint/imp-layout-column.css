@@ -1,0 +1,135 @@
+/* Layout: a left column and a large map 版面：左欄＋大地圖 (footprint, round four, 2026-11-06).
+   Impeccable's `layout` command on tinted-onestamp.css, the one he liked most. The atlas, the washes
+   and the stamps are as they were; the count, the share, three quiet lines and the stamp now stand in
+   one narrow column on the left, and the map fills the rest. Spacing is on a 4 px step: tight inside
+   a group, open between groups. */
+:root {
+  --tn-ochre: oklch(83% 0.09 86);
+  --tn-terra: oklch(73% 0.085 42);
+  --tn-sage: oklch(77% 0.06 135);
+  --tn-slate: oklch(74% 0.05 235);
+  --tn-mauve: oklch(73% 0.05 338);
+  --tn-verdigris: oklch(77% 0.05 190);
+  --tn-home: var(--clay);
+  --tn-water: color-mix(in oklch, var(--ink) 80%, var(--slate));
+  --tn-k: 1; /* the map's scale against the 1440 wide window, set by the script */
+}
+
+/* ---- the sheet: sea, washes, the shown country's deeper wash, then the ink ---- */
+.tn-sheet { position: absolute; left: 0; top: 0; width: var(--sheet-w, 100%); height: var(--sheet-h, 100%); }
+.tn-sheet > canvas, .tn-sheet > svg { position: absolute; left: 0; top: 0; display: block; }
+.tn-sheet > canvas { width: var(--sheet-w, 100%); height: var(--sheet-h, 100%); }
+.tn-wash, .os-deep { mix-blend-mode: multiply; pointer-events: none; }
+.tn-sea, .os-rings { pointer-events: none; }
+/* the engraving is drawn once: on its own layer, so the ring and the stamp changing never redraw it */
+.tn-ink, .os-rings { will-change: transform; }
+.tn-sheet > .os-deep { left: var(--dx, 0); top: var(--dy, 0); width: var(--dw, 0); height: var(--dh, 0); opacity: 0; transition: opacity 0.5s var(--ease); }
+.tn-sheet > .os-deep.is-on { opacity: 1; }
+
+/* the engraving */
+.tn-coast { fill: none; stroke: var(--ink); stroke-width: 0.7; stroke-linejoin: round; stroke-linecap: round; pointer-events: none; }
+.tn-border { fill: none; stroke: var(--ink); stroke-opacity: 0.6; stroke-width: 0.4; stroke-linejoin: round; pointer-events: none; }
+.tn-hit { fill: none; stroke: none; pointer-events: fill; }
+.tn-dot { fill: none; stroke: var(--ink); stroke-width: 0.6; pointer-events: none; }
+.tn-lead { fill: none; stroke: var(--ink-2); stroke-width: 0.5; pointer-events: none; }
+.tn-lead-end { fill: var(--ink-2); pointer-events: none; }
+
+/* a small country, while its stamp is shown: a fine ring in the stamp's ink */
+.os-ring { fill: none; stroke: var(--os-ink, var(--ink)); stroke-width: 1; opacity: 0; transition: opacity 0.5s var(--ease); pointer-events: none; }
+.os-ring.is-on { opacity: 0.9; }
+
+/* the lettering: small serif capitals, the year a step smaller in old style figures */
+.tn-name {
+  font-family: var(--f-name); font-weight: 400; font-size: max(8.6px, calc(10.5px * var(--tn-k))); letter-spacing: 0.13em;
+  fill: var(--ink);
+}
+.tn-name--l { font-size: max(9.6px, calc(12px * var(--tn-k))); letter-spacing: 0.16em; }
+.tn-name--s { font-size: max(8px, calc(9.25px * var(--tn-k))); }
+.tn-name .tn-year { font-size: 0.82em; letter-spacing: 0.04em; fill: var(--ink-2); font-variant-numeric: oldstyle-nums; }
+.tn-name.is-halo { paint-order: stroke; stroke: var(--paper); stroke-width: 3px; stroke-linejoin: round; }
+.tn-name.is-home, .tn-name.is-home .tn-year { fill: var(--link); }
+html[lang="zh-Hant"] .tn-name { letter-spacing: 0.08em; font-size: max(9.6px, calc(11px * var(--tn-k))); }
+html[lang="zh-Hant"] .tn-name--l { font-size: max(9.6px, calc(12px * var(--tn-k))); letter-spacing: 0.16em; }
+html[lang="zh-Hant"] .tn-name--s { font-size: max(9px, calc(10px * var(--tn-k))); }
+/* a label with no room at this size is left out; the stamp names the country instead */
+.tn-label.is-cut { display: none; }
+
+/* ---- the column: one group of facts, the stamp apart at its foot ---- */
+.cl-col {
+  --u: calc(4px * var(--p-density, 1));
+  --tight: calc(var(--u) * 2);   /* inside a group */
+  --step: calc(var(--u) * 4);    /* between the parts of a group */
+  --open: calc(var(--u) * 10);   /* between groups */
+  position: absolute; left: 0; top: 0;
+  transform: translate(var(--x, 0), var(--y, 0));
+  width: var(--cw, 220px); height: var(--ch, auto);
+  display: flex; flex-direction: column; align-items: flex-start;
+}
+
+/* the count: the number as wide as the column, its words under it */
+.os-count {
+  --f: 220px;
+  max-width: var(--cw, 220px);
+  display: flex; align-items: last baseline; gap: calc(var(--f) * 0.075);
+  margin: 0; pointer-events: none; color: var(--ink);
+}
+.os-count__n {
+  font-family: var(--f-name); font-weight: 400; font-size: var(--f); line-height: 1;
+  font-variant-numeric: lining-nums; letter-spacing: -0.02em;
+  /* the box drawn in to the figures themselves (measured by the script), so the column's top is the ink's */
+  margin: calc(var(--n-top, 0px) * -1) 0 calc(var(--n-bot, 0px) * -1);
+}
+.os-count__side { display: grid; justify-items: start; gap: var(--tight); min-width: 0; padding-bottom: calc(var(--f) * 0.008); }
+.os-count__w { font-family: var(--f-name); font-weight: 400; font-size: max(1.5rem, calc(var(--f) * 0.135)); line-height: 1; white-space: nowrap; }
+html[lang="zh-Hant"] .os-count__w { font-weight: 500; letter-spacing: 0.06em; }
+.os-share { display: grid; justify-items: start; gap: calc(var(--u) * 1.5); }
+.os-share__pct { font-family: var(--f-name); font-weight: 400; font-size: max(1.25rem, calc(var(--f) * 0.092)); line-height: 1; font-variant-numeric: lining-nums; white-space: nowrap; }
+/* the share's line may take two lines in a narrow column, broken evenly */
+.os-share__of { margin: 0; max-width: var(--cw, 220px); text-wrap: balance; }
+.os-count.is-stack { flex-direction: column; align-items: flex-start; gap: var(--step); }
+.os-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; margin: 0; }
+
+/* the quiet lines: trips, continents, the years; the same small capitals as the share's line */
+.cl-lines { margin: var(--open) 0 0; padding: 0; list-style: none; display: grid; gap: var(--tight); }
+.cl-lines li { white-space: nowrap; }
+
+/* ---- the stamp: one at a time, at the column's foot ---- */
+.os-seal {
+  margin-top: auto; padding-top: var(--open);
+  display: grid; justify-items: start; gap: var(--tight);
+  pointer-events: none;
+}
+/* the stamp's room is wider than the stamp; drawn in so a stamp's ink, not its room, meets the column's edge */
+.os-seal__spot { position: relative; width: var(--sw, 160px); height: var(--sh, 120px); margin: calc(var(--s, 100px) * -0.08) 0 calc(var(--s, 100px) * -0.06) calc(var(--s, 100px) * -0.13); }
+.os-seal__n { margin: 0; white-space: nowrap; text-box: trim-both cap alphabetic; }
+
+.os-stamp { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; color: var(--os-ink, var(--ink)); mix-blend-mode: multiply; }
+.os-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+.st-edge { fill: none; stroke: currentColor; stroke-width: var(--st-heavy, 2.6px); stroke-linejoin: round; }
+.st-line { fill: none; stroke: currentColor; stroke-width: var(--st-thin, 0.9px); }
+.st-fill { fill: currentColor; }
+.st-name { fill: currentColor; font-family: var(--f-text); font-weight: 600; letter-spacing: 0.1em; }
+.st-big { fill: currentColor; font-family: var(--f-name); font-weight: 400; letter-spacing: 0.03em; font-variant-numeric: lining-nums; }
+.st-date { fill: currentColor; font-family: var(--f-text); font-weight: 500; letter-spacing: 0.08em; }
+.st-mark { fill: currentColor; font-family: var(--f-text); font-weight: 600; letter-spacing: 0.16em; }
+html[lang="zh-Hant"] .st-name { letter-spacing: 0.14em; }
+html[lang="zh-Hant"] .st-big { font-weight: 600; }
+
+/* ---- the page arriving: the sheet and the column are simply there, after a short fade ---- */
+.fp--imp-layout-column .tn-sheet, .fp--imp-layout-column .cl-col { opacity: 0; transition: opacity 0.6s var(--ease); }
+.fp--imp-layout-column.is-ready .tn-sheet, .fp--imp-layout-column.is-ready .cl-col { opacity: 1; }
+.fp--imp-layout-column.is-still .tn-sheet, .fp--imp-layout-column.is-still .cl-col { transition: none; }
+
+/* ---- on a desktop the page is the window, nothing beyond it ---- */
+.fp--imp-layout-column:not(.is-narrow) .fp-stage { overflow: hidden; }
+
+/* ---- phones: the map on top, the column under it; the page may scroll ---- */
+.fp--imp-layout-column.is-narrow .fp-stage { overflow-x: hidden; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+/* the count beside its words, as one line of type */
+.cl-col.is-narrow .os-count__side { padding-bottom: calc(var(--f) * 0.01); }
+/* the quiet lines in one row */
+.cl-col.is-narrow .cl-lines { grid-auto-flow: column; column-gap: calc(var(--u) * 6); }
+/* the stamp at the left, its line beside it */
+.cl-col.is-narrow .os-seal { margin-top: 0; grid-template-columns: auto auto; align-items: center; column-gap: var(--step); }
+.cl-col.is-narrow .os-seal__spot { margin: 0 0 0 calc(var(--s, 100px) * -0.08); }
+.os-room { position: absolute; left: 0; top: 0; width: 1px; height: var(--room, 0); pointer-events: none; }

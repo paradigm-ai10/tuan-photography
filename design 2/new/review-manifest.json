@@ -2,7 +2,8 @@
   "name": "journey",
   "round": {
     "groups": [
-      "footprint-3"
+      "footprint-3",
+      "footprint-4"
     ],
     "ids": [
       "footprint-tinted-onestamp"
@@ -44,6 +45,13 @@
       "title": {
         "en": "One stamp at a time, four ways",
         "zh": "一次一個章，四種做法"
+      }
+    },
+    {
+      "id": "footprint-4",
+      "title": {
+        "en": "One stamp at a time, eleven ways with Impeccable",
+        "zh": "一次一個章，用 Impeccable 做的十一種"
       }
     },
     {
@@ -254,6 +262,171 @@
       "desc": {
         "en": "The one stamp lives in a small open passport; each new country turns the page, so two stamps sit side by side, never on top of each other.",
         "zh": "印章放在一本打開的小護照裡；每換一個國家就翻一頁，左右兩頁各一個章，不會疊在一起。"
+      },
+      "still": {
+        "wait": 9000
+      }
+    },
+    {
+      "href": "footprint-imp-bolder.html",
+      "group": "footprint-4",
+      "title": {
+        "en": "Bolder",
+        "zh": "更大膽"
+      },
+      "desc": {
+        "en": "Impeccable \"bolder\": the count, the washes and the stamp at full strength.",
+        "zh": "Impeccable「bolder」：數字、水彩和印章都放到最強。"
+      },
+      "still": {
+        "wait": 9000
+      }
+    },
+    {
+      "href": "footprint-imp-quieter.html",
+      "group": "footprint-4",
+      "title": {
+        "en": "Quieter",
+        "zh": "更安靜"
+      },
+      "desc": {
+        "en": "Impeccable \"quieter\": softer washes, more paper, fewer lines, a smaller stamp.",
+        "zh": "Impeccable「quieter」：水彩更淡、留白更多、線條更少、印章更小。"
+      },
+      "still": {
+        "wait": 9000
+      }
+    },
+    {
+      "href": "footprint-imp-distill.html",
+      "group": "footprint-4",
+      "title": {
+        "en": "Down to the essentials",
+        "zh": "精簡到只剩重點"
+      },
+      "desc": {
+        "en": "Impeccable \"distill\": only what it takes to say \"I have been to these 20 countries\".",
+        "zh": "Impeccable「distill」：只留下說「我去過這 20 個國家」需要的東西。"
+      },
+      "still": {
+        "wait": 9000
+      }
+    },
+    {
+      "href": "footprint-imp-typeset.html",
+      "group": "footprint-4",
+      "title": {
+        "en": "Set like an atlas title page",
+        "zh": "字體編排像地圖集"
+      },
+      "desc": {
+        "en": "Impeccable \"typeset\": the count and labels set like the title page and lettering of a fine atlas.",
+        "zh": "Impeccable「typeset」：數字和地名照精緻地圖集的書名頁和字的層次來排。"
+      },
+      "still": {
+        "wait": 9000
+      }
+    },
+    {
+      "href": "footprint-imp-colorize.html",
+      "group": "footprint-4",
+      "title": {
+        "en": "A colour for each continent",
+        "zh": "每個大洲一個顏色"
+      },
+      "desc": {
+        "en": "Impeccable \"colorize\": a printed-atlas palette, one wash per continent, each stamp in its country's colour.",
+        "zh": "Impeccable「colorize」：印刷地圖集的配色，每個大洲一種水彩，印章用自己國家的顏色。"
+      },
+      "still": {
+        "wait": 9000
+      }
+    },
+    {
+      "href": "footprint-imp-polish.html",
+      "group": "footprint-4",
+      "title": {
+        "en": "The same page, finished",
+        "zh": "同一張，精修完成"
+      },
+      "desc": {
+        "en": "Impeccable \"polish\": the page you liked, with spacing, labels, phone and small windows finished to ship quality.",
+        "zh": "Impeccable「polish」：你喜歡的那張，間距、地名、手機和小視窗都修到可以上線。"
+      },
+      "still": {
+        "wait": 9000
+      }
+    },
+    {
+      "href": "footprint-imp-layout-column.html",
+      "group": "footprint-4",
+      "title": {
+        "en": "A column and a big map",
+        "zh": "左欄＋大地圖"
+      },
+      "desc": {
+        "en": "Impeccable \"layout\": a narrow left column holds the count, the share and the stamp; the map fills the rest.",
+        "zh": "Impeccable「layout」：左邊一條窄欄放數字、百分比和印章，其餘全是地圖。"
+      },
+      "still": {
+        "wait": 9000
+      }
+    },
+    {
+      "href": "footprint-imp-layout-spread.html",
+      "group": "footprint-4",
+      "title": {
+        "en": "An atlas lying open",
+        "zh": "攤開的地圖集"
+      },
+      "desc": {
+        "en": "Impeccable \"layout\": the page as an open atlas, two pages and a fold, the count in one margin, the stamp in the other.",
+        "zh": "Impeccable「layout」：整頁像一本攤開的地圖集，兩頁中間有摺線，數字在一邊頁緣，印章在另一邊。"
+      },
+      "still": {
+        "wait": 9000
+      }
+    },
+    {
+      "href": "footprint-imp-animate.html",
+      "group": "footprint-4",
+      "title": {
+        "en": "The arrival, slowly",
+        "zh": "慢慢出現"
+      },
+      "desc": {
+        "en": "Impeccable \"animate\": the engraving draws in, then each country's wash bleeds in as its stamp presses, in the order you went.",
+        "zh": "Impeccable「animate」：地圖的線先畫出來，然後照你去的順序，每個國家的水彩慢慢暈開，同時蓋上它的章。"
+      },
+      "still": {
+        "wait": 9000
+      }
+    },
+    {
+      "href": "footprint-imp-delight.html",
+      "group": "footprint-4",
+      "title": {
+        "en": "Small touches",
+        "zh": "小驚喜"
+      },
+      "desc": {
+        "en": "Impeccable \"delight\": small atlas touches, such as a wash that lifts like paper and a pencilled note by the stamp.",
+        "zh": "Impeccable「delight」：一些小細節，像水彩像紙一樣微微浮起、印章旁邊鉛筆寫的小字。"
+      },
+      "still": {
+        "wait": 9000
+      }
+    },
+    {
+      "href": "footprint-imp-overdrive.html",
+      "group": "footprint-4",
+      "title": {
+        "en": "The count is the atlas",
+        "zh": "數字就是地圖"
+      },
+      "desc": {
+        "en": "Impeccable \"overdrive\": the numerals 20 so large they become a window, filled with the hand-tinted map.",
+        "zh": "Impeccable「overdrive」：「20」大到變成一扇窗，裡面就是手工上色的地圖。"
       },
       "still": {
         "wait": 9000
@@ -857,11 +1030,22 @@
       "footprint-onestamp-route",
       "footprint-onestamp-plate",
       "footprint-onestamp-index",
-      "footprint-onestamp-passport"
+      "footprint-onestamp-passport",
+      "footprint-imp-bolder",
+      "footprint-imp-quieter",
+      "footprint-imp-distill",
+      "footprint-imp-typeset",
+      "footprint-imp-colorize",
+      "footprint-imp-polish",
+      "footprint-imp-layout-column",
+      "footprint-imp-layout-spread",
+      "footprint-imp-animate",
+      "footprint-imp-delight",
+      "footprint-imp-overdrive"
     ],
     "question": {
-      "en": "Four ways of the one-stamp map you liked most (number 1 is it, as it was). Give each a score and mark what to change.",
-      "zh": "你最喜歡的「一次一個章」的四種做法（第 1 張是原本那張）。每版給個分數，想改的地方按 M 標記。"
+      "en": "Fifteen ways of the one-stamp map you like (number 1 is it, as it was). Each card says what the reviewers thought. Give each a score and mark what to change.",
+      "zh": "你喜歡的「一次一個章」的十五種做法（第 1 張是原本那張）。每張的說明裡有評審的意見。每版給個分數，想改的地方按 M 標記。"
     }
   }
 }

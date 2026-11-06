@@ -1,0 +1,167 @@
+/* Coloured by continent, one stamp at a time 配色 (footprint, round four, 2026-11-06).
+   Impeccable's colorize command (reference/colorize.md) on the polished tinted-onestamp: the colour
+   now means something, as in a printed school atlas. One wash family per continent he has been to,
+   three steps each so neighbours part (step 1 is the family's own colour, 2 a deeper, warmer turn,
+   3 a paler one; crowded Europe has a fourth), and the family's deep ink for the stamps, every ink at
+   least 6.7 to 1 on the paper.
+   Taiwan, home, stays the site's clay and its stamp the route red. The sea takes a very pale wash,
+   the land is left paper. A small key names the families, since colour is never the only code. */
+:root {
+  /* Asia: yellow ochre, turning to amber and to straw; its ink a raw umber */
+  --cz-asia-1: oklch(85% 0.078 84);
+  --cz-asia-2: oklch(77% 0.095 66);
+  --cz-asia-3: oklch(90% 0.052 92);
+  --cz-asia-ink: oklch(46% 0.085 66);
+  /* Europe: rose madder, turning to terracotta, to a pale shell and to a deep rose (four steps: its
+     seven countries touch so closely that three would leave two neighbours alike); its ink a madder lake */
+  --cz-europe-1: oklch(81% 0.062 12);
+  --cz-europe-2: oklch(72% 0.085 40);
+  --cz-europe-3: oklch(88% 0.042 28);
+  --cz-europe-4: oklch(70% 0.07 6);
+  --cz-europe-ink: oklch(45% 0.11 20);
+  /* Oceania: sage, turning greener and paler; its ink a deep green earth */
+  --cz-oceania-1: oklch(80% 0.055 138);
+  --cz-oceania-2: oklch(72% 0.062 156);
+  --cz-oceania-3: oklch(86% 0.042 120);
+  --cz-oceania-ink: oklch(44% 0.07 148);
+  /* North America: heather, turning to a lavender grey and to a pale mauve; its ink a plum */
+  --cz-north-america-1: oklch(77% 0.048 316);
+  --cz-north-america-2: oklch(71% 0.055 300);
+  --cz-north-america-3: oklch(82% 0.04 330);
+  --cz-north-america-ink: oklch(43% 0.075 314);
+  /* any continent still to come: verdigris */
+  --cz-other-1: oklch(78% 0.05 190);
+  --cz-other-2: oklch(72% 0.055 200);
+  --cz-other-3: oklch(83% 0.04 180);
+  --cz-other-ink: oklch(43% 0.06 195);
+  /* the sea, a very pale blue-grey wash; the water-lines a little bluer than the ink */
+  --cz-sea: oklch(94.6% 0.016 222);
+  --tn-water: oklch(40% 0.035 235);
+  --tn-home: var(--clay);
+  --tn-k: 1; /* the map's scale against the 1440 wide window, set by the script */
+}
+
+/* ---- the sheet: sea, washes, the shown country's deeper wash, then the ink ---- */
+.tn-sheet { position: absolute; left: 0; top: 0; width: var(--sheet-w, 100%); height: var(--sheet-h, 100%); }
+.tn-sheet > canvas, .tn-sheet > svg { position: absolute; left: 0; top: 0; display: block; }
+.tn-sheet > canvas { width: var(--sheet-w, 100%); height: var(--sheet-h, 100%); }
+.tn-wash, .os-deep { mix-blend-mode: multiply; pointer-events: none; }
+.tn-sea, .os-rings { pointer-events: none; }
+/* the engraving is drawn once: on its own layer, so the ring and the stamp changing never redraw it */
+.tn-ink, .os-rings { will-change: transform; }
+.tn-sheet > .os-deep { left: var(--dx, 0); top: var(--dy, 0); width: var(--dw, 0); height: var(--dh, 0); opacity: 0; transition: opacity 0.5s var(--ease); }
+.tn-sheet > .os-deep.is-on { opacity: 1; }
+
+/* the engraving */
+.tn-coast { fill: none; stroke: var(--ink); stroke-width: 0.7; stroke-linejoin: round; stroke-linecap: round; pointer-events: none; }
+.tn-border { fill: none; stroke: var(--ink); stroke-opacity: 0.6; stroke-width: 0.4; stroke-linejoin: round; pointer-events: none; }
+.tn-hit { fill: none; stroke: none; pointer-events: fill; }
+/* the country in keyboard focus: its outline in the site's clay, the one colour that means "this can be followed" */
+.tn-hit:focus { outline: none; }
+.tn-hit:focus-visible { stroke: var(--link); stroke-width: 1.6px; stroke-linejoin: round; }
+.fp--colorize ::selection { background: var(--clay); color: var(--paper); }
+.tn-dot { fill: none; stroke: var(--ink); stroke-width: 0.6; pointer-events: none; }
+.tn-lead { fill: none; stroke: var(--ink-2); stroke-width: 0.5; pointer-events: none; }
+.tn-lead-end { fill: var(--ink-2); pointer-events: none; }
+
+/* a small country, while its stamp is shown: a fine ring in the stamp's ink */
+.os-ring { fill: none; stroke: var(--os-ink, var(--ink)); stroke-width: 1; opacity: 0; transition: opacity 0.5s var(--ease); pointer-events: none; }
+.os-ring.is-on { opacity: 0.9; }
+
+/* the lettering: small serif capitals, the year a step smaller in old style figures */
+.tn-name {
+  font-family: var(--f-name); font-weight: 400; font-size: max(8.6px, calc(10.5px * var(--tn-k))); letter-spacing: 0.13em;
+  fill: var(--ink);
+}
+.tn-name--l { font-size: max(9.6px, calc(12px * var(--tn-k))); letter-spacing: 0.16em; }
+.tn-name--s { font-size: max(8px, calc(9.25px * var(--tn-k))); }
+.tn-name .tn-year { font-size: 0.82em; letter-spacing: 0.04em; fill: var(--ink-2); font-variant-numeric: oldstyle-nums; }
+.tn-name.is-halo { paint-order: stroke; stroke: var(--paper); stroke-width: 3px; stroke-linejoin: round; }
+.tn-name.is-home, .tn-name.is-home .tn-year { fill: var(--link); }
+html[lang="zh-Hant"] .tn-name { letter-spacing: 0.08em; font-size: max(9.6px, calc(11px * var(--tn-k))); }
+html[lang="zh-Hant"] .tn-name--l { font-size: max(9.6px, calc(12px * var(--tn-k))); letter-spacing: 0.16em; }
+html[lang="zh-Hant"] .tn-name--s { font-size: max(9px, calc(10px * var(--tn-k))); }
+/* a label with no room at this size is left out; the stamp names the country instead */
+.tn-label.is-cut { display: none; }
+
+/* ---- the count: set large in a quiet corner, no box ---- */
+.os-count {
+  --f: 300px;
+  position: absolute; left: 0; top: 0;
+  transform: translate(var(--x, 0), var(--y, 0));
+  display: flex; align-items: last baseline; gap: calc(var(--f) * 0.075);
+  margin: 0; pointer-events: none; color: var(--ink);
+}
+.os-count__n {
+  font-family: var(--f-name); font-weight: 400; font-size: var(--f); line-height: 1;
+  font-variant-numeric: lining-nums; letter-spacing: -0.02em;
+  /* the box drawn in to the figures themselves (measured by the script), so the corner holds the ink */
+  margin: calc(var(--n-top, 0px) * -1) 0 calc(var(--n-bot, 0px) * -1) calc(var(--n-left, 0px) * -1);
+}
+.os-count__side { display: grid; justify-items: start; gap: calc(var(--f) * 0.05); padding-bottom: calc(var(--f) * 0.008); }
+.os-count__w { font-family: var(--f-name); font-weight: 400; font-size: max(1.5rem, calc(var(--f) * 0.135)); line-height: 1; white-space: nowrap; }
+html[lang="zh-Hant"] .os-count__w { font-weight: 500; letter-spacing: 0.06em; }
+.os-share { display: grid; justify-items: start; gap: calc(var(--f) * 0.012); }
+.os-share__pct { font-family: var(--f-name); font-weight: 400; font-size: max(1.25rem, calc(var(--f) * 0.092)); line-height: 1; font-variant-numeric: lining-nums; white-space: nowrap; }
+.os-share__of { margin: 0; white-space: nowrap; }
+/* on a phone, or where the corner is tall: the words under the number */
+.os-count.is-stack { flex-direction: column; align-items: flex-start; gap: calc(var(--f) * 0.07); }
+/* on a phone the words stand beside a number sized from the map; the small line may take two lines */
+.is-narrow .os-count { gap: max(12px, calc(var(--f) * 0.09)); }
+.is-narrow .os-share__of { white-space: normal; max-width: 13em; text-wrap: balance; }
+.os-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; margin: 0; }
+
+/* ---- the stamp: one at a time, in a fixed spot ---- */
+.os-seal {
+  position: absolute; left: 0; top: 0;
+  transform: translate(var(--x, 0), var(--y, 0));
+  display: grid; justify-items: center; gap: 4px;
+  width: var(--sw, 160px); pointer-events: none;
+}
+.os-seal__spot { position: relative; width: var(--sw, 160px); height: var(--sh, 120px); }
+.os-seal__n { margin: 0; white-space: nowrap; }
+/* on a phone the line sits beside the stamp, to its left */
+.os-seal.is-beside { grid-template-columns: auto var(--sw, 160px); width: auto; align-items: center; column-gap: 12px; }
+.os-seal.is-beside .os-seal__spot { grid-column: 2; grid-row: 1; }
+.os-seal.is-beside .os-seal__n { grid-column: 1; grid-row: 1; }
+
+.os-stamp { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; color: var(--os-ink, var(--ink)); mix-blend-mode: multiply; }
+.os-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+.st-edge { fill: none; stroke: currentColor; stroke-width: var(--st-heavy, 2.6px); stroke-linejoin: round; }
+.st-line { fill: none; stroke: currentColor; stroke-width: var(--st-thin, 0.9px); }
+.st-fill { fill: currentColor; }
+.st-name { fill: currentColor; font-family: var(--f-text); font-weight: 600; letter-spacing: 0.1em; }
+.st-big { fill: currentColor; font-family: var(--f-name); font-weight: 400; letter-spacing: 0.03em; font-variant-numeric: lining-nums; }
+.st-date { fill: currentColor; font-family: var(--f-text); font-weight: 500; letter-spacing: 0.08em; }
+.st-mark { fill: currentColor; font-family: var(--f-text); font-weight: 600; letter-spacing: 0.16em; }
+html[lang="zh-Hant"] .st-name { letter-spacing: 0.14em; }
+html[lang="zh-Hant"] .st-big { font-weight: 600; }
+
+/* ---- the page arriving: the sheet and the count are simply there, after a short fade ---- */
+.fp--onestamp .tn-sheet, .fp--onestamp .os-count { opacity: 0; transition: opacity 0.6s var(--ease); }
+.fp--onestamp.is-ready .tn-sheet, .fp--onestamp.is-ready .os-count { opacity: 1; }
+.fp--onestamp.is-still .tn-sheet, .fp--onestamp.is-still .os-count { transition: none; }
+
+/* ---- on a desktop the page is the window, nothing beyond it ---- */
+.fp--onestamp:not(.is-narrow) .fp-stage { overflow: hidden; }
+
+/* ---- phones: the map on top, the count and the stamp under it; the page may scroll ---- */
+.fp--onestamp.is-narrow .fp-stage { overflow-x: hidden; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+/* ---- the key: a swatch of each continent's wash in its ink's fine rule, the name, his count there ---- */
+.cz-key {
+  position: absolute; left: 0; top: 0; margin: 0; padding: 0; list-style: none;
+  transform: translate(var(--x, 0), var(--y, 0));
+  display: grid; grid-template-columns: 11px auto auto; column-gap: 10px; row-gap: 7px; align-items: center;
+  pointer-events: none;
+}
+.cz-key li { display: contents; }
+.cz-key__sw { width: 11px; height: 11px; background: color-mix(in oklch, var(--cz-c, var(--paper-2)) 78%, var(--paper)); border: 1px solid var(--cz-k, var(--ink-2)); }
+.cz-key__name { white-space: nowrap; }
+.cz-key__n { justify-self: end; padding-left: 6px; font-variant-numeric: tabular-nums lining-nums; color: var(--ink); }
+/* on a phone, two continents to a line */
+.cz-key.is-two { grid-template-columns: 11px auto auto 11px auto auto; row-gap: 9px; }
+.cz-key.is-two .cz-key__n { padding-right: 18px; }
+.fp--colorize .cz-key { opacity: 0; transition: opacity 0.6s var(--ease); }
+.fp--colorize.is-ready .cz-key { opacity: 1; }
+.fp--colorize.is-still .cz-key { transition: none; }
+.os-room { position: absolute; left: 0; top: 0; width: 1px; height: var(--room, 0); pointer-events: none; }
