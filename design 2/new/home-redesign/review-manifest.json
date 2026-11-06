@@ -386,6 +386,82 @@
       },
       "still": {
         "wait": 5200
+      },
+      "out": true
+    },
+    {
+      "href": "c-pencil-lines.html",
+      "group": "opening2",
+      "title": {
+        "en": "Drawn in coloured pencil",
+        "zh": "用色鉛筆畫出來"
+      },
+      "desc": {
+        "en": "The lines themselves are drawn in colour, with no grey pencil at all: each line is the colour of what it outlines. Then each is gone over again, wider and wider, until the colour fills out from the lines; long strokes colour the sky last. Same timing as E: the colour is all there as the last lines land, then the film starts moving. A click skips it.",
+        "zh": "線條本身就是彩色的，完全沒有灰色鉛筆：每一筆都是它畫的東西的顏色。接著每條線再被描過幾次，越描越粗，顏色從線條裡長出來填滿；天空最後用長長的筆觸塗上。時間和 E 一樣：最後幾筆畫完時顏色已經到位，影片接著開始動。點一下可以跳過。"
+      },
+      "still": {
+        "wait": 5000
+      }
+    },
+    {
+      "href": "c-pencil-hatch.html",
+      "group": "opening2",
+      "title": {
+        "en": "Hatched in colour",
+        "zh": "色鉛筆排線"
+      },
+      "desc": {
+        "en": "Grey lines as in E, and close behind them coloured pencil hatching: fine diagonal strokes, then a second layer crossing them, put down wherever the pencil has just been. The hatching texture shows until the film starts. Same timing as E: the colour is all there as the last lines land, then the film starts moving. A click skips it.",
+        "zh": "線條和 E 一樣是灰色的，緊跟在後面的是色鉛筆排線：細細的斜線，再一層交叉的斜線，鉛筆剛畫到哪裡就排到哪裡。影片開始前看得到排線的紋理。時間和 E 一樣：最後幾筆畫完時顏色已經到位，影片接著開始動。點一下可以跳過。"
+      },
+      "still": {
+        "wait": 5000
+      }
+    },
+    {
+      "href": "c-pencil-band.html",
+      "group": "opening2",
+      "title": {
+        "en": "Colour along each line",
+        "zh": "線條帶出顏色"
+      },
+      "desc": {
+        "en": "Grey lines, and each line carries a soft band of colour with it, as if the colour were rubbed in with a finger right after the line; the sky is filled with broad soft strokes. The gentlest of the five. Same timing as E: the colour is all there as the last lines land, then the film starts moving. A click skips it.",
+        "zh": "灰色線條，每一筆都帶著一圈柔和的顏色，像畫完一筆馬上用手指把顏色抹開；天空用寬寬軟軟的筆觸補上。五個裡面最柔和的。時間和 E 一樣：最後幾筆畫完時顏色已經到位，影片接著開始動。點一下可以跳過。"
+      },
+      "still": {
+        "wait": 5000
+      }
+    },
+    {
+      "href": "c-pencil-grain.html",
+      "group": "opening2",
+      "title": {
+        "en": "Colour in the paper's grain",
+        "zh": "顏色落進紙紋"
+      },
+      "desc": {
+        "en": "Grey lines, and the colour catches in the paper's tooth like a coloured pencil on rough paper: first a scatter of coloured specks, then denser, then solid, in three passes behind the lines. Same timing as E: the colour is all there as the last lines land, then the film starts moving. A click skips it.",
+        "zh": "灰色線條，顏色像色鉛筆畫在粗紙上，卡在紙的紋路裡：先是一點一點的色點，越來越密，最後塗滿，跟在線條後面分三次上色。時間和 E 一樣：最後幾筆畫完時顏色已經到位，影片接著開始動。點一下可以跳過。"
+      },
+      "still": {
+        "wait": 5000
+      }
+    },
+    {
+      "href": "c-pencil-scribble.html",
+      "group": "opening2",
+      "title": {
+        "en": "Scribbled in",
+        "zh": "塗鴉上色"
+      },
+      "desc": {
+        "en": "Grey lines, and quick zigzag scribbles of colour fill each patch the pencil has just reached, like colouring in fast by hand; a second round of scribbles crosses the first. Same timing as E: the colour is all there as the last lines land, then the film starts moving. A click skips it.",
+        "zh": "灰色線條，鉛筆剛畫到的地方馬上用快速的來回塗鴉上色，像用手很快地塗顏色；第二輪塗鴉再交叉塗過去。時間和 E 一樣：最後幾筆畫完時顏色已經到位，影片接著開始動。點一下可以跳過。"
+      },
+      "still": {
+        "wait": 5000
       }
     }
   ],
@@ -464,13 +540,15 @@
   "words": {},
   "ask": {
     "ids": [
-      "r-windows",
-      "s-prints-over",
-      "u-layered"
+      "c-pencil-lines",
+      "c-pencil-hatch",
+      "c-pencil-band",
+      "c-pencil-grain",
+      "c-pencil-scribble"
     ],
     "question": {
-      "en": "Three ways to push the layering further. Give each a score.",
-      "zh": "三種把層疊做得更多的方式，每個打個分數。"
+      "en": "Five ways the colour comes with the pencil. Give each a score.",
+      "zh": "五種顏色跟著鉛筆一起出來的方式，每個打個分數。"
     }
   }
 }

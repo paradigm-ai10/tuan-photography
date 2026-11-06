@@ -150,6 +150,16 @@ def sketched(sid, cls="", sizes="(max-width: 48rem) 92vw, 60vw"):
             f'<img class="hr-sk__pencil" src="media/sketch/{sid}.jpg" alt="" loading="lazy" decoding="async"></a>{caption(sid)}</figure>')
 
 
+# E's opening in coloured pencil, five ways (pencil.js MODES)
+PENCILS = [
+    ("lines", "Drawn in coloured pencil", "用色鉛筆畫出來"),
+    ("hatch", "Hatched in colour", "色鉛筆排線"),
+    ("band", "Colour along each line", "線條帶出顏色"),
+    ("grain", "Colour in the paper's grain", "顏色落進紙紋"),
+    ("scribble", "Scribbled in", "塗鴉上色"),
+]
+
+
 def page(home, name, title_en, title_zh, opening, body, extra="", attrs="", way=None, foot_html=None, scripts=""):
     return f"""<!doctype html>
 <html lang="en" data-home="{home}"{attrs}>
@@ -265,6 +275,13 @@ def build():
     # spreading from the towers as the pencil does, so the drawing ends in colour and the film just starts.
     coloured = "\n  " + lines + f'\n  <div class="hr-load__counts">{tally}</div>'
     (OUT / "c-coloured.html").write_text(page("d", "c-coloured", "Coloured as it is drawn", "邊畫邊上色", film_e, c, coloured, " data-counts data-colour"), encoding="utf-8")
+    # ... in coloured pencil (his ask, 2026-11-06: the wash above "pops"; the colour should come with the
+    # sketching, like a coloured pencil): five ways of laying it down, in pencil.js, chosen by data-pencil.
+    # The paper is a canvas the pencil wears away, so the film's first frame comes through stroke by stroke.
+    wear = '\n  <canvas class="hr-load__wear" aria-hidden="true"></canvas>' + coloured
+    for mode, en, zh in PENCILS:
+        (OUT / f"c-pencil-{mode}.html").write_text(page("d", f"c-pencil-{mode}", en, zh, film_e, c, wear, f' data-counts data-pencil="{mode}"',
+                                                        scripts='<script src="pencil.js"></script>\n'), encoding="utf-8")
     # Round two (his ask, 2026-11-05: "continue designing the rest of the home page"): E's opening kept,
     # three ways for everything under the film.
     rest = lambda r: " data-counts" + f' data-rest="{r}"'

@@ -83,7 +83,15 @@ html.hr-shade .hr-load__trace { opacity: 0.85; }
   -webkit-mask-image: radial-gradient(circle farthest-corner at 50% 28%, transparent calc((var(--c) * 1.5 - 0.5) * 100%), #000 calc(var(--c) * 150%));
   mask-image: radial-gradient(circle farthest-corner at 50% 28%, transparent calc((var(--c) * 1.5 - 0.5) * 100%), #000 calc(var(--c) * 150%)); }
 [data-colour].hr-trace .hr-load__paper { --c: 1; transition: --c 2.5s cubic-bezier(0.3, 0, 0.45, 1) 0.1s; }
-[data-colour].hr-out .hr-load__trace { opacity: 0; transition: opacity 1.1s cubic-bezier(0.2, 0, 0.3, 1); }
+:is([data-colour], [data-pencil]).hr-out .hr-load__trace { opacity: 0; transition: opacity 1.1s cubic-bezier(0.2, 0, 0.3, 1); }
+/* E in coloured pencil (his ask, 2026-11-06: the colour comes with the sketching, not out of nowhere): five ways
+   to lay it down, in pencil.js. The paper becomes a canvas the pencil wears away, so the film's first frame
+   comes through stroke by stroke; the film starts as the last lines land and the last of the paper lifts */
+.hr-load__wear { display: none; }
+[data-pencil] .hr-load__wear { position: absolute; inset: 0; z-index: 0; display: block; width: 100%; height: 100%; }
+[data-pencil].hr-trace .hr-load__paper { opacity: 0; transition: none; }
+[data-pencil="lines"] .hr-load__trace { visibility: hidden; }   /* here the lines themselves are drawn in colour */
+[data-pencil].hr-out .hr-load__wear { opacity: 0; transition: opacity 0.7s cubic-bezier(0.2, 0, 0.3, 1); }
 
 /* ---------------- the top: the logo small, the menu, the two languages ---------------- */
 .hr-top { position: absolute; z-index: 3; top: 0; left: 0; right: 0; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;

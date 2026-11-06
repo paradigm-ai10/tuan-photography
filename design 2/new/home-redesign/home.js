@@ -2,7 +2,7 @@
    photographs rising into view. <html data-home> names the direction: a (a short film), b (prints
    gather), c (drawn, then real), d (traced line by line, then real); with data-counts on <html> it is E,
    the trip so far counting up under the drawing and a caption for each scene of the film; data-colour adds the
-   colour coming up under the lines as they are drawn. The loading screen is the live one (logo 1C, motion 21); here it
+   colour coming up under the lines as they are drawn, and data-pencil lays it down in coloured pencil (pencil.js). The loading screen is the live one (logo 1C, motion 21); here it
    plays on every load so each version can be judged. A click or a key skips to the end; R plays it
    again; ?still shows the end at once (for the list page's pictures); "reduce motion" skips it. */
 (() => {
@@ -90,6 +90,7 @@
   function finish() {
     if (done) return;
     done = true;
+    if (window.HRPencil) window.HRPencil.stop();
     if (screen) screen.remove();
     html.classList.remove('hr-loading', 'hr-full', 'hr-out', 'hr-horizon', 'hr-draw', 'hr-trace', 'hr-shade');
     if (video) video.play().catch(() => {});
@@ -164,9 +165,10 @@
     html.classList.add('hr-horizon');
     await wait(1100); if (done) return;
     html.classList.add('hr-trace');
+    if (window.HRPencil) window.HRPencil.start();   // the coloured pencil (pencil.js) follows the lines
     if (tally.length) count(2100);
-    if ('colour' in html.dataset) {   // E coloured: the colour is in as the last lines land, and the film starts moving under them
-      await wait(2550); if (done) return;
+    if ('colour' in html.dataset || 'pencil' in html.dataset) {   // the colour is in as the last lines land, and the film starts moving under them
+      await wait('pencil' in html.dataset ? 2750 : 2550); if (done) return;
       if (video) video.play().catch(() => {});
       html.classList.add('hr-out');   // the lines and the counts lift off the moving film
       await wait(1200);
