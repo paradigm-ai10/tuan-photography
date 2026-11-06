@@ -93,6 +93,21 @@ html.hr-shade .hr-load__trace { opacity: 0.85; }
 [data-pencil="lines"] .hr-load__trace { visibility: hidden; }   /* here the lines themselves are drawn in colour */
 [data-pencil].hr-out .hr-load__wear { opacity: 0; transition: opacity 0.7s cubic-bezier(0.2, 0, 0.3, 1); }
 [data-pencil].hr-trace .hr-load__mark { opacity: 0; transition: opacity 0.35s ease; }   /* the logo's last word is gone before any colour comes */
+/* 32 smoothed (his ask, 2026-11-06: the change from brushing to the whole film came out of nowhere): the film
+   settles from a little close all through the brushing, the last paper dissolves into its grain and lifts, the menu
+   comes after */
+[data-smooth] .hr-open video { transform: scale(1.12); }
+[data-smooth].hr-settle .hr-open video { transform: none; transition: transform var(--settle, 1.2s) cubic-bezier(0.39, 0.575, 0.565, 1); }
+/* the soft shades come in under the thinning paper: the foot's after the last sweep is down, the top's, lower and
+   shorter, once the sky is nearly clear; the menu lands once most of the paper is gone, the caption just after it */
+[data-smooth] .hr-open::before { height: 16svh; opacity: 0; transition: opacity 1s cubic-bezier(0.45, 0, 0.55, 1) 0.8s; }
+[data-smooth][data-counts] .hr-open::after { opacity: 0; transition: opacity 1s cubic-bezier(0.45, 0, 0.55, 1) 0.5s; }
+[data-smooth].hr-clearing .hr-open::before { opacity: 0.6; }
+[data-smooth].hr-clearing[data-counts] .hr-open::after { opacity: 1; }
+[data-smooth] .hr-cap { opacity: 0; transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.45s; }
+[data-smooth].hr-shown .hr-cap { opacity: 1; }
+[data-smooth] .hr-cap__one { transition: opacity 0.4s ease, transform 1.2s var(--out); }   /* the caption leaves just before the cut */
+[data-smooth].hr-out .hr-top { transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.3s; }
 [data-pencil].hr-counted .hr-load__counts { opacity: 0; transition: opacity 0.45s ease; }   /* they step aside before the pencil reaches the foot */
 
 /* ---------------- the top: the logo small, the menu, the two languages ---------------- */

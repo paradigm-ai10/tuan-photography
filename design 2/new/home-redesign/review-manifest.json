@@ -570,6 +570,21 @@
       "still": {
         "wait": 5500
       }
+    },
+    {
+      "href": "c-hand-dry-smooth.html",
+      "group": "opening4",
+      "title": {
+        "en": "A dry brush, smoothed",
+        "zh": "乾筆飛白，收得更順"
+      },
+      "desc": {
+        "en": "32 with a smoother change from brushing into the film, worked over in five rounds with two reviewers (a panel of first-time visitors and a motion designer). The film settles slowly from a little close the whole time; the brush finishes with a few wetter sweeps, the last one along the foot; every stroke lands narrow and lifts off tapering, its front a rounded, leaning nose; what paper is left thins away in short dashes, the spire first and small slivers early, the last streaks lingering at the edges; then the menu and caption, and the first shot holds a couple of seconds before the film moves on. A click skips it.",
+        "zh": "32 的進階版，刷完到影片的轉換更順，跟兩位評審（一組第一次看到網站的訪客、一位動態設計師）來回改了五輪。影片從頭到尾都在從稍微放大慢慢退回原本大小；刷子最後用幾筆比較濕的大筆收尾，最後一筆沿著底部；每一筆落下時窄、提起時漸細，筆頭是圓的、往後斜；剩下的白紙變成一小段一小段慢慢消失，聖家堂先清乾淨、零碎的小白邊先走，最後幾絲留在畫面邊緣；接著選單和字幕出現，第一個畫面停幾秒才換下一段。點一下可以跳過。"
+      },
+      "still": {
+        "wait": 5600
+      }
     }
   ],
   "tags": [
@@ -647,13 +662,11 @@
   "words": {},
   "ask": {
     "ids": [
-      "c-hand",
-      "c-hand-loaded",
-      "c-hand-dry"
+      "c-hand-dry-smooth"
     ],
     "question": {
-      "en": "Three hands brushing the film in. Give each a score.",
-      "zh": "三種像人手在刷的方式，每個打個分數。"
+      "en": "32, smoothed over five rounds of review. Give it a score.",
+      "zh": "32 經過五輪評審改順了，打個分數。"
     }
   }
 }

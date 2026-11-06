@@ -86,6 +86,16 @@
     caps.forEach((c) => c.classList.toggle('is-on', t >= Number(c.dataset.from) && t < Number(c.dataset.to)));
   });
 
+  // smoothed: the film's pace from the last stroke, so its first shot ends T seconds from now on every load: it keeps
+  // its slow pace, then eases back to its own, reaching it as the shot ends (data-cut on the captions, or the first caption's end)
+  function hold(T) {
+    if (!video) return;
+    const box = document.querySelector('.hr-cap'), cut = box && box.dataset.cut ? Number(box.dataset.cut) : caps.length ? Number(caps[0].dataset.to) : 2.6, r0 = video.playbackRate;
+    const left = cut - video.currentTime;
+    const R = Math.min(T, Math.max(0.8, (left - r0 * T) / ((1 - r0) / 2)));
+    setTimeout(() => speed(r0, 1, R * 1000), (T - R) * 1000);
+  }
+
   // the film's pace eased from one speed to another
   let easing = false;
   function speed(from, to, ms) {
@@ -104,6 +114,8 @@
     if (done) return;
     done = true;
     if (window.HRPencil) window.HRPencil.stop();
+    if (!html.classList.contains('hr-settle')) { html.style.setProperty('--settle', '1.2s'); html.classList.add('hr-settle'); }
+    html.classList.add('hr-shown', 'hr-clearing');   // smoothed: the caption and the shades, if skipped before the paper cleared
     if (screen) screen.remove();
     html.classList.remove('hr-loading', 'hr-full', 'hr-out', 'hr-horizon', 'hr-draw', 'hr-trace', 'hr-shade', 'hr-counted');
     if (video) { if (!easing) video.playbackRate = 1; video.play().catch(() => {}); }   // a skip mid-brush plays it at its own pace
@@ -185,10 +197,25 @@
       if (plan.rate) video.playbackRate = plan.rate;
       video.play().catch(() => {});
     }
+    if (plan && plan.out) {   // smoothed: the film settles from a little close, all through the brushing and after
+      html.style.setProperty('--settle', (plan.out + 2.8).toFixed(2) + 's');   // a number for the stylesheet: still drifting as the first shot ends
+      html.classList.add('hr-settle');
+    }
     if (tally.length) count(plan ? plan.count * 1000 : 2100);
     if (plan) {   // the counts step aside so the foot of the picture under them can be coloured
       await wait(plan.counted * 1000); if (done) return;
       html.classList.add('hr-counted');
+      if (plan.out) {   // smoothed: as the last sweep begins the paper starts to thin, the shades come in under it, the menu and caption
+        // once most of it is gone, and the first shot holds about two seconds after
+        await wait((plan.clear - plan.counted) * 1000); if (done) return;
+        html.classList.add('hr-clearing');
+        hold(plan.out - plan.clear + 2.4);
+        await wait((plan.out - plan.clear - 0.25) * 1000); if (done) return;
+        html.classList.add('hr-out', 'hr-shown');
+        await wait(1400);
+        finish();
+        return;
+      }
       await wait((plan.end - plan.counted) * 1000); if (done) return;
       if (plan.rate && video) speed(plan.rate, 1, 900);   // then eases back to its own pace, the first shot still on
     }
