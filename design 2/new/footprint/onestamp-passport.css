@@ -1,0 +1,161 @@
+/* One stamp at a time, in a passport 一次一個章＋護照翻頁 (footprint, round three, 2026-11-06).
+   The hand-tinted atlas and the large count of tinted-onestamp.css, with the one stamp given a home:
+   a small open passport, two facing visa pages on fine wave-printed paper, stitched down the middle,
+   square, a hairline edge. The right page turns over about the spine to the next country. */
+:root {
+  --tn-ochre: oklch(83% 0.09 86);
+  --tn-terra: oklch(73% 0.085 42);
+  --tn-sage: oklch(77% 0.06 135);
+  --tn-slate: oklch(74% 0.05 235);
+  --tn-mauve: oklch(73% 0.05 338);
+  --tn-verdigris: oklch(77% 0.05 190);
+  --tn-home: var(--clay);
+  --tn-water: color-mix(in oklch, var(--ink) 80%, var(--slate));
+  --tn-k: 1; /* the map's scale against the 1440 wide window, set by the script */
+}
+
+/* ---- the sheet: sea, washes, the shown country's deeper wash, then the ink ---- */
+.tn-sheet { position: absolute; left: 0; top: 0; width: var(--sheet-w, 100%); height: var(--sheet-h, 100%); }
+.tn-sheet > canvas, .tn-sheet > svg { position: absolute; left: 0; top: 0; display: block; }
+.tn-sheet > canvas { width: var(--sheet-w, 100%); height: var(--sheet-h, 100%); }
+.tn-wash, .os-deep { mix-blend-mode: multiply; pointer-events: none; }
+.tn-sea, .os-rings { pointer-events: none; }
+/* the engraving is drawn once: on its own layer, so the ring and the stamp changing never redraw it */
+.tn-ink, .os-rings { will-change: transform; }
+.tn-sheet > .os-deep { left: var(--dx, 0); top: var(--dy, 0); width: var(--dw, 0); height: var(--dh, 0); opacity: 0; transition: opacity 0.5s var(--ease); }
+.tn-sheet > .os-deep.is-on { opacity: 1; }
+
+/* the engraving */
+.tn-coast { fill: none; stroke: var(--ink); stroke-width: 0.7; stroke-linejoin: round; stroke-linecap: round; pointer-events: none; }
+.tn-border { fill: none; stroke: var(--ink); stroke-opacity: 0.6; stroke-width: 0.4; stroke-linejoin: round; pointer-events: none; }
+.tn-hit { fill: none; stroke: none; pointer-events: fill; }
+.tn-dot { fill: none; stroke: var(--ink); stroke-width: 0.6; pointer-events: none; }
+.tn-lead { fill: none; stroke: var(--ink-2); stroke-width: 0.5; pointer-events: none; }
+.tn-lead-end { fill: var(--ink-2); pointer-events: none; }
+
+/* a small country, while its stamp is shown: a fine ring in the stamp's ink */
+.os-ring { fill: none; stroke: var(--os-ink, var(--ink)); stroke-width: 1; opacity: 0; transition: opacity 0.5s var(--ease); pointer-events: none; }
+.os-ring.is-on { opacity: 0.9; }
+
+/* the lettering: small serif capitals, the year a step smaller in old style figures */
+.tn-name {
+  font-family: var(--f-name); font-weight: 400; font-size: max(8.6px, calc(10.5px * var(--tn-k))); letter-spacing: 0.13em;
+  fill: var(--ink);
+}
+.tn-name--l { font-size: max(9.6px, calc(12px * var(--tn-k))); letter-spacing: 0.16em; }
+.tn-name--s { font-size: max(8px, calc(9.25px * var(--tn-k))); }
+.tn-name .tn-year { font-size: 0.82em; letter-spacing: 0.04em; fill: var(--ink-2); font-variant-numeric: oldstyle-nums; }
+.tn-name.is-halo { paint-order: stroke; stroke: var(--paper); stroke-width: 3px; stroke-linejoin: round; }
+.tn-name.is-home, .tn-name.is-home .tn-year { fill: var(--link); }
+html[lang="zh-Hant"] .tn-name { letter-spacing: 0.08em; font-size: max(9.6px, calc(11px * var(--tn-k))); }
+html[lang="zh-Hant"] .tn-name--l { font-size: max(9.6px, calc(12px * var(--tn-k))); letter-spacing: 0.16em; }
+html[lang="zh-Hant"] .tn-name--s { font-size: max(9px, calc(10px * var(--tn-k))); }
+/* a label with no room at this size is left out; the stamp names the country instead */
+.tn-label.is-cut { display: none; }
+
+/* ---- the count: set large in a quiet corner, no box ---- */
+.os-count {
+  --f: 300px;
+  position: absolute; left: 0; top: 0;
+  transform: translate(var(--x, 0), var(--y, 0));
+  display: flex; align-items: last baseline; gap: calc(var(--f) * 0.075);
+  margin: 0; pointer-events: none; color: var(--ink);
+}
+.os-count__n {
+  font-family: var(--f-name); font-weight: 400; font-size: var(--f); line-height: 1;
+  font-variant-numeric: lining-nums; letter-spacing: -0.02em;
+  /* the box drawn in to the figures themselves (measured by the script), so the corner holds the ink */
+  margin: calc(var(--n-top, 0px) * -1) 0 calc(var(--n-bot, 0px) * -1);
+}
+.os-count__side { display: grid; justify-items: start; gap: calc(var(--f) * 0.05); padding-bottom: calc(var(--f) * 0.008); }
+.os-count__w { font-family: var(--f-name); font-weight: 400; font-size: max(1.5rem, calc(var(--f) * 0.135)); line-height: 1; white-space: nowrap; }
+html[lang="zh-Hant"] .os-count__w { font-weight: 500; letter-spacing: 0.06em; }
+.os-share { display: grid; justify-items: start; gap: calc(var(--f) * 0.012); }
+.os-share__pct { font-family: var(--f-name); font-weight: 400; font-size: max(1.25rem, calc(var(--f) * 0.092)); line-height: 1; font-variant-numeric: lining-nums; white-space: nowrap; }
+.os-share__of { margin: 0; white-space: nowrap; }
+/* on a phone the words stay beside the number, the small line in two */
+.os-count.is-tight .os-share__of { white-space: normal; max-width: 10.5em; }
+html[lang="zh-Hant"] .os-count.is-tight .os-share__of { white-space: nowrap; max-width: none; }
+/* where the corner is tall: the words under the number */
+.os-count.is-stack { flex-direction: column; align-items: flex-start; gap: calc(var(--f) * 0.07); }
+.os-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; margin: 0; }
+
+/* ---- the passport: two facing visa pages ---- */
+.pp {
+  --pp-edge: color-mix(in oklch, var(--ink) 34%, var(--paper));
+  --pp-paper: color-mix(in oklch, var(--paper) 98%, var(--slate));
+  position: absolute; left: 0; top: 0;
+  transform: translate(var(--x, 0), var(--y, 0));
+  width: calc(var(--pw, 140px) * 2); height: var(--ph, 175px);
+  pointer-events: none;
+}
+.pp-book { position: relative; width: 100%; height: 100%; perspective: calc(var(--pw, 140px) * 6); }
+.pp-page, .pp-face {
+  position: absolute; top: 0; width: var(--pw, 140px); height: var(--ph, 175px);
+  background-color: var(--pp-paper); background-image: var(--pp-pattern, none);
+  border: 1px solid var(--pp-edge);
+  overflow: hidden;
+}
+/* each page edged on its three outer sides; the fold between them is the stitch line's */
+.pp-page--l { left: 0; border-right: 0; }
+.pp-page--r { left: var(--pw, 140px); border-left: 0; }
+.pp-face--front { left: 0; border-left: 0; }
+.pp-face--back { left: 0; border-right: 0; transform: rotateY(180deg); }
+/* the inside of the cover: plain paper, no printing */
+.pp-page.is-cover, .pp-face.is-cover { background-color: var(--paper-2); background-image: none; }
+
+/* the leaf that turns: over the right page, hinged on the spine */
+.pp-leaf {
+  position: absolute; left: var(--pw, 140px); top: 0; width: var(--pw, 140px); height: var(--ph, 175px);
+  transform-origin: 0 50%; transform-style: preserve-3d;
+  visibility: hidden; z-index: 2;
+}
+.pp-leaf.is-on { visibility: visible; }
+.pp-face { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+/* a page turning away from the light reads a shade darker; never a shadow cast */
+.pp-shade { position: absolute; inset: 0; background: color-mix(in oklch, var(--ink) 8%, transparent); opacity: 0; pointer-events: none; }
+
+/* the fold and its stitches */
+.pp-fold { position: absolute; left: calc(var(--pw, 140px) - 0.5px); top: 0; bottom: 0; width: 0; border-left: 1px solid var(--hair); z-index: 1; }
+.pp-fold::after { content: ""; position: absolute; left: -1px; top: 9%; bottom: 9%; border-left: 1px dashed var(--ink-3); }
+
+/* the printing: the running head, the page number */
+.pp-head, .pp-no {
+  position: absolute; margin: 0; white-space: nowrap;
+  font: 500 var(--pp-type, 10px)/1 var(--f-text); letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-2);
+}
+.pp-head { left: 0; right: 0; top: calc(var(--ph, 175px) * 0.07); text-align: center; letter-spacing: 0.32em; padding-left: 0.32em; }
+.pp-no { bottom: calc(var(--ph, 175px) * 0.06); letter-spacing: 0.14em; }
+.pp-page--l .pp-no, .pp-face--back .pp-no { left: calc(var(--pp-m, 8px) + 2px); }
+.pp-page--r .pp-no, .pp-face--front .pp-no { right: calc(var(--pp-m, 8px) + 2px); }
+html[lang="zh-Hant"] .pp-head { text-transform: none; letter-spacing: 0.5em; padding-left: 0.5em; font-family: "Noto Sans TC", var(--f-text); }
+html[lang="zh-Hant"] .pp-no { text-transform: none; letter-spacing: 0.1em; font-family: "Noto Sans TC", var(--f-text); }
+/* home's page, in red */
+.is-home .pp-no { color: var(--route); }
+
+/* the stamp area, between the head and the number */
+.pp-spot { position: absolute; left: var(--pp-m, 8px); right: var(--pp-m, 8px); top: var(--pp-top, 24px); bottom: var(--pp-bot, 24px); }
+
+.os-stamp { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; color: var(--os-ink, var(--ink)); mix-blend-mode: multiply; transform-origin: 50% 50%; }
+.os-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+.st-edge { fill: none; stroke: currentColor; stroke-width: var(--st-heavy, 2.6px); stroke-linejoin: round; }
+.st-line { fill: none; stroke: currentColor; stroke-width: var(--st-thin, 0.9px); }
+.st-fill { fill: currentColor; }
+.st-name { fill: currentColor; font-family: var(--f-text); font-weight: 600; letter-spacing: 0.1em; }
+.st-big { fill: currentColor; font-family: var(--f-name); font-weight: 400; letter-spacing: 0.03em; font-variant-numeric: lining-nums; }
+.st-date { fill: currentColor; font-family: var(--f-text); font-weight: 500; letter-spacing: 0.08em; }
+.st-mark { fill: currentColor; font-family: var(--f-text); font-weight: 600; letter-spacing: 0.16em; }
+html[lang="zh-Hant"] .st-name { letter-spacing: 0.14em; }
+html[lang="zh-Hant"] .st-big { font-weight: 600; }
+
+/* ---- the page arriving: the sheet, the count and the passport are simply there, after a short fade ---- */
+.fp--passport .tn-sheet, .fp--passport .os-count, .fp--passport .pp { opacity: 0; transition: opacity 0.6s var(--ease); }
+.fp--passport.is-ready .tn-sheet, .fp--passport.is-ready .os-count, .fp--passport.is-ready .pp { opacity: 1; }
+.fp--passport.is-still .tn-sheet, .fp--passport.is-still .os-count, .fp--passport.is-still .pp { transition: none; }
+
+/* ---- on a desktop the page is the window, nothing beyond it ---- */
+.fp--passport:not(.is-narrow) .fp-stage { overflow: hidden; }
+
+/* ---- phones: the map on top, the count under it, the passport under that; the page may scroll ---- */
+.fp--passport.is-narrow .fp-stage { overflow-x: hidden; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+.os-room { position: absolute; left: 0; top: 0; width: 1px; height: var(--room, 0); pointer-events: none; }

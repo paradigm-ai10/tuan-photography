@@ -2,7 +2,10 @@
   "name": "journey",
   "round": {
     "groups": [
-      "footprint-2"
+      "footprint-3"
+    ],
+    "ids": [
+      "footprint-tinted-onestamp"
     ]
   },
   "endpoint": "/__reviews/journey",
@@ -34,6 +37,13 @@
       "title": {
         "en": "Where I have been, round two",
         "zh": "足跡地圖，第二輪"
+      }
+    },
+    {
+      "id": "footprint-3",
+      "title": {
+        "en": "One stamp at a time, four ways",
+        "zh": "一次一個章，四種做法"
       }
     },
     {
@@ -184,6 +194,66 @@
       "desc": {
         "en": "The hand-tinted atlas with the count large in one corner and the share of the world. One stamp in the other corner: it presses through your countries once in order, then shows the one you point at, so stamps never pile up.",
         "zh": "手工上色的老地圖，一角放大數字和全世界的百分比。另一角只放一個印章：一開始照順序蓋過每個國家一次，之後指到哪個國家就換成哪個章，所以不會疊在一起。"
+      },
+      "still": {
+        "wait": 9000
+      }
+    },
+    {
+      "href": "footprint-onestamp-route.html",
+      "group": "footprint-3",
+      "title": {
+        "en": "One stamp, and its route",
+        "zh": "一次一個章＋路線"
+      },
+      "desc": {
+        "en": "As the one you liked, and while each stamp is shown its trip is drawn on the map in fine ink from Taipei; earlier routes stay as faint lines.",
+        "zh": "跟你喜歡的那張一樣，每個章出現時，那趟旅行的路線從台北用細墨線畫出來；之前的路線留下淡淡的線。"
+      },
+      "still": {
+        "wait": 9000
+      }
+    },
+    {
+      "href": "footprint-onestamp-plate.html",
+      "group": "footprint-3",
+      "title": {
+        "en": "One stamp, the whole atlas plate",
+        "zh": "一次一個章＋整張地圖"
+      },
+      "desc": {
+        "en": "The map as large as the window allows, one engraved plate; the count and the stamp are printed on the open sea inside it.",
+        "zh": "地圖放到視窗最大，像一整張雕版地圖；大數字和印章直接印在地圖的海上。"
+      },
+      "still": {
+        "wait": 9000
+      }
+    },
+    {
+      "href": "footprint-onestamp-index.html",
+      "group": "footprint-3",
+      "title": {
+        "en": "One stamp, with an index",
+        "zh": "一次一個章＋國家目錄"
+      },
+      "desc": {
+        "en": "As the one you liked, with a list of your 20 countries and their years beside the stamp, like the index of an atlas; tap a name to see its stamp.",
+        "zh": "跟你喜歡的那張一樣，印章旁邊加一個國家目錄，20 個國家和年份；點名字就換成那個國家的章。"
+      },
+      "still": {
+        "wait": 9000
+      }
+    },
+    {
+      "href": "footprint-onestamp-passport.html",
+      "group": "footprint-3",
+      "title": {
+        "en": "One stamp, a passport that turns",
+        "zh": "一次一個章＋護照翻頁"
+      },
+      "desc": {
+        "en": "The one stamp lives in a small open passport; each new country turns the page, so two stamps sit side by side, never on top of each other.",
+        "zh": "印章放在一本打開的小護照裡；每換一個國家就翻一頁，左右兩頁各一個章，不會疊在一起。"
       },
       "still": {
         "wait": 9000
@@ -784,15 +854,14 @@
   "words": {},
   "ask": {
     "ids": [
-      "footprint-scratch-passport",
-      "footprint-tinted-border",
-      "footprint-scratch-ledger",
-      "footprint-tinted-onestamp",
-      "footprint-only-tinted"
+      "footprint-onestamp-route",
+      "footprint-onestamp-plate",
+      "footprint-onestamp-index",
+      "footprint-onestamp-passport"
     ],
     "question": {
-      "en": "Round two of the maps, made from your notes: the scratch and hand-tinted looks, a bigger count with the share of the world, and the stamps off the countries. Give each a score and mark what to change.",
-      "zh": "照你的筆記做的第二輪：刮刮和手工上色的風格、更大的國家數字加上全世界百分比、印章不再壓在國家上。每版給個分數，想改的地方按 M 標記。"
+      "en": "Four ways of the one-stamp map you liked most (number 1 is it, as it was). Give each a score and mark what to change.",
+      "zh": "你最喜歡的「一次一個章」的四種做法（第 1 張是原本那張）。每版給個分數，想改的地方按 M 標記。"
     }
   }
 }
