@@ -1,7 +1,8 @@
 /* Home redesign, three directions (2026-11-05): the opening of each, the two languages, and the
    photographs rising into view. <html data-home> names the direction: a (a short film), b (prints
    gather), c (drawn, then real), d (traced line by line, then real); with data-counts on <html> it is E,
-   the trip so far counting up under the drawing and a caption for each scene of the film. The loading screen is the live one (logo 1C, motion 21); here it
+   the trip so far counting up under the drawing and a caption for each scene of the film; data-colour adds the
+   colour coming up under the lines as they are drawn. The loading screen is the live one (logo 1C, motion 21); here it
    plays on every load so each version can be judged. A click or a key skips to the end; R plays it
    again; ?still shows the end at once (for the list page's pictures); "reduce motion" skips it. */
 (() => {
@@ -164,6 +165,14 @@
     await wait(1100); if (done) return;
     html.classList.add('hr-trace');
     if (tally.length) count(2100);
+    if ('colour' in html.dataset) {   // E coloured: the colour is in as the last lines land, and the film starts moving under them
+      await wait(2550); if (done) return;
+      if (video) video.play().catch(() => {});
+      html.classList.add('hr-out');   // the lines and the counts lift off the moving film
+      await wait(1200);
+      finish();
+      return;
+    }
     await wait(1900); if (done) return;   // the shading starts as the last lines land (the lines run at --pace 0.5)
     html.classList.add('hr-shade');
     if (video) { video.currentTime = 0; video.play().catch(() => {}); }   // the film is already moving under the paper

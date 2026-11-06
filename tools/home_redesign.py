@@ -260,6 +260,11 @@ def build():
                    for a, b, name, where in CAPTIONS)
     film_e = FILM.replace("</video></section>", f'</video><p class="hr-cap" aria-hidden="true">{caps}</p></section>')
     (OUT / "c-counted.html").write_text(page("d", "c-counted", "Traced and counted", "勾出來，數一數", film_e, c, counted, " data-counts"), encoding="utf-8")
+    # E, coloured as it is drawn (his ask, 2026-11-06: the grey sketch, then colour, took too long): as E
+    # without the pencil shading; the film's first frame washes in under the lines as they are drawn,
+    # spreading from the towers as the pencil does, so the drawing ends in colour and the film just starts.
+    coloured = "\n  " + lines + f'\n  <div class="hr-load__counts">{tally}</div>'
+    (OUT / "c-coloured.html").write_text(page("d", "c-coloured", "Coloured as it is drawn", "邊畫邊上色", film_e, c, coloured, " data-counts data-colour"), encoding="utf-8")
     # Round two (his ask, 2026-11-05: "continue designing the rest of the home page"): E's opening kept,
     # three ways for everything under the film.
     rest = lambda r: " data-counts" + f' data-rest="{r}"'

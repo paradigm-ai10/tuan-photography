@@ -47,6 +47,13 @@
         "en": "Fifth round: the live site's layering, taken further",
         "zh": "第五輪：把正式網站的層疊捲動做得更多"
       }
+    },
+    {
+      "id": "opening2",
+      "title": {
+        "en": "The opening: colour while it is drawn",
+        "zh": "開場：邊畫邊上色"
+      }
     }
   ],
   "items": [
@@ -364,6 +371,21 @@
       },
       "still": {
         "wait": 2500
+      }
+    },
+    {
+      "href": "c-coloured.html",
+      "group": "opening2",
+      "title": {
+        "en": "Coloured as it is drawn",
+        "zh": "邊畫邊上色"
+      },
+      "desc": {
+        "en": "E as you asked: no grey pencil stage. While the road is drawn, the colour of the film's first frame washes in under the lines, starting at the towers and spreading out the way the pencil goes, pale at first and deepening. As the last lines land the colour is all there and the film starts moving; the lines and counts lift off it. The film is up about 2 seconds sooner than E. Only the opening changed; the rest of the page is E's.",
+        "zh": "照你說的改 E：拿掉灰色的鉛筆階段。畫路的同時，影片第一格的顏色在線條下面慢慢浮出來，從塔開始往外擴，跟鉛筆走的方向一樣，先淡淡的再越來越濃。最後幾筆畫完時顏色已經到位，影片直接開始動，線條和數字再淡掉。比 E 大約早 2 秒進到影片。只改了開場，下面的部分和 E 一樣。"
+      },
+      "still": {
+        "wait": 5200
       }
     }
   ],
