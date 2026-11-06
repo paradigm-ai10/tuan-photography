@@ -179,6 +179,22 @@ SMOOTHS = [
     ("arc", "Sweeping arcs", "弧形大筆"),
     ("cross", "Crossed strokes", "交叉刷"),
 ]
+# round three of the brush and the sketch (his ask, 2026-11-06: "in between sketching and this brushing", five of each;
+# the sketches should not feel "detached" from the film), all without the counts and with 33's smoothed ending
+BRUSH3 = [
+    ("spiredown", "Down from the spire", "從聖家堂往下刷"),
+    ("up", "Brushed up to the spire", "往上刷到聖家堂"),
+    ("broad", "A few broad strokes", "幾筆大刷"),
+    ("slant", "Slanted downstrokes", "斜斜往下刷"),
+    ("lines", "Brushed over the drawing", "刷過線稿"),
+]
+SKETCHES = [
+    ("move", "A drawing that moves", "會動的素描"),
+    ("bleed", "Colour from the lines", "顏色從線條長出來"),
+    ("tone", "The light first", "光先進來"),
+    ("front", "Drawing, then film, in one sweep", "一路畫過去，影片跟在後面"),
+    ("tracing", "Tracing paper", "描圖紙"),
+]
 
 
 def page(home, name, title_en, title_zh, opening, body, extra="", attrs="", way=None, foot_html=None, scripts=""):
@@ -321,6 +337,13 @@ def build():
     for mode, en, zh in SMOOTHS:
         (OUT / f"c-smooth-{mode}.html").write_text(page("d", f"c-smooth-{mode}", en, zh, film_s, c, bare,
                                                         f' data-counts data-pencil="hand-{mode}" data-smooth', scripts='<script src="brush.js"></script>\n'), encoding="utf-8")
+    for mode, en, zh in BRUSH3:
+        (OUT / f"c-smooth-{mode}.html").write_text(page("d", f"c-smooth-{mode}", en, zh, film_s, c, bare + ("\n  " + lines if mode == "lines" else ""),
+                                                        f' data-counts data-pencil="hand-{mode}" data-smooth', scripts='<script src="brush.js"></script>\n'), encoding="utf-8")
+    # the sketch that becomes the film: the film itself drawn in pencil as it plays, in sketchfilm.js
+    for mode, en, zh in SKETCHES:
+        (OUT / f"c-sketch-{mode}.html").write_text(page("d", f"c-sketch-{mode}", en, zh, film_s, c, bare + ("\n  " + lines if mode == "tracing" else ""),
+                                                        f' data-counts data-pencil="sk-{mode}" data-smooth', scripts='<script src="sketchfilm.js"></script>\n'), encoding="utf-8")
     # Round two (his ask, 2026-11-05: "continue designing the rest of the home page"): E's opening kept,
     # three ways for everything under the film.
     rest = lambda r: " data-counts" + f' data-rest="{r}"'

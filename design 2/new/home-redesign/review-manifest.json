@@ -75,6 +75,20 @@
         "en": "The opening: six relatives of 33",
         "zh": "開場：33 的六個變化"
       }
+    },
+    {
+      "id": "opening6",
+      "title": {
+        "en": "The opening: the sketch turns into the film",
+        "zh": "開場：素描變成影片"
+      }
+    },
+    {
+      "id": "opening7",
+      "title": {
+        "en": "The opening: five more brushings",
+        "zh": "開場：再五種刷法"
+      }
     }
   ],
   "items": [
@@ -646,8 +660,8 @@
         "zh": "由上往下刷"
       },
       "desc": {
-        "en": "Columns brushed from the top down, left to right, stopping in a level line above the counts; then one sweep along the foot. Same ending as 33: the paper left thins away, the spire first, then the menu and caption, and the first shot holds. Reviewed by a visitor panel and a motion designer, and fixed from their notes. A click skips it.",
-        "zh": "從上往下一條一條刷，由左往右，在數字上方停成一條平的線；最後沿著底部刷一筆。收尾和 33 一樣：剩下的白紙慢慢消失、聖家堂先清乾淨，接著選單和字幕出現，第一個畫面停幾秒。請訪客和動態設計師評過，照他們的意見改過。點一下可以跳過。"
+        "en": "Columns brushed from the top down, left to right, all the way to the foot; then one sweep along it. Same ending as 33: the paper left thins away, the spire first, then the menu and caption, and the first shot holds. Reviewed by a visitor panel and a motion designer, and fixed from their notes. A click skips it.",
+        "zh": "從上往下一條一條刷，由左往右，一路刷到底；最後沿著底部刷一筆。收尾和 33 一樣：剩下的白紙慢慢消失、聖家堂先清乾淨，接著選單和字幕出現，第一個畫面停幾秒。請訪客和動態設計師評過，照他們的意見改過。點一下可以跳過。"
       },
       "still": {
         "wait": 5600
@@ -676,8 +690,158 @@
         "zh": "交叉刷"
       },
       "desc": {
-        "en": "A rising pass with gaps, then a falling pass across it, like cross-hatching; the strokes stop short of the counts until they step aside. Same ending as 33: the paper left thins away, the spire first, then the menu and caption, and the first shot holds. Reviewed by a visitor panel and a motion designer, and fixed from their notes. A click skips it.",
-        "zh": "先一輪往上斜的筆畫，中間留空，再一輪往下斜的交叉刷過去，像交叉排線；數字讓開之前，筆畫會停在數字前面。收尾和 33 一樣：剩下的白紙慢慢消失、聖家堂先清乾淨，接著選單和字幕出現，第一個畫面停幾秒。請訪客和動態設計師評過，照他們的意見改過。點一下可以跳過。"
+        "en": "A rising pass with gaps, then a falling pass across it, like cross-hatching. Same ending as 33: the paper left thins away, the spire first, then the menu and caption, and the first shot holds. Reviewed by a visitor panel and a motion designer, and fixed from their notes. A click skips it.",
+        "zh": "先一輪往上斜的筆畫，中間留空，再一輪往下斜的交叉刷過去，像交叉排線。收尾和 33 一樣：剩下的白紙慢慢消失、聖家堂先清乾淨，接著選單和字幕出現，第一個畫面停幾秒。請訪客和動態設計師評過，照他們的意見改過。點一下可以跳過。"
+      },
+      "still": {
+        "wait": 5600
+      }
+    },
+    {
+      "href": "c-sketch-move.html",
+      "group": "opening6",
+      "title": {
+        "en": "A drawing that moves",
+        "zh": "會動的素描"
+      },
+      "desc": {
+        "en": "After the logo, the film itself is drawn in coloured pencil, from the Sagrada Família outward, and the drawing already moves, because it is the film playing slowly underneath. Then the hatching thickens, layer on layer, each stroke bolder, until no paper shows and the drawing has become the film. No counts. Same ending as 33: menu and caption after, and the first shot holds. A click skips it.",
+        "zh": "標誌之後，用彩色鉛筆把影片本身畫出來，從聖家堂往外畫；畫出來的素描本來就在動，因為底下就是慢慢播放的影片。接著筆觸一層一層加密、越畫越粗，直到看不到白紙，素描就變成了影片。沒有數字。收尾和 33 一樣：選單和字幕之後出現，第一個畫面停幾秒。點一下可以跳過。"
+      },
+      "still": {
+        "wait": 6600
+      }
+    },
+    {
+      "href": "c-sketch-bleed.html",
+      "group": "opening6",
+      "title": {
+        "en": "Colour from the lines",
+        "zh": "顏色從線條長出來"
+      },
+      "desc": {
+        "en": "The film drawn in coloured pencil, then the colour soaks out from each line into the spaces between, darker places first and the sky last, like paint into paper. No counts. Same ending as 33: menu and caption after, and the first shot holds. A click skips it.",
+        "zh": "先用彩色鉛筆把影片畫出來，然後顏色從每條線往外滲進空白處，暗的地方先、天空最後，像顏料滲進紙裡。沒有數字。收尾和 33 一樣：選單和字幕之後出現，第一個畫面停幾秒。點一下可以跳過。"
+      },
+      "still": {
+        "wait": 6600
+      }
+    },
+    {
+      "href": "c-sketch-tone.html",
+      "group": "opening6",
+      "title": {
+        "en": "The light first",
+        "zh": "光先進來"
+      },
+      "desc": {
+        "en": "The film drawn in coloured pencil, then it turns real by brightness: the sky and the sunlit stone first, the middle tones next, the shade under the trees last. No counts. Same ending as 33: menu and caption after, and the first shot holds. A click skips it.",
+        "zh": "先用彩色鉛筆畫出影片，接著依亮度變成真的：天空和照到陽光的石頭先，中間的顏色其次，樹下的陰影最後。沒有數字。收尾和 33 一樣：選單和字幕之後出現，第一個畫面停幾秒。點一下可以跳過。"
+      },
+      "still": {
+        "wait": 6600
+      }
+    },
+    {
+      "href": "c-sketch-front.html",
+      "group": "opening6",
+      "title": {
+        "en": "Drawing, then film, in one sweep",
+        "zh": "一路畫過去，影片跟在後面"
+      },
+      "desc": {
+        "en": "One movement from the Sagrada Família outward: paper ahead, the pencil drawing at the front, the film close behind it, so every part is a drawing for a moment and then real. No counts. Same ending as 33: menu and caption after, and the first shot holds. A click skips it.",
+        "zh": "從聖家堂往外一路推過去：前面是白紙，最前緣是鉛筆素描，影片緊跟在後，所以每個地方都先當一下素描，再變成真的。沒有數字。收尾和 33 一樣：選單和字幕之後出現，第一個畫面停幾秒。點一下可以跳過。"
+      },
+      "still": {
+        "wait": 6600
+      }
+    },
+    {
+      "href": "c-sketch-tracing.html",
+      "group": "opening6",
+      "title": {
+        "en": "Tracing paper",
+        "zh": "描圖紙"
+      },
+      "desc": {
+        "en": "The film plays faintly behind a sheet of tracing paper while E's traced lines, the ones you chose before, are drawn on it. Then the paper clears from the Sagrada Família outward, as wet tracing paper turns clear, and the lines go with it. No counts. Same ending as 33: menu and caption after, and the first shot holds. A click skips it.",
+        "zh": "影片在一張描圖紙後面淡淡地播，紙上畫出 E 那些你選過的描線。接著紙從聖家堂往外變透明，像描圖紙沾濕變清楚，線條跟著一起消失。沒有數字。收尾和 33 一樣：選單和字幕之後出現，第一個畫面停幾秒。點一下可以跳過。"
+      },
+      "still": {
+        "wait": 6600
+      }
+    },
+    {
+      "href": "c-smooth-spiredown.html",
+      "group": "opening7",
+      "title": {
+        "en": "Down from the spire",
+        "zh": "從聖家堂往下刷"
+      },
+      "desc": {
+        "en": "The first stroke straight down the Sagrada Família, then columns brushed downward, spreading out from it to both sides. The two you gave 3, from the spire out and brushed downward, in one. No counts. Same ending as 33: menu and caption after, and the first shot holds. A click skips it.",
+        "zh": "第一筆直直刷過聖家堂，接著從它往兩邊一條一條往下刷。把你給 3 分的兩個（從聖家堂往外刷、由上往下刷）合在一起。沒有數字。收尾和 33 一樣：選單和字幕之後出現，第一個畫面停幾秒。點一下可以跳過。"
+      },
+      "still": {
+        "wait": 5600
+      }
+    },
+    {
+      "href": "c-smooth-up.html",
+      "group": "opening7",
+      "title": {
+        "en": "Brushed up to the spire",
+        "zh": "往上刷到聖家堂"
+      },
+      "desc": {
+        "en": "Columns brushed upward from below the screen, starting at the two edges and closing in, the Sagrada Família left as paper until the last stroke, so the brushing ends on it. No counts. Same ending as 33: menu and caption after, and the first shot holds. A click skips it.",
+        "zh": "從畫面下方往上刷，先刷兩邊，再往中間靠，聖家堂留到最後一筆才刷出來，刷完剛好停在它身上。沒有數字。收尾和 33 一樣：選單和字幕之後出現，第一個畫面停幾秒。點一下可以跳過。"
+      },
+      "still": {
+        "wait": 5600
+      }
+    },
+    {
+      "href": "c-smooth-broad.html",
+      "group": "opening7",
+      "title": {
+        "en": "A few broad strokes",
+        "zh": "幾筆大刷"
+      },
+      "desc": {
+        "en": "A much wider brush, unhurried: a handful of downward strokes across the screen, then one along the foot. No counts. Same ending as 33: menu and caption after, and the first shot holds. A click skips it.",
+        "zh": "換一支寬很多的刷子，不急：幾筆由上往下橫過整個畫面，最後沿底部刷一筆。沒有數字。收尾和 33 一樣：選單和字幕之後出現，第一個畫面停幾秒。點一下可以跳過。"
+      },
+      "still": {
+        "wait": 5600
+      }
+    },
+    {
+      "href": "c-smooth-slant.html",
+      "group": "opening7",
+      "title": {
+        "en": "Slanted downstrokes",
+        "zh": "斜斜往下刷"
+      },
+      "desc": {
+        "en": "Your first idea for the brush, top down with some angle in it: strokes leaning from top left to bottom right, laid one after another from left to right, like rain on a window. No counts. Same ending as 33: menu and caption after, and the first shot holds. A click skips it.",
+        "zh": "你最早說的刷法：由上往下、帶一點角度。每一筆從左上斜到右下，由左往右一筆接一筆，像雨打在窗上。沒有數字。收尾和 33 一樣：選單和字幕之後出現，第一個畫面停幾秒。點一下可以跳過。"
+      },
+      "still": {
+        "wait": 5600
+      }
+    },
+    {
+      "href": "c-smooth-lines.html",
+      "group": "opening7",
+      "title": {
+        "en": "Brushed over the drawing",
+        "zh": "刷過線稿"
+      },
+      "desc": {
+        "en": "Between the sketch and the brush: E's traced lines are drawn first, and the brush follows them out from the Sagrada Família, taking the lines away with the paper. No counts. Same ending as 33: menu and caption after, and the first shot holds. A click skips it.",
+        "zh": "介於素描和刷子之間：先畫出 E 的描線，刷子跟在後面從聖家堂往外刷，把線和白紙一起刷掉。沒有數字。收尾和 33 一樣：選單和字幕之後出現，第一個畫面停幾秒。點一下可以跳過。"
       },
       "still": {
         "wait": 5600
@@ -759,17 +923,20 @@
   "words": {},
   "ask": {
     "ids": [
-      "c-hand-dry-smooth",
-      "c-smooth-ink",
-      "c-smooth-alt",
-      "c-smooth-centre",
-      "c-smooth-down",
-      "c-smooth-arc",
-      "c-smooth-cross"
+      "c-sketch-move",
+      "c-sketch-bleed",
+      "c-sketch-tone",
+      "c-sketch-front",
+      "c-sketch-tracing",
+      "c-smooth-spiredown",
+      "c-smooth-up",
+      "c-smooth-broad",
+      "c-smooth-slant",
+      "c-smooth-lines"
     ],
     "question": {
-      "en": "33 and six relatives, each a different hand. Give each a score.",
-      "zh": "33 和它的六個變化，每個是不同的刷法。每個打個分數。"
+      "en": "Five sketches that turn into the film, and five more brushings. Give each a score.",
+      "zh": "五個會變成影片的素描，和五種新的刷法。每個打個分數。"
     }
   }
 }

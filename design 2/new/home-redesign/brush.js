@@ -37,6 +37,19 @@
     'hand-down': { kin: true, size: 0.3, angle: 90, tilt: 7, blunt: 0.3, taper: 0.25, dur: [0.18, 0.24], lift: [0.04, 0.09], dip: 3, load: 0.9, spend: 0.7, bow: 0.025, shake: 0.005, flecks: 5, rate: 0.35, way: 'down' },
     'hand-arc': { kin: true, size: 0.3, angle: -3, tilt: 3, dur: [0.26, 0.34], lift: [0.05, 0.1], dip: 3, load: 1, spend: 0.6, bow: 0.15, arc: true, shake: 0.004, flecks: 4, rate: 0.35, single: true },
     'hand-cross': { kin: true, size: 0.24, angle: -26, tilt: 4, dur: [0.16, 0.21], lift: [0.03, 0.05], dip: 4, load: 1.05, spend: 0.5, gap: 0.8, bow: 0.02, shake: 0.005, flecks: 5, rate: 0.35, single: true, way: 'cross' },
+    // round three (his ask, 2026-11-06: five more brushings, after he gave "from the spire out" and "brushed downward" 3,
+    // the calligraphy and back-and-forth 1). spiredown: the spire first, then columns brushed downward, outward from it
+    // one side then the other; up: columns brushed upward from the two edges inward, the spire last; broad: a few wide,
+    // unhurried columns; fan: strokes fanned out from above the spire, left to right, like a hand turning at the elbow;
+    // lines: the traced drawing first, then the brush follows it out from the spire, taking the lines with the paper
+    'hand-spiredown': { kin: true, foot: false, size: 0.28, angle: 90, tilt: 6, blunt: 0.3, taper: 0.25, dur: [0.18, 0.24], lift: [0.04, 0.08], dip: 3, load: 0.9, spend: 0.7, bow: 0.025, shake: 0.005, flecks: 5, rate: 0.35, way: 'spiredown' },
+    'hand-up': { kin: true, size: 0.28, angle: -90, tilt: 3, blunt: 0.3, taper: 0.25, dur: [0.28, 0.36], lift: [0.1, 0.16], dip: 3, load: 0.9, spend: 0.7, bow: 0.025, shake: 0.005, flecks: 5, rate: 0.35, way: 'up' },
+    'hand-broad': { kin: true, foot: false, size: 0.5, angle: 90, tilt: 4, blunt: 0.4, taper: 0.3, dur: [0.42, 0.52], lift: [0.1, 0.16], dip: 2, load: 1, spend: 0.55, bow: 0.03, shake: 0.004, flecks: 4, rate: 0.35, way: 'down' },
+    'hand-fan': { kin: true, size: 0.3, angle: 90, tilt: 2, blunt: 0.3, taper: 0.25, dur: [0.17, 0.22], lift: [0.03, 0.06], dip: 3, load: 0.95, spend: 0.6, bow: 0.03, shake: 0.005, flecks: 5, rate: 0.35, way: 'fan' },
+    // after the review round: fan read as a windscreen wiper and is off the list; slant (his first idea, "top down, with
+    // some angle in it") took its place: downstrokes leaning from top left to bottom right, left to right
+    'hand-slant': { kin: true, foot: false, size: 0.28, angle: 62, tilt: 5, blunt: 0.3, taper: 0.25, dur: [0.18, 0.24], lift: [0.04, 0.08], dip: 3, load: 0.9, spend: 0.7, bow: 0.025, shake: 0.005, flecks: 5, rate: 0.35, way: 'down' },
+    'hand-lines': { kin: true, foot: false, size: 0.28, angle: 90, tilt: 6, blunt: 0.3, taper: 0.25, dur: [0.15, 0.2], lift: [0.03, 0.06], dip: 3, load: 0.9, spend: 0.7, bow: 0.025, shake: 0.005, flecks: 5, rate: 0.35, way: 'spiredown', lines: 0.9 },
   };
   const o = HANDS[html.dataset.pencil];
   const SMOOTH = 'smooth' in html.dataset;   // 32 smoothed: the last of the paper dissolves into its grain and lifts away (his ask, 2026-11-06)
@@ -134,7 +147,7 @@
     const open = (r) => { let n = 0; for (let x = 0; x < GX; x++) n += !cov[r * GX + x]; return n; };
     const strokes = [];
     // without the counts (taken off 33 to 39, his call 2026-11-06) nothing waits for them: the brush goes straight to the foot
-    let t = SMOOTH ? 0.25 : 0, counted = footY < H ? null : 0, n = 0;
+    let t = (SMOOTH ? 0.25 : 0) + (o.lines || 0), counted = footY < H ? null : 0, n = 0;
     const B0 = Math.sqrt(W * H) * o.size * 0.85;   // the brush suits the screen's size, so a phone gets a narrower one
     const add = (x0, x1, yc, B, quick = 1, wet = 1, fixed = 0, step = null, tilt = null, wob = 1, back = false) => {   // one stroke from x0 to x1, its middle at height yc
       const ang = tilt === null ? o.angle + (rnd() - 0.5) * 2 * o.tilt : tilt, ta = Math.tan(ang * Math.PI / 180);
@@ -174,7 +187,8 @@
     };
     let early = W, footTop = H;
     if (o.way === 'down') {   // columns brushed downward, left to right, stopping above the counts until they step aside
-      for (let left = -B0 * 0.3; left < W;) {
+      const lean = Math.abs(o.angle) < 85 ? H / 2 / Math.tan(o.angle * Math.PI / 180) : 0;   // slant: the columns lean, so they start further left
+      for (let left = (o.size > 0.4 ? -B0 * 0.05 : -B0 * 0.3) - lean; left < W + lean;) {
         const B = B0 * (0.7 + 0.6 * rnd());
         if (counted === null && t > 1.1) { counted = t - 0.15; t += 0.3; }
         if (counted === null) early = left + B;   // these stop above the counts; the foot sweep finishes under them
@@ -182,6 +196,43 @@
         left += B * (0.6 + 0.12 * rnd());
       }
       if (counted === null) { counted = Math.max(1, t - 0.15); t = Math.max(t, counted + 0.3); }
+    } else if (o.way === 'spiredown' || o.way === 'up') {
+      // columns laid out across the screen, then taken in order: spiredown, the spire first and then outward from it;
+      // up, from the two edges inward and the spire last, each brushed from below the screen to above it
+      const sx = W * 0.49, cols = [];
+      if (o.way === 'up') {   // laid out from the spire's own stroke outward on each side, so it is left for last and no gap is left by it
+        for (const side of [-1, 1]) for (let edge = B0 * 0.48; edge < Math.max(sx, W - sx) + B0 * 0.3;) {
+          const B = B0 * (0.8 + 0.4 * rnd());
+          cols.push([sx + side * (edge + B * 0.35), B]);
+          edge += B * (0.62 + 0.1 * rnd());
+        }
+      } else for (let left = -B0 * 0.3; left < W;) {
+        const B = B0 * (0.7 + 0.6 * rnd());
+        if (Math.abs(left + B / 2 - sx) > B0 * 0.35) cols.push([left + B / 2, B]);
+        left += B * (0.6 + 0.12 * rnd());
+      }
+      cols.sort((a, b) => Math.abs(a[0] - sx) - Math.abs(b[0] - sx));
+      const spire = () => o.way === 'up' ? addCol(sx, H + B0 * 0.7, -B0 * 0.7, B0 * 1.1, -90, 1.6) : addCol(sx, -B0 * 0.7, H + B0 * 0.5, B0 * 1.1, 90, 1.6);
+      if (o.way === 'spiredown') spire();
+      (o.way === 'up' ? cols.reverse() : cols).forEach(([xc, B]) => o.way === 'up'
+        ? addCol(xc, H + B * (0.6 + 0.5 * rnd()), -B * (0.3 + 0.6 * rnd()), B)
+        : addCol(xc, -B * (0.6 + 0.5 * rnd()), H + B * (0.3 + 0.6 * rnd()), B));
+      if (o.way === 'up') spire();
+    } else if (o.way === 'fan') {   // fanned out from a point above the spire, left to right
+      const px = W * 0.49, py = -H * 0.3;
+      for (let deg = 166; deg > 14;) {
+        const B = B0 * (0.9 + 0.2 * rnd()), d = deg + (rnd() - 0.5) * 2 * o.tilt, a = d * Math.PI / 180, ux = Math.cos(a), uy = Math.sin(a);
+        const r0 = H * (0.08 + 0.06 * rnd());   // it lands above the screen
+        const r1 = Math.min((H + B - py) / uy, ux < 0 ? (px + B) / -ux : ux > 0 ? (W + B - px) / ux : Infinity) + B * 0.5;
+        if (py + uy * r1 > -B * 0.3) {   // it reaches the screen
+          const len = r1 - r0, dur = between(o.dur) * (0.6 + 0.4 * Math.min(1.2, len / H)) * (0.75 + 0.25 * Math.min(1.6, W / 1440));
+          let shade = 0;
+          for (let i = 0; i < 8; i++) shade += dark(px + ux * (r0 + len * (i + 0.5) / 8), py + uy * (r0 + len * (i + 0.5) / 8)) / 8;
+          const load = o.load * (1 - 0.13 * (n % o.dip)) * (0.92 + 0.16 * rnd()) * (1 + 0.6 * shade);
+          commit(stroke(px + ux * r0, py + uy * r0, len, d, B, load, t, dur), dur, null);
+        }
+        deg -= (B * 0.62 / (H * 1.1)) * 180 / Math.PI;
+      }
     } else if (o.way === 'cross') {   // a rising pass with gaps between, then a falling pass across it, both in reading order
       const pass = (deg, gap) => {
         const a = deg * Math.PI / 180, R = Math.abs(Math.sin(a)) * W / 2 + Math.cos(a) * H / 2;
@@ -241,7 +292,7 @@
       const span = Math.max(2, Math.round(B0 * 0.8 / C)), foot = GY - span;
       const need = (q) => { let m = 0; for (let x = 0; x < GX; x++) m += (!cov[q * GX + x] + bare[q * GX + x] * 2) * (1 + 2 * dark(x * C + C / 2, q * C + C / 2)); return m; };
       const picked = [];
-      for (let k = 0; k < (o.way === 'down' || o.way === 'cross' ? 0 : o.way === 'centre' ? 1 : 3); k++) {
+      for (let k = 0; k < (['down', 'cross', 'spiredown', 'up', 'fan'].includes(o.way) ? 0 : o.way === 'centre' ? 1 : 3); k++) {
         let best = -1, most = GX * span * 0.12;
         for (let r = 0; r + span <= foot; r++) {
           if (picked.some((q) => Math.abs(q - r) < span)) continue;
@@ -260,8 +311,12 @@
         if (x1 - x0 < B0 * 3) { const m = (x0 + x1) / 2; x0 = m - B0 * 1.5; x1 = m + B0 * 1.5; }
         add(Math.max(-W * 0.08 - B0 * 0.35, x0), Math.min(W * 1.15, x1), (row + span / 2) * C, B0 * 1.15, 1, 1.45, 0.3, 0.73, o.way === 'down' ? -4 : null);
       });
+      // no sweep along the foot where the columns already reach it (round three): across their up-and-down streaks it
+      // left a grid of dots
+      if (o.way !== 'up' && o.foot !== false) {
       footTop = H - B0 * 0.3 + 40 - Math.min(B0 * 1.4, H * 0.5) * 0.5;
-      add(-W * 0.12 - B0 * 0.5, o.way === 'down' ? Math.min(W * 1.15 + 60, early + B0) : W * 1.15 + 60, H - B0 * 0.3 + 40 + (o.arc ? o.bow * W * 0.9 : 0), Math.min(B0 * 1.4, H * 0.5), 1, o.kin ? 2 : 1.5, 0.34, 1, o.way === 'down' ? -2 : o.way === 'cross' ? 4 : o.angle * 0.3, 2.2);
+      add(-W * 0.12 - B0 * 0.5, o.way === 'down' ? Math.min(W * 1.15 + 60, early + B0) : W * 1.15 + 60, H - B0 * 0.3 + 40 + (o.arc ? o.bow * W * 0.9 : 0), Math.min(B0 * 1.4, H * 0.5), 1, o.kin ? 2 : 1.5, 0.34, 1, o.way === 'down' ? -2 : o.way === 'cross' ? 4 : Math.abs(o.angle) === 90 ? 0 : o.angle * 0.3, 2.2);
+      }
     } else {
       // then a few quick touches where the paper still shows most
       for (let k = 0; k < 4; k++) {
@@ -316,9 +371,24 @@
     const levels = [['#000', 1], [tooth(0.5), 1], [tooth(1.4), 0.95], [tooth(3), 0.85]].map(([s, alpha]) => {
       let style = s;
       if (typeof s !== 'string') { style = ctx.createPattern(s, 'repeat'); style.setTransform(new DOMMatrix().scale(1.3)); }
-      return { style, alpha };
+      return { style, alpha, pat: typeof s !== 'string' };
     });
     strokes.forEach((st) => st.lines.forEach((l) => { l.at = l.pts[0]; }));
+    // lines: the traced drawing (E's lines, laid over the screen as the film is, cover) drawn into the paper itself from
+    // the towers outward, only where paper is left, so the brush takes the lines away with it
+    const svg = o.lines ? document.querySelector('.hr-load__trace') : null, ink = [];
+    if (svg) {
+      const s = Math.max(W / 1920, H / 1080), ox = (W - 1920 * s) / 2, oy = (H - 1080 * s) / 2, pace = 0.42;
+      svg.querySelectorAll('path').forEach((el) => {
+        const pts = el.getAttribute('d').slice(1).split(' L').map((q) => { const [x, y] = q.split(',').map(Number); return [ox + x * s, oy + y * s]; });
+        const st = el.getAttribute('style') || '', cum = [0];
+        for (let i = 1; i < pts.length; i++) cum.push(cum[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]));
+        if (cum[cum.length - 1] < 70 * s) return;   // the short squiggles in the trees left out, so fewer, firmer lines
+        ink.push({ pts, cum, d: parseFloat((/--d:\s*([\d.]+)/.exec(st) || [0, 0])[1]) * pace, t: parseFloat((/--t:\s*([\d.]+)/.exec(st) || [0, 0.6])[1]) * pace, i: 0, at: pts[0] });
+      });
+      ink.style = getComputedStyle(svg).stroke;
+      ink.width = 1.35 * s;
+    }
     // smoothed: the paper left thins away all over in short dashes along the brush's direction, drifting gently left to right, a dash at
     // a time, each shrinking from its edges over about 0.2 s, paced to start gently and let the last few linger, the
     // foot a quarter second behind the top so the last sweep is down first. It works alongside the last sweep, so
@@ -326,12 +396,13 @@
     const Q = 4, QW = Math.ceil(W / Q), QH = Math.ceil(H / Q), clear = {};
     if (SMOOTH) {
       let n = new Float32Array(QW * QH).map(() => rnd());
-      for (let pass = 0; pass < 2; pass++) {   // drawn out sideways into dashes
+      const tall = Math.abs(o.angle) >= 45;   // the dashes run the way the brush went: sideways, or up and down for the columns
+      for (let pass = 0; pass < 2; pass++) {   // drawn out into dashes
         const m = new Float32Array(QW * QH);
         for (let y = 0; y < QH; y++) for (let x = 0; x < QW; x++) {
           let sum = 0, c = 0;
-          for (let d = -4; d <= 4; d++) { const xx = x + d; if (xx >= 0 && xx < QW) { sum += n[y * QW + xx]; c++; } }
-          for (let d = -1; d <= 1; d += 2) { const yy = y + d; if (yy >= 0 && yy < QH) { sum += n[yy * QW + x] * 0.5; c += 0.5; } }
+          for (let d = -4; d <= 4; d++) { const xx = x + (tall ? 0 : d), yy = y + (tall ? d : 0); if (xx >= 0 && xx < QW && yy >= 0 && yy < QH) { sum += n[yy * QW + xx]; c++; } }
+          for (let d = -1; d <= 1; d += 2) { const xx = x + (tall ? d : 0), yy = y + (tall ? 0 : d); if (xx >= 0 && xx < QW && yy >= 0 && yy < QH) { sum += n[yy * QW + xx] * 0.5; c += 0.5; } }
           m[y * QW + x] = sum / c;
         }
         n = m;
@@ -388,6 +459,26 @@
     const frame = (now) => {
       if (!running) return;
       const t = (now - t0) / 1000;
+      if (ink.length) {   // the drawing goes on before the brush reaches it
+        const path = new Path2D();
+        for (const l of ink) {
+          if (t < l.d || l.i >= l.pts.length - 1) continue;
+          const k = Math.min(1, (t - l.d) / l.t), along = (1 - Math.pow(1 - k, 3)) * l.cum[l.cum.length - 1];
+          path.moveTo(l.at[0], l.at[1]);
+          while (l.i < l.pts.length - 1 && l.cum[l.i + 1] <= along) { l.i++; l.at = l.pts[l.i]; path.lineTo(l.at[0], l.at[1]); }
+          if (l.i < l.pts.length - 1) {
+            const f = (along - l.cum[l.i]) / Math.max(0.001, l.cum[l.i + 1] - l.cum[l.i]), a = l.pts[l.i], b = l.pts[l.i + 1];
+            l.at = [a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f];
+            path.lineTo(l.at[0], l.at[1]);
+          }
+        }
+        ctx.save();
+        ctx.globalCompositeOperation = 'source-atop';
+        ctx.strokeStyle = ink.style;
+        ctx.lineWidth = ink.width;
+        ctx.stroke(path);
+        ctx.restore();
+      }
       const paths = levels.map(() => new Path2D());
       for (const s of strokes) {
         if (t < s.t0 || s.done) continue;
@@ -411,7 +502,12 @@
         if (p >= 1) s.done = true;
       }
       ctx.lineWidth = 4.2;
-      levels.forEach((lv, i) => { ctx.globalAlpha = lv.alpha; ctx.strokeStyle = lv.style; ctx.stroke(paths[i]); });
+      levels.forEach((lv, i) => {
+        // the six and after: the paper's tooth shifts a little each frame, so the specks a dry tail leaves do not line up
+        // from stroke to stroke into a grid of dots
+        if (o.kin && lv.pat) lv.style.setTransform(new DOMMatrix().translate(Math.random() * 128, Math.random() * 128).scale(1.3));
+        ctx.globalAlpha = lv.alpha; ctx.strokeStyle = lv.style; ctx.stroke(paths[i]);
+      });
       ctx.globalAlpha = 1;
       ctx.fillStyle = '#000';
       for (const s of strokes) for (const fl of s.flecks) {
