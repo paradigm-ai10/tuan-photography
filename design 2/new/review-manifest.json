@@ -251,27 +251,6 @@
       }
     },
     {
-      "id": "journey-luxe-print",
-      "href": "journey-luxe-print.html",
-      "group": "luxe",
-      "title": {
-        "en": "One print: the map turns over to the Matterhorn",
-        "zh": "一幅：地圖翻過來是馬特洪峰"
-      },
-      "desc": {
-        "en": "The map hangs as one fine print on the wall. It turns over once, slowly, to a single photograph of yours in a wide paper margin (the Matterhorn in the lake), holds there, turns back, and only then folds into the globe. One thing moves at a time.",
-        "zh": "地圖像一幅掛在牆上的版畫。往下捲，它慢慢翻過來一次，背面是你的一張照片（湖裡的馬特洪峰倒影），四周留寬寬的紙邊；停一下，再翻回來，然後才折成地球。一次只動一件事。"
-      },
-      "still": {
-        "wait": 20000,
-        "view": {
-          "state": {
-            "y": 1.17
-          }
-        }
-      }
-    },
-    {
       "id": "journey-luxe-hang",
       "href": "journey-luxe-hang.html",
       "group": "luxe",
@@ -290,38 +269,6 @@
             "y": 1.17
           }
         }
-      }
-    },
-    {
-      "id": "journey-luxe-clouds",
-      "href": "journey-luxe-clouds.html",
-      "group": "luxe",
-      "title": {
-        "en": "Through the clouds (after Velaa)",
-        "zh": "穿過雲層（來自 Velaa）"
-      },
-      "desc": {
-        "en": "From Velaa's film-like descent through the clouds. Three banks of paper-white mist pass the eye one after another, nearer and larger; the map bends into the globe behind them, and when they clear the globe is whole. One slow movement, nothing else on the page.",
-        "zh": "來自 Velaa 像電影一樣穿過雲層往下的開場。三層紙白色的雲一層接一層從眼前飄過，越來越近、越來越大；地圖在雲後面彎成地球，雲散開時地球已經成形。整頁只有這一個慢慢的動作。"
-      },
-      "still": {
-        "wait": 20000
-      }
-    },
-    {
-      "id": "journey-luxe-drift",
-      "href": "journey-luxe-drift.html",
-      "group": "luxe",
-      "title": {
-        "en": "Five prints drifting (after Cartier)",
-        "zh": "五張照片漂過（來自 Cartier）"
-      },
-      "desc": {
-        "en": "From Cartier's gemstones floating at different depths. Five of your photographs rise slowly past at three depths while the map folds, the near ones larger, quicker and in front, the far ones small and soft, kept mostly off the middle; they leave at the top as the globe closes.",
-        "zh": "來自 Cartier 寶石在不同深度漂浮的感覺。地圖在折的時候，五張你的照片在三種深度慢慢往上漂過：近的比較大、比較快、在前面，遠的小而淡，大多避開中間；地球合起來時它們從上面離開。"
-      },
-      "still": {
-        "wait": 20000
       }
     },
     {
@@ -470,54 +417,6 @@
       "desc": {
         "en": "The live page with your photographs: the prints along the wall's faded top and bottom are your photographs. They come up out of the paper as they lift off, and turn into map as they are laid on the ball.",
         "zh": "正式版加上你的照片：牆上下兩邊淡掉的那幾排相片是你的照片，拿起來時從紙裡浮出來，貼到地球上時變回地圖。"
-      },
-      "still": {
-        "wait": 20000
-      }
-    },
-    {
-      "id": "journey-gallery-ring",
-      "href": "journey-gallery-ring.html",
-      "group": "wall",
-      "title": {
-        "en": "Prints wall, a ring of photographs",
-        "zh": "照片牆，一圈照片"
-      },
-      "desc": {
-        "en": "The live page with your photographs: one print per trip lifts off the wall where that trip went and hangs in a ring round the finished globe. As you read, the ring turns so the trip you are on hangs at the bottom, a little larger.",
-        "zh": "正式版加上你的照片：每趟旅行一張照片，從牆上那趟去的地方拿起來，掛成一圈繞著合起來的地球。往下讀時，這圈會轉，讓你正在看的那趟掛在最下面，大一點。"
-      },
-      "still": {
-        "wait": 20000
-      }
-    },
-    {
-      "id": "journey-gallery-scatter",
-      "href": "journey-gallery-scatter.html",
-      "group": "wall",
-      "title": {
-        "en": "Prints wall, the photographs thrown",
-        "zh": "照片牆，照片拋起來"
-      },
-      "desc": {
-        "en": "Row 8 made plain to see: as the wall parts, each print is tossed up and a little aside and turns over in the air, so a cloud of your photographs fills the screen; they land photograph up and the globe forms as a ball of your photographs, and only then do they turn back to the map, Taiwan's first.",
-        "zh": "第 8 版放大來看：牆一分開，每張相片被拋起、往旁邊飛一點，在空中翻過來，滿畫面都是你的照片；落下時照片朝上，地球先變成一顆照片球，之後才從台灣那幾張開始翻回地圖。"
-      },
-      "still": {
-        "wait": 20000
-      }
-    },
-    {
-      "id": "journey-gallery-photoball",
-      "href": "journey-gallery-photoball.html",
-      "group": "wall",
-      "title": {
-        "en": "Prints wall, the globe stays photographs",
-        "zh": "照片牆，地球一直是照片"
-      },
-      "desc": {
-        "en": "Row 11, but the prints never turn back: the globe stays a ball of your photographs for good, while you read every trip, with the routes drawn over them.",
-        "zh": "跟第 11 版一樣，但相片不再翻回地圖：地球一直是一顆照片球，讀每一趟旅程時都是，路線畫在照片上。"
       },
       "still": {
         "wait": 20000
