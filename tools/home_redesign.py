@@ -314,10 +314,12 @@ def build():
     # rounds of viewer reviews
     # the film's first shot holds until 3.2 s (measured: its cross-dissolve starts there), so the caption stays to 2.9
     film_s = film_e.replace('<p class="hr-cap"', '<p class="hr-cap" data-cut="3.2"', 1).replace('data-from="0.5" data-to="2.6"', 'data-from="0.5" data-to="2.9"', 1)
-    (OUT / "c-hand-dry-smooth.html").write_text(page("d", "c-hand-dry-smooth", "A dry brush, smoothed", "乾筆飛白，收得更順", film_s, c, brushed,
+    # 33 to 39 without the counts (his call, 2026-11-06: "not serving the purpose"); data-counts stays for the caption's foot shade
+    bare = '\n  <canvas class="hr-load__wear" aria-hidden="true"></canvas>'
+    (OUT / "c-hand-dry-smooth.html").write_text(page("d", "c-hand-dry-smooth", "A dry brush, smoothed", "乾筆飛白，收得更順", film_s, c, bare,
                                                      ' data-counts data-pencil="hand-dry" data-smooth', scripts='<script src="brush.js"></script>\n'), encoding="utf-8")
     for mode, en, zh in SMOOTHS:
-        (OUT / f"c-smooth-{mode}.html").write_text(page("d", f"c-smooth-{mode}", en, zh, film_s, c, brushed,
+        (OUT / f"c-smooth-{mode}.html").write_text(page("d", f"c-smooth-{mode}", en, zh, film_s, c, bare,
                                                         f' data-counts data-pencil="hand-{mode}" data-smooth', scripts='<script src="brush.js"></script>\n'), encoding="utf-8")
     # Round two (his ask, 2026-11-05: "continue designing the rest of the home page"): E's opening kept,
     # three ways for everything under the film.

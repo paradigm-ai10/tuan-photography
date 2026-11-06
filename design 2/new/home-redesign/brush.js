@@ -133,7 +133,8 @@
     }));
     const open = (r) => { let n = 0; for (let x = 0; x < GX; x++) n += !cov[r * GX + x]; return n; };
     const strokes = [];
-    let t = SMOOTH ? 0.25 : 0, counted = null, n = 0;
+    // without the counts (taken off 33 to 39, his call 2026-11-06) nothing waits for them: the brush goes straight to the foot
+    let t = SMOOTH ? 0.25 : 0, counted = footY < H ? null : 0, n = 0;
     const B0 = Math.sqrt(W * H) * o.size * 0.85;   // the brush suits the screen's size, so a phone gets a narrower one
     const add = (x0, x1, yc, B, quick = 1, wet = 1, fixed = 0, step = null, tilt = null, wob = 1, back = false) => {   // one stroke from x0 to x1, its middle at height yc
       const ang = tilt === null ? o.angle + (rnd() - 0.5) * 2 * o.tilt : tilt, ta = Math.tan(ang * Math.PI / 180);
