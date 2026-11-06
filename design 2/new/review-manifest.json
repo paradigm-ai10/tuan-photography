@@ -2,7 +2,7 @@
   "name": "journey",
   "round": {
     "groups": [
-      "footprint"
+      "footprint-2"
     ]
   },
   "endpoint": "/__reviews/journey",
@@ -27,6 +27,13 @@
       "title": {
         "en": "Live and kept",
         "zh": "正式版與留下的"
+      }
+    },
+    {
+      "id": "footprint-2",
+      "title": {
+        "en": "Where I have been, round two",
+        "zh": "足跡地圖，第二輪"
       }
     },
     {
@@ -120,6 +127,81 @@
       },
       "still": {
         "wait": 20000
+      }
+    },
+    {
+      "href": "footprint-scratch-passport.html",
+      "group": "footprint-2",
+      "title": {
+        "en": "Scratch map, a passport page",
+        "zh": "刮刮地圖＋護照內頁"
+      },
+      "desc": {
+        "en": "The scratch map, with the count much bigger and the share of the world (10.3% of 195 countries). The stamps sit on a passport page beside the map, never on the countries; point at one to light its country.",
+        "zh": "刮刮地圖，國家數字更大，加上去過全世界幾 %（195 國的 10.3%）。印章蓋在地圖旁邊的護照內頁上，不壓在國家上；指著印章，它的國家會亮起來。"
+      },
+      "still": {
+        "wait": 9000
+      }
+    },
+    {
+      "href": "footprint-tinted-border.html",
+      "group": "footprint-2",
+      "title": {
+        "en": "Hand-tinted atlas, stamps round the edge",
+        "zh": "手工上色＋邊框印章"
+      },
+      "desc": {
+        "en": "The hand-tinted atlas, the count large in its cartouche with the share of the world. The stamps make a border round the sheet, each on the side nearest its country, a fine line leading to it.",
+        "zh": "手工上色的老地圖，大數字放在標題框裡，加上全世界的百分比。印章排成地圖四周的邊框，各自靠近自己國家那一邊，用細線連過去。"
+      },
+      "still": {
+        "wait": 9000
+      }
+    },
+    {
+      "href": "footprint-scratch-ledger.html",
+      "group": "footprint-2",
+      "title": {
+        "en": "Scratch map, stamps year by year",
+        "zh": "刮刮地圖＋印章一年一年排"
+      },
+      "desc": {
+        "en": "The scratch map with the count large, the share of the world in words and as 195 small squares, 20 of them scratched gold. The stamps run along the bottom in a row, under their years.",
+        "zh": "刮刮地圖，大數字，全世界的百分比用字寫，也用 195 個小方格表示，刮開 20 格。印章在下面排成一排，照年份放。"
+      },
+      "still": {
+        "wait": 9000
+      }
+    },
+    {
+      "href": "footprint-tinted-onestamp.html",
+      "group": "footprint-2",
+      "title": {
+        "en": "Hand-tinted atlas, one stamp at a time",
+        "zh": "手工上色＋一次一個章"
+      },
+      "desc": {
+        "en": "The hand-tinted atlas with the count large in one corner and the share of the world. One stamp in the other corner: it presses through your countries once in order, then shows the one you point at, so stamps never pile up.",
+        "zh": "手工上色的老地圖，一角放大數字和全世界的百分比。另一角只放一個印章：一開始照順序蓋過每個國家一次，之後指到哪個國家就換成哪個章，所以不會疊在一起。"
+      },
+      "still": {
+        "wait": 9000
+      }
+    },
+    {
+      "href": "footprint-only-tinted.html",
+      "group": "footprint-2",
+      "title": {
+        "en": "Only where I have been, hand-tinted",
+        "zh": "只有去過的地方，上色版"
+      },
+      "desc": {
+        "en": "Only your countries drawn, painted in watercolour like the atlas, the count as large as it will go with the share of the world beside it, and a row of small stamps under it.",
+        "zh": "只畫你去過的國家，用老地圖的水彩上色，國家數字放到最大，旁邊寫全世界的百分比，下面一排小印章。"
+      },
+      "still": {
+        "wait": 9000
       }
     },
     {
@@ -699,5 +781,18 @@
     "--rv-label": "\"Geist\", \"Noto Sans TC\", sans-serif",
     "--rv-name": "\"Playfair Display\", \"Noto Serif TC\", serif"
   },
-  "words": {}
+  "words": {},
+  "ask": {
+    "ids": [
+      "footprint-scratch-passport",
+      "footprint-tinted-border",
+      "footprint-scratch-ledger",
+      "footprint-tinted-onestamp",
+      "footprint-only-tinted"
+    ],
+    "question": {
+      "en": "Round two of the maps, made from your notes: the scratch and hand-tinted looks, a bigger count with the share of the world, and the stamps off the countries. Give each a score and mark what to change.",
+      "zh": "照你的筆記做的第二輪：刮刮和手工上色的風格、更大的國家數字加上全世界百分比、印章不再壓在國家上。每版給個分數，想改的地方按 M 標記。"
+    }
+  }
 }

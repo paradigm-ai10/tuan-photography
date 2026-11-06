@@ -1,0 +1,133 @@
+/* Hand-tinted atlas with a border of stamps 手工上色＋邊框印章 (footprint, round two, 2026-11-06).
+   The engraved, hand-coloured world map of footprint-tinted; round it, in the margin, the entry
+   stamps of footprint-stamps, each on the side nearest its country, a fine hairline running in to it.
+   The cartouche has grown to hold the count and the share of the world. Corners are square; the
+   stamps keep their own shapes. */
+:root {
+  --tb-ochre: oklch(83% 0.09 86);
+  --tb-terra: oklch(73% 0.085 42);
+  --tb-sage: oklch(77% 0.06 135);
+  --tb-slate: oklch(74% 0.05 235);
+  --tb-mauve: oklch(73% 0.05 338);
+  --tb-verdigris: oklch(77% 0.05 190);
+  --tb-home: var(--clay);
+  --tb-water: color-mix(in oklch, var(--ink) 80%, var(--slate));
+  --tb-blue: oklch(46% 0.115 258); /* the stamp inks beyond the earth colours */
+  --tb-umber: oklch(41% 0.075 48);
+  --tb-k: 1; /* the map's scale against the 1440 wide window, set by the script */
+}
+
+/* on a phone the page scrolls: the map, the cartouche, then the stamps in rows */
+.fp--tinted-border.is-narrow .fp-stage { top: 60px; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; }
+.tb-wrap { position: relative; width: 100%; height: var(--content-h, 100%); }
+
+/* ---- the map (as footprint-tinted) ---- */
+.tb-sheet { position: absolute; left: 0; top: 0; }
+.tb-sheet > canvas, .tb-sheet > svg { position: absolute; left: 0; top: 0; display: block; }
+.tb-sheet > canvas { width: var(--sw); height: var(--sh); }
+.tb-wash { mix-blend-mode: multiply; pointer-events: none; }
+.tb-sea { pointer-events: none; }
+.tb-coast { fill: none; stroke: var(--ink); stroke-width: 0.7; stroke-linejoin: round; stroke-linecap: round; pointer-events: none; }
+.tb-border { fill: none; stroke: var(--ink); stroke-opacity: 0.6; stroke-width: 0.4; stroke-linejoin: round; pointer-events: none; }
+.tb-hit { fill: none; stroke: none; pointer-events: fill; }
+.tb-dot { fill: none; stroke: var(--ink); stroke-width: 0.6; pointer-events: none; }
+
+/* the lettering, kept for the three countries large enough to hold their names */
+.tb-name {
+  font-family: var(--f-name); font-weight: 400; font-size: max(9.6px, calc(12px * var(--tb-k))); letter-spacing: 0.16em;
+  fill: var(--ink); pointer-events: none;
+}
+.tb-name .tb-year { font-size: 0.82em; letter-spacing: 0.04em; fill: var(--ink-2); font-variant-numeric: oldstyle-nums; }
+html[lang="zh-Hant"] .tb-name { letter-spacing: 0.2em; font-size: max(10px, calc(12.5px * var(--tb-k))); }
+.tb-label { transition: opacity 0.7s var(--ease); }
+.tb-label.is-wait { opacity: 0; }
+
+/* ---- the leaders: a fine engraved hairline from each stamp to where he arrived ---- */
+.tb-lines { position: absolute; left: 0; top: 0; display: block; overflow: visible; pointer-events: none; }
+.tb-stamps { position: absolute; inset: 0; pointer-events: none; }
+.tb-inks { position: absolute; width: 0; height: 0; overflow: hidden; }
+.tb-lines { z-index: 1; }
+.tb-cart { z-index: 2; }
+.tb-stamps { z-index: 3; }
+.tb-lead { fill: none; stroke: var(--ink); stroke-width: 0.55; stroke-opacity: 0.42; transition: stroke-opacity 0.25s, stroke-width 0.25s; }
+.tb-lead-end { fill: var(--ink); fill-opacity: 0.7; transition: fill-opacity 0.25s; }
+.tb-leader { transition: opacity 0.7s var(--ease); }
+.tb-leader.is-wait { opacity: 0; }
+.tb-leader.is-on .tb-lead { stroke-opacity: 1; stroke-width: 0.9; }
+.tb-leader.is-on .tb-lead-end { fill-opacity: 1; }
+/* on a phone, only the one tapped, drawn over everything */
+.is-narrow .tb-lines { z-index: 4; }
+.is-narrow .tb-leader { opacity: 0; transition: opacity 0.3s var(--ease); }
+.is-narrow .tb-leader.is-on { opacity: 1; }
+.is-narrow .tb-leader.is-on .tb-lead { stroke-width: 0.8; }
+
+/* ---- the cartouche: square, a heavy rule and a fine one inside it, paper over the engraving ---- */
+.tb-cart {
+  --F: 200px;
+  position: absolute; left: 0; top: 0; transform: translate(var(--x, 0), var(--y, 0));
+  width: var(--cw, auto); height: var(--ch, auto);
+  background: var(--paper); border: 1.25px solid var(--ink); padding: 4px;
+  outline: 7px solid var(--paper); /* a margin of bare paper, so the engraving stops short of the frame */
+  color: var(--ink); text-align: center; letter-spacing: 0; font-variant-numeric: lining-nums;
+}
+.tb-cart.is-measure { width: auto; height: auto; visibility: hidden; }
+.tb-cart__in {
+  height: 100%; border: 0.5px solid var(--ink);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: calc(var(--F) * 0.045) calc(var(--F) * 0.07) calc(var(--F) * 0.05);
+}
+.tb-cart p, .tb-cart h1 { margin: 0; white-space: nowrap; }
+.tb-cart__title {
+  font-family: var(--f-name); font-weight: 400; font-size: clamp(11px, calc(var(--F) * 0.041), 15.5px); line-height: 1.2;
+  letter-spacing: 0.24em; text-transform: uppercase; padding-left: 0.24em;
+}
+.tb-cart__rule { width: calc(var(--F) * 0.15); height: 0; border-top: 0.5px solid var(--ink); margin: calc(var(--F) * 0.03) auto calc(var(--F) * 0.026); }
+.tb-cart__n {
+  font-family: var(--f-name); font-weight: 400; font-size: var(--F); line-height: 0.84;
+  font-variant-numeric: lining-nums; letter-spacing: -0.02em;
+}
+.tb-cart__w { font-family: var(--f-name); font-weight: 400; font-size: calc(var(--F) * 0.105); line-height: 1.1; margin-top: calc(var(--F) * 0.012) !important; }
+.tb-cart__share {
+  display: flex; align-items: baseline; justify-content: center; gap: 0.32em;
+  font-family: var(--f-name); font-size: max(12px, calc(var(--F) * 0.05)); line-height: 1.25; color: var(--ink);
+  margin-top: calc(var(--F) * 0.036) !important;
+}
+.tb-cart__share b { font-weight: 400; font-size: 1.62em; line-height: 1; font-variant-numeric: lining-nums; letter-spacing: 0; }
+.tb-cart__more { font-family: var(--f-name); font-size: max(11.5px, calc(var(--F) * 0.042)); line-height: 1.35; margin-top: calc(var(--F) * 0.028) !important; font-variant-numeric: lining-nums; }
+.tb-cart__span {
+  font-family: var(--f-name); font-size: max(9.5px, calc(var(--F) * 0.031)); line-height: 1.3; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--ink-2); font-variant-numeric: lining-nums; margin-top: calc(var(--F) * 0.016) !important; padding-left: 0.2em;
+}
+.tb-cart:lang(zh) .tb-cart__title { letter-spacing: 0.34em; text-transform: none; padding-left: 0.34em; font-weight: 500; }
+.tb-cart:lang(zh) .tb-cart__w { font-weight: 500; letter-spacing: 0.08em; padding-left: 0.08em; }
+.tb-cart:lang(zh) .tb-cart__share span, .tb-cart:lang(zh) .tb-cart__more { letter-spacing: 0.04em; }
+.tb-cart:lang(zh) .tb-cart__span { text-transform: none; letter-spacing: 0.14em; }
+/* on a phone the number takes the whole width, and nothing lies under the cartouche */
+.is-narrow .tb-cart { outline: 0; }
+.is-narrow .tb-cart__in { padding-left: calc(var(--F) * 0.03); padding-right: calc(var(--F) * 0.03); }
+
+/* ---- the stamps (as footprint-stamps): inks from the earth palette plus one stamp blue, home in red ---- */
+.ink-clay { color: var(--clay); }
+.ink-olive { color: var(--olive); }
+.ink-slate { color: var(--slate); }
+.ink-umber { color: var(--tb-umber); }
+.ink-blue { color: var(--tb-blue); }
+.ink-home { color: var(--route); }
+.tb-edge { fill: none; stroke: currentColor; stroke-width: var(--st-heavy, 2.2px); stroke-linejoin: round; }
+.tb-line { fill: none; stroke: currentColor; stroke-width: var(--st-thin, 0.9px); }
+.tb-fill { fill: currentColor; }
+.tb-sname { fill: currentColor; font-family: var(--f-text); font-weight: 600; letter-spacing: 0.1em; }
+.tb-big { fill: currentColor; font-family: var(--f-name); font-weight: 400; letter-spacing: 0.03em; font-variant-numeric: lining-nums; }
+.tb-date { fill: currentColor; font-family: var(--f-text); font-weight: 500; letter-spacing: 0.08em; }
+.tb-mark { fill: currentColor; font-family: var(--f-text); font-weight: 600; letter-spacing: 0.16em; }
+html[lang="zh-Hant"] .tb-sname { letter-spacing: 0.14em; }
+html[lang="zh-Hant"] .tb-big { font-weight: 600; }
+.tb-st {
+  position: absolute; left: 0; top: 0; width: var(--w); height: var(--h); transform: translate(var(--x), var(--y));
+  pointer-events: auto; will-change: opacity, scale;
+  transition: opacity 0.42s var(--ease), scale 0.55s var(--ease);
+}
+.tb-st svg { display: block; overflow: visible; }
+
+/* a press: a short, quiet scale and fade, in place */
+.tb-st.is-wait { opacity: 0; scale: 1.05; }

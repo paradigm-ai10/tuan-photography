@@ -1,0 +1,116 @@
+/* Scratch map with a passport page 刮刮地圖＋護照內頁 (2026-11-06, round two). The foil's three
+   tones and the fourth earth colour are scratch.css's, the two stamp inks are stamps.css's; the
+   passport page's paper and its fine printed lines are this version's own. Everything else is
+   base.css. The stamps keep their own physical shapes; everything else stays square. */
+:root {
+  --foil: oklch(85.5% 0.032 86);    /* the foil itself, champagne close to pewter */
+  --foil-lo: oklch(74% 0.028 78);   /* the lines printed on the foil, the cut edge */
+  --foil-hi: oklch(97% 0.02 92);    /* the light catching the grain */
+  --ochre: oklch(69% 0.105 78);
+  --st-blue: oklch(46% 0.115 258);
+  --st-umber: oklch(41% 0.075 48);
+  --pp-paper: color-mix(in oklch, var(--olive) 6%, var(--paper));  /* a visa page, faintly sage */
+  --pp-line: color-mix(in oklch, var(--olive) 30%, var(--paper));  /* its fine printed waves */
+  --pp-rose: color-mix(in oklch, var(--slate) 24%, var(--paper));  /* the rosette in its middle */
+}
+
+/* ---------------------------------------------------------------- the whole page */
+
+.sp { position: absolute; inset: 0; }
+
+/* the poster: a printed sheet with a double neatline; the map, then a band with the count */
+.sp-hold { position: absolute; left: var(--sx, 16px); top: var(--sy, 60px); }
+.sp-sheet { position: relative; width: var(--sw, 600px); height: var(--sh, 400px); }
+.sp-sheet::before, .sp-sheet::after { content: ""; position: absolute; pointer-events: none; }
+.sp-sheet::before { inset: 0; border: 1px solid var(--ink-2); }
+.sp-sheet::after { inset: 4px; border: 1px solid var(--hair); }
+.sp-sheet canvas { position: absolute; left: 0; top: 0; display: block; width: var(--cw, 100%); height: var(--ch, 100%); }
+.sc-edge { transform: translate(0.55px, 0.75px); }
+.sc-dust { cursor: default; }
+.sp-rule { position: absolute; left: 4px; right: 4px; top: var(--ry, 0); height: 1px; background: var(--hair); }
+
+/* Taiwan's mark */
+.sp-home { position: absolute; left: var(--hx, 0); top: var(--hy, 0); margin: 0; display: flex; align-items: center; gap: 6px; color: var(--ink); pointer-events: none; white-space: nowrap; }
+.sp-home::before { content: ""; width: 18px; height: 1px; background: var(--ink-2); }
+.sp-home.is-under { flex-direction: column; gap: 2px; transform: translateX(-50%); }
+.sp-home.is-under::before { width: 1px; height: 9px; }
+
+/* a country lit from its stamp: the rest of the map under a paper veil, the country outlined */
+.sp-lit { position: absolute; left: 0; top: 0; width: var(--cw, 100%); height: var(--ch, 100%); pointer-events: none; opacity: 0; transition: opacity 0.2s var(--ease); }
+.sp-lit.is-on { opacity: 1; }
+.sp-lit__veil { fill: var(--paper); fill-opacity: 0.66; fill-rule: evenodd; }
+.sp-lit__line { fill: none; stroke: var(--ink); stroke-width: 1; stroke-linejoin: round; }
+
+/* ---------------------------------------------------------------- the count, set large */
+
+.sp-count {
+  --f: 300px;
+  position: absolute; left: var(--cx, 0); top: var(--cy, 0); z-index: 1;
+  width: max-content; margin: 0;
+  display: flex; align-items: flex-end; gap: calc(var(--f) * 0.07);
+}
+.sp-count__n {
+  font-family: var(--f-name); font-weight: 400; font-size: var(--f); letter-spacing: -0.02em;
+  font-variant-numeric: lining-nums; color: var(--ink);
+  /* the box drawn tight round the figures: the baseline on its foot, the tops of the figures at its top */
+  line-height: 0.83; margin-top: calc(var(--f) * -0.115);
+}
+.sp-count__side { display: grid; grid-template-columns: minmax(0, 1fr); gap: 7px; max-width: var(--side, none); padding-bottom: calc(var(--f) * 0.012); }
+.sp-count__side p, .sp-count__side h1 { margin: 0; }
+.sp-count__where { padding-bottom: 3px; }
+.sp-count__w { font-family: var(--f-name); font-weight: 400; font-size: clamp(1.5rem, calc(var(--f) * 0.125), 3.25rem); line-height: 1; color: var(--ink); }
+html[lang="zh-Hant"] .sp-count__w { font-weight: 500; letter-spacing: 0.06em; }
+.sp-count__share { font-size: 0.9375rem; line-height: 1.45; color: var(--ink-2); padding-top: 2px; }
+.sp-count__share span, .sp-count__trips, .sp-count__where { white-space: nowrap; }
+.sp-count__share b { font-family: var(--f-name); font-weight: 400; font-size: 1.6em; line-height: 1; font-variant-numeric: lining-nums; color: var(--ink); }
+.sp-count__trips { color: var(--ink-3); }
+.sp-count.is-short .sp-count__trips { display: none; } /* too narrow for the line on one row */
+
+/* ---------------------------------------------------------------- the passport page */
+
+.sp-pass { position: absolute; left: var(--px, 0); top: var(--py, 0); width: var(--pw, 300px); height: var(--ph, 400px); margin: 0; }
+.sp-page { display: block; width: 100%; height: 100%; }
+.sp-page__paper { fill: var(--pp-paper); stroke: var(--hair); stroke-width: 1; }
+.sp-gu { fill: none; stroke: var(--pp-line); stroke-width: 0.5; }
+.sp-rose { fill: none; stroke: var(--pp-rose); stroke-width: 0.55; }
+.sp-stitch { stroke: var(--ink-3); stroke-width: 0.9; stroke-dasharray: 4 3.5; stroke-opacity: 0.55; }
+.sp-head { fill: var(--ink-2); font-family: var(--f-text); font-weight: 500; font-size: 10.5px; letter-spacing: 0.24em; }
+html[lang="zh-Hant"] .sp-head { letter-spacing: 0.3em; font-size: 11.5px; }
+.sp-num { fill: var(--ink-2); font-family: var(--f-name); font-weight: 400; font-size: 15px; font-variant-numeric: lining-nums; }
+
+/* the inks */
+.ink-clay { color: var(--clay); }
+.ink-olive { color: var(--olive); }
+.ink-slate { color: var(--slate); }
+.ink-umber { color: var(--st-umber); }
+.ink-blue { color: var(--st-blue); }
+.ink-home { color: var(--route); }
+
+/* a stamp (drawn as in stamps.css) */
+.st { cursor: default; outline: none; transition: opacity 0.2s var(--ease); }
+.st-press { opacity: 0; mix-blend-mode: multiply; transform-box: fill-box; transform-origin: center; }
+.st-press.is-on { opacity: 1; }
+.st-edge { fill: none; stroke: currentColor; stroke-width: var(--st-heavy, 2.6px); stroke-linejoin: round; }
+.st-line { fill: none; stroke: currentColor; stroke-width: var(--st-thin, 0.9px); }
+.st-fill { fill: currentColor; }
+.st-name { fill: currentColor; font-family: var(--f-text); font-weight: 600; letter-spacing: 0.1em; }
+.st-big { fill: currentColor; font-family: var(--f-name); font-weight: 400; letter-spacing: 0.03em; font-variant-numeric: lining-nums; }
+.st-date { fill: currentColor; font-family: var(--f-text); font-weight: 500; letter-spacing: 0.08em; }
+.st-mark { fill: currentColor; font-family: var(--f-text); font-weight: 600; letter-spacing: 0.16em; }
+html[lang="zh-Hant"] .st-name { letter-spacing: 0.14em; }
+html[lang="zh-Hant"] .st-big { font-weight: 600; }
+.st-hit { fill: transparent; stroke: none; pointer-events: all; }
+.st:focus-visible .st-hit { stroke: var(--link); stroke-width: 1.5; }
+
+/* a stamp lit from its country: the others step back */
+.sp-page.is-lit .st:not(.is-lit) { opacity: 0.24; }
+
+/* ---------------------------------------------------------------- phones: one column that scrolls */
+
+/* the stage starts under the top bar and scrolls; the map stays at the top while it does */
+.fp-stage.is-stack { top: var(--top, 58px); overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; }
+.sp.is-stack { position: relative; inset: auto; padding: 0 var(--edge, 16px) 40px; }
+.sp.is-stack .sp-hold { position: sticky; left: auto; top: 0; z-index: 3; background: var(--paper); padding: 6px 0 12px; }
+.sp.is-stack .sp-rule { display: none; }
+.sp.is-stack .sp-count { position: relative; left: auto; top: auto; z-index: 0; width: auto; margin-top: 22px; flex-direction: column; align-items: flex-start; gap: calc(var(--f) * 0.07); }
+.sp.is-stack .sp-pass { position: relative; left: auto; top: auto; margin: 34px 0 0; }

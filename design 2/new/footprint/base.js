@@ -22,6 +22,8 @@
       photos: (n) => (n === 1 ? 'photograph' : 'photographs'),
       since: (y) => `since ${y}`, span: (a, b) => `${a} to ${b}`,
       home: 'Home', of: (a, b) => `${a} of ${b}`, km: 'km',
+      // the share of the world: "10.3%" + "of the world's 195 countries"
+      pct: (p) => `${p}%`, ofWorld: (n) => `of the world's ${n} countries`,
       first: (y) => `first in ${y}`, times: (n) => (n === 1 ? 'once' : n === 2 ? 'twice' : `${n} times`),
       continent: { asia: 'Asia', europe: 'Europe', oceania: 'Oceania', 'north-america': 'North America' },
     },
@@ -31,6 +33,7 @@
       cities: () => '個地方', flights: () => '段航程', photos: () => '張照片',
       since: (y) => `從 ${y} 年起`, span: (a, b) => `${a} 到 ${b}`,
       home: '家', of: (a, b) => `${b} 個中的 ${a} 個`, km: '公里',
+      pct: (p) => `${p}%`, ofWorld: (n) => `全世界 ${n} 個國家的`,
       first: (y) => `${y} 年第一次去`, times: (n) => `去過 ${n} 次`,
       continent: { asia: '亞洲', europe: '歐洲', oceania: '大洋洲', 'north-america': '北美洲' },
     },
@@ -123,6 +126,8 @@
     until: Math.max(...abroad.map((c) => c.last)),
     world: 195, // the countries of the world, as the United Nations counts them
   };
+  // how much of the world's countries he has been to, in percent with one decimal (20 of 195: 10.3)
+  counts.share = Math.round((counts.countries / counts.world) * 1000) / 10;
 
   // year by year: the countries first seen that year, and the running total
   const years = [];

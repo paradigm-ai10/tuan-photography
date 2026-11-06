@@ -1,0 +1,122 @@
+/* Scratch map and ledger 刮刮地圖＋印章一年一年排 (2026-11-06, round two). The scratch map's foil
+   poster, the count set large beside it with the share of the world as words and as a tally of 195
+   foil squares, and the entry stamps in one ledger strip along the foot, year by year. The foil
+   tones are the scratch map's, the inks the stamps'; everything else is base.css. */
+:root {
+  --foil: oklch(85.5% 0.032 86);    /* the foil itself, champagne close to pewter */
+  --foil-lo: oklch(74% 0.028 78);   /* the lines printed on the foil, the cut edge */
+  --foil-hi: oklch(97% 0.02 92);    /* the light catching the grain */
+  --ochre: oklch(69% 0.105 78);     /* North America on the map */
+  --sl-gold: oklch(66% 0.118 74);   /* what a scratched square of the tally shows */
+  --st-blue: oklch(46% 0.115 258);
+  --st-umber: oklch(41% 0.075 48);
+}
+
+/* ---- the page: the poster and the count side by side, the ledger along the foot ---- */
+.sl-page {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; justify-content: center; gap: var(--gap-rl, 24px);
+  padding: calc(var(--top, 58px) + 4px) var(--edge-x, 40px) var(--foot, 12px);
+}
+.sl-row { display: flex; gap: var(--cg, 40px); height: var(--rowh, auto); flex: none; }
+
+/* the poster: a printed sheet with a double neatline */
+.sl-sheet { position: relative; flex: none; width: var(--pw, 100%); height: var(--ph, 300px); }
+.sl-sheet::before, .sl-sheet::after { content: ""; position: absolute; pointer-events: none; }
+.sl-sheet::before { inset: 0; border: 1px solid var(--ink-2); }
+.sl-sheet::after { inset: 4px; border: 1px solid var(--hair); }
+.sl-sheet canvas { position: absolute; left: 0; top: 0; display: block; width: var(--pw, 100%); height: var(--ph, 300px); }
+.sl-edge { transform: translate(0.55px, 0.75px); }
+.sl-dust { cursor: default; touch-action: pan-y; }
+.sl-hl { pointer-events: none; opacity: 0; transition: opacity 0.2s var(--ease); }
+.sl-hl.is-on { opacity: 1; }
+
+/* the poster's title, in the band above the map */
+.sl-title { position: absolute; left: 0; right: 0; top: var(--ty, 0); margin: 0; text-align: center; font: 400 1.75rem/1.2 var(--f-name); color: var(--ink); visibility: hidden; pointer-events: none; }
+.has-title .sl-title { visibility: visible; }
+html[lang="zh-Hant"] .sl-title { font-weight: 500; letter-spacing: 0.08em; }
+@media (max-width: 699px) { .sl-title { font-size: 1.5rem; } }
+
+/* Taiwan's mark */
+.sl-home { position: absolute; left: var(--hx, 0); top: var(--hy, 0); margin: 0; display: flex; align-items: center; gap: 6px; color: var(--ink); pointer-events: none; white-space: nowrap; }
+.sl-home::before { content: ""; width: 18px; height: 1px; background: var(--ink-2); }
+.sl-home.is-under { flex-direction: column; gap: 2px; transform: translateX(-50%); }
+.sl-home.is-under::before { width: 1px; height: 9px; }
+
+/* ---- the count ---- */
+.sl-count { flex: none; width: var(--cw, auto); display: flex; flex-direction: column; justify-content: space-between; min-width: 0; }
+.sl-count__head { display: grid; justify-items: start; }
+.sl-count__label { margin: 0 0 calc(var(--f, 300px) * 0.06) 0; font-size: 0.6875rem; }
+.sl-count__n {
+  font-family: var(--f-name); font-weight: 400; font-size: var(--f, 300px); line-height: 1;
+  font-variant-numeric: lining-nums; letter-spacing: -0.02em; color: var(--ink);
+  /* the line box trimmed to the figures themselves (measured in the script), so the words sit close under them */
+  margin-top: calc(var(--nt, 0.2) * -1em); margin-bottom: calc(var(--nb, 0.1) * -1em);
+}
+.sl-count__n span { display: inline-block; }
+.sl-count__w { margin: calc(var(--f, 300px) * 0.075) 0 0; font-family: var(--f-name); font-weight: 400; font-size: max(1.25rem, calc(var(--f, 300px) * 0.115)); line-height: 1.05; color: var(--ink); }
+html[lang="zh-Hant"] .sl-count__w { font-weight: 500; letter-spacing: 0.06em; }
+.sl-count__foot { display: grid; gap: calc(var(--cell, 10px) * 1.25); }
+
+/* the share of the world, in words */
+.sl-share { margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 0.5em; row-gap: 2px; color: var(--ink-2); font-size: 0.8125rem; line-height: 1.3; }
+.sl-share b { font-family: var(--f-name); font-weight: 400; font-size: clamp(1.25rem, calc(var(--f, 300px) * 0.08), 2rem); line-height: 1; color: var(--ink); font-variant-numeric: lining-nums; }
+html[lang="zh-Hant"] .sl-share { font-size: 0.84rem; }
+
+/* and as a tally: one small square of foil for every country of the world */
+.sl-tally { position: relative; width: var(--tw, 100%); height: var(--th, 50px); }
+.sl-tally canvas { position: absolute; left: 0; top: 0; display: block; width: var(--tw, 100%); height: var(--th, 50px); }
+.sl-tally .sl-dust { cursor: default; }
+.sl-tally__mark { position: absolute; left: 0; top: 0; width: var(--ms, 8px); height: var(--ms, 8px); transform: translate(var(--mx, 0), var(--my, 0)); outline: 1px solid var(--ink); outline-offset: 1px; pointer-events: none; opacity: 0; transition: opacity 0.2s var(--ease); }
+.sl-tally__mark.is-on { opacity: 1; }
+
+/* a short window: the small label above the count goes, for the screen reader only */
+.sl-count.is-short .sl-count__label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* ---- the ledger: the stamps along the foot, year by year ---- */
+.sl-ledger { flex: none; display: flex; justify-content: space-between; align-items: flex-start; gap: var(--lg, 20px); margin: 0; padding: 0; }
+.sl-year { display: grid; gap: 8px; align-content: start; min-width: 0; }
+.sl-year__label { margin: 0; padding-bottom: 5px; border-bottom: 1px solid var(--hair); white-space: nowrap; }
+.sl-year__stamps {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(var(--cols, 1), auto); grid-template-rows: repeat(2, var(--row, 70px));
+  column-gap: var(--sg, 8px); row-gap: var(--sg, 8px); justify-content: start;
+}
+.sl-stamp { display: grid; place-items: center; min-width: 0; transition: opacity 0.2s var(--ease); }
+.sl-year--one .sl-stamp { grid-row: 1 / span 2; }
+.sl-stamp svg { display: block; overflow: visible; }
+.sl-ledger.is-lit .sl-stamp:not(.is-on) { opacity: 0.28; }
+
+/* a short window: the ledger's labels sit closer */
+.is-tight .sl-year { gap: 5px; }
+.is-tight .sl-year__label { padding-bottom: 3px; }
+.is-tight .sl-count__w { margin-top: calc(var(--f, 300px) * 0.06); }
+
+/* ---- a stamp (the drawing is the passport stamps' own) ---- */
+.st-press { opacity: 0; mix-blend-mode: multiply; }
+.st-press.is-on { opacity: 1; }
+.st-edge { fill: none; stroke: currentColor; stroke-width: var(--st-heavy, 2.2px); stroke-linejoin: round; }
+.st-line { fill: none; stroke: currentColor; stroke-width: var(--st-thin, 0.9px); }
+.st-fill { fill: currentColor; }
+.st-name { fill: currentColor; font-family: var(--f-text); font-weight: 600; letter-spacing: 0.1em; }
+.st-big { fill: currentColor; font-family: var(--f-name); font-weight: 400; letter-spacing: 0.03em; font-variant-numeric: lining-nums; }
+.st-date { fill: currentColor; font-family: var(--f-text); font-weight: 500; letter-spacing: 0.08em; }
+.st-mark { fill: currentColor; font-family: var(--f-text); font-weight: 600; letter-spacing: 0.16em; }
+html[lang="zh-Hant"] .st-name { letter-spacing: 0.14em; }
+html[lang="zh-Hant"] .st-big { font-weight: 600; }
+.ink-clay { color: var(--clay); }
+.ink-olive { color: var(--olive); }
+.ink-slate { color: var(--slate); }
+.ink-umber { color: var(--st-umber); }
+.ink-blue { color: var(--st-blue); }
+.sl-inks { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+/* ---- phones and tall windows: the poster, the count, then the stamps, scrolled ---- */
+.is-narrow .fp-top { background: var(--paper); }
+.is-narrow .fp-stage { overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; }
+.is-narrow .sl-page { position: static; justify-content: flex-start; padding-bottom: 28px; }
+.is-narrow .sl-row { flex-direction: column; height: auto; gap: 22px; }
+.is-narrow .sl-count { width: auto; gap: 18px; }
+.is-narrow .sl-ledger { flex-wrap: wrap; justify-content: flex-start; column-gap: 22px; row-gap: 20px; padding-top: 4px; }
+.is-narrow .sl-year { max-width: 100%; }
+.is-narrow .sl-year__stamps { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sg, 8px); }

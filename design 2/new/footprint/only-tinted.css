@@ -1,0 +1,96 @@
+/* Footprint, "Only where I have been, tinted / 只有去過的地方，上色版" (round two, 2026-11-06): only his
+   countries, engraved, water-lined and laid in watercolour on an empty sheet whose coasts are a faint
+   dotted line; the count as large as the free paper allows; under it a row of small entry stamps,
+   one per country, each in a deeper shade of its country's wash. The washes are the hand-tinted
+   atlas's six earth colours; Taiwan is clay. */
+:root {
+  --ot-ochre: oklch(83% 0.09 86);
+  --ot-terra: oklch(73% 0.085 42);
+  --ot-sage: oklch(77% 0.06 135);
+  --ot-slate: oklch(74% 0.05 235);
+  --ot-mauve: oklch(73% 0.05 338);
+  --ot-verdigris: oklch(77% 0.05 190);
+  --ot-home: var(--clay);
+  --ot-water: color-mix(in oklch, var(--ink) 80%, var(--slate));
+  --ot-ghost: oklch(83% 0.012 75); /* the dotted coast: just there */
+}
+
+/* ---- the sheet ---- */
+.ot-sheet { position: absolute; inset: 0; }
+.ot-sheet > canvas, .ot-sheet > svg { position: absolute; left: 0; top: 0; display: block; }
+.ot-sheet > canvas { width: var(--sw, 100%); height: var(--sh, 100%); }
+.ot-ghost, .ot-sea, .ot-wash { pointer-events: none; }
+.ot-wash { mix-blend-mode: multiply; }
+.ot-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+/* the rest of the world: a dotted line round every coast */
+.ot-coast { fill: none; stroke: var(--ot-ghost); stroke-width: 1.15; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 0 calc(var(--dot, 3.4) * 1px); vector-effect: non-scaling-stroke; }
+
+/* the engraving: his coasts and outlines in ink, the borders between two of his countries finer */
+.ot-outer { fill: none; stroke: var(--ink); stroke-width: 0.7; stroke-linejoin: round; stroke-linecap: round; pointer-events: none; }
+.ot-inner { fill: none; stroke: var(--ink); stroke-opacity: 0.6; stroke-width: 0.4; stroke-linejoin: round; pointer-events: none; }
+.ot-edge { fill: none; stroke: none; pointer-events: none; }
+.ot-edge.is-on { stroke: var(--ink); stroke-width: 1.4; stroke-linejoin: round; }
+.ot-dot { fill: none; stroke: var(--ink); stroke-width: 0.6; pointer-events: none; }
+.ot-dot.is-on { stroke-width: 1.3; }
+.ot-hit { fill: transparent; stroke: none; pointer-events: all; cursor: default; }
+.ot-home { fill: var(--ot-home); font-size: 10px; dominant-baseline: middle; }
+
+/* ---- the count ---- */
+.ot-count {
+  --f: 280px;
+  position: absolute; left: 0; top: 0;
+  transform: translate(var(--x, 0), var(--y, 0));
+  opacity: 0;
+}
+.ot-count.is-set { opacity: 1; }
+.ot-count__top { display: flex; align-items: flex-end; gap: calc(var(--f) * 0.07); width: max-content; pointer-events: none; }
+.ot-count__n {
+  font-family: var(--f-name); font-weight: 400; font-size: var(--f); line-height: 0.74;
+  font-variant-numeric: lining-nums; letter-spacing: -0.02em; color: var(--ink);
+  padding-top: calc(var(--f) * 0.02);
+  margin-left: -0.03em; /* the 2's own side bearing: its ink lines up with the stamps */
+}
+.ot-count__side { display: grid; gap: calc(var(--f) * 0.03); padding-bottom: calc(var(--f) * 0.005); }
+.ot-count__w { font-family: var(--f-name); font-weight: 400; font-size: max(1.5rem, calc(var(--f) * 0.135)); line-height: 1; color: var(--ink); }
+html[lang="zh-Hant"] .ot-count__w { font-weight: 500; letter-spacing: 0.06em; }
+.ot-count__share {
+  margin: 0; font-family: var(--f-name); font-weight: 400; font-size: max(0.95rem, calc(var(--f) * 0.05)); line-height: 1.25;
+  color: var(--ink); white-space: nowrap; font-variant-numeric: lining-nums;
+}
+html[lang="zh-Hant"] .ot-count__share { font-weight: 500; letter-spacing: 0.04em; }
+.is-narrow .ot-count__share { white-space: normal; max-width: 10.5em; }
+.ot-count__line { margin: calc(var(--f) * 0.012) 0 0; color: var(--ink-2); line-height: 1.6; white-space: nowrap; }
+.ot-count__line span { display: block; }
+
+/* ---- the stamps, in a row under the count, in the order he first went ---- */
+.ot-stamps {
+  display: grid; grid-template-columns: repeat(var(--cols, 10), var(--cw, 72px)); grid-auto-rows: var(--ch, 54px);
+  width: calc(var(--cols, 10) * var(--cw, 72px)); height: calc(var(--rows, 2) * var(--ch, 54px));
+  margin: var(--sgap, 24px) 0 0; padding: 0; list-style: none;
+}
+.ot-stamp { position: relative; outline: none; cursor: default; transition: opacity 0.25s; }
+.ot-stamp svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.ot-st-edge { fill: none; stroke: var(--st-ink, var(--ink)); stroke-width: var(--st-heavy, 2px); stroke-linejoin: round; }
+.ot-st-line { fill: none; stroke: var(--st-ink, var(--ink)); stroke-width: var(--st-thin, 0.8px); }
+.ot-st-fill { fill: var(--st-ink, var(--ink)); }
+.ot-st-name { fill: var(--st-ink, var(--ink)); font-family: var(--f-text); font-weight: 600; letter-spacing: 0.1em; }
+.ot-st-year { fill: var(--st-ink, var(--ink)); font-family: var(--f-name); font-weight: 400; letter-spacing: 0.03em; font-variant-numeric: lining-nums; }
+html[lang="zh-Hant"] .ot-st-name { letter-spacing: 0.12em; }
+.ot-stamp:focus-visible::after { content: ""; position: absolute; inset: 2px; outline: 1.5px solid var(--link); outline-offset: 0; }
+
+/* lit: the country and its stamp stay, the others step back */
+.is-lit .ot-stamp:not(.is-on) { opacity: 0.28; }
+
+/* arrival: the stamps come with their washes, one by one; nothing moves but the colour */
+.is-arriving .ot-stamp:not(.is-in) { opacity: 0; }
+.is-arriving .ot-stamp.is-in { transition: opacity 0.7s var(--ease); }
+.is-arriving.is-lit .ot-stamp.is-in:not(.is-on) { opacity: 0.28; }
+.is-arriving .ot-count.is-set { transition: opacity 0.6s var(--ease); }
+
+.ot-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; margin: 0; }
+
+/* on a phone the page may be taller than the screen: it scrolls, the top bar on paper */
+body.is-scroll { overflow-y: auto; }
+body.is-scroll .fp-stage { position: absolute; bottom: auto; height: var(--tall, 100%); }
+body.is-scroll .fp-top { background: var(--paper); }
