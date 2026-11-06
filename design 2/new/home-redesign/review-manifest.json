@@ -54,6 +54,13 @@
         "en": "The opening: colour while it is drawn",
         "zh": "開場：邊畫邊上色"
       }
+    },
+    {
+      "id": "opening3",
+      "title": {
+        "en": "The opening: brushed onto the film",
+        "zh": "開場：把影片刷出來"
+      }
     }
   ],
   "items": [
@@ -463,6 +470,51 @@
       "still": {
         "wait": 5000
       }
+    },
+    {
+      "href": "c-brush.html",
+      "group": "opening3",
+      "title": {
+        "en": "Brushed in",
+        "zh": "刷出來"
+      },
+      "desc": {
+        "en": "A wide brush sweeps left to right, row under row, top to bottom, on a slight slant, the strokes full of paint in the middle with dry, streaky edges and tails. Your logo first, as before; no pencil and no still picture: the film is already playing under the white, so every stroke uncovers moving footage, and once the last row is down the page is simply the film. The counts sit on the white strip at the foot and step aside before the brush gets there. A click skips it.",
+        "zh": "一支寬刷子由左往右刷，一排接一排從上往下，稍微斜一點；筆觸中間顏料飽滿，邊緣和尾巴乾乾的、有刷痕。先是你的標誌，和之前一樣；沒有鉛筆、也沒有靜止的畫面：白色底下影片已經在播，每一刷刷開的都是會動的畫面，最後一排刷完，畫面就是影片。數字在底部的白色上，刷子到之前先讓開。點一下可以跳過。"
+      },
+      "still": {
+        "wait": 4900
+      }
+    },
+    {
+      "href": "c-brush-fine.html",
+      "group": "opening3",
+      "title": {
+        "en": "Many brushstrokes",
+        "zh": "一筆一筆刷"
+      },
+      "desc": {
+        "en": "A narrower brush and more rows, quicker strokes, a little more slant: more like painting a wall stroke by stroke. Your logo first, as before; no pencil and no still picture: the film is already playing under the white, so every stroke uncovers moving footage, and once the last row is down the page is simply the film. The counts sit on the white strip at the foot and step aside before the brush gets there. A click skips it.",
+        "zh": "比較窄的刷子、比較多排、每一刷更快、也更斜一點：比較像一筆一筆刷牆。先是你的標誌，和之前一樣；沒有鉛筆、也沒有靜止的畫面：白色底下影片已經在播，每一刷刷開的都是會動的畫面，最後一排刷完，畫面就是影片。數字在底部的白色上，刷子到之前先讓開。點一下可以跳過。"
+      },
+      "still": {
+        "wait": 4900
+      }
+    },
+    {
+      "href": "c-brush-slant.html",
+      "group": "opening3",
+      "title": {
+        "en": "Brushed on a slant",
+        "zh": "斜斜地刷"
+      },
+      "desc": {
+        "en": "The same wide brush on a steep slant, so the picture opens corner to corner, the bottom right last. Your logo first, as before; no pencil and no still picture: the film is already playing under the white, so every stroke uncovers moving footage, and once the last row is down the page is simply the film. The counts sit on the white strip at the foot and step aside before the brush gets there. A click skips it.",
+        "zh": "同一支寬刷子，但斜得很明顯，畫面從一個角往對角打開，右下角最後刷開。先是你的標誌，和之前一樣；沒有鉛筆、也沒有靜止的畫面：白色底下影片已經在播，每一刷刷開的都是會動的畫面，最後一排刷完，畫面就是影片。數字在底部的白色上，刷子到之前先讓開。點一下可以跳過。"
+      },
+      "still": {
+        "wait": 4900
+      }
     }
   ],
   "tags": [
@@ -544,11 +596,14 @@
       "c-pencil-hatch",
       "c-pencil-band",
       "c-pencil-grain",
-      "c-pencil-scribble"
+      "c-pencil-scribble",
+      "c-brush",
+      "c-brush-fine",
+      "c-brush-slant"
     ],
     "question": {
-      "en": "Five ways the colour comes with the pencil. Give each a score.",
-      "zh": "五種顏色跟著鉛筆一起出來的方式，每個打個分數。"
+      "en": "Eight openings: five where the colour comes with a coloured pencil, three where a brush uncovers the film. Give each a score.",
+      "zh": "八個開場：五個是顏色跟著色鉛筆一起出來，三個是用刷子把影片刷出來。每個打個分數。"
     }
   }
 }

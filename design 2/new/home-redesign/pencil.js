@@ -4,13 +4,15 @@
    last line lands the colour is all there and the film starts moving. <html data-pencil> names how the
    colour goes down: lines (the lines themselves in colour, then gone over), hatch (diagonal hatching close
    behind the lines), band (a soft band carried along each line), grain (colour caught in the paper's tooth,
-   building up), scribble (quick zigzag scribbles). home.js calls HRPencil.start() as the tracing begins. */
+   building up), scribble (quick zigzag scribbles); brush, brush-fine and brush-slant drop the pencil and sweep the
+   paper off the film already playing (his idea, 2026-11-06). home.js calls HRPencil.start() as the tracing begins,
+   and it answers with its timings. */
 (() => {
   'use strict';
   const html = document.documentElement;
   const canvas = document.querySelector('.hr-load__wear');
   const svg = document.querySelector('.hr-load__trace');
-  if (!html.dataset.pencil || !canvas || !svg) return;
+  if (!html.dataset.pencil || !canvas) return;
 
   const VW = 1920, VH = 1080;   // the drawing's own frame, laid over the screen as the film is (cover)
   const END = 2.85;              // seconds after the tracing starts by which every colour stroke is down
@@ -30,17 +32,18 @@
     return (x) => { let lo = 0, hi = 1; for (let i = 0; i < 18; i++) { const m = (lo + hi) / 2; if (f(m, 0.4, 0.2) < x) lo = m; else hi = m; } return f((lo + hi) / 2, 0, 1); };
   })();
   const even = (x) => x * (2 - x);   // a hand stroke: quick off the mark, easing at the end
+  const sweep = (x) => 0.5 - Math.cos(Math.PI * x) / 2;   // an arm's sweep: gathers speed, then slows
 
   // a stroke: its points, the length run so far along them, when it starts and how long it takes
   function stroke(pts, t0, dur, ease) {
     const cum = [0];
     for (let i = 1; i < pts.length; i++) cum.push(cum[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]));
-    return { pts, cum, L: cum[cum.length - 1] || 1, t0, dur: Math.max(0.05, dur), ease: ease || even, done: 0, i: 0, low: Math.max(...pts.map((q) => q[1])) };
+    return { pts, cum, L: cum[cum.length - 1] || 1, t0, dur: Math.max(0.05, dur), ease: ease || even, done: 0, stop: Infinity, i: 0, low: Math.max(...pts.map((q) => q[1])) };
   }
 
   // the grey lines, read from the drawing on the page (their start and length are on each path)
-  const pace = parseFloat(getComputedStyle(svg).getPropertyValue('--pace')) || 1;
-  const lines = [...svg.querySelectorAll('path')].map((p) => {
+  const pace = svg ? parseFloat(getComputedStyle(svg).getPropertyValue('--pace')) || 1 : 1;
+  const lines = [...(svg ? svg.querySelectorAll('path') : [])].map((p) => {
     const n = (p.getAttribute('d').match(/-?\d+(\.\d+)?/g) || []).map(Number);
     const pts = [];
     for (let i = 0; i + 1 < n.length; i += 2) pts.push([n[i], n[i + 1]]);
@@ -140,9 +143,48 @@
       { make: () => scribble({ cell: 64, zigs: 7, angle: -55, lag: 0.1, dur: 0.24, spread: 0.1 }), width: 7, alpha: 0.9, grain: 0.6 },
       { make: () => scribble({ cell: 64, zigs: 7, angle: 40, lag: 0.34, dur: 0.24, spread: 0.1 }), width: 8, alpha: 0.85, grain: 0.6 },
       { make: () => scribble({ cell: 90, zigs: 5, angle: -15, lag: 0.55, dur: 0.24, spread: 0.1 }), width: 20, alpha: 0.7, grain: 0.4 } ] },
+    // the brush (his idea, 2026-11-06): no pencil; the film already plays behind the paper and wide strokes
+    // uncover it, left to right, row under row, on a slant. size is the brush's width as a share of the screen's
+    // height, gap the time between rows, sag how much each stroke bows, fan how round its start is, dry and tail
+    // how often and how far a bristle runs out at the end, classes the bristles' [strength, width]
+    brush: { res: 1, brush: { size: 0.28, overlap: 0.3, angle: -7, dur: 0.62, gap: 0.42, sag: 0.025, space: 3, fan: 70, dry: 0.2, tail: 240, minCount: 1.1,
+      classes: [[1, 2.6], [1, 2], [0.7, 2.2], [0.4, 1.6]] } },
+    'brush-fine': { res: 1, brush: { size: 0.15, overlap: 0.26, angle: -10, dur: 0.46, gap: 0.25, sag: 0.018, space: 2.4, fan: 50, dry: 0.25, tail: 180, minCount: 1.1,
+      classes: [[1, 2.5], [1, 2], [0.7, 2.1], [0.4, 1.5]] } },
+    'brush-slant': { res: 1, brush: { size: 0.26, overlap: 0.3, angle: -22, dur: 0.6, gap: 0.3, sag: 0.02, space: 3, fan: 70, dry: 0.2, tail: 240, minCount: 1.1,
+      classes: [[1, 2.6], [1, 2], [0.7, 2.2], [0.4, 1.6]] } },
   };
   const mode = MODES[html.dataset.pencil] || MODES.hatch;
-  const layers = mode.layers.map((l) => ({ ...l, list: l.make().sort((a, b) => a.t0 - b.t0), next: 0, active: [] }));
+  let layers = (mode.layers || []).map((l) => ({ ...l, list: l.make().sort((a, b) => a.t0 - b.t0), next: 0, active: [] }));
+
+  // the brush's rows, in screen pixels: each row a band of bristles that land together, start ragged and run
+  // dry at the end; rows reaching the counts at the foot wait until they have stepped aside
+  function brush(o, W, H, footY) {
+    const B = H * o.size, a = Math.tan(o.angle * Math.PI / 180), reach = Math.abs(a) * W / 2;
+    const x0 = -0.06 * W, x1 = 1.06 * W, dur = o.dur * (0.6 + 0.4 * Math.min(1.6, W / 1440));
+    const out = o.classes.map(([alpha, wf]) => ({ alpha, width: o.space * wf, list: [], next: 0, active: [] }));
+    let t = 0, counted = null;
+    for (let yc = B * 0.4 - reach, r = 0; yc - B / 2 - reach < H; yc += B * (1 - o.overlap), r++) {
+      if (counted === null && yc + reach + B / 2 + o.sag * H > footY) { counted = Math.max(o.minCount, t - 0.25); t = Math.max(t, counted + 0.2); }
+      const n = Math.round(B / o.space), bow = (r % 2 ? -1 : 1) * o.sag * H;
+      for (let j = 0; j < n; j++) {
+        const off = (j / (n - 1) - 0.5) * B + (rnd() - 0.5) * o.space, edge = Math.abs(off) / (B / 2), ph = rnd() * 6, pts = [];
+        for (let x = x0; x <= x1 + 1; x += 36) {
+          const u = (x - x0) / (x1 - x0);
+          pts.push([x, yc + a * (x - W / 2) + bow * Math.sin(Math.PI * u) + off * (1 + 0.04 * Math.sin(u * 7 + ph))]);
+        }
+        const st = stroke(pts, t + rnd() * 0.03, dur, sweep);
+        st.done = edge * edge * o.fan * rnd();   // the brush lands rounder than it is wide
+        st.stop = st.L - (rnd() < o.dry + edge * 0.4 ? rnd() * o.tail : 0) - edge * edge * o.fan * rnd();   // and runs dry at the end
+        out[Math.min(out.length - 1, Math.floor((rnd() * rnd() * 0.6 + edge * edge * 0.55) * out.length))].list.push(st);   // full of paint in the middle, drier at the edges
+      }
+      t += o.gap;
+    }
+    out.forEach((l) => l.list.sort((p, q) => p.t0 - q.t0));
+    const end = t - o.gap + dur + 0.05;
+    if (counted === null) counted = end - 0.4;
+    return { layers: out, plan: { count: Math.max(0.6, counted - 0.15), counted, end, film: 'now' } };
+  }
 
   // the paper's tooth: white with a random strength at each grain
   const tooth = {};
@@ -183,20 +225,28 @@
     ctx.fillStyle = getComputedStyle(document.querySelector('.hr-load__paper')).backgroundColor;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     const s = Math.max(W / VW, H / VH);
-    ctx.setTransform(s * k, 0, 0, s * k, (W - VW * s) / 2 * k, (H - VH * s) / 2 * k);
-    // the counts sit on paper along the foot (nothing written on the photograph): the pencil leaves that strip
-    // blank while they show, then colours it as they step aside (his note, 2026-11-06: the white band)
+    // the counts sit on paper along the foot (nothing written on the photograph): the colour leaves that strip
+    // blank while they show, then fills it as they step aside (his note, 2026-11-06: the white band)
     const counts = document.querySelector('.hr-load__counts');
-    const foot = counts ? (counts.getBoundingClientRect().top - (H - VH * s) / 2) / s : Infinity;
-    if (foot < VH) layers.forEach((l) => {
-      l.list.forEach((st) => { if (st.low > foot) st.t0 = Math.max(st.t0, Math.min(FOOT + rnd() * 0.3, END - st.dur)); });
-      l.list.sort((a, b) => a.t0 - b.t0);
-    });
+    const footY = counts ? counts.getBoundingClientRect().top : Infinity;
+    let plan;
+    if (mode.brush) {
+      ({ layers, plan } = brush(mode.brush, W, H, footY));
+      ctx.setTransform(k, 0, 0, k, 0, 0);
+    } else {
+      plan = { count: 1.8, counted: FOOT - 0.1, end: END - 0.1, film: 'end' };
+      ctx.setTransform(s * k, 0, 0, s * k, (W - VW * s) / 2 * k, (H - VH * s) / 2 * k);
+      const foot = (footY - (H - VH * s) / 2) / s;
+      if (foot < VH) layers.forEach((l) => {
+        l.list.forEach((st) => { if (st.low > foot) st.t0 = Math.max(st.t0, Math.min(FOOT + rnd() * 0.3, END - st.dur)); });
+        l.list.sort((a, b) => a.t0 - b.t0);
+      });
+    }
     ctx.globalCompositeOperation = 'destination-out';   // the pencil takes the paper away
     ctx.lineJoin = 'round';
     if (mode.blur) ctx.filter = `blur(${mode.blur}px)`;   // a soft edge, as colour rubbed in with a finger
     layers.forEach((l) => {
-      if (!l.grain) { l.style = '#000'; return; }
+      if (!l.grain) { l.style = '#000'; return; }   // the brush and the band have no tooth
       l.style = ctx.createPattern(grain(l.grain), 'repeat');
       l.style.setTransform(new DOMMatrix().scale(1.3 / s));   // a grain about 1.3 px across on any screen
     });
@@ -209,7 +259,7 @@
         if (!l.active.length) continue;
         ctx.beginPath();
         l.active = l.active.filter((st) => {
-          const p = Math.min(1, (t - st.t0) / st.dur), b = st.ease(p) * st.L;
+          const p = Math.min(1, (t - st.t0) / st.dur), b = Math.min(st.ease(p) * st.L, st.stop);
           if (b > st.done + 0.01) { piece(ctx, st, st.done, b); st.done = b; }
           return p < 1;
         });
@@ -219,9 +269,10 @@
         ctx.strokeStyle = l.style;
         ctx.stroke();
       }
-      if (t < END + 0.2) requestAnimationFrame(frame);
+      if (t < plan.end + 0.2) requestAnimationFrame(frame);
     };
     requestAnimationFrame(frame);
+    return plan;
   }
   window.HRPencil = { start, stop: () => { running = false; } };
 })();

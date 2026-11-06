@@ -158,6 +158,12 @@ PENCILS = [
     ("grain", "Colour in the paper's grain", "顏色落進紙紋"),
     ("scribble", "Scribbled in", "塗鴉上色"),
 ]
+# ... and brushed (his idea, 2026-11-06): no pencil, wide strokes sweep the paper off the film already playing
+BRUSHES = [
+    ("brush", "Brushed in", "刷出來"),
+    ("brush-fine", "Many brushstrokes", "一筆一筆刷"),
+    ("brush-slant", "Brushed on a slant", "斜斜地刷"),
+]
 
 
 def page(home, name, title_en, title_zh, opening, body, extra="", attrs="", way=None, foot_html=None, scripts=""):
@@ -282,6 +288,10 @@ def build():
     for mode, en, zh in PENCILS:
         (OUT / f"c-pencil-{mode}.html").write_text(page("d", f"c-pencil-{mode}", en, zh, film_e, c, wear, f' data-counts data-pencil="{mode}"',
                                                         scripts='<script src="pencil.js"></script>\n'), encoding="utf-8")
+    brushed = '\n  <canvas class="hr-load__wear" aria-hidden="true"></canvas>' + f'\n  <div class="hr-load__counts">{tally}</div>'
+    for mode, en, zh in BRUSHES:
+        (OUT / f"c-{mode}.html").write_text(page("d", f"c-{mode}", en, zh, film_e, c, brushed, f' data-counts data-pencil="{mode}"',
+                                                 scripts='<script src="pencil.js"></script>\n'), encoding="utf-8")
     # Round two (his ask, 2026-11-05: "continue designing the rest of the home page"): E's opening kept,
     # three ways for everything under the film.
     rest = lambda r: " data-counts" + f' data-rest="{r}"'

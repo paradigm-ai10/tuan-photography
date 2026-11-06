@@ -92,6 +92,7 @@ html.hr-shade .hr-load__trace { opacity: 0.85; }
 [data-pencil].hr-trace .hr-load__paper { opacity: 0; transition: none; }
 [data-pencil="lines"] .hr-load__trace { visibility: hidden; }   /* here the lines themselves are drawn in colour */
 [data-pencil].hr-out .hr-load__wear { opacity: 0; transition: opacity 0.7s cubic-bezier(0.2, 0, 0.3, 1); }
+[data-pencil].hr-trace .hr-load__mark { opacity: 0; transition: opacity 0.35s ease; }   /* the logo's last word is gone before any colour comes */
 [data-pencil].hr-counted .hr-load__counts { opacity: 0; transition: opacity 0.45s ease; }   /* they step aside before the pencil reaches the foot */
 
 /* ---------------- the top: the logo small, the menu, the two languages ---------------- */

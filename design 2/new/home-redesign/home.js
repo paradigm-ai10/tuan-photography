@@ -165,16 +165,17 @@
     html.classList.add('hr-horizon');
     await wait(1100); if (done) return;
     html.classList.add('hr-trace');
-    if (window.HRPencil) window.HRPencil.start();   // the coloured pencil (pencil.js) follows the lines
-    const pencil = 'pencil' in html.dataset;
-    if (tally.length) count(pencil ? 1800 : 2100);
-    if (pencil) {   // the counts step aside so the pencil can colour the foot of the picture under them
-      await wait(2100); if (done) return;
+    // the coloured pencil or the brush (pencil.js) answers with its timings, in seconds from now
+    const plan = window.HRPencil ? window.HRPencil.start() : null;
+    if (plan && plan.film === 'now' && video) { video.currentTime = 0; video.play().catch(() => {}); }   // the brush uncovers the film already playing
+    if (tally.length) count(plan ? plan.count * 1000 : 2100);
+    if (plan) {   // the counts step aside so the foot of the picture under them can be coloured
+      await wait(plan.counted * 1000); if (done) return;
       html.classList.add('hr-counted');
-      await wait(650); if (done) return;
+      await wait((plan.end - plan.counted) * 1000); if (done) return;
     }
-    if ('colour' in html.dataset || pencil) {   // the colour is in as the last lines land, and the film starts moving under them
-      if (!pencil) { await wait(2550); if (done) return; }
+    if ('colour' in html.dataset || plan) {   // the colour is in as the last lines land, and the film starts moving under them
+      if (!plan) { await wait(2550); if (done) return; }
       if (video) video.play().catch(() => {});
       html.classList.add('hr-out');   // the lines and the counts lift off the moving film
       await wait(1200);
