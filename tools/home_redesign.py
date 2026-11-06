@@ -164,6 +164,12 @@ BRUSHES = [
     ("brush-fine", "Many brushstrokes", "一筆一筆刷"),
     ("brush-slant", "Brushed on a slant", "斜斜地刷"),
 ]
+# ... and brushed by hand (his note, 2026-11-06: the first brush felt "formalized", not a person brushing): brush.js
+HANDS = [
+    ("hand", "Brushed by hand", "手刷"),
+    ("hand-loaded", "A loaded brush", "沾滿顏料的刷子"),
+    ("hand-dry", "A dry brush", "乾筆飛白"),
+]
 
 
 def page(home, name, title_en, title_zh, opening, body, extra="", attrs="", way=None, foot_html=None, scripts=""):
@@ -292,6 +298,9 @@ def build():
     for mode, en, zh in BRUSHES:
         (OUT / f"c-{mode}.html").write_text(page("d", f"c-{mode}", en, zh, film_e, c, brushed, f' data-counts data-pencil="{mode}"',
                                                  scripts='<script src="pencil.js"></script>\n'), encoding="utf-8")
+    for mode, en, zh in HANDS:
+        (OUT / f"c-{mode}.html").write_text(page("d", f"c-{mode}", en, zh, film_e, c, brushed, f' data-counts data-pencil="{mode}"',
+                                                 scripts='<script src="brush.js"></script>\n'), encoding="utf-8")
     # Round two (his ask, 2026-11-05: "continue designing the rest of the home page"): E's opening kept,
     # three ways for everything under the film.
     rest = lambda r: " data-counts" + f' data-rest="{r}"'

@@ -86,6 +86,19 @@
     caps.forEach((c) => c.classList.toggle('is-on', t >= Number(c.dataset.from) && t < Number(c.dataset.to)));
   });
 
+  // the film's pace eased from one speed to another
+  let easing = false;
+  function speed(from, to, ms) {
+    easing = true;
+    const t0 = performance.now();
+    const step = (now) => {
+      const k = Math.min(1, (now - t0) / ms);
+      video.playbackRate = from + (to - from) * k * k * (3 - 2 * k);
+      if (k < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+
   // the end state at once: the loading screen gone, the film playing
   function finish() {
     if (done) return;
@@ -93,7 +106,7 @@
     if (window.HRPencil) window.HRPencil.stop();
     if (screen) screen.remove();
     html.classList.remove('hr-loading', 'hr-full', 'hr-out', 'hr-horizon', 'hr-draw', 'hr-trace', 'hr-shade', 'hr-counted');
-    if (video) video.play().catch(() => {});
+    if (video) { if (!easing) video.playbackRate = 1; video.play().catch(() => {}); }   // a skip mid-brush plays it at its own pace
   }
   document.addEventListener('keydown', (e) => {
     if (e.metaKey || e.ctrlKey || /^(INPUT|TEXTAREA)$/.test(e.target.tagName)) return;
@@ -167,12 +180,17 @@
     html.classList.add('hr-trace');
     // the coloured pencil or the brush (pencil.js) answers with its timings, in seconds from now
     const plan = window.HRPencil ? window.HRPencil.start() : null;
-    if (plan && plan.film === 'now' && video) { video.currentTime = 0; video.play().catch(() => {}); }   // the brush uncovers the film already playing
+    if (plan && plan.film === 'now' && video) {   // the brush uncovers the film already playing, slowed while it works
+      video.currentTime = 0;
+      if (plan.rate) video.playbackRate = plan.rate;
+      video.play().catch(() => {});
+    }
     if (tally.length) count(plan ? plan.count * 1000 : 2100);
     if (plan) {   // the counts step aside so the foot of the picture under them can be coloured
       await wait(plan.counted * 1000); if (done) return;
       html.classList.add('hr-counted');
       await wait((plan.end - plan.counted) * 1000); if (done) return;
+      if (plan.rate && video) speed(plan.rate, 1, 900);   // then eases back to its own pace, the first shot still on
     }
     if ('colour' in html.dataset || plan) {   // the colour is in as the last lines land, and the film starts moving under them
       if (!plan) { await wait(2550); if (done) return; }

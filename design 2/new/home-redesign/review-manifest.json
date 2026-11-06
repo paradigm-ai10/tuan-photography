@@ -61,6 +61,13 @@
         "en": "The opening: brushed onto the film",
         "zh": "開場：把影片刷出來"
       }
+    },
+    {
+      "id": "opening4",
+      "title": {
+        "en": "The opening: brushed by hand",
+        "zh": "開場：像人手在刷"
+      }
     }
   ],
   "items": [
@@ -484,7 +491,8 @@
       },
       "still": {
         "wait": 4900
-      }
+      },
+      "out": true
     },
     {
       "href": "c-brush-fine.html",
@@ -499,7 +507,8 @@
       },
       "still": {
         "wait": 4900
-      }
+      },
+      "out": true
     },
     {
       "href": "c-brush-slant.html",
@@ -514,6 +523,52 @@
       },
       "still": {
         "wait": 4900
+      },
+      "out": true
+    },
+    {
+      "href": "c-hand.html",
+      "group": "opening4",
+      "title": {
+        "en": "Brushed by hand",
+        "zh": "手刷"
+      },
+      "desc": {
+        "en": "A wide brush, painted briskly, band after band from the top, one long stroke or two where the first runs dry. As a hand paints: one stroke at a time with a lift between, each a different length, angle and speed, arcing the way an arm does; the paint full where the brush lands and breaking into dry streaks as it runs out; then a few quick touches where the paper still shows. The film plays slowly under the brush and comes back to its own pace, so the first shot stays on a moment after the last stroke. The counts step aside before the brush reaches them. A click skips it.",
+        "zh": "一支寬刷子，刷得俐落，從上面一排一排往下，一筆刷到底，或是第一筆乾了再接一筆。像手在刷：一次一筆，中間會提起來，每一筆長短、角度、速度都不一樣，跟手臂一樣有弧度；刷子落下的地方顏料飽滿，越刷越乾，變成乾乾的刷痕；最後在還看得到白紙的地方補幾筆。刷的時候影片在底下慢慢播，刷完再回到正常速度，所以最後一筆之後第一個畫面還會停留一下。刷子到之前數字先讓開。點一下可以跳過。"
+      },
+      "still": {
+        "wait": 5500
+      }
+    },
+    {
+      "href": "c-hand-loaded.html",
+      "group": "opening4",
+      "title": {
+        "en": "A loaded brush",
+        "zh": "沾滿顏料的刷子"
+      },
+      "desc": {
+        "en": "More paint on a wider brush, slower and fuller strokes, fewer dry streaks. As a hand paints: one stroke at a time with a lift between, each a different length, angle and speed, arcing the way an arm does; the paint full where the brush lands and breaking into dry streaks as it runs out; then a few quick touches where the paper still shows. The film plays slowly under the brush and comes back to its own pace, so the first shot stays on a moment after the last stroke. The counts step aside before the brush reaches them. A click skips it.",
+        "zh": "更寬、沾更多顏料的刷子，筆觸比較慢、比較飽滿，乾刷痕比較少。像手在刷：一次一筆，中間會提起來，每一筆長短、角度、速度都不一樣，跟手臂一樣有弧度；刷子落下的地方顏料飽滿，越刷越乾，變成乾乾的刷痕；最後在還看得到白紙的地方補幾筆。刷的時候影片在底下慢慢播，刷完再回到正常速度，所以最後一筆之後第一個畫面還會停留一下。刷子到之前數字先讓開。點一下可以跳過。"
+      },
+      "still": {
+        "wait": 5500
+      }
+    },
+    {
+      "href": "c-hand-dry.html",
+      "group": "opening4",
+      "title": {
+        "en": "A dry brush",
+        "zh": "乾筆飛白"
+      },
+      "desc": {
+        "en": "Little paint, fast and loose: strokes at freer angles, more dry streaks (飛白) and flecks flung off the ends. As a hand paints: one stroke at a time with a lift between, each a different length, angle and speed, arcing the way an arm does; the paint full where the brush lands and breaking into dry streaks as it runs out; then a few quick touches where the paper still shows. The film plays slowly under the brush and comes back to its own pace, so the first shot stays on a moment after the last stroke. The counts step aside before the brush reaches them. A click skips it.",
+        "zh": "顏料少、刷得快又鬆：角度比較隨意，乾刷的飛白比較多，筆尾還會甩出一點點顏料。像手在刷：一次一筆，中間會提起來，每一筆長短、角度、速度都不一樣，跟手臂一樣有弧度；刷子落下的地方顏料飽滿，越刷越乾，變成乾乾的刷痕；最後在還看得到白紙的地方補幾筆。刷的時候影片在底下慢慢播，刷完再回到正常速度，所以最後一筆之後第一個畫面還會停留一下。刷子到之前數字先讓開。點一下可以跳過。"
+      },
+      "still": {
+        "wait": 5500
       }
     }
   ],
@@ -592,18 +647,13 @@
   "words": {},
   "ask": {
     "ids": [
-      "c-pencil-lines",
-      "c-pencil-hatch",
-      "c-pencil-band",
-      "c-pencil-grain",
-      "c-pencil-scribble",
-      "c-brush",
-      "c-brush-fine",
-      "c-brush-slant"
+      "c-hand",
+      "c-hand-loaded",
+      "c-hand-dry"
     ],
     "question": {
-      "en": "Eight openings: five where the colour comes with a coloured pencil, three where a brush uncovers the film. Give each a score.",
-      "zh": "八個開場：五個是顏色跟著色鉛筆一起出來，三個是用刷子把影片刷出來。每個打個分數。"
+      "en": "Three hands brushing the film in. Give each a score.",
+      "zh": "三種像人手在刷的方式，每個打個分數。"
     }
   }
 }
