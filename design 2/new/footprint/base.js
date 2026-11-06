@@ -129,6 +129,22 @@
   // how much of the world's countries he has been to, in percent with one decimal (20 of 195: 10.3)
   counts.share = Math.round((counts.countries / counts.world) * 1000) / 10;
 
+  // the ramp (2026-11-06): his record trip by trip, oldest first, with the running totals of the three
+  // numbers on the page: countries, flights and photographs. A country's photographs join the count when
+  // the country first does; home's are there from the start.
+  const ramp = [];
+  {
+    const seen = new Set();
+    let cs = 0, fs = 0, ps = home.photos;
+    for (const j of journeys) {
+      const fresh = j.countries.map((id) => byId.get(id)).filter((c) => c && !c.home && !seen.has(c.id));
+      fresh.forEach((c) => seen.add(c.id));
+      const fl = flights.filter((f) => f.journey === j.id);
+      cs += fresh.length; fs += fl.length; ps += fresh.reduce((n, c) => n + c.photos, 0);
+      ramp.push({ journey: j.id, year: yearOf(j), date: j.date, fresh, flights: fl, countries: cs, flightsSoFar: fs, photos: ps });
+    }
+  }
+
   // year by year: the countries first seen that year, and the running total
   const years = [];
   for (let y = counts.since, total = 0; y <= counts.until; y++) {
@@ -193,7 +209,7 @@
 
   window.FP = {
     S, esc, $, WORDS, get lang() { return lang; }, get w() { return WORDS[lang]; }, setLang, onLang: (fn) => listeners.push(fn),
-    ISO, countries, abroad, home, byId, byIso, places, flights, journeys, years, counts, km,
+    ISO, countries, abroad, home, byId, byIso, places, flights, journeys, years, ramp, counts, km,
     world, names, chrome, tip, about, fmt, reduced, still,
   };
 })();

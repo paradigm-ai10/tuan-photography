@@ -41,13 +41,6 @@
       }
     },
     {
-      "id": "footprint-3",
-      "title": {
-        "en": "One stamp at a time, four ways",
-        "zh": "一次一個章，四種做法"
-      }
-    },
-    {
       "id": "footprint-4",
       "title": {
         "en": "One stamp at a time, eleven ways with Impeccable",
@@ -208,66 +201,6 @@
       }
     },
     {
-      "href": "footprint-onestamp-route.html",
-      "group": "footprint-3",
-      "title": {
-        "en": "One stamp, and its route",
-        "zh": "一次一個章＋路線"
-      },
-      "desc": {
-        "en": "As the one you liked, and while each stamp is shown its trip is drawn on the map in fine ink from Taipei; earlier routes stay as faint lines. Reviewers: 22 of 32, better than the one you liked. The flights drawn in ink with each stamp add your story, slowly and in order; lines must stop crossing country names.",
-        "zh": "跟你喜歡的那張一樣，每個章出現時，那趟旅行的路線從台北用細墨線畫出來；之前的路線留下淡淡的線。評審：32 分拿 22 分，比你喜歡的原版好。每個章出現時，用細墨線畫出那趟的航線，慢慢、照順序，多了故事卻不雜；只是線不該壓過國名。"
-      },
-      "still": {
-        "wait": 9000
-      }
-    },
-    {
-      "href": "footprint-onestamp-plate.html",
-      "group": "footprint-3",
-      "title": {
-        "en": "One stamp, the whole atlas plate",
-        "zh": "一次一個章＋整張地圖"
-      },
-      "desc": {
-        "en": "The map as large as the window allows, one engraved plate; the count and the stamp are printed on the open sea inside it. Reviewers: 21 of 32, not as good as the one you liked. A handsome Pacific-centred plate with Taiwan in the middle, but the count shrank to a third of its size.",
-        "zh": "地圖放到視窗最大，像一整張雕版地圖；大數字和印章直接印在地圖的海上。評審：32 分拿 21 分，不如你喜歡的原版。以太平洋為中心、台灣在正中的整張地圖很好看，但國家數字縮到原本的三分之一。"
-      },
-      "still": {
-        "wait": 9000
-      }
-    },
-    {
-      "href": "footprint-onestamp-index.html",
-      "group": "footprint-3",
-      "title": {
-        "en": "One stamp, with an index",
-        "zh": "一次一個章＋國家目錄"
-      },
-      "desc": {
-        "en": "As the one you liked, with a list of your 20 countries and their years beside the stamp, like the index of an atlas; tap a name to see its stamp. Reviewers: 25 of 32, not as good as the one you liked. Best for keyboard and phone browsing, but it prints all twenty names again beside a map that already names them.",
-        "zh": "跟你喜歡的那張一樣，印章旁邊加一個國家目錄，20 個國家和年份；點名字就換成那個國家的章。評審：32 分拿 25 分，不如你喜歡的原版。鍵盤和手機瀏覽最方便，但地圖上已經寫了國名，旁邊又把二十個國家再列一次。"
-      },
-      "still": {
-        "wait": 9000
-      }
-    },
-    {
-      "href": "footprint-onestamp-passport.html",
-      "group": "footprint-3",
-      "title": {
-        "en": "One stamp, a passport that turns",
-        "zh": "一次一個章＋護照翻頁"
-      },
-      "desc": {
-        "en": "The one stamp lives in a small open passport; each new country turns the page, so two stamps sit side by side, never on top of each other. Reviewers: 21 of 32, not as good as the one you liked. The most charming home for the stamps, but twenty page turns and a tinted panel make the corner busier than the original.",
-        "zh": "印章放在一本打開的小護照裡；每換一個國家就翻一頁，左右兩頁各一個章，不會疊在一起。評審：32 分拿 21 分，不如你喜歡的原版。給印章最有味道的家，但連翻二十頁，加上有底色的護照，讓角落比原版熱鬧。"
-      },
-      "still": {
-        "wait": 9000
-      }
-    },
-    {
       "href": "footprint-imp-bolder.html",
       "group": "footprint-4",
       "title": {
@@ -277,36 +210,6 @@
       "desc": {
         "en": "Impeccable \"bolder\": the count, the washes and the stamp at full strength. Reviewers: 22 of 32, better than the one you liked. The only version that makes the count clearly bigger, keeping the tinted atlas and one calm stamp.",
         "zh": "Impeccable「bolder」：數字、水彩和印章都放到最強。評審：32 分拿 22 分，比你喜歡的原版好。唯一把數字明顯放大的版本，手繪上色地圖和一次一個章都還在。"
-      },
-      "still": {
-        "wait": 9000
-      }
-    },
-    {
-      "href": "footprint-imp-quieter.html",
-      "group": "footprint-4",
-      "title": {
-        "en": "Quieter",
-        "zh": "更安靜"
-      },
-      "desc": {
-        "en": "Impeccable \"quieter\": softer washes, more paper, fewer lines, a smaller stamp. Reviewers: 22 of 32, not as good as the one you liked. Calm and slow, but the count got smaller and your countries are too faint to find.",
-        "zh": "Impeccable「quieter」：水彩更淡、留白更多、線條更少、印章更小。評審：32 分拿 22 分，不如你喜歡的原版。安靜又慢，但數字變小了，去過的國家顏色淡到很難找。"
-      },
-      "still": {
-        "wait": 9000
-      }
-    },
-    {
-      "href": "footprint-imp-distill.html",
-      "group": "footprint-4",
-      "title": {
-        "en": "Down to the essentials",
-        "zh": "精簡到只剩重點"
-      },
-      "desc": {
-        "en": "Impeccable \"distill\": only what it takes to say \"I have been to these 20 countries\". Reviewers: 21 of 32, not as good as the one you liked. The cleanest page, but it drops the hand-tinted atlas, the names and the 10.3% figure.",
-        "zh": "Impeccable「distill」：只留下說「我去過這 20 個國家」需要的東西。評審：32 分拿 21 分，不如你喜歡的原版。畫面最乾淨，但手繪上色的地圖、國名和 10.3% 的數字都不見了。"
       },
       "still": {
         "wait": 9000
@@ -343,51 +246,6 @@
       }
     },
     {
-      "href": "footprint-imp-polish.html",
-      "group": "footprint-4",
-      "title": {
-        "en": "The same page, finished",
-        "zh": "同一張，精修完成"
-      },
-      "desc": {
-        "en": "Impeccable \"polish\": the page you liked, with spacing, labels, phone and small windows finished to ship quality. Reviewers: 24 of 32, about the same as the one you liked. Looks the same as the original on a desktop with better keyboard and short-window handling, but the phone count got smaller.",
-        "zh": "Impeccable「polish」：你喜歡的那張，間距、地名、手機和小視窗都修到可以上線。評審：32 分拿 24 分，跟你喜歡的原版差不多。桌機上看起來和原版一樣，鍵盤和矮視窗處理得更好，但手機上的數字變小了。"
-      },
-      "still": {
-        "wait": 9000
-      }
-    },
-    {
-      "href": "footprint-imp-layout-column.html",
-      "group": "footprint-4",
-      "title": {
-        "en": "A column and a big map",
-        "zh": "左欄＋大地圖"
-      },
-      "desc": {
-        "en": "Impeccable \"layout\": a narrow left column holds the count, the share and the stamp; the map fills the rest. Reviewers: 21 of 32, not as good as the one you liked. Neater alignment, but the count shrinks to half the original's size and a stats column replaces the atlas plate feel.",
-        "zh": "Impeccable「layout」：左邊一條窄欄放數字、百分比和印章，其餘全是地圖。評審：32 分拿 21 分，不如你喜歡的原版。對齊更整齊，但數字縮成原版的一半，左欄像數據側欄，少了地圖集版面的味道。"
-      },
-      "still": {
-        "wait": 9000
-      }
-    },
-    {
-      "href": "footprint-imp-layout-spread.html",
-      "group": "footprint-4",
-      "title": {
-        "en": "An atlas lying open",
-        "zh": "攤開的地圖集"
-      },
-      "desc": {
-        "en": "Impeccable \"layout\": the page as an open atlas, two pages and a fold, the count in one margin, the stamp in the other. Reviewers: 22 of 32, about the same as the one you liked. The most printed-atlas feel and the biggest map, but the count you wants larger shrank by a third.",
-        "zh": "Impeccable「layout」：整頁像一本攤開的地圖集，兩頁中間有摺線，數字在一邊頁緣，印章在另一邊。評審：32 分拿 22 分，跟你喜歡的原版差不多。最有印刷地圖集的感覺，地圖也最大，但你想放大的數字反而小了三分之一。"
-      },
-      "still": {
-        "wait": 9000
-      }
-    },
-    {
       "href": "footprint-imp-animate.html",
       "group": "footprint-4",
       "title": {
@@ -412,21 +270,6 @@
       "desc": {
         "en": "Impeccable \"delight\": small atlas touches, such as a wash that lifts like paper and a pencilled note by the stamp. Reviewers: 22 of 32, about the same as the one you liked. Quiet, well-judged hand marks, but barely visible at a glance, and the count stays the same size.",
         "zh": "Impeccable「delight」：一些小細節，像水彩像紙一樣微微浮起、印章旁邊鉛筆寫的小字。評審：32 分拿 22 分，跟你喜歡的原版差不多。手寫記號安靜又得體，但一眼幾乎看不出來，數字大小也沒變。"
-      },
-      "still": {
-        "wait": 9000
-      }
-    },
-    {
-      "href": "footprint-imp-overdrive.html",
-      "group": "footprint-4",
-      "title": {
-        "en": "The count is the atlas",
-        "zh": "數字就是地圖"
-      },
-      "desc": {
-        "en": "Impeccable \"overdrive\": the numerals 20 so large they become a window, filled with the hand-tinted map. Reviewers: 17 of 32, not as good as the one you liked. The biggest count yet, but the numerals become loud decoration and the atlas you likes shrinks to a thumbnail.",
-        "zh": "Impeccable「overdrive」：「20」大到變成一扇窗，裡面就是手工上色的地圖。評審：32 分拿 17 分，不如你喜歡的原版。數字最大，但變成搶眼的裝飾，你喜歡的地圖縮成角落的小圖。"
       },
       "still": {
         "wait": 9000
@@ -1024,28 +867,5 @@
     "--rv-label": "\"Geist\", \"Noto Sans TC\", sans-serif",
     "--rv-name": "\"Playfair Display\", \"Noto Serif TC\", serif"
   },
-  "words": {},
-  "ask": {
-    "ids": [
-      "footprint-onestamp-route",
-      "footprint-onestamp-plate",
-      "footprint-onestamp-index",
-      "footprint-onestamp-passport",
-      "footprint-imp-bolder",
-      "footprint-imp-quieter",
-      "footprint-imp-distill",
-      "footprint-imp-typeset",
-      "footprint-imp-colorize",
-      "footprint-imp-polish",
-      "footprint-imp-layout-column",
-      "footprint-imp-layout-spread",
-      "footprint-imp-animate",
-      "footprint-imp-delight",
-      "footprint-imp-overdrive"
-    ],
-    "question": {
-      "en": "Fifteen ways of the one-stamp map you like (number 1 is it, as it was). Open \"What it is\" on a card for what the reviewers thought. Give each a score and mark what to change.",
-      "zh": "你喜歡的「一次一個章」的十五種做法（第 1 張是原本那張）。每張卡片按「這版是什麼」可以看評審的意見。每版給個分數，想改的地方按 M 標記。"
-    }
-  }
+  "words": {}
 }
