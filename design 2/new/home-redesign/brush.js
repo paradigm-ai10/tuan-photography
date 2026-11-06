@@ -24,6 +24,19 @@
     'hand-loaded': { size: 0.34, angle: -3, tilt: 4, dur: [0.32, 0.44], lift: [0.07, 0.13], dip: 4, load: 1.3, spend: 0.4, bow: 0.035, shake: 0.003, flecks: 2, rate: 0.35 },
     // a dry brush, fast and scratchy, more strokes at looser angles
     'hand-dry': { size: 0.27, angle: -7, tilt: 9, dur: [0.18, 0.26], lift: [0.04, 0.09], dip: 3, load: 0.85, spend: 0.75, bow: 0.025, shake: 0.006, flecks: 8, rate: 0.35 },
+    // 33's six relatives (his ask, 2026-11-06: more versions of it, for range), all with 33's smoothed ending.
+    // way: the order of the strokes (right: bands left to right, top down; alt: back and forth; centre: down the
+    // spire, then outward from its middle; down: columns brushed downward, left to right; cross: a rising pass, then
+    // a falling one across it); single: one stroke a band; arc: every stroke the same strong arch (bow);
+    // blunt and taper: how pointed and how thin a stroke's end is (1 and 0.7 as 33);
+    // swell: how much the stroke thickens and thins along its length;
+    // gap: how far apart the clumps of bristles sit (1 as 33); fringe: how often the outer bristles skip
+    'hand-ink': { kin: true, size: 0.5, angle: -18, tilt: 6, dur: [0.34, 0.4], lift: [0.08, 0.12], dip: 2, load: 0.9, spend: 0.85, bow: 0.05, shake: 0.004, flecks: 10, rate: 0.35, single: true, swell: 0.45, fringe: 6 },
+    'hand-alt': { kin: true, size: 0.22, angle: -5, tilt: 5, dur: [0.2, 0.28], lift: [0.04, 0.08], dip: 3, load: 0.95, spend: 0.65, bow: 0.025, shake: 0.005, flecks: 5, rate: 0.35, single: true, way: 'alt' },
+    'hand-centre': { kin: true, size: 0.27, angle: -6, tilt: 3, dur: [0.17, 0.23], lift: [0.04, 0.09], dip: 3, load: 0.9, spend: 0.7, bow: 0.025, shake: 0.006, flecks: 6, rate: 0.35, way: 'centre' },
+    'hand-down': { kin: true, size: 0.3, angle: 90, tilt: 7, blunt: 0.3, taper: 0.25, dur: [0.18, 0.24], lift: [0.04, 0.09], dip: 3, load: 0.9, spend: 0.7, bow: 0.025, shake: 0.005, flecks: 5, rate: 0.35, way: 'down' },
+    'hand-arc': { kin: true, size: 0.3, angle: -3, tilt: 3, dur: [0.26, 0.34], lift: [0.05, 0.1], dip: 3, load: 1, spend: 0.6, bow: 0.15, arc: true, shake: 0.004, flecks: 4, rate: 0.35, single: true },
+    'hand-cross': { kin: true, size: 0.24, angle: -26, tilt: 4, dur: [0.16, 0.21], lift: [0.03, 0.05], dip: 4, load: 1.05, spend: 0.5, gap: 0.8, bow: 0.02, shake: 0.005, flecks: 5, rate: 0.35, single: true, way: 'cross' },
   };
   const o = HANDS[html.dataset.pencil];
   const SMOOTH = 'smooth' in html.dataset;   // 32 smoothed: the last of the paper dissolves into its grain and lifts away (his ask, 2026-11-06)
@@ -54,7 +67,7 @@
   // one stroke: a bowed path from (x0, y0) at an angle, its bristles in clumps, each with its paint along it
   function stroke(x0, y0, len, ang, B, load, t0, dur, wob = 1) {
     const a = ang * Math.PI / 180, ux = Math.cos(a), uy = Math.sin(a), nx = -uy, ny = ux;
-    const bow = -o.bow * len * (0.6 + 0.4 * rnd()) * (wob > 1 ? 1.6 : 1), ph = rnd() * 6, sh = o.shake * innerHeight;   // one arm, so every stroke arcs the same way (the last, the most)
+    const bow = -o.bow * len * (o.arc ? 1 : 0.6 + 0.4 * rnd()) * (wob > 1 && !o.arc ? 1.6 : 1), ph = rnd() * 6, sh = o.shake * innerHeight;   // one arm, so every stroke arcs the same way (the last, the most)
     const centre = (u) => {
       const along = u * len, side = bow * 4 * u * (1 - u) + sh * Math.sin(u * 11 + ph) * Math.sin(u * 3.7 + ph * 2);
       return [x0 + ux * along + nx * side, y0 + uy * along + ny * side];
@@ -64,7 +77,7 @@
     // smoothed: the brush lands narrow and spreads over one and a half of its widths, and narrows to a third as it lifts
     // over the last two, so no stroke starts or stops square on the screen
     const uL = Math.min(0.25, 1.5 * B / len), uR = Math.min(0.3, 2 * B / len);
-    const spread = (u) => (u < uL ? 0.4 + 0.6 * (1 - (1 - u / uL) ** 2) : u > 1 - uR ? 1 - 0.7 * ((u - 1 + uR) / uR) ** 1.5 : 1) + 0.04 * Math.sin(u * 9 + ph);
+    const spread = (u) => (u < uL ? 0.4 + 0.6 * (1 - (1 - u / uL) ** 2) : u > 1 - uR ? 1 - (o.taper ?? 0.7) * ((u - 1 + uR) / uR) ** 1.5 : 1) + 0.04 * Math.sin(u * 9 + ph);
     // smoothed: each long side wobbles slowly on its own (a few px), so no side is ruler-straight
     const wA = rnd() * 6, wB = rnd() * 6, wC = rnd() * 6, wD = rnd() * 6;
     const side = (u, top) => wob * (top ? 5 * Math.sin(u * len / 110 + wA) + 2.5 * Math.sin(u * len / 41 + wB) : 5 * Math.sin(u * len / 120 + wC) + 2.5 * Math.sin(u * len / 37 + wD));
@@ -75,32 +88,32 @@
         bristles.push(off);
         off += space / (B / 2) * (0.7 + 0.6 * rnd());
       }
-      off += space / (B / 2) * (0.05 + rnd() * 0.5);
+      off += space / (B / 2) * (0.05 + rnd() * 0.5) * (o.gap ?? 1);
     }
     const lines = bristles.map((off) => {
       const e = Math.abs(off), cap = 0.8 + 0.4 * rnd(), p1 = rnd() * 6, p2 = rnd() * 6, p3 = rnd() * 6, p4 = rnd() * 6;
       // the brush lands rounded and a little on one corner, and lifts off ragged and tapering
       const u0 = (B * (0.32 * e ** 1.6 + 0.12 * (off + 1) / 2 + 0.05 * rnd())) / len;
-      const u1 = 1 - (B * (0.45 * e ** 1.4 + 0.1 * (1 - off) / 2 + 0.12 * rnd())) / len;
+      const u1 = 1 - (B * (0.45 * (o.blunt ?? 1) * e ** 1.4 + 0.1 * (1 - off) / 2 + 0.12 * rnd())) / len;
       const pts = [], level = [];
       for (let i = 0; i < N; i++) {
-        const u = i / (N - 1), [cx, cy] = centre(u), w = B / 2 * (off + 0.025 * Math.sin(u * 13 + p3)) * (SMOOTH ? spread(u) : 0.72 + 0.28 * press(u)) + (SMOOTH ? e * e * side(u, off > 0) : 0);   // bristles wander, so the gaps open and close
+        const u = i / (N - 1), [cx, cy] = centre(u), w = B / 2 * (off + 0.025 * Math.sin(u * 13 + p3)) * (SMOOTH ? spread(u) * (1 - (wob > 1 ? 0 : o.swell || 0) * 0.5 * (1 + Math.sin(u * Math.PI * 2.2 + ph))) : 0.72 + 0.28 * press(u)) + (SMOOTH ? e * e * side(u, off > 0) : 0);   // bristles wander, so the gaps open and close
         pts.push([cx + nx * w, cy + ny * w]);
         if (u < u0 || u > u1) { level.push(-1); continue; }
         // the paint left on this bristle here: full at the start, spent along the way (the edges sooner),
         // skipping where the brush runs light, and thinner where it lifts
-        const fringe = SMOOTH && e > 0.8 ? 3 * (e - 0.8) * Math.max(0, Math.sin(u * len / 55 + p4)) : 0;   // the outer bristles skip now and then along the side
-        const paint = (load * cap + (u < 0.06 ? 0.15 : 0) + (SMOOTH && u < uL * 0.6 ? 0.2 : 0) - o.spend * u * (1 + 0.8 * e ** 3) - 0.1 * (0.6 * Math.sin(u * 9 + p1) + 0.4 * Math.sin(u * 23 + p2)) - fringe) * (0.55 + 0.45 * (SMOOTH ? spread(u) : press(u)));
+        const fringe = SMOOTH && e > 0.8 ? (wob > 1 ? 3 : o.fringe ?? 3) * (e - 0.8) * Math.max(0, Math.sin(u * len / 55 + p4)) : 0;   // the outer bristles skip now and then along the side
+        const paint = (load * cap + (u < 0.06 ? 0.15 : 0) + (SMOOTH && u < uL * 0.6 ? 0.2 : 0) + (o.kin ? 0.3 * darkAt(pts[i][0], pts[i][1]) : 0) - o.spend * (o.kin && wob > 1 ? 0.5 : 1) * u * (1 + 0.8 * e ** 3) - 0.1 * (0.6 * Math.sin(u * 9 + p1) + 0.4 * Math.sin(u * 23 + p2)) - fringe) * (0.55 + 0.45 * (SMOOTH ? spread(u) : press(u)));
         level.push(paint > 0.5 ? 0 : paint > 0.32 ? 1 : paint > 0.18 ? 2 : paint > 0.08 ? 3 : -1);
       }
-      const lag = SMOOTH ? 30 * e ** 1.5 + 0.47 * B * 0.5 * (1 - off) / 2 + 4 * rnd() : B * (0.05 * e * e + 0.06 * rnd());   // smoothed: a rounded nose leaning back
+      const lag = SMOOTH ? (o.kin ? 0.2 * B * e * e + 0.3 * B * (1 - off) / 2 : 30 * e ** 1.5 + 0.47 * B * 0.5 * (1 - off) / 2) + 4 * rnd() : B * (0.05 * e * e + 0.06 * rnd());   // smoothed: a rounded nose leaning back
       return { pts, level, i: 0, at: null, lag: lag / len };   // bristles trail the head unevenly, so its front is not a straight line
     });
     const end = centre(1), flecks = [];
     for (let i = 0, n = Math.floor(rnd() * (o.flecks + 1)); i < n; i++) {   // drops flung off the end as it lifts
       const d = 8 + rnd() * 80, s = (rnd() - 0.5) * B * 0.8;
       if (SMOOTH) {   // smoothed: inside the dry tail or on its edge, not out on bare paper
-        const u = 0.7 + 0.3 * rnd(), [cx, cy] = centre(u), w = (rnd() - 0.5) * B * 1.1;
+        const u = o.kin ? 0.6 + 0.3 * rnd() : 0.7 + 0.3 * rnd(), [cx, cy] = centre(u), w = (rnd() - 0.5) * B * (o.kin ? 0.9 * spread(u) : 1.1);
         flecks.push([cx + nx * w, cy + ny * w, 0.8 + rnd() * 2, t0 + dur * u + rnd() * 0.05]);
       } else flecks.push([end[0] + ux * d + nx * s, end[1] + uy * d + ny * s, 0.8 + rnd() * 2.6, t0 + dur + rnd() * 0.06]);
     }
@@ -122,7 +135,7 @@
     const strokes = [];
     let t = SMOOTH ? 0.25 : 0, counted = null, n = 0;
     const B0 = Math.sqrt(W * H) * o.size * 0.85;   // the brush suits the screen's size, so a phone gets a narrower one
-    const add = (x0, x1, yc, B, quick = 1, wet = 1, fixed = 0, step = null, tilt = null, wob = 1) => {   // one stroke from x0 to x1, its middle at height yc
+    const add = (x0, x1, yc, B, quick = 1, wet = 1, fixed = 0, step = null, tilt = null, wob = 1, back = false) => {   // one stroke from x0 to x1, its middle at height yc
       const ang = tilt === null ? o.angle + (rnd() - 0.5) * 2 * o.tilt : tilt, ta = Math.tan(ang * Math.PI / 180);
       const len = (x1 - x0) / Math.cos(ang * Math.PI / 180);
       const y0 = yc - ta * (x1 - x0) / 2;
@@ -130,7 +143,14 @@
       let shade = 0;   // smoothed: more paint where the footage under the stroke is dark, so it reads as the photograph, not black hatching
       if (SMOOTH) for (let i = 0; i < 8; i++) shade += dark(x0 + (x1 - x0) * (i + 0.5) / 8, yc) / 8;
       const load = wet * o.load * (1 - 0.13 * (n % o.dip)) * (0.92 + 0.16 * rnd()) * (1 + 0.6 * shade);   // the brush empties, then is dipped again
-      const st = stroke(x0, y0, len, ang, B, load, t, dur, wob);
+      const st = back ? stroke(W - x1, y0, len, ang, B, load, t, dur, wob) : stroke(x0, y0, len, ang, B, load, t, dur, wob);
+      if (back) {   // a backhand stroke: built going right, then mirrored, so it lands on the right and runs dry on the left
+        st.lines.forEach((l) => l.pts.forEach((q) => { q[0] = W - q[0]; }));
+        st.flecks.forEach((q) => { q[0] = W - q[0]; });
+      }
+      commit(st, dur, step);
+    };
+    const commit = (st, dur, step) => {
       if (counted === null) {   // keep clear of the counts until they have stepped aside
         let low = -Infinity;
         st.lines.forEach((l) => l.pts.forEach((q, i) => { if (l.level[i] >= 0) low = Math.max(low, q[1]); }));
@@ -142,29 +162,85 @@
       n++;
       t += step !== null ? step * dur : dur + (n % o.dip === 0 ? between(o.lift) + 0.14 : between(o.lift));
     };
-    // band after band from the top, left to right: one long stroke, or two where the first runs dry
-    for (let top = -B0 * 0.3; top < H;) {   // the first band starts above the screen, so its dry edge is off it
-      const B = B0 * (0.88 + 0.24 * rnd()), yc = top + B / 2;
-      if (counted === null && yc + B * 0.3 > footY) {   // the counts step aside, then the foot is painted
-        counted = Math.max(1, t - 0.15);
-        t = Math.max(t, counted + 0.3);
+    // one stroke brushed downward from y0 to y1 around x = xc
+    const addCol = (xc, y0, y1, B, deg = null, wet = 1) => {
+      const ang = (deg ?? o.angle) + (rnd() - 0.5) * 2 * (deg === null ? o.tilt : 3), a = ang * Math.PI / 180, len = (y1 - y0) / Math.sin(a);
+      const dur = between(o.dur) * (0.6 + 0.4 * Math.min(1.2, (y1 - y0) / H)) * (0.75 + 0.25 * Math.min(1.6, W / 1440));
+      let shade = 0;
+      for (let i = 0; i < 8; i++) shade += dark(xc, y0 + (y1 - y0) * (i + 0.5) / 8) / 8;
+      const load = wet * o.load * (1 - 0.13 * (n % o.dip)) * (0.92 + 0.16 * rnd()) * (1 + 0.6 * shade);
+      commit(stroke(xc - Math.cos(a) * len / 2, y0, len, ang, B, load, t, dur), dur, null);
+    };
+    let early = W, footTop = H;
+    if (o.way === 'down') {   // columns brushed downward, left to right, stopping above the counts until they step aside
+      for (let left = -B0 * 0.3; left < W;) {
+        const B = B0 * (0.7 + 0.6 * rnd());
+        if (counted === null && t > 1.1) { counted = t - 0.15; t += 0.3; }
+        if (counted === null) early = left + B;   // these stop above the counts; the foot sweep finishes under them
+        addCol(left + B / 2, -B * (0.6 + 0.5 * rnd()), counted === null ? footY - 14 + (rnd() - 0.5) * 16 : H + B * (0.3 + 0.6 * rnd()), B);
+        left += B * (0.6 + 0.12 * rnd());
       }
-      const x0 = -W * (0.04 + 0.06 * rnd()) - (SMOOTH ? B * 0.35 : 0);
-      const far = () => W * (SMOOTH ? 1.12 + 0.06 * rnd() : 1.04 + 0.06 * rnd());   // smoothed: the dry end lands off the right edge
-      if (rnd() < 0.55) add(x0, far(), yc, B);
-      else {
-        const mid = W * (0.5 + 0.2 * rnd());
-        add(x0, mid, yc + (rnd() - 0.5) * B * 0.1, B);
-        add(mid - W * (0.12 + 0.08 * rnd()), far(), yc + (rnd() - 0.5) * B * 0.12, B * (0.9 + 0.15 * rnd()));
+      if (counted === null) { counted = Math.max(1, t - 0.15); t = Math.max(t, counted + 0.3); }
+    } else if (o.way === 'cross') {   // a rising pass with gaps between, then a falling pass across it, both in reading order
+      const pass = (deg, gap) => {
+        const a = deg * Math.PI / 180, R = Math.abs(Math.sin(a)) * W / 2 + Math.cos(a) * H / 2;
+        for (let sN = -R + B0 * 0.4; sN < R - B0 * 0.2; sN += B0 * gap * (0.9 + 0.2 * rnd())) {
+          if (counted === null && t > 1.1) { counted = t - 0.15; t += 0.3; }
+          const B = B0 * (0.88 + 0.24 * rnd()), d = deg + (rnd() - 0.5) * 2 * o.tilt, ta = Math.tan(d * Math.PI / 180);
+          const line = (x) => H / 2 + sN / Math.cos(a) + ta * (x - W / 2);   // the stroke's middle line
+          let x0 = -W * 0.1 - B * 1.6, x1 = W * 1.1 + B * 1.8;
+          if (counted === null) {   // keep its painted part above the counts until they have stepped aside
+            const xa = W / 2 + (footY - B * 0.6 - (H / 2 + sN / Math.cos(a))) / ta;
+            if (ta < 0) x0 = Math.max(x0, xa); else x1 = Math.min(x1, xa);
+            if (x1 - x0 < B * 2) continue;
+          }
+          add(x0, x1, line((x0 + x1) / 2), B, 1, 1, 0, null, d);
+        }
+      };
+      pass(o.angle, 1.5);
+      pass(-o.angle, 0.85);
+      if (counted === null) { counted = Math.max(1, t - 0.15); t = Math.max(t, counted + 0.3); }
+    } else {
+      // band after band from the top, left to right: one long stroke, or two where the first runs dry; back and forth
+      // for 'alt'; for 'centre' the bands are taken from the spire's height outward
+      const band = (yc, B, k) => {
+        if (counted === null && yc + B * (o.kin ? 0.6 : 0.3) > footY) {   // the counts step aside, then the foot is painted
+          counted = Math.max(1, t - 0.15);
+          t = Math.max(t, counted + 0.3);
+        }
+        const x0 = -W * (0.04 + 0.06 * rnd()) - (SMOOTH ? B * (o.kin ? 1.6 : 0.35) : 0);
+        const far = () => W * (SMOOTH ? 1.12 + 0.06 * rnd() : 1.04 + 0.06 * rnd()) + (o.kin ? B * 1.8 : 0);   // smoothed: the dry end lands off the right edge
+        const back = o.way === 'alt' && k % 2 === 1;
+        if (o.single || rnd() < 0.55) add(x0, far(), yc, B, 1, 1, 0, null, back ? -(o.angle + (rnd() - 0.5) * 2 * o.tilt) : null, 1, back);
+        else {
+          const mid = W * (0.5 + 0.2 * rnd());
+          add(x0, mid, yc + (rnd() - 0.5) * B * 0.1, B);
+          add(mid - W * (0.12 + 0.08 * rnd()), far(), yc + (rnd() - 0.5) * B * 0.12, B * (0.9 + 0.15 * rnd()));
+        }
+      };
+      if (o.way === 'centre') {   // one stroke down the spire first, then the bands, laid out and taken from its middle outward
+        addCol(W * 0.49, -B0 * 0.7, H * 0.72, B0 * 1.1, 90, 1.6);
+        const bands = [];
+        for (let top = -B0 * 0.3; top < H;) {
+          const B = B0 * (0.88 + 0.24 * rnd());
+          bands.push([top + B / 2, B]);
+          top += B * (0.64 + 0.08 * rnd());
+        }
+        bands.sort((a, b) => Math.abs(a[0] - H * 0.4) - Math.abs(b[0] - H * 0.4)).forEach(([yc, B], k) => band(yc, B, k));
+      } else {
+        for (let top = -B0 * 0.3 + (o.arc ? o.bow * W : 0), k = 0; top < H; k++) {   // the first band starts above the screen, so its dry edge is off it
+          const B = B0 * (0.88 + 0.24 * rnd());
+          band(top + B / 2, B, k);
+          top += B * ((o.way === 'alt' ? 0.56 : 0.64) + 0.08 * rnd());   // each band covers the last one's dry edge
+        }
       }
-      top += B * (0.64 + 0.08 * rnd());   // each band covers the last one's dry edge
     }
     if (SMOOTH) {   // smoothed (the reviewers' notes): finish with the brush, wetter sweeps over what shows most, in reading order,
       // the last one along the foot, left to right, so the brush ends at the bottom of the frame
       const span = Math.max(2, Math.round(B0 * 0.8 / C)), foot = GY - span;
       const need = (q) => { let m = 0; for (let x = 0; x < GX; x++) m += (!cov[q * GX + x] + bare[q * GX + x] * 2) * (1 + 2 * dark(x * C + C / 2, q * C + C / 2)); return m; };
       const picked = [];
-      for (let k = 0; k < 3; k++) {
+      for (let k = 0; k < (o.way === 'down' || o.way === 'cross' ? 0 : o.way === 'centre' ? 1 : 3); k++) {
         let best = -1, most = GX * span * 0.12;
         for (let r = 0; r + span <= foot; r++) {
           if (picked.some((q) => Math.abs(q - r) < span)) continue;
@@ -181,9 +257,10 @@
         if (hi < 0) return;
         let x0 = lo * C - B0 * 1.5, x1 = (hi + 1) * C + B0 * 2;
         if (x1 - x0 < B0 * 3) { const m = (x0 + x1) / 2; x0 = m - B0 * 1.5; x1 = m + B0 * 1.5; }
-        add(Math.max(-W * 0.08 - B0 * 0.35, x0), Math.min(W * 1.15, x1), (row + span / 2) * C, B0 * 1.15, 1, 1.45, 0.3, 0.73);
+        add(Math.max(-W * 0.08 - B0 * 0.35, x0), Math.min(W * 1.15, x1), (row + span / 2) * C, B0 * 1.15, 1, 1.45, 0.3, 0.73, o.way === 'down' ? -4 : null);
       });
-      add(-W * 0.12 - B0 * 0.5, W * 1.15 + 60, H - B0 * 0.3 + 40, B0 * 1.4, 1, 1.5, 0.34, 1, o.angle * 0.3, 2.2);
+      footTop = H - B0 * 0.3 + 40 - Math.min(B0 * 1.4, H * 0.5) * 0.5;
+      add(-W * 0.12 - B0 * 0.5, o.way === 'down' ? Math.min(W * 1.15 + 60, early + B0) : W * 1.15 + 60, H - B0 * 0.3 + 40 + (o.arc ? o.bow * W * 0.9 : 0), Math.min(B0 * 1.4, H * 0.5), 1, o.kin ? 2 : 1.5, 0.34, 1, o.way === 'down' ? -2 : o.way === 'cross' ? 4 : o.angle * 0.3, 2.2);
     } else {
       // then a few quick touches where the paper still shows most
       for (let k = 0; k < 4; k++) {
@@ -200,9 +277,10 @@
     const end = strokes.length ? strokes[strokes.length - 1].t0 + strokes[strokes.length - 1].dur + 0.1 : 0.5;
     if (counted === null) counted = Math.max(0.6, end - 0.5);
     const clearAt = strokes.length ? strokes[strokes.length - 1].t0 - 0.1 : end;   // smoothed: the paper starts to thin as the last sweep begins
-    return { strokes, plan: { count: Math.max(0.6, counted - 0.15), counted, end, clear: clearAt, out: SMOOTH ? clearAt + DISSOLVE : 0, film: 'now', rate: SMOOTH ? 0.25 : o.rate } };
+    return { strokes, plan: { footTop, count: Math.max(0.6, counted - 0.15), counted, end, clear: clearAt, out: SMOOTH ? clearAt + DISSOLVE : 0, film: 'now', rate: SMOOTH ? 0.25 : o.rate } };
   }
 
+  let darkAt = () => 0;   // how dark the footage is at a point, once the film's first frame is in
   let running = false;
   function start() {
     if (running) return null;
@@ -231,6 +309,7 @@
         return 1 - (0.2126 * px[i] + 0.7152 * px[i + 1] + 0.0722 * px[i + 2]) / 255;
       };
     }
+    darkAt = dark;
     const { strokes, plan: timing } = plan(W, H, counts ? counts.getBoundingClientRect().top : Infinity, dark);
     // how much paint reaches the paper at each level: full, then less and less of the tooth
     const levels = [['#000', 1], [tooth(0.5), 1], [tooth(1.4), 0.95], [tooth(3), 0.85]].map(([s, alpha]) => {
@@ -278,7 +357,8 @@
           const x0 = Math.max(0, x - R), x1 = Math.min(QW, x + R + 1), y0 = Math.max(0, y - R), y1 = Math.min(QH, y + R + 1);
           const d = (sum[y1 * (QW + 1) + x1] - sum[y0 * (QW + 1) + x1] - sum[y1 * (QW + 1) + x0] + sum[y0 * (QW + 1) + x0]) / ((x1 - x0) * (y1 - y0));
           const i = y * QW + x;
-          from[i] = timing.clear + 0.3 * Math.abs(2 * x / QW - 1) + 0.15 * (1 - y / QH) + 0.9 * pace(rank(key[i])) - 0.3 * (1 - Math.min(1, d * 2.5));
+          from[i] = timing.clear + 0.3 * Math.abs(2 * x / QW - 1) + 0.15 * (1 - y / QH) + 0.9 * pace(rank(key[i])) - 0.3 * (1 - Math.min(1, d * 2.5))
+            + (o.kin ? 0.35 * Math.max(0, Math.min(1, (y * Q - timing.footTop) / (0.1 * H))) : 0);   // the six: the last sweep's band waits for the sweep
         }
       };
       const mask = document.createElement('canvas');
@@ -295,6 +375,7 @@
         }
         mc.putImageData(mi, 0, 0);
         ctx.save();
+        ctx.filter = 'none';
         ctx.setTransform(1, 0, 0, 1, 0, 0);
         ctx.globalCompositeOperation = 'destination-out';
         ctx.imageSmoothingEnabled = true;
@@ -312,7 +393,7 @@
         const p = Math.min(1, (t - s.t0) / s.dur), r = reach(p);
         for (const l of s.lines) {
           // smoothed: the trail is held all through the middle of the stroke, so the front keeps its rounded, leaning nose
-          const behind = SMOOTH ? l.lag * Math.min(1, 6 * r * (1 - r)) : 0;
+          const behind = SMOOTH ? l.lag * (o.kin ? Math.min(1, 10 * r, 4 * (1 - r)) : Math.min(1, 6 * r * (1 - r))) : 0;
           const head = Math.max(0, Math.min(1, SMOOTH ? r - behind : r * (1 + l.lag) - l.lag)) * (N - 1), hi = Math.floor(head), f = head - hi;
           for (let i = l.i + 1; i <= hi; i++) {
             if (l.level[i] >= 0) { paths[l.level[i]].moveTo(l.at[0], l.at[1]); paths[l.level[i]].lineTo(l.pts[i][0], l.pts[i][1]); }

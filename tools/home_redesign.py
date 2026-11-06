@@ -170,6 +170,15 @@ HANDS = [
     ("hand-loaded", "A loaded brush", "沾滿顏料的刷子"),
     ("hand-dry", "A dry brush", "乾筆飛白"),
 ]
+# 33's six relatives (his ask, 2026-11-06: more versions of it, for range), each with 33's smoothed ending
+SMOOTHS = [
+    ("ink", "Calligraphy brush", "毛筆一揮"),
+    ("alt", "Back and forth", "來回刷"),
+    ("centre", "From the spire out", "從聖家堂往外刷"),
+    ("down", "Brushed downward", "由上往下刷"),
+    ("arc", "Sweeping arcs", "弧形大筆"),
+    ("cross", "Crossed strokes", "交叉刷"),
+]
 
 
 def page(home, name, title_en, title_zh, opening, body, extra="", attrs="", way=None, foot_html=None, scripts=""):
@@ -307,6 +316,9 @@ def build():
     film_s = film_e.replace('<p class="hr-cap"', '<p class="hr-cap" data-cut="3.2"', 1).replace('data-from="0.5" data-to="2.6"', 'data-from="0.5" data-to="2.9"', 1)
     (OUT / "c-hand-dry-smooth.html").write_text(page("d", "c-hand-dry-smooth", "A dry brush, smoothed", "乾筆飛白，收得更順", film_s, c, brushed,
                                                      ' data-counts data-pencil="hand-dry" data-smooth', scripts='<script src="brush.js"></script>\n'), encoding="utf-8")
+    for mode, en, zh in SMOOTHS:
+        (OUT / f"c-smooth-{mode}.html").write_text(page("d", f"c-smooth-{mode}", en, zh, film_s, c, brushed,
+                                                        f' data-counts data-pencil="hand-{mode}" data-smooth', scripts='<script src="brush.js"></script>\n'), encoding="utf-8")
     # Round two (his ask, 2026-11-05: "continue designing the rest of the home page"): E's opening kept,
     # three ways for everything under the film.
     rest = lambda r: " data-counts" + f' data-rest="{r}"'

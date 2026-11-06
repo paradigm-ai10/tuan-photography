@@ -68,6 +68,13 @@
         "en": "The opening: brushed by hand",
         "zh": "開場：像人手在刷"
       }
+    },
+    {
+      "id": "opening5",
+      "title": {
+        "en": "The opening: six relatives of 33",
+        "zh": "開場：33 的六個變化"
+      }
     }
   ],
   "items": [
@@ -585,6 +592,96 @@
       "still": {
         "wait": 5600
       }
+    },
+    {
+      "href": "c-smooth-ink.html",
+      "group": "opening5",
+      "title": {
+        "en": "Calligraphy brush",
+        "zh": "毛筆一揮"
+      },
+      "desc": {
+        "en": "A big calligraphy brush: four quick, steep diagonal sweeps, thick and thin, with dry flying white (飛白). Same ending as 33: the paper left thins away, the spire first, then the menu and caption, and the first shot holds. Reviewed by a visitor panel and a motion designer, and fixed from their notes. A click skips it.",
+        "zh": "一支大毛筆：四筆又快又斜的大筆，筆畫有粗有細，帶著乾筆的飛白。收尾和 33 一樣：剩下的白紙慢慢消失、聖家堂先清乾淨，接著選單和字幕出現，第一個畫面停幾秒。請訪客和動態設計師評過，照他們的意見改過。點一下可以跳過。"
+      },
+      "still": {
+        "wait": 5600
+      }
+    },
+    {
+      "href": "c-smooth-alt.html",
+      "group": "opening5",
+      "title": {
+        "en": "Back and forth",
+        "zh": "來回刷"
+      },
+      "desc": {
+        "en": "A narrower brush going back and forth, left to right, then right to left, like painting a wall; even and calm. Same ending as 33: the paper left thins away, the spire first, then the menu and caption, and the first shot holds. Reviewed by a visitor panel and a motion designer, and fixed from their notes. A click skips it.",
+        "zh": "比較窄的刷子來回刷，先左到右、再右到左，像在刷牆，平均又安靜。收尾和 33 一樣：剩下的白紙慢慢消失、聖家堂先清乾淨，接著選單和字幕出現，第一個畫面停幾秒。請訪客和動態設計師評過，照他們的意見改過。點一下可以跳過。"
+      },
+      "still": {
+        "wait": 5600
+      }
+    },
+    {
+      "href": "c-smooth-centre.html",
+      "group": "opening5",
+      "title": {
+        "en": "From the spire out",
+        "zh": "從聖家堂往外刷"
+      },
+      "desc": {
+        "en": "The first stroke goes straight down the Sagrada Família, then the bands spread up and down from it, so the subject comes first. Same ending as 33: the paper left thins away, the spire first, then the menu and caption, and the first shot holds. Reviewed by a visitor panel and a motion designer, and fixed from their notes. A click skips it.",
+        "zh": "第一筆直直刷下聖家堂，再從那裡往上、往下一排一排刷開，主角最先出現。收尾和 33 一樣：剩下的白紙慢慢消失、聖家堂先清乾淨，接著選單和字幕出現，第一個畫面停幾秒。請訪客和動態設計師評過，照他們的意見改過。點一下可以跳過。"
+      },
+      "still": {
+        "wait": 5600
+      }
+    },
+    {
+      "href": "c-smooth-down.html",
+      "group": "opening5",
+      "title": {
+        "en": "Brushed downward",
+        "zh": "由上往下刷"
+      },
+      "desc": {
+        "en": "Columns brushed from the top down, left to right, stopping in a level line above the counts; then one sweep along the foot. Same ending as 33: the paper left thins away, the spire first, then the menu and caption, and the first shot holds. Reviewed by a visitor panel and a motion designer, and fixed from their notes. A click skips it.",
+        "zh": "從上往下一條一條刷，由左往右，在數字上方停成一條平的線；最後沿著底部刷一筆。收尾和 33 一樣：剩下的白紙慢慢消失、聖家堂先清乾淨，接著選單和字幕出現，第一個畫面停幾秒。請訪客和動態設計師評過，照他們的意見改過。點一下可以跳過。"
+      },
+      "still": {
+        "wait": 5600
+      }
+    },
+    {
+      "href": "c-smooth-arc.html",
+      "group": "opening5",
+      "title": {
+        "en": "Sweeping arcs",
+        "zh": "弧形大筆"
+      },
+      "desc": {
+        "en": "Every stroke the same gentle arch, like an arm swinging from the shoulder, band under band. Same ending as 33: the paper left thins away, the spire first, then the menu and caption, and the first shot holds. Reviewed by a visitor panel and a motion designer, and fixed from their notes. A click skips it.",
+        "zh": "每一筆都是同樣的弧線，像手臂從肩膀揮出去，一排接一排。收尾和 33 一樣：剩下的白紙慢慢消失、聖家堂先清乾淨，接著選單和字幕出現，第一個畫面停幾秒。請訪客和動態設計師評過，照他們的意見改過。點一下可以跳過。"
+      },
+      "still": {
+        "wait": 5600
+      }
+    },
+    {
+      "href": "c-smooth-cross.html",
+      "group": "opening5",
+      "title": {
+        "en": "Crossed strokes",
+        "zh": "交叉刷"
+      },
+      "desc": {
+        "en": "A rising pass with gaps, then a falling pass across it, like cross-hatching; the strokes stop short of the counts until they step aside. Same ending as 33: the paper left thins away, the spire first, then the menu and caption, and the first shot holds. Reviewed by a visitor panel and a motion designer, and fixed from their notes. A click skips it.",
+        "zh": "先一輪往上斜的筆畫，中間留空，再一輪往下斜的交叉刷過去，像交叉排線；數字讓開之前，筆畫會停在數字前面。收尾和 33 一樣：剩下的白紙慢慢消失、聖家堂先清乾淨，接著選單和字幕出現，第一個畫面停幾秒。請訪客和動態設計師評過，照他們的意見改過。點一下可以跳過。"
+      },
+      "still": {
+        "wait": 5600
+      }
     }
   ],
   "tags": [
@@ -662,11 +759,17 @@
   "words": {},
   "ask": {
     "ids": [
-      "c-hand-dry-smooth"
+      "c-hand-dry-smooth",
+      "c-smooth-ink",
+      "c-smooth-alt",
+      "c-smooth-centre",
+      "c-smooth-down",
+      "c-smooth-arc",
+      "c-smooth-cross"
     ],
     "question": {
-      "en": "32, smoothed over five rounds of review. Give it a score.",
-      "zh": "32 經過五輪評審改順了，打個分數。"
+      "en": "33 and six relatives, each a different hand. Give each a score.",
+      "zh": "33 和它的六個變化，每個是不同的刷法。每個打個分數。"
     }
   }
 }
