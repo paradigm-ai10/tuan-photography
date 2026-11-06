@@ -6,7 +6,8 @@
 For each version: its number, title, score word, when he saw it; his marks (Like or Change, tags,
 phrases, words, what was under the click); his overall note; what he kept it over in Compare.
 Then what he keeps saying, counted, and the marks not yet done. The versions the manifest's
-"ask" names come first, with which of them still have no score.
+"ask" names come first, with which of them still have no score. With a round (manifest "round",
+else "ask"), this round is numbered first, as the hub numbers it, and the earlier rounds follow.
 """
 import argparse
 import json
@@ -31,9 +32,18 @@ def main():
     items = D.get('items', {})
     names = D.get('names', {})
     order, title, num, words, out = [], {}, {}, {}, set()
-    # numbered as the hub numbers them: by group, in the order the groups are listed, then as written
+    # numbered as the hub numbers them: this round first, then by group, in the order the groups are
+    # listed, then as written
     gpos = {g.get('id'): i for i, g in enumerate(M.get('groups', []))}
-    ranked = sorted(enumerate(M.get('items', [])), key=lambda p: (gpos.get(p[1].get('group'), 10 ** 6), p[0]))
+    rnd = M.get('round') or {}
+    r_ids, r_groups = set(rnd.get('ids') or []), set(rnd.get('groups') or [])
+    if not r_ids and not r_groups:
+        r_ids = set((M.get('ask') or {}).get('ids') or [])
+    iid_of = lambda it: it.get('id') or it['href'].rsplit('.', 1)[0]
+    now = {iid_of(it) for it in M.get('items', []) if iid_of(it) in r_ids or it.get('group') in r_groups}
+    if not now:
+        now = {iid_of(it) for it in M.get('items', [])}
+    ranked = sorted(enumerate(M.get('items', [])), key=lambda p: (iid_of(p[1]) not in now, gpos.get(p[1].get('group'), 10 ** 6), p[0]))
     for i, (_, it) in enumerate(ranked, 1):
         iid = it.get('id') or it['href'].rsplit('.', 1)[0]
         order.append(iid)
@@ -73,7 +83,12 @@ def main():
         lines.append(f"Asked this round (Your pick): {len(ask) - len(left)} of {len(ask)} scored")
         lines += [f"    {num[x]:>2} {title.get(x) or x}: {score(items.get(x, {}))}" for x in ask]
         lines.append('')
+    split = len(now) < len(order)
     for iid in order + earlier:
+        if split and iid == order[0]:
+            lines += [f"This round ({len(now)})", '']
+        if split and iid not in now and (iid in earlier and iid == earlier[0] and not [x for x in order if x not in now] or iid in order and iid == [x for x in order if x not in now][0]):
+            lines += [f"Earlier rounds ({len(order) - len(now)} on the list)", '']
         it = items.get(iid, {})
         ms = marks(it)
         head = f"{num.get(iid, '-'):>2}  {title.get(iid) or names.get(iid, iid)}  [{iid}]"

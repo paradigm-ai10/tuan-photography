@@ -1,5 +1,10 @@
 {
   "name": "journey",
+  "round": {
+    "groups": [
+      "footprint"
+    ]
+  },
   "endpoint": "/__reviews/journey",
   "stills": "/__reviews/journey/thumbs/",
   "hub": "index.html",
@@ -27,8 +32,8 @@
     {
       "id": "footprint",
       "title": {
-        "en": "Where I have been: ten maps",
-        "zh": "足跡地圖：十個版本"
+        "en": "Where I have been",
+        "zh": "足跡地圖"
       }
     },
     {
@@ -166,22 +171,6 @@
       }
     },
     {
-      "id": "footprint-popup",
-      "href": "footprint-popup.html",
-      "group": "footprint",
-      "title": {
-        "en": "Paper pop-up",
-        "zh": "立體紙地圖"
-      },
-      "desc": {
-        "en": "The world printed on a sheet of paper on a table, seen at an angle. The countries you have been to are cut from card and stand up off the sheet, taller where you went more often, with their shadows on the paper. They rise one by one in the order you went.",
-        "zh": "世界印在桌上的一張紙上，斜斜地看過去。你去過的國家用卡紙剪下來立在紙上，去得越多次越高，影子落在紙上。照你去的先後一個一個立起來。"
-      },
-      "still": {
-        "wait": 9000
-      }
-    },
-    {
       "id": "footprint-stamps",
       "href": "footprint-stamps.html",
       "group": "footprint",
@@ -208,22 +197,6 @@
       "desc": {
         "en": "A paper wall map with a pin pushed in at every place you have been, and a red thread running from the home pin in Taipei out along each trip and back. The counts are on a small card pinned in the corner.",
         "zh": "一張貼在牆上的紙地圖，你去過的每個地方都插了一根圖釘，一條紅線從台北的家出發，沿著每一趟旅行繞出去再回來。數字寫在角落一張釘著的小卡片上。"
-      },
-      "still": {
-        "wait": 9000
-      }
-    },
-    {
-      "id": "footprint-stitch",
-      "href": "footprint-stitch.html",
-      "group": "footprint",
-      "title": {
-        "en": "Cross-stitch sampler",
-        "zh": "十字繡"
-      },
-      "desc": {
-        "en": "The world as an embroidery sampler on linen: every bit of land is a pattern still to be sewn, and the countries you have been to are stitched in coloured thread, sewn one by one in the order you went. The count is stitched in big numbers.",
-        "zh": "世界變成一塊亞麻布上的十字繡：所有陸地都只有還沒繡的圖樣，你去過的國家用彩色的線繡上去，照你去的先後一個一個繡。去過幾個國家也用十字繡繡成大大的數字。"
       },
       "still": {
         "wait": 9000

@@ -61,6 +61,7 @@ html.rvk-drawer-open .rvk-bar { translate: calc(-50% - var(--rvk-w) / 2) 0; }
 .rvk-n { font-size: 11px; letter-spacing: 0.06em; color: var(--rvk-ink-3); white-space: nowrap; font-variant-numeric: tabular-nums; }
 .rvk-title { font-family: var(--rvk-name); font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 /* (manifest "ask") a version he is asked to score says so until he does, and its hairline is in the mark colour */
+.rvk-old { flex: none; align-self: center; font-size: 11px; letter-spacing: 0.06em; color: var(--rvk-ink-3); border: 1px solid currentColor; padding: 2px 6px; white-space: nowrap; }
 .rvk-ask { flex: none; align-self: center; font-size: 11px; font-weight: 500; letter-spacing: 0.06em; color: var(--rvk-paper); background: var(--rvk-mark); padding: 3px 7px; white-space: nowrap; }
 .rvk-bar.is-ask .rvk-hair { background: var(--rvk-mark); }
 .rvk-sep { width: 1px; height: 16px; background: var(--rvk-hair); flex: none; }

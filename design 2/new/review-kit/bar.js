@@ -67,7 +67,7 @@
   const typing = (el) => el && el.closest && el.closest('input, textarea, select, [contenteditable=""], [contenteditable="true"]');
 
   let M = { items: [], groups: [], tags: [], phrases: [] };   // the manifest
-  let list = [], me = null, idx = -1, groupList = [];
+  let all = [], list = [], me = null, idx = -1, groupList = [];
 
   // ---- the DOM -----------------------------------------------------------------------------------
   const root = document.createElement('div');
@@ -89,7 +89,9 @@
   // ---- the bar -----------------------------------------------------------------------------------
   function drawBar() {
     const it = R.data.items[ID] || {}, s = it.stars || 0;
-    const n = idx + 1, total = list.length;
+    // this round counts on its own; an earlier round's version keeps its place on the whole list
+    const n = me ? me.n : idx + 1, total = me && !me.now ? all.length : list.length;
+    const old = !!(me && !me.now);
     const title = me ? pick(me.title) : (R.data.names || {})[ID] || document.title.split(' · ')[0];
     const back = OPT.back !== '' && list.length;
     // one of the versions Claude asked him to score this round (manifest "ask"), not scored yet
@@ -99,7 +101,7 @@
       <span class="rvk-hair" aria-hidden="true"${n > 0 ? ` data-n="${n}"` : ''}></span>
       <div class="rvk-row">
         ${total > 1 ? `<button type="button" class="rvk-w rvk-prev" data-k="prev">${esc(t('prev'))}</button>` : ''}
-        <span class="rvk-where">${ask ? `<span class="rvk-ask">${esc(t('askTag'))}</span>` : ''}${n > 0 ? `<span class="rvk-n">${esc(t('of', { n, total }))}</span>` : ''}<span class="rvk-title">${esc(title)}</span></span>
+        <span class="rvk-where">${ask ? `<span class="rvk-ask">${esc(t('askTag'))}</span>` : ''}${old ? `<span class="rvk-old">${esc(t('earlierTag'))}</span>` : ''}${n > 0 ? `<span class="rvk-n">${esc(t('of', { n, total }))}</span>` : ''}<span class="rvk-title">${esc(title)}</span></span>
         ${total > 1 ? `<button type="button" class="rvk-w rvk-next" data-k="next">${esc(t('next'))}</button>` : ''}
         <span class="rvk-sep" aria-hidden="true"></span>
         <span class="rvk-sc" role="group" aria-label="${esc(t('score'))}">${[1, 2, 3, 4, 5].map((k) =>
@@ -460,11 +462,13 @@
       st.textContent = `:root{${Object.entries(m.theme).filter(([k]) => /^--rv-[a-z0-9-]+$/.test(k)).map(([k, v]) => `${k}:${String(v).replace(/[;{}<]/g, '')}`).join(';')}}`;
       document.head.appendChild(st);
     }
-    list = window.ReviewStore.ordered(m);
-    me = list.find((x) => x.id === ID) || null;
+    all = window.ReviewStore.ordered(m);
+    all.forEach((x) => R.name(x.id, RW.pick('en', x.title)));
+    me = all.find((x) => x.id === ID) || null;
+    // previous and next stay inside this round, or inside the earlier rounds, never mixing the two
+    list = me ? all.filter((x) => x.now === me.now) : all;
     idx = me ? list.indexOf(me) : -1;
     groupList = me && me.group ? list.filter((x) => x.group === me.group) : list;
-    list.forEach((x) => R.name(x.id, RW.pick('en', x.title)));
   }
 
   function start() {

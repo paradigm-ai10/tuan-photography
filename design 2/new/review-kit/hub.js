@@ -7,7 +7,9 @@
    his marks as dots on it, the score as five squares he can press here, the count of marks, the
    last thing he wrote. Filters, sort, "Keeps saying" (what he says most, counted), group notes,
    and the versions no longer on the list, folded and read-only. The versions Claude asks him to
-   score this round (manifest "ask") are listed at the top and framed on the sheet until scored. */
+   score this round (manifest "ask") are listed at the top and framed on the sheet until scored.
+   With a round (manifest "round", else "ask"), the sheet shows this round only; earlier rounds wait
+   behind their own word at the top, so nothing old is mixed in with what he is judging now. */
 (() => {
   'use strict';
   const SCRIPT = document.currentScript;
@@ -24,7 +26,7 @@
   const typing = (el) => el && el.closest && el.closest('input, textarea, select, [contenteditable=""], [contenteditable="true"]');
 
   let M = null, R = null, list = [], stills = {}, mount = null;
-  const ui = { filter: 0, sort: 0, scroll: 0, earlier: false, keeps: false, by: null, picked: null, open: {} };
+  const ui = { filter: 0, sort: 0, scroll: 0, earlier: false, keeps: false, by: null, picked: null, open: {}, view: 'now' };
   const MAXPICK = () => (window.ReviewCompare && window.ReviewCompare.MAX) || 6;
   const KEY = () => `rv-hub-${M.name}`;
   function remember() {
@@ -60,10 +62,14 @@
     return it.note || (ms[0] && ms[0].text) || '';
   }
 
+  // this round and the earlier ones: the sheet shows one at a time when there is a round
+  const hasRound = () => list.some((v) => !v.now);
+  const pool = () => (hasRound() ? list.filter((v) => (ui.view === 'earlier' ? !v.now : v.now)) : list);
+
   // what "Keeps saying" counts: each phrase and tag, split by Like and Change
   function sayings() {
     const out = new Map();
-    list.forEach((v) => R.marksOf(v.id).forEach((m) => {
+    pool().forEach((v) => R.marksOf(v.id).forEach((m) => {
       const kind = m.kind || '';
       (m.phrases || []).forEach((p) => {
         const tagsOf = (m.tags || []).length ? m.tags : [''];
@@ -157,9 +163,10 @@
     const say = ui.keeps ? sayings() : [];
     const known = new Set(list.map((v) => v.id));
     const earlier = Object.keys(R.data.items || {}).filter((id) => !known.has(id) && !id.startsWith('*'));
+    const vsAll = pool(), past = hasRound() && ui.view === 'earlier';
     let shown = 0;
     const groupHtml = groups.map((g) => {
-      const vs = sorted(list.filter((v) => (v.group || '') === (g.id || '') || (!g.id && !v.group)));
+      const vs = sorted(vsAll.filter((v) => (v.group || '') === (g.id || '') || (!g.id && !v.group)));
       if (!vs.length) return '';
       const vis = vs.filter(matches);
       shown += vis.length;
@@ -179,7 +186,11 @@
         <h1 class="rvh-title">${esc(pick(M.title))}</h1>
         ${M.intro ? `<p class="rvh-intro">${esc(pick(M.intro))}</p>` : ''}
       </header>
-      ${askBox()}
+      ${hasRound() ? `<nav class="rvh-views" aria-label="${esc(t('viewNow'))} / ${esc(t('viewEarlier'))}">${['now', 'earlier'].map((k) => {
+          const n = list.filter((v) => (k === 'now' ? v.now : !v.now)).length;
+          return `<button type="button" class="rvh-view" data-h="view" data-v="${k}" aria-pressed="${ui.view === k}">${esc(t(k === 'now' ? 'viewNow' : 'viewEarlier'))} <span class="rvh-gc">${n}</span></button>`;
+        }).join('')}</nav>` : ''}
+      ${past ? `<p class="rvh-intro">${esc(t('viewEarlierNote'))}</p>` : askBox()}
       <div class="rvh-tools">
         <span class="rvh-tg" role="group" aria-label="${esc(t('filterLabel'))}">${filters.map((f, i) => `<button type="button" class="rvh-w" data-h="filter" data-i="${i}" aria-pressed="${!ui.by && ui.filter === i}">${esc(f)}</button>`).join('')}${askIds().length ? `<button type="button" class="rvh-w" data-h="filter" data-i="4" aria-pressed="${!ui.by && ui.filter === 4}">${esc(t('askTag'))}</button>` : ''}</span>
         <span class="rvh-tg" role="group" aria-label="${esc(t('sortLabel'))}">${sorts.map((f, i) => `<button type="button" class="rvh-w" data-h="sort" data-i="${i}" aria-pressed="${ui.sort === i}">${esc(f)}</button>`).join('')}</span>
@@ -201,7 +212,7 @@
         }).join('') : `<p class="rvh-none">${esc(t('keepsNone'))}</p>`}</div>` : ''}
       ${groupHtml}
       ${shown ? '' : `<p class="rvh-none">${esc(t('nothingHere'))}</p>`}
-      ${earlier.length ? `<details class="rvh-earlier"${ui.earlier ? ' open' : ''}>
+      ${earlier.length && (!hasRound() || past) ? `<details class="rvh-earlier"${ui.earlier ? ' open' : ''}>
         <summary><span class="rvh-gt">${esc(t('earlier'))}</span> <span class="rvh-gc">${esc(earlier.length === 1 ? t('version1') : t('versions', { n: earlier.length }))}</span></summary>
         <p class="rvh-intro">${esc(t('earlierNote'))}</p>
         <div class="rvh-grid is-small">${earlier.map(earlierCard).join('')}</div>
@@ -284,6 +295,7 @@
     else if (k === 'unpick') { ui.picked = null; redraw(); }
     else if (k === 'sbs') { location.href = `${location.pathname}?compare=${ui.picked.map(encodeURIComponent).join(',')}`; }
     else if (k === 'clear') { ui.by = null; redraw(); }
+    else if (k === 'view') { ui.view = b.dataset.v === 'earlier' ? 'earlier' : 'now'; ui.by = null; ui.keeps = false; render(); scrollTo({ top: 0, behavior: 'instant' }); }
     else if (k === 'by') {
       const x = (ui._say || [])[+b.dataset.i];
       if (x) { ui.by = x.ids; ui.byLabel = sayingText(x); redraw(); scrollTo({ top: 0, behavior: 'instant' }); }
@@ -334,9 +346,11 @@
       return Promise.all([thumbs, R.pull()]);
     }).then(([th]) => {
       stills = th || {};
-      render();
       // back from a version: its card in view and outlined; otherwise where he was
       const h = /^#v-(.+)$/.exec(location.hash);
+      // back from an earlier round's version: the earlier rounds are what he was looking at
+      if (h && list.some((v) => v.id === decodeURIComponent(h[1]) && !v.now)) ui.view = 'earlier';
+      render();
       const el = h && document.getElementById(`v-${decodeURIComponent(h[1])}`);
       if (el) {
         el.scrollIntoView({ block: 'center', behavior: 'instant' });

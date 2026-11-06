@@ -31,6 +31,10 @@
 .rvh-w:hover { color: var(--h-link); }
 .rvh-w[aria-pressed="true"], .rvh-w[aria-expanded="true"], .rvh-w.is-on { color: var(--h-ink); text-decoration: underline; text-underline-offset: 0.35em; text-decoration-thickness: 1px; }
 
+.rvh-views { display: flex; flex-wrap: wrap; gap: 0 2rem; margin-top: 1.6rem; }
+.rvh-view { font-family: var(--h-name); font-size: 1.15rem; color: var(--h-ink-3); min-height: 2.4rem; display: inline-flex; align-items: baseline; gap: 0.5rem; }
+.rvh-view:hover { color: var(--h-link); }
+.rvh-view[aria-pressed="true"] { color: var(--h-ink); text-decoration: underline; text-underline-offset: 0.35em; text-decoration-thickness: 1px; }
 .rvh-tools {
   display: flex; flex-wrap: wrap; align-items: center; gap: 0.25rem 2rem; margin-top: 2rem;
   padding: 0.35rem 0; border-top: 1px solid var(--h-ink); border-bottom: 1px solid var(--h-hair);
