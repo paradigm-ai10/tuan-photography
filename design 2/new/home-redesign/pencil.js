@@ -14,6 +14,7 @@
 
   const VW = 1920, VH = 1080;   // the drawing's own frame, laid over the screen as the film is (cover)
   const END = 2.85;              // seconds after the tracing starts by which every colour stroke is down
+  const FOOT = 2.2;              // when the counts have stepped aside and the foot of the picture can be coloured
 
   // a fixed run of random numbers, so the colour goes down the same way on every visit
   let seed = 1127;
@@ -34,7 +35,7 @@
   function stroke(pts, t0, dur, ease) {
     const cum = [0];
     for (let i = 1; i < pts.length; i++) cum.push(cum[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]));
-    return { pts, cum, L: cum[cum.length - 1] || 1, t0, dur: Math.max(0.05, dur), ease: ease || even, done: 0, i: 0 };
+    return { pts, cum, L: cum[cum.length - 1] || 1, t0, dur: Math.max(0.05, dur), ease: ease || even, done: 0, i: 0, low: Math.max(...pts.map((q) => q[1])) };
   }
 
   // the grey lines, read from the drawing on the page (their start and length are on each path)
@@ -183,6 +184,14 @@
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     const s = Math.max(W / VW, H / VH);
     ctx.setTransform(s * k, 0, 0, s * k, (W - VW * s) / 2 * k, (H - VH * s) / 2 * k);
+    // the counts sit on paper along the foot (nothing written on the photograph): the pencil leaves that strip
+    // blank while they show, then colours it as they step aside (his note, 2026-11-06: the white band)
+    const counts = document.querySelector('.hr-load__counts');
+    const foot = counts ? (counts.getBoundingClientRect().top - (H - VH * s) / 2) / s : Infinity;
+    if (foot < VH) layers.forEach((l) => {
+      l.list.forEach((st) => { if (st.low > foot) st.t0 = Math.max(st.t0, Math.min(FOOT + rnd() * 0.3, END - st.dur)); });
+      l.list.sort((a, b) => a.t0 - b.t0);
+    });
     ctx.globalCompositeOperation = 'destination-out';   // the pencil takes the paper away
     ctx.lineJoin = 'round';
     if (mode.blur) ctx.filter = `blur(${mode.blur}px)`;   // a soft edge, as colour rubbed in with a finger
