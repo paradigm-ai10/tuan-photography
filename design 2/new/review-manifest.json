@@ -2,7 +2,11 @@
   "name": "journey",
   "round": {
     "groups": [
-      "footprint-5"
+      "footprint-6"
+    ],
+    "ids": [
+      "footprint-ramp-band",
+      "footprint-ramp-widen"
     ]
   },
   "endpoint": "/__reviews/journey",
@@ -41,6 +45,13 @@
       "title": {
         "en": "The ramp: countries, flights, photographs",
         "zh": "慢慢累積：國家、航程、照片"
+      }
+    },
+    {
+      "id": "footprint-6",
+      "title": {
+        "en": "The wall map, five ways",
+        "zh": "牆面地圖，五種做法"
       }
     },
     {
@@ -171,6 +182,81 @@
       },
       "still": {
         "wait": 12000
+      }
+    },
+    {
+      "href": "footprint-wall-widen-band.html",
+      "group": "footprint-6",
+      "title": {
+        "en": "From home, ending on the wall map",
+        "zh": "從家拉遠＋底部數字"
+      },
+      "desc": {
+        "en": "The two you liked joined: it opens close on Taiwan and widens trip by trip, ending on the full wall map with the three numbers along the foot.",
+        "zh": "你喜歡的兩張合在一起：一開始只看到台灣附近，一趟一趟拉遠，最後停在滿版地圖，三個數字在最下面。"
+      },
+      "still": {
+        "wait": 14000
+      }
+    },
+    {
+      "href": "footprint-wall-relief.html",
+      "group": "footprint-6",
+      "title": {
+        "en": "With the mountains",
+        "zh": "地形浮雕"
+      },
+      "desc": {
+        "en": "The wall map with the world's mountains printed softly under the colours, so the Alps, the Himalaya and New Zealand show through.",
+        "zh": "滿版地圖底下淡淡印上全世界的地形，阿爾卑斯山、喜馬拉雅山、紐西蘭的山都看得到。"
+      },
+      "still": {
+        "wait": 14000
+      }
+    },
+    {
+      "href": "footprint-wall-numbers.html",
+      "group": "footprint-6",
+      "title": {
+        "en": "The numbers larger",
+        "zh": "大數字"
+      },
+      "desc": {
+        "en": "The wall map with a taller band along the foot and the three numbers as large as it allows, engraved on the sea.",
+        "zh": "滿版地圖，下面的海變高，三個數字放到最大，像刻在海圖上。"
+      },
+      "still": {
+        "wait": 14000
+      }
+    },
+    {
+      "href": "footprint-wall-places.html",
+      "group": "footprint-6",
+      "title": {
+        "en": "The places you stood",
+        "zh": "走過的地方"
+      },
+      "desc": {
+        "en": "The wall map with a small ink point for each of the 62 places you went, appearing trip by trip; point at one for its name.",
+        "zh": "滿版地圖，你去過的 62 個地方各一個小墨點，一趟一趟出現；指著它會顯示地名。"
+      },
+      "still": {
+        "wait": 14000
+      }
+    },
+    {
+      "href": "footprint-wall-follow.html",
+      "group": "footprint-6",
+      "title": {
+        "en": "Trip by trip, the view follows",
+        "zh": "跟著每一趟走"
+      },
+      "desc": {
+        "en": "It opens close on Taiwan and frames each trip in turn, close for Japan, wide for Europe, then pulls back to the whole world. Click to skip to the end.",
+        "zh": "一開始只看到台灣附近，接著每一趟都把畫面移到那趟去的地方，去日本就拉近，去歐洲就拉遠，最後看到整個世界。點一下可以直接跳到最後。"
+      },
+      "still": {
+        "wait": 14000
       }
     },
     {
@@ -900,5 +986,18 @@
     "--rv-label": "\"Geist\", \"Noto Sans TC\", sans-serif",
     "--rv-name": "\"Playfair Display\", \"Noto Serif TC\", serif"
   },
-  "words": {}
+  "words": {},
+  "ask": {
+    "ids": [
+      "footprint-wall-widen-band",
+      "footprint-wall-relief",
+      "footprint-wall-numbers",
+      "footprint-wall-places",
+      "footprint-wall-follow"
+    ],
+    "question": {
+      "en": "Five wall maps from the two you liked (1 and 2 are those two, as they were). Give each a score and mark what to change.",
+      "zh": "從你喜歡的兩張做出的五種牆面地圖（第 1、2 張是原本那兩張）。每版給個分數，想改的地方按 M 標記。"
+    }
+  }
 }

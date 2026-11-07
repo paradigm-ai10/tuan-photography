@@ -1,0 +1,68 @@
+/* Wall map, following each trip 跟著每一趟走 (footprint, round six, 2026-11-07).
+   Widen's hand-tinted atlas (bolder's six earth washes, the clay of home, typeset's lettering), seen
+   through one fixed window whose view goes to each trip in turn, then pulls back to rest on the whole
+   world. The three numbers stand in the bottom left corner and stay put while the map moves under
+   them; a quiet line on the words' line names the trip being shown. */
+:root {
+  --tn-ochre: oklch(80% 0.125 84);
+  --tn-terra: oklch(68% 0.125 40);
+  --tn-sage: oklch(72% 0.095 135);
+  --tn-slate: oklch(68% 0.08 238);
+  --tn-mauve: oklch(66% 0.085 338);
+  --tn-verdigris: oklch(71% 0.08 190);
+  --tn-home: var(--clay);
+  --tn-water: color-mix(in oklch, var(--ink) 80%, var(--slate));
+}
+
+/* ---- the sheet: the water-lines (drawn on the graphics card), then the map, each a whole-window layer ---- */
+.wf-sheet { position: absolute; left: 0; top: 0; width: var(--sheet-w, 100%); height: var(--sheet-h, 100%); pointer-events: none; }
+.wf-sheet > canvas { position: absolute; left: 0; top: 0; display: block; width: var(--sheet-w, 100%); height: var(--sheet-h, 100%); }
+
+/* ---- the three numbers: countries largest, then flights, then photographs, each with its word under it ---- */
+.wf-figs {
+  --f: 110px;
+  position: absolute; left: 0; top: 0;
+  transform: translate(var(--x, 0), var(--y, 0));
+  display: grid; grid-auto-flow: column; grid-template-rows: auto auto;
+  column-gap: calc(var(--f) * 0.3); row-gap: calc(var(--f) * 0.06);
+  align-items: baseline; justify-items: start;
+  margin: 0; pointer-events: none; color: var(--ink);
+}
+.wf-n {
+  display: flex; min-width: calc(var(--nd, 2) * 0.61em);
+  font-family: var(--f-name); font-weight: 400; line-height: 1; letter-spacing: 0;
+  font-size: calc(var(--f) * var(--r, 1)); font-variant-numeric: lining-nums;
+}
+/* each figure in a cell of one width, so the count never jiggles as it climbs (the typeface has no tabular figures) */
+.wf-n > span { display: inline-block; width: 0.61em; text-align: center; }
+.wf-n > span.is-sep { width: auto; }
+.wf-n--c { --r: 1; }
+.wf-n--f { --r: 0.62; }
+.wf-n--p { --r: 0.48; }
+.wf-w { margin: 0; white-space: nowrap; }
+.wf-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; margin: 0; }
+
+/* ---- the trip being shown: its date and its countries, quiet, on the words' line; at rest, the years ---- */
+.wf-trip {
+  position: absolute; left: 0; top: 0; margin: 0;
+  transform: translate(var(--x, 0), var(--y, 0));
+  white-space: nowrap; color: var(--ink-3); font-variant-numeric: lining-nums;
+  opacity: 0; transition: opacity 0.6s var(--ease); pointer-events: none;
+}
+.wf-trip.is-on { opacity: 1; }
+/* on a phone it is the map's caption, under it, and may take two lines */
+.wf-trip.is-wrap { white-space: normal; width: var(--tw, auto); }
+
+/* ---- arriving: the sheet and the numbers come up together after a short fade ---- */
+.fp--follow .wf-sheet, .fp--follow .wf-figs { opacity: 0; transition: opacity 0.6s var(--ease); }
+.fp--follow.is-ready .wf-sheet, .fp--follow.is-ready .wf-figs { opacity: 1; }
+.fp--follow.is-still .wf-sheet, .fp--follow.is-still .wf-figs, .fp--follow.is-still .wf-trip { transition: none; }
+/* while the view travels, a click anywhere on the map takes it to the end */
+.fp--follow.is-moving .fp-stage { cursor: pointer; }
+
+/* ---- on a desktop the page is the window, nothing beyond it ---- */
+.fp--follow:not(.is-narrow) .fp-stage { overflow: hidden; }
+
+/* ---- phones: the map tall, the trip line and the numbers under it; the map may be dragged sideways ---- */
+.fp--follow.is-narrow .fp-stage { overflow-x: hidden; overflow-y: auto; -webkit-overflow-scrolling: touch; touch-action: pan-y; }
+.wf-room { position: absolute; left: 0; top: 0; width: 1px; height: var(--room, 0); pointer-events: none; }

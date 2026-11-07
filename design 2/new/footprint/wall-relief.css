@@ -1,0 +1,133 @@
+/* Wall map in relief 地形浮雕牆面地圖 (footprint, round six, 2026-11-07). The wall map of round five,
+   edge to edge with the three numbers in its southern ocean, printed over the world's shaded relief in a
+   second, pale warm-grey ink. The washes are bolder's six earth colours, laid thinner and in multiply so
+   the relief reads through; the lettering is typeset's. On a phone the sheet is cut at the date line and
+   its halves stacked. The states of the ramp are set by the script, frame by frame. */
+:root {
+  --tn-ochre: oklch(80% 0.125 84);
+  --tn-terra: oklch(68% 0.125 40);
+  --tn-sage: oklch(72% 0.095 135);
+  --tn-slate: oklch(68% 0.08 238);
+  --tn-mauve: oklch(66% 0.085 338);
+  --tn-verdigris: oklch(71% 0.08 190);
+  --tn-home: var(--clay);
+  --tn-water: color-mix(in oklch, var(--ink) 80%, var(--slate));
+  --tn-k: 1; /* the lettering's scale against a 1440 wide window, set by the script */
+  /* the relief's ink: a pale warm grey, the paper's own hue darkened; how strong it is on flat land and in
+     the deepest shade (read by the script) */
+  --wr-relief: oklch(52% 0.026 70);
+  --wr-relief-base: 0.065;
+  --wr-relief-deep: 0.56;
+}
+
+/* ---- the sheet: the sea, the washes, then the ink. On a phone it is cut to the map's own block ---- */
+.tn-sheet {
+  position: absolute; left: 0; top: 0; width: var(--sheet-w, 100%); height: var(--sheet-h, 100%);
+  clip-path: inset(var(--clip-t, 0px) 0 var(--clip-b, 0px) 0);
+}
+.tn-sheet > canvas, .tn-sheet > svg, .rb-washes { position: absolute; left: 0; top: 0; display: block; }
+.tn-sea, .rb-washes { width: var(--sheet-w, 100%); height: var(--sheet-h, 100%); pointer-events: none; }
+/* each layer that changes is composited on its own, so the engraving is painted once */
+.tn-ink, .rb-fly, .rb-lab, .rb-wash { will-change: transform; }
+.tn-ink, .rb-fly { pointer-events: none; }
+.rb-wash { position: absolute; left: 0; top: 0; width: var(--dw, 0); height: var(--dh, 0); transform: translate(var(--dx, 0), var(--dy, 0)); mix-blend-mode: multiply; }
+
+/* the engraving */
+.tn-coast { fill: none; stroke: var(--ink); stroke-width: 0.7; stroke-linejoin: round; stroke-linecap: round; pointer-events: none; }
+.tn-border { fill: none; stroke: var(--ink); stroke-opacity: 0.5; stroke-width: 0.4; stroke-linejoin: round; pointer-events: none; }
+.tn-hit { fill: none; stroke: none; pointer-events: none; }
+.tn-hit.is-on { pointer-events: fill; cursor: default; }
+.tn-lead { fill: none; stroke: var(--ink-2); stroke-width: 0.5; pointer-events: none; }
+.tn-lead-end { fill: var(--ink-2); pointer-events: none; }
+/* a country too small to wash: a fine ring for its dab of colour, drawn when it is reached */
+.tn-dot { fill: none; stroke: var(--ink); stroke-width: 0.6; pointer-events: none; opacity: 0; transition: opacity 0.9s var(--ease); }
+.tn-dot.is-on { opacity: 1; }
+
+/* the flights: quiet hairlines, drawn like a pen along the great circle, then left faint */
+.rb-flight {
+  fill: none; stroke: var(--route); stroke-width: 0.8; stroke-linecap: round; stroke-linejoin: round;
+  stroke-dasharray: 1 1; stroke-dashoffset: calc(1 - var(--p, 0)); stroke-opacity: var(--o, 0); pointer-events: none;
+}
+
+/* the lettering, as typeset set it: spaced serif capitals in three size classes, years in old-style figures */
+.tn-name {
+  font-family: var(--f-name); font-weight: 400; font-size: max(8.6px, calc(10.5px * var(--tn-k))); letter-spacing: 0.16em;
+  fill: var(--ink); font-kerning: normal; pointer-events: none;
+}
+.tn-name--l { font-size: max(10px, calc(13px * var(--tn-k))); letter-spacing: calc((0.32 * var(--tn-k) - 0.08) * 1em); }
+.tn-name--s { font-size: max(8px, calc(9.25px * var(--tn-k))); letter-spacing: 0.12em; fill: var(--ink-2); }
+.tn-name .tn-year { font-size: 0.8em; letter-spacing: 0.03em; fill: var(--ink-2); font-variant-numeric: oldstyle-nums proportional-nums; }
+.tn-name--l .tn-year { font-size: 0.74em; letter-spacing: 0.06em; }
+.tn-name.is-halo { paint-order: stroke; stroke: var(--paper); stroke-width: 3px; stroke-linejoin: round; }
+.tn-name.is-home { fill: var(--link); letter-spacing: 0.18em; }
+.tn-name.is-home .tn-year { fill: var(--link); font-family: var(--f-text); font-weight: 600; font-size: 0.66em; letter-spacing: 0.16em; }
+html[lang="zh-Hant"] .tn-name { letter-spacing: 0.1em; font-size: max(9.6px, calc(11px * var(--tn-k))); }
+html[lang="zh-Hant"] .tn-name--l { font-size: max(10.4px, calc(13.5px * var(--tn-k))); letter-spacing: calc((0.6 * var(--tn-k) - 0.1) * 1em); }
+html[lang="zh-Hant"] .tn-name--s { font-size: max(9px, calc(10px * var(--tn-k))); letter-spacing: 0.08em; }
+html[lang="zh-Hant"] .tn-name.is-home .tn-year { font-weight: 500; font-size: 0.86em; letter-spacing: 0.04em; }
+.tn-ocean {
+  font-family: var(--f-name); font-weight: 400; font-size: max(8px, calc(9.5px * var(--tn-k))); letter-spacing: 0.62em;
+  fill: var(--tn-water); fill-opacity: 0.72;
+  paint-order: stroke; stroke: var(--paper); stroke-width: 3px; stroke-linejoin: round; pointer-events: none;
+}
+html[lang="zh-Hant"] .tn-ocean { font-size: max(9px, calc(10.5px * var(--tn-k))); letter-spacing: 1.1em; }
+.tn-ocean.is-cut, .tn-label.is-cut { display: none; }
+/* a name is lettered as its country takes its colour */
+.tn-label { opacity: 0; transition: opacity 0.9s var(--ease); }
+.tn-label.is-on { opacity: 1; }
+
+/* ---- the three numbers, in one row in the southern ocean ---- */
+.rb-row { position: absolute; inset: 0; pointer-events: none; }
+.rb-stat {
+  position: absolute; left: 0; top: 0;
+  transform: translate(var(--x, 0), var(--y, 0));
+  display: flex; align-items: flex-start; gap: calc(var(--f, 100px) * 0.08);
+  color: var(--ink); white-space: nowrap;
+}
+.rb-n {
+  font-family: var(--f-name); font-weight: 400; font-size: var(--f, 100px); line-height: 1;
+  font-variant-numeric: lining-nums tabular-nums; letter-spacing: -0.015em;
+  min-width: var(--nw, 0); text-align: right;
+  /* the box drawn in to the figures' ink (measured by the script), so the row sits on their line */
+  margin: calc(var(--n-top, 0px) * -1) 0 calc(var(--n-bot, 0px) * -1);
+}
+/* a figure in its cell: every figure as wide as the widest, so the count climbs in place */
+.rb-d { display: inline-block; width: var(--dw, 0.62em); text-align: center; }
+.rb-pct .rb-d { width: var(--pdw, 0.62em); }
+.rb-side { display: grid; justify-items: start; gap: 7px; margin-top: -3px; }
+.rb-label { font-size: 0.75rem; color: var(--ink); min-width: var(--lw, 0); }
+html[lang="zh-Hant"] .rb-label { font-size: 0.8125rem; letter-spacing: 0.16em; }
+.rb-share { display: flex; align-items: baseline; gap: 0.5em; }
+.rb-pct {
+  font-family: var(--f-name); font-weight: 400; font-size: 1rem; line-height: 1; color: var(--ink);
+  font-variant-numeric: lining-nums tabular-nums; min-width: var(--pw, 0); text-align: right;
+}
+html[lang="zh-Hant"] .rb-pct { text-align: left; }
+.rb-of { color: var(--ink-2); font-variant-numeric: lining-nums; }
+.rb-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; margin: 0; }
+
+/* the trip being counted: a very quiet line at the band's end, only while the ramp runs */
+.rb-trip {
+  position: absolute; left: 0; top: 0; margin: 0;
+  transform: translate(var(--x, 0), var(--y, 0));
+  width: var(--tw, auto); text-align: right; white-space: nowrap;
+  color: var(--ink-3); font-variant-numeric: lining-nums tabular-nums;
+  opacity: 0; transition: opacity 0.8s var(--ease); pointer-events: none;
+}
+.rb-trip.is-on { opacity: 1; }
+
+/* ---- the page arriving: the atlas and the numbers at nought, after a short fade ---- */
+.fp--wall-relief .tn-sheet, .fp--wall-relief .rb-row { opacity: 0; transition: opacity 0.6s var(--ease); }
+.fp--wall-relief.is-ready .tn-sheet, .fp--wall-relief.is-ready .rb-row { opacity: 1; }
+/* a held frame (?at=) and the finished page (?still) are drawn at once */
+.fp--wall-relief.is-held *, .fp--wall-relief.is-held .tn-sheet, .fp--wall-relief.is-held .rb-row { transition: none !important; }
+
+/* ---- on a desktop the page is the window, nothing beyond it ---- */
+.fp--wall-relief:not(.is-narrow) .fp-stage { overflow: hidden; }
+
+/* ---- phones: the two halves of the sheet stacked, the numbers in a row under them; the page may scroll ---- */
+.fp--wall-relief.is-narrow .fp-stage { overflow-x: hidden; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+.is-narrow .rb-stat { flex-direction: column; align-items: center; gap: 10px; }
+.is-narrow .rb-side { margin-top: 0; gap: 6px; justify-items: center; }
+.is-narrow .rb-share { position: absolute; left: 0; top: 100%; margin-top: 12px; }
+.rb-room { position: absolute; left: 0; top: 0; width: 1px; height: var(--room, 0); pointer-events: none; }

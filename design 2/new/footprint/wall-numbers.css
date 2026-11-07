@@ -1,0 +1,132 @@
+/* Wall map, big numbers 大數字牆面地圖 (footprint, round six, 2026-11-07). The map is the window, edge to
+   edge; the band along its foot is the map's own southern sea, ruled with water-lines, and the three
+   numbers stand in it as large as it allows. The washes are bolder's six earth colours, the lettering
+   typeset's. The states of the ramp are set by the script, frame by frame, as custom properties and
+   classes. On a phone the world is set in two strips, one under the other, the numbers under them. */
+:root {
+  --tn-ochre: oklch(80% 0.125 84);
+  --tn-terra: oklch(68% 0.125 40);
+  --tn-sage: oklch(72% 0.095 135);
+  --tn-slate: oklch(68% 0.08 238);
+  --tn-mauve: oklch(66% 0.085 338);
+  --tn-verdigris: oklch(71% 0.08 190);
+  --tn-home: var(--clay);
+  --tn-water: color-mix(in oklch, var(--ink) 80%, var(--slate));
+  --tn-k: 1; /* the lettering's scale against a 1440 wide window, set by the script */
+}
+
+/* ---- the sheet: the sea, the washes, then the ink ---- */
+.wn-sheet { position: absolute; left: 0; top: 0; width: var(--sheet-w, 100%); height: var(--sheet-h, 100%); isolation: isolate; }
+.wn-sheet > canvas, .wn-sheet > svg, .wn-washes { position: absolute; left: 0; top: 0; display: block; }
+.wn-sea, .wn-washes { width: var(--sheet-w, 100%); height: var(--sheet-h, 100%); pointer-events: none; }
+/* each layer that changes is composited on its own, so the engraving is painted once */
+.tn-ink, .wn-fly, .wn-lab, .wn-wash { will-change: transform; }
+.tn-ink, .wn-fly { pointer-events: none; }
+/* a country's wash, cut to its own strip of the sheet (on a phone there are two) */
+.wn-wash {
+  position: absolute; left: 0; top: 0; width: var(--dw, 0); height: var(--dh, 0);
+  transform: translate(var(--dx, 0), var(--dy, 0)); mix-blend-mode: multiply;
+  clip-path: inset(var(--ct, 0px) var(--cr, 0px) var(--cb, 0px) var(--cl, 0px));
+}
+
+/* the engraving */
+.tn-coast { fill: none; stroke: var(--ink); stroke-width: 0.7; stroke-linejoin: round; stroke-linecap: round; pointer-events: none; }
+.tn-border { fill: none; stroke: var(--ink); stroke-opacity: 0.5; stroke-width: 0.4; stroke-linejoin: round; pointer-events: none; }
+.tn-hit { fill: none; stroke: none; pointer-events: none; }
+.tn-hit.is-on { pointer-events: fill; cursor: default; }
+.tn-lead { fill: none; stroke: var(--ink-2); stroke-width: 0.5; pointer-events: none; }
+.tn-lead-end { fill: var(--ink-2); pointer-events: none; }
+/* a country too small to wash: a fine ring for its dab of colour, drawn when it is reached */
+.tn-dot { fill: none; stroke: var(--ink); stroke-width: 0.6; pointer-events: none; opacity: 0; transition: opacity 0.9s var(--ease); }
+.tn-dot.is-on { opacity: 1; }
+
+/* the flights: quiet hairlines, drawn like a pen, then left faint */
+.wn-flight {
+  fill: none; stroke: var(--route); stroke-width: 0.8; stroke-linecap: round; stroke-linejoin: round;
+  stroke-dasharray: 1 1; stroke-dashoffset: calc(1 - var(--p, 0)); stroke-opacity: var(--o, 0); pointer-events: none;
+}
+
+/* the lettering, as typeset set it: spaced serif capitals in three size classes, years in old-style figures */
+.tn-name {
+  font-family: var(--f-name); font-weight: 400; font-size: max(8.6px, calc(10.5px * var(--tn-k))); letter-spacing: 0.16em;
+  fill: var(--ink); font-kerning: normal; pointer-events: none;
+}
+.tn-name--l { font-size: max(10px, calc(13px * var(--tn-k))); letter-spacing: calc((0.32 * var(--tn-k) - 0.08) * 1em); }
+.tn-name--s { font-size: max(8px, calc(9.25px * var(--tn-k))); letter-spacing: 0.12em; fill: var(--ink-2); }
+.tn-name .tn-year { font-size: 0.8em; letter-spacing: 0.03em; fill: var(--ink-2); font-variant-numeric: oldstyle-nums proportional-nums; }
+.tn-name--l .tn-year { font-size: 0.74em; letter-spacing: 0.06em; }
+.tn-name.is-halo { paint-order: stroke; stroke: var(--paper); stroke-width: 3px; stroke-linejoin: round; }
+.tn-name.is-home { fill: var(--link); letter-spacing: 0.18em; }
+.tn-name.is-home .tn-year { fill: var(--link); font-family: var(--f-text); font-weight: 600; font-size: 0.66em; letter-spacing: 0.16em; }
+html[lang="zh-Hant"] .tn-name { letter-spacing: 0.1em; font-size: max(9.6px, calc(11px * var(--tn-k))); }
+html[lang="zh-Hant"] .tn-name--l { font-size: max(10.4px, calc(13.5px * var(--tn-k))); letter-spacing: calc((0.6 * var(--tn-k) - 0.1) * 1em); }
+html[lang="zh-Hant"] .tn-name--s { font-size: max(9px, calc(10px * var(--tn-k))); letter-spacing: 0.08em; }
+html[lang="zh-Hant"] .tn-name.is-home .tn-year { font-weight: 500; font-size: 0.86em; letter-spacing: 0.04em; }
+.tn-ocean {
+  font-family: var(--f-name); font-weight: 400; font-size: max(8px, calc(9.5px * var(--tn-k))); letter-spacing: 0.62em;
+  fill: var(--tn-water); fill-opacity: 0.72;
+  paint-order: stroke; stroke: var(--paper); stroke-width: 3px; stroke-linejoin: round; pointer-events: none;
+}
+html[lang="zh-Hant"] .tn-ocean { font-size: max(9px, calc(10.5px * var(--tn-k))); letter-spacing: 1.1em; }
+.tn-ocean.is-cut, .tn-label.is-cut { display: none; }
+/* a name is lettered as its country takes its colour */
+.tn-label { opacity: 0; transition: opacity 0.9s var(--ease); }
+.tn-label.is-on { opacity: 1; }
+
+/* ---- the three numbers, each placed by the script: the figure, its word under it, the share line ---- */
+.wn-row { position: absolute; inset: 0; pointer-events: none; }
+.wn-n, .wn-label, .wn-share, .wn-trip {
+  position: absolute; left: 0; top: 0; margin: 0;
+  transform: translate(var(--x, 0), var(--y, 0));
+  width: var(--w, auto); white-space: nowrap;
+}
+.wn-n {
+  font-family: var(--f-name); font-weight: 400; font-size: var(--f, 100px); line-height: 1;
+  color: var(--ink); text-align: right; letter-spacing: 0; font-variant-numeric: lining-nums;
+}
+/* a figure in its cell: every figure as wide as the widest, so the count climbs in place */
+.wn-d { display: inline-block; width: var(--cell, 0.62em); text-align: center; }
+/* the word under each figure: small spaced capitals, centred (the indent balances the last letter's space) */
+.wn-label { font-size: 0.75rem; letter-spacing: 0.24em; text-indent: 0.24em; color: var(--ink); text-align: center; }
+html[lang="zh-Hant"] .wn-label { font-size: 0.8125rem; letter-spacing: 0.34em; text-indent: 0.34em; }
+.wn-share { display: flex; justify-content: center; align-items: baseline; gap: 0.5em; }
+.is-narrow .wn-share { justify-content: flex-start; }
+.wn-pct {
+  font-family: var(--f-name); font-weight: 400; font-size: 1rem; line-height: 1; color: var(--ink);
+  font-variant-numeric: lining-nums; min-width: var(--pw, 0); text-align: right;
+}
+html[lang="zh-Hant"] .wn-pct { text-align: left; }
+.wn-pct .wn-d { width: var(--pcell, 0.62em); }
+.wn-of { color: var(--ink-2); }
+.wn-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; margin: 0; }
+
+/* the trip being counted: a very quiet line at the band's edge, only while the ramp runs */
+.wn-trip {
+  text-align: right; color: var(--ink-3); font-variant-numeric: lining-nums;
+  opacity: 0; transition: opacity 0.8s var(--ease);
+}
+.wn-trip.is-on { opacity: 1; }
+
+/* ---- the page arriving: the atlas and the numbers at nought, after a short fade ---- */
+.fp--wall .wn-sheet, .fp--wall .wn-row { opacity: 0; transition: opacity 0.6s var(--ease); }
+.fp--wall.is-ready .wn-sheet, .fp--wall.is-ready .wn-row { opacity: 1; }
+/* a held frame (?at=) and the finished page (?still) are drawn at once */
+.fp--wall.is-held *, .fp--wall.is-held .wn-sheet, .fp--wall.is-held .wn-row { transition: none !important; }
+
+/* ---- on a desktop the page is the window, nothing beyond it ---- */
+.fp--wall:not(.is-narrow) .fp-stage { overflow: hidden; }
+
+/* ---- phones: the two strips of the world, the numbers in a row under them; the page may scroll ---- */
+.fp--wall.is-narrow .fp-stage { overflow-x: hidden; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+.wn-room { position: absolute; left: 0; top: 0; width: 1px; height: var(--room, 0); pointer-events: none; }
+
+/* ---- the halo of paper each piece of lettering in the band carries: the sea's ruled lines stop short
+   round the letterforms, crisply, with a little softness at the ends; under the count it follows the
+   figures as they change ---- */
+.wn-halo { color: var(--paper); -webkit-text-stroke: calc(var(--f, 100px) * 0.12) var(--paper); text-shadow: 0 0 calc(var(--f, 100px) * 0.05) var(--paper); }
+.fp--wall:not(.is-narrow) .wn-label,
+.fp--wall:not(.is-narrow) .wn-share,
+.fp--wall:not(.is-narrow) .wn-trip {
+  text-shadow: 0 0 1px var(--paper), 0 0 2px var(--paper), 0 0 3px var(--paper), 0 0 4px var(--paper), 0 0 5px var(--paper), 0 0 7px var(--paper), 0 0 9px var(--paper);
+}
+.is-narrow .wn-halo { display: none; }
