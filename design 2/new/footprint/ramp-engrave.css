@@ -1,0 +1,113 @@
+/* Engraved, then coloured 先刻版，再上色 (footprint, round five, 2026-11-06).
+   The arrival he scored well (imp-animate) made into the ramp: the plate, the coasts engraved from home
+   outward, the borders and sea lines; then his trips in order, the three numbers counting up, each new
+   country's wash bleeding in as the count reaches it, each flight drawn as a quiet hairline. The washes
+   are bolder's six earth colours; the lettering is typeset's. The map is as large as the window allows,
+   its Pacific edges running off the sides; the three numbers stand in the open sea. */
+:root {
+  --tn-ochre: oklch(80% 0.125 84);
+  --tn-terra: oklch(68% 0.125 40);
+  --tn-sage: oklch(72% 0.095 135);
+  --tn-slate: oklch(68% 0.08 238);
+  --tn-mauve: oklch(66% 0.085 338);
+  --tn-verdigris: oklch(71% 0.08 190);
+  --tn-home: var(--clay);
+  --tn-water: color-mix(in oklch, var(--ink) 80%, var(--slate));
+  --tn-k: 1; /* the map's scale against the 1440 wide window, set by the script */
+}
+
+/* ---- the sheet: sea, washes, flights, then the ink ---- */
+.tn-sheet { position: absolute; left: 0; top: 0; width: var(--sheet-w, 100%); height: var(--sheet-h, 100%); }
+.tn-sheet > canvas, .tn-sheet > svg { position: absolute; left: 0; top: 0; display: block; }
+.tn-sheet > canvas { width: var(--sheet-w, 100%); height: var(--sheet-h, 100%); }
+.tn-sheet > .ia-washes { position: absolute; left: 0; top: 0; width: var(--sheet-w, 100%); height: var(--sheet-h, 100%); pointer-events: none; }
+.ia-wash { position: absolute; left: 0; top: 0; width: var(--dw, 0); height: var(--dh, 0); transform: translate(var(--dx, 0), var(--dy, 0)); mix-blend-mode: multiply; }
+/* a country not reached yet: the paper left clear, like every other country */
+.ia-wash.is-waiting { opacity: 0; }
+.ia-water, .tn-sea { pointer-events: none; }
+.tn-ink { will-change: transform; }
+
+/* ---- the flights: hairlines in the route's red, drawn like a pen, faint once dry ---- */
+.re-flights { pointer-events: none; overflow: visible; }
+.re-flight { fill: none; stroke: var(--route); stroke-width: 0.7; stroke-linecap: round; stroke-linejoin: round; }
+.is-narrow .re-flight { stroke-width: 0.55; }
+
+/* ---- the engraving ---- */
+.tn-coast { fill: none; stroke: var(--ink); stroke-width: 0.7; stroke-linejoin: round; stroke-linecap: round; pointer-events: none; }
+.tn-border { fill: none; stroke: var(--ink); stroke-opacity: 0.55; stroke-width: 0.4; stroke-linejoin: round; pointer-events: none; }
+.tn-hit { fill: none; stroke: none; pointer-events: fill; cursor: default; }
+.tn-dot { fill: none; stroke: var(--ink); stroke-width: 0.6; pointer-events: none; transition: opacity 0.6s var(--ease); }
+.tn-dot.is-waiting { opacity: 0; }
+.tn-lead { fill: none; stroke: var(--ink-2); stroke-width: 0.5; pointer-events: none; }
+.tn-lead-end { fill: var(--ink-2); pointer-events: none; }
+/* each coast drawn along its own line (the script runs its stroke-dashoffset from 1 to 0) */
+.ia-draw { stroke-dasharray: 1 1.02; }
+
+/* ---- the lettering, as an engraved atlas sets it (typeset): spaced serif capitals in three size
+   classes, years a step smaller in old-style figures, home in clay with a sans HOME ---- */
+.tn-name {
+  font-family: var(--f-name); font-weight: 400; font-size: max(8.6px, calc(10.5px * var(--tn-k))); letter-spacing: 0.16em;
+  fill: var(--ink); font-kerning: normal;
+}
+.tn-name--l { font-size: max(10px, calc(13px * var(--tn-k))); letter-spacing: calc((0.32 * var(--tn-k) - 0.08) * 1em); }
+.tn-name--s { font-size: max(8px, calc(9.25px * var(--tn-k))); letter-spacing: 0.12em; fill: var(--ink-2); }
+.tn-name .tn-year { font-size: 0.8em; letter-spacing: 0.03em; fill: var(--ink-2); font-variant-numeric: oldstyle-nums proportional-nums; }
+.tn-name--l .tn-year { font-size: 0.74em; letter-spacing: 0.06em; }
+.tn-name.is-halo { paint-order: stroke; stroke: var(--paper); stroke-width: 3px; stroke-linejoin: round; }
+.tn-name.is-home { fill: var(--link); letter-spacing: 0.18em; }
+.tn-name.is-home .tn-year { fill: var(--link); font-family: var(--f-text); font-weight: 600; font-size: 0.66em; letter-spacing: 0.16em; }
+html[lang="zh-Hant"] .tn-name { letter-spacing: 0.1em; font-size: max(9.6px, calc(11px * var(--tn-k))); }
+html[lang="zh-Hant"] .tn-name--l { font-size: max(10.4px, calc(13.5px * var(--tn-k))); letter-spacing: calc((0.6 * var(--tn-k) - 0.1) * 1em); }
+html[lang="zh-Hant"] .tn-name--s { font-size: max(9px, calc(10px * var(--tn-k))); letter-spacing: 0.08em; }
+html[lang="zh-Hant"] .tn-name.is-home .tn-year { font-weight: 500; font-size: 0.86em; letter-spacing: 0.04em; }
+/* the oceans: light, very widely spaced capitals in the water-lines' ink */
+.tn-ocean {
+  font-family: var(--f-name); font-weight: 400; font-size: max(8px, calc(9.5px * var(--tn-k))); letter-spacing: 0.62em;
+  fill: var(--tn-water); fill-opacity: 0.72;
+  paint-order: stroke; stroke: var(--paper); stroke-width: 3px; stroke-linejoin: round; pointer-events: none;
+}
+html[lang="zh-Hant"] .tn-ocean { font-size: max(9px, calc(10.5px * var(--tn-k))); letter-spacing: 1.1em; }
+.tn-ocean.is-cut, .tn-label.is-cut { display: none; }
+/* a name waits for its country's colour */
+.tn-label { transition: opacity 0.6s var(--ease); }
+.tn-label.is-waiting { opacity: 0; }
+
+/* ---- the three numbers, set like an atlas title page: lining figures, a fine rule, a spaced-caps
+   label. Countries largest, then flights, then photographs. The figures are tabular, so they hold
+   still while they count. ---- */
+.re-count {
+  --f: 160px;
+  position: absolute; left: 0; top: 0; margin: 0;
+  transform: translate(var(--x, 0), var(--y, 0));
+  display: grid; justify-items: center; row-gap: calc(var(--f) * 0.13);
+  pointer-events: none; color: var(--ink);
+}
+.re-num { display: grid; justify-items: center; --nf: calc(var(--f) * 0.5); --lf: max(10.5px, calc(var(--f) * 0.062)); }
+.re-num--c { --nf: var(--f); --lf: max(11.5px, calc(var(--f) * 0.076)); }
+.re-num__n {
+  display: block;
+  font-family: var(--f-name); font-weight: 400; font-size: var(--nf); line-height: 1;
+  font-variant-numeric: lining-nums tabular-nums; letter-spacing: -0.01em;
+  min-width: var(--nw, 0); text-align: right;
+  /* the box drawn in to the figures' ink, top and bottom (measured by the script) */
+  margin: calc(var(--n-top, 0em) * -1) 0 calc(var(--n-bot, 0em) * -1);
+}
+.re-num__rule { display: block; width: max(1.75rem, calc(var(--nf) * 0.34)); border-top: 1px solid var(--ink-3); margin: calc(var(--nf) * 0.12) 0 calc(var(--nf) * 0.1); }
+.re-num--c .re-num__rule { margin: calc(var(--nf) * 0.09) 0 calc(var(--nf) * 0.075); }
+.re-num__w {
+  margin: 0; font: 500 var(--lf)/1.2 var(--f-text); text-transform: uppercase; color: var(--ink-2); white-space: nowrap;
+  letter-spacing: var(--ls, 0.24em); margin-right: calc(var(--ls, 0.24em) * -1);
+}
+html[lang="zh-Hant"] .re-num__w { text-transform: none; font-weight: 500; }
+/* on a phone: the three in a row under the map, their rules on one line */
+.re-count.is-row { grid-auto-flow: column; grid-template-columns: repeat(3, 1fr); width: var(--rw, 100%); align-items: end; column-gap: 8px; }
+.re-count.is-row .re-num { --lf: 10.5px; }
+.re-count.is-row .re-num__rule { margin: calc(var(--f) * 0.07) 0 calc(var(--f) * 0.06); }
+.os-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; margin: 0; }
+
+/* ---- on a desktop the page is the window, nothing beyond it ---- */
+.fp--ramp-engrave:not(.is-narrow) .fp-stage { overflow: hidden; }
+
+/* ---- phones: the map at full width, the three numbers under it; the page may scroll ---- */
+.fp--ramp-engrave.is-narrow .fp-stage { overflow-x: hidden; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+.os-room { position: absolute; left: 0; top: 0; width: 1px; height: var(--room, 0); pointer-events: none; }

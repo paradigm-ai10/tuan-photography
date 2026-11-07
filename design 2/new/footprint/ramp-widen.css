@@ -1,0 +1,54 @@
+/* Ramp, the view widening 從家出發，視野越來越大 (footprint, round five, 2026-11-06).
+   The hand-tinted atlas of bolder (its six earth washes, the clay of home), lettered as typeset letters it,
+   seen through one fixed window whose view widens trip by trip, from Taiwan to the whole world. The
+   three numbers stand in the bottom left corner of the window and stay put while the map moves under them. */
+:root {
+  --tn-ochre: oklch(80% 0.125 84);
+  --tn-terra: oklch(68% 0.125 40);
+  --tn-sage: oklch(72% 0.095 135);
+  --tn-slate: oklch(68% 0.08 238);
+  --tn-mauve: oklch(66% 0.085 338);
+  --tn-verdigris: oklch(71% 0.08 190);
+  --tn-home: var(--clay);
+  --tn-water: color-mix(in oklch, var(--ink) 80%, var(--slate));
+}
+
+/* ---- the sheet: the water-lines (drawn on the graphics card), then the map, each a whole-window layer ---- */
+.rw-sheet { position: absolute; left: 0; top: 0; width: var(--sheet-w, 100%); height: var(--sheet-h, 100%); pointer-events: none; }
+.rw-sheet > canvas { position: absolute; left: 0; top: 0; display: block; width: var(--sheet-w, 100%); height: var(--sheet-h, 100%); }
+
+/* ---- the three numbers: countries largest, then flights, then photographs, each with its word under it ---- */
+.rw-figs {
+  --f: 110px;
+  position: absolute; left: 0; top: 0;
+  transform: translate(var(--x, 0), var(--y, 0));
+  display: grid; grid-auto-flow: column; grid-template-rows: auto auto;
+  column-gap: calc(var(--f) * 0.3); row-gap: calc(var(--f) * 0.06);
+  align-items: baseline; justify-items: start;
+  margin: 0; pointer-events: none; color: var(--ink);
+}
+.rw-n {
+  display: flex; min-width: calc(var(--nd, 2) * 0.61em);
+  font-family: var(--f-name); font-weight: 400; line-height: 1; letter-spacing: 0;
+  font-size: calc(var(--f) * var(--r, 1)); font-variant-numeric: lining-nums;
+}
+/* each figure in a cell of one width, so the count never jiggles as it climbs (the typeface has no tabular figures) */
+.rw-n > span { display: inline-block; width: 0.61em; text-align: center; }
+.rw-n > span.is-sep { width: auto; }
+.rw-n--c { --r: 1; }
+.rw-n--f { --r: 0.62; }
+.rw-n--p { --r: 0.48; }
+.rw-w { margin: 0; white-space: nowrap; }
+.rw-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; margin: 0; }
+
+/* ---- arriving: the sheet and the numbers come up together after a short fade ---- */
+.fp--widen .rw-sheet, .fp--widen .rw-figs { opacity: 0; transition: opacity 0.6s var(--ease); }
+.fp--widen.is-ready .rw-sheet, .fp--widen.is-ready .rw-figs { opacity: 1; }
+.fp--widen.is-still .rw-sheet, .fp--widen.is-still .rw-figs { transition: none; }
+
+/* ---- on a desktop the page is the window, nothing beyond it ---- */
+.fp--widen:not(.is-narrow) .fp-stage { overflow: hidden; }
+
+/* ---- phones: the map across the top, the numbers in a row under it; the page may scroll ---- */
+.fp--widen.is-narrow .fp-stage { overflow-x: hidden; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+.rw-room { position: absolute; left: 0; top: 0; width: 1px; height: var(--room, 0); pointer-events: none; }

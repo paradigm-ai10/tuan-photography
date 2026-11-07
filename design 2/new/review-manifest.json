@@ -2,11 +2,7 @@
   "name": "journey",
   "round": {
     "groups": [
-      "footprint-3",
-      "footprint-4"
-    ],
-    "ids": [
-      "footprint-tinted-onestamp"
+      "footprint-5"
     ]
   },
   "endpoint": "/__reviews/journey",
@@ -38,6 +34,13 @@
       "title": {
         "en": "Where I have been, round two",
         "zh": "足跡地圖，第二輪"
+      }
+    },
+    {
+      "id": "footprint-5",
+      "title": {
+        "en": "The ramp: countries, flights, photographs",
+        "zh": "慢慢累積：國家、航程、照片"
       }
     },
     {
@@ -138,6 +141,81 @@
       },
       "still": {
         "wait": 20000
+      }
+    },
+    {
+      "href": "footprint-ramp-atlas.html",
+      "group": "footprint-5",
+      "title": {
+        "en": "Atlas, three numbers and a stamp",
+        "zh": "地圖集＋三個數字＋一個章"
+      },
+      "desc": {
+        "en": "The atlas drawn big; your countries start uncoloured and gain colour trip by trip as the three numbers count up, flights as faint lines. The numbers sit as one title block in the South Pacific, the stamp in the other corner.",
+        "zh": "地圖放大；你去過的國家一開始沒有顏色，一趟一趟上色，三個數字跟著往上跳，航線是淡淡的細線。數字像標題一樣放在南太平洋，印章在另一角。"
+      },
+      "still": {
+        "wait": 12000
+      }
+    },
+    {
+      "href": "footprint-ramp-band.html",
+      "group": "footprint-5",
+      "title": {
+        "en": "The map to the edges, numbers along the foot",
+        "zh": "滿版地圖＋底部三個數字"
+      },
+      "desc": {
+        "en": "The map fills the whole window with no white margin; the three numbers sit in one row in the southern sea along the bottom. No stamp.",
+        "zh": "地圖填滿整個視窗，沒有白邊；三個數字在下面的南方海上排成一排。沒有印章。"
+      },
+      "still": {
+        "wait": 12000
+      }
+    },
+    {
+      "href": "footprint-ramp-engrave.html",
+      "group": "footprint-5",
+      "title": {
+        "en": "Engraved first, then coloured",
+        "zh": "先刻版，再上色"
+      },
+      "desc": {
+        "en": "The engraving draws itself in from Taiwan outward, then the ramp: numbers count up in atlas lettering, countries colour, flights appear faintly.",
+        "zh": "地圖的線先從台灣往外畫出來，然後數字用地圖集的字體往上跳，國家上色，航線淡淡出現。"
+      },
+      "still": {
+        "wait": 12000
+      }
+    },
+    {
+      "href": "footprint-ramp-flights.html",
+      "group": "footprint-5",
+      "title": {
+        "en": "Flight by flight",
+        "zh": "一段一段航程"
+      },
+      "desc": {
+        "en": "All 41 flights drawn one by one as quiet lines; the flight count ticks with each, and a country colours when a flight first lands there. A small stamp shows the newest country.",
+        "zh": "41 段航程一段一段畫出來，都是安靜的細線；每畫一段航程數就加一，第一次飛到的國家就上色。旁邊一個小印章顯示最新的國家。"
+      },
+      "still": {
+        "wait": 12000
+      }
+    },
+    {
+      "href": "footprint-ramp-widen.html",
+      "group": "footprint-5",
+      "title": {
+        "en": "From home, the view widens",
+        "zh": "從家出發，視野越來越大"
+      },
+      "desc": {
+        "en": "It opens close in on Taiwan; with each trip the map slowly widens to take in the new places, until the whole world fills the window. The numbers stay put in one corner.",
+        "zh": "一開始只看到台灣附近；每一趟旅行，地圖慢慢拉遠，把新去的地方包進來，最後整個世界填滿視窗。數字固定在一角。"
+      },
+      "still": {
+        "wait": 12000
       }
     },
     {
@@ -867,5 +945,18 @@
     "--rv-label": "\"Geist\", \"Noto Sans TC\", sans-serif",
     "--rv-name": "\"Playfair Display\", \"Noto Serif TC\", serif"
   },
-  "words": {}
+  "words": {},
+  "ask": {
+    "ids": [
+      "footprint-ramp-atlas",
+      "footprint-ramp-band",
+      "footprint-ramp-engrave",
+      "footprint-ramp-flights",
+      "footprint-ramp-widen"
+    ],
+    "question": {
+      "en": "Five ramps from your notes: a bigger map, three numbers (countries, flights, photographs) counting up, your countries gaining colour trip by trip, the flights quiet. Give each a score and mark what to change.",
+      "zh": "照你的筆記做的五種「慢慢累積」：地圖更大、三個數字（國家、航程、照片）往上跳、去過的國家一趟一趟上色、航線很安靜。每版給個分數，想改的地方按 M 標記。"
+    }
+  }
 }
