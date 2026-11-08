@@ -89,6 +89,13 @@
         "en": "The opening: five more brushings",
         "zh": "開場：再五種刷法"
       }
+    },
+    {
+      "id": "opening8",
+      "title": {
+        "en": "The opening: the photographs arrive",
+        "zh": "開場：照片進場"
+      }
     }
   ],
   "items": [
@@ -856,6 +863,231 @@
         "wait": 5600
       },
       "out": true
+    },
+    {
+      "href": "c-flock-diamond.html",
+      "group": "opening8",
+      "title": {
+        "en": "The diamond",
+        "zh": "菱形"
+      },
+      "desc": {
+        "en": "Closest to Mathilde de Chiara, which you marked Good. The logo shrinks into the corner where the page keeps it; 25 of your photographs fly in along the diagonal from the top right, as one flock, and land as a diamond of level squares. One square among them is alive: the Barcelona film, small, in slow motion. The far ones peel away down the other diagonal and the live one grows to the whole screen, where the film plays on. A click skips it.",
+        "zh": "最接近你標喜歡的 Mathilde de Chiara。標誌縮到角落（頁面本來就放在那裡），25 張你的照片從右上沿著對角線一群飛進來，落成一個由正方形排成的菱形。其中一格是活的：巴塞隆納的影片，小小的、慢動作。外圍的一張張往左下剝離，活的那格長大到整個畫面，影片接著播。點一下可以跳過。"
+      },
+      "still": {
+        "wait": 4200
+      }
+    },
+    {
+      "href": "c-flock-ribbon.html",
+      "group": "opening8",
+      "title": {
+        "en": "A ribbon of prints",
+        "zh": "一條照片帶"
+      },
+      "desc": {
+        "en": "The same diamond, but the prints come single file from the corner, a long train that coils into place one after another; they unwind out of the other corner in the same order while the live one grows.",
+        "zh": "一樣的菱形，但照片是從角落一張接一張排隊進來，像一條長長的帶子一張張捲進位置；再照同樣的順序從另一個角落退出去，活的那格同時長大。"
+      },
+      "still": {
+        "wait": 4200
+      }
+    },
+    {
+      "href": "c-flock-column.html",
+      "group": "opening8",
+      "title": {
+        "en": "Into one column",
+        "zh": "落成一直欄"
+      },
+      "desc": {
+        "en": "Her ending: the diamond lands, then falls into one column down the middle of the paper, and the column slides up through the screen; the live one stops in the middle and grows while the rest run on out of the top.",
+        "zh": "她的收尾：菱形落定後，掉成紙中央的一直欄，整欄往上滑過畫面；活的那格停在正中央長大，其他的繼續往上出去。"
+      },
+      "still": {
+        "wait": 4200
+      }
+    },
+    {
+      "href": "c-flock-line.html",
+      "group": "opening8",
+      "title": {
+        "en": "The line becomes a row",
+        "zh": "那條線變成一排照片"
+      },
+      "desc": {
+        "en": "The logo's own line: the name fades, the line runs to both edges, and a row of photographs opens out of it from the middle outward, each one unfolding from the line. The row parts to both sides and the live one in the middle grows.",
+        "zh": "用標誌本身那條線：名字淡去，線跑到兩邊，一排照片從線裡由中間往外一張張打開。整排往兩邊分開，中間活的那張長大。"
+      },
+      "still": {
+        "wait": 4200
+      }
+    },
+    {
+      "href": "c-flock-contact.html",
+      "group": "opening8",
+      "title": {
+        "en": "Contact sheet",
+        "zh": "印樣"
+      },
+      "desc": {
+        "en": "Four rows of photographs at their own shapes slide in from alternate sides and fill the screen like a contact sheet; they slide back out the way they came and the live one grows.",
+        "zh": "四排照片保持自己的形狀，從左右輪流滑進來，鋪滿畫面像一張印樣；再照原路滑出去，活的那張長大。"
+      },
+      "still": {
+        "wait": 4200
+      }
+    },
+    {
+      "href": "c-flock-stairs.html",
+      "group": "opening8",
+      "title": {
+        "en": "Stairs",
+        "zh": "階梯"
+      },
+      "desc": {
+        "en": "Five rows of squares, each a step further across, rise from below row by row into a staircase; then every one of them gathers onto the live one, shrinking under it as it grows: the many become the one.",
+        "zh": "五排正方形，每排往旁邊錯開一格，從下面一排排升上來排成階梯；然後全部往活的那格聚過去，在它底下縮小，它同時長大：很多張變成一張。"
+      },
+      "still": {
+        "wait": 4200
+      }
+    },
+    {
+      "href": "c-flock-strips.html",
+      "group": "opening8",
+      "title": {
+        "en": "Strips of film passing",
+        "zh": "一條條底片經過"
+      },
+      "desc": {
+        "en": "Three strips of photographs run across the screen, the middle one the other way, and slow to a stop with the live frame in the middle, like film passing a gate; the outer strips part up and down and it grows.",
+        "zh": "三條照片帶橫著跑過畫面，中間那條反方向，慢慢停下來時活的那格剛好在正中間，像底片經過片門；上下兩條往外分開，它長大。"
+      },
+      "still": {
+        "wait": 4200
+      }
+    },
+    {
+      "href": "c-flock-table.html",
+      "group": "opening8",
+      "title": {
+        "en": "Laid on the table",
+        "zh": "攤在桌上"
+      },
+      "desc": {
+        "en": "Prints dropped onto the paper one after another, each a little tilted, never overlapping, like photographs laid out on a desk; then they slide off the table's edges and the live one straightens and grows.",
+        "zh": "照片一張張掉到紙上，各自微微歪斜、不重疊，像攤在桌上的照片；然後從桌子四邊滑出去，活的那張轉正、長大。"
+      },
+      "still": {
+        "wait": 4200
+      }
+    },
+    {
+      "href": "c-flock-ring.html",
+      "group": "opening8",
+      "title": {
+        "en": "Around the name",
+        "zh": "圍著名字"
+      },
+      "desc": {
+        "en": "The only one where the logo stays in the middle: the prints settle in a ring around it, drifting in from outside; then the ring closes onto the live one, which grows over the name.",
+        "zh": "唯一讓標誌留在中間的：照片從外面飄進來，在名字四周圍成一圈；然後整圈往活的那張收攏，它蓋過名字長大。"
+      },
+      "still": {
+        "wait": 4200
+      }
+    },
+    {
+      "href": "c-flock-columns.html",
+      "group": "opening8",
+      "title": {
+        "en": "Columns rising",
+        "zh": "升起的直欄"
+      },
+      "desc": {
+        "en": "Five columns of photographs rise from below at different speeds, like the slow columns of a gallery, and come to rest with the live one in the middle; the rest carry on out of the top as it grows.",
+        "zh": "五條直欄的照片用不同的速度從下面升上來，像藝廊慢慢捲動的直欄，停下來時活的那張在正中間；其他的繼續往上出去，它長大。"
+      },
+      "still": {
+        "wait": 4200
+      }
+    },
+    {
+      "href": "c-flock-mosaic.html",
+      "group": "opening8",
+      "title": {
+        "en": "The photographs become the film",
+        "zh": "照片變成影片"
+      },
+      "desc": {
+        "en": "The boldest: a wall of 40 photographs flies in and fills the screen edge to edge. Then, from the middle outward, each photograph turns into its own piece of the film's first frame, until the wall is the frame, and the frame moves.",
+        "zh": "最大膽的一個：40 張照片飛進來，從邊到邊鋪滿畫面。然後從中間往外，每一張照片變成影片第一格裡屬於它那一塊，直到整面牆就是那一格，然後畫面動起來。"
+      },
+      "still": {
+        "wait": 4200
+      }
+    },
+    {
+      "href": "c-flock-sweep.html",
+      "group": "opening8",
+      "title": {
+        "en": "... swept from the corner",
+        "zh": "從角落掃過去"
+      },
+      "desc": {
+        "en": "The same wall, arriving row by row from the sides; the film comes up across it on the diagonal, from the top left to the bottom right.",
+        "zh": "同一面牆，改成一排一排從兩側進來；影片沿著對角線從左上掃到右下浮出來。"
+      },
+      "still": {
+        "wait": 4200
+      }
+    },
+    {
+      "href": "c-flock-window.html",
+      "group": "opening8",
+      "title": {
+        "en": "Into one window",
+        "zh": "走進其中一扇窗"
+      },
+      "desc": {
+        "en": "A wall of small screens lights up one by one; then the view moves in on the live one until it is the whole screen, like walking up to one window of a building.",
+        "zh": "一面小螢幕牆一格格亮起來；然後鏡頭往活的那格推進，直到它就是整個畫面，像走近一棟大樓的其中一扇窗。"
+      },
+      "still": {
+        "wait": 4200
+      }
+    },
+    {
+      "href": "c-flock-stack.html",
+      "group": "opening8",
+      "title": {
+        "en": "A stack, dealt",
+        "zh": "一疊照片，一張張發出去"
+      },
+      "desc": {
+        "en": "The prints drop into one big pile in the middle. The top one is flicked away to the left, the next to the right, each showing the next beneath, a quick look through the stack; the last in the pile is the live one, and it grows.",
+        "zh": "照片掉成中間一大疊。最上面那張往左一甩，下一張往右，每甩一張就露出下面那張，快速翻一遍；疊底最後一張是活的，它長大。"
+      },
+      "still": {
+        "wait": 4200
+      }
+    },
+    {
+      "href": "c-flock-letters.html",
+      "group": "opening8",
+      "title": {
+        "en": "TUAN, in photographs",
+        "zh": "用照片排出 TUAN"
+      },
+      "desc": {
+        "en": "The prints fly in and spell TUAN across the paper, letter by letter, 41 photographs as the pixels of his name; then the letters gather onto the live one in the A, and it grows.",
+        "zh": "照片飛進來，一個字母一個字母在紙上排出 TUAN，41 張照片當名字的像素；然後字母往 A 裡面活的那張聚過去，它長大。"
+      },
+      "still": {
+        "wait": 4200
+      }
     }
   ],
   "tags": [
@@ -930,5 +1162,28 @@
     "--rv-label": "\"Geist\", \"Noto Sans TC\", sans-serif",
     "--rv-name": "\"Playfair Display\", \"Noto Serif TC\", serif"
   },
-  "words": {}
+  "words": {},
+  "ask": {
+    "ids": [
+      "c-flock-diamond",
+      "c-flock-ribbon",
+      "c-flock-column",
+      "c-flock-line",
+      "c-flock-contact",
+      "c-flock-stairs",
+      "c-flock-strips",
+      "c-flock-table",
+      "c-flock-ring",
+      "c-flock-columns",
+      "c-flock-mosaic",
+      "c-flock-sweep",
+      "c-flock-window",
+      "c-flock-stack",
+      "c-flock-letters"
+    ],
+    "question": {
+      "en": "Fifteen ways the photographs can arrive, after Mathilde de Chiara, each ending on the film. Score each; mark the spot you mean.",
+      "zh": "照著 Mathilde de Chiara 做的十五種照片進場，每個最後都落在影片上。每個打個分數；想說哪裡就點那裡。"
+    }
+  }
 }

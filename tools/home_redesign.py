@@ -196,6 +196,42 @@ SKETCHES = [
     ("tracing", "Tracing paper", "描圖紙"),
 ]
 
+# The photographs arrive (2026-11-09; his pick from the references was Mathilde de Chiara's opening): flock.js, fifteen
+# choreographies of his own photographs flying in with the logo, gathering, and becoming the film. The tiles carry only
+# data-src, so a version loads the photographs it uses; the order below puts his strongest first, the Queensboro train second.
+FLOCK_PHOTOS = ["matterhorn-lake", "queensboro-train", "fuji-lake", "roys-peak", "sapa-terraces", "tekapo-stars", "aurora",
+                "golden-gate-fog", "dumbo-bridge", "otaru-canal", "kifune", "gordes", "calanque", "zermatt-dusk", "hoi-an-gate",
+                "peak-night", "neuschwanstein", "bunkers", "aoraki", "tekapo-church", "fuji-shinkansen", "sapa-valley",
+                "lower-manhattan-reflection", "empire-state-sunset", "burj-khalifa", "park-guell", "stained-glass", "kinkaku",
+                "fushimi-inari", "marina-bay", "big-ben-tall", "tower-bridge", "griffith-observatory", "capitol-dusk-reflection",
+                "chongqing-raffles", "hongya-cave", "jewel", "painted-ladies", "taipei-101", "leshan-buddha", "calanque-tall",
+                "edge-night", "sapa-dusk", "osaka-castle", "london-eye", "greenwich", "gold-coast", "hill-houses"]
+FLOCKS = [
+    ("diamond", "The diamond", "菱形"),
+    ("ribbon", "A ribbon of prints", "一條照片帶"),
+    ("column", "Into one column", "落成一直欄"),
+    ("line", "The line becomes a row", "那條線變成一排照片"),
+    ("contact", "Contact sheet", "印樣"),
+    ("stairs", "Stairs", "階梯"),
+    ("strips", "Strips of film passing", "一條條底片經過"),
+    ("table", "Laid on the table", "攤在桌上"),
+    ("ring", "Around the name", "圍著名字"),
+    ("columns", "Columns rising", "升起的直欄"),
+    ("mosaic", "The photographs become the film", "照片變成影片"),
+    ("sweep", "... swept from the corner", "從角落掃過去"),
+    ("window", "Into one window", "走進其中一扇窗"),
+    ("stack", "A stack, dealt", "一疊照片，一張張發出去"),
+    ("letters", "TUAN, in photographs", "用照片排出 TUAN"),
+]
+
+
+def flock_tiles():
+    tiles = "".join(f'<div class="hr-tile"><img data-src="{IMG}640/{SLIDES[s]["file"]}" data-ar="{SLIDES[s]["w"] / SLIDES[s]["h"]:.3f}" alt=""></div>'
+                    for s in FLOCK_PHOTOS)
+    film = ('<div class="hr-tile hr-tile--film" data-poster="media/road-first.jpg">'
+            '<video muted playsinline loop preload="auto" data-src="media/barcelona.mp4"></video></div>')
+    return f'\n  <div class="hr-flock" aria-hidden="true">{tiles}{film}</div>'
+
 
 def page(home, name, title_en, title_zh, opening, body, extra="", attrs="", way=None, foot_html=None, scripts=""):
     return f"""<!doctype html>
@@ -344,6 +380,11 @@ def build():
     for mode, en, zh in SKETCHES:
         (OUT / f"c-sketch-{mode}.html").write_text(page("d", f"c-sketch-{mode}", en, zh, film_s, c, bare + ("\n  " + lines if mode == "tracing" else ""),
                                                         f' data-counts data-pencil="sk-{mode}" data-smooth', scripts='<script src="sketchfilm.js"></script>\n'), encoding="utf-8")
+    # The photographs arrive (2026-11-09): fifteen choreographies in flock.js, chosen by data-flock; the body is C's, the
+    # film_s ending (the caption, the first shot's cut) as 33
+    for mode, en, zh in FLOCKS:
+        (OUT / f"c-flock-{mode}.html").write_text(page("f", f"c-flock-{mode}", en, zh, film_s, c, flock_tiles(),
+                                                       f' data-counts data-flock="{mode}"', scripts='<script src="flock.js"></script>\n'), encoding="utf-8")
     # Round two (his ask, 2026-11-05: "continue designing the rest of the home page"): E's opening kept,
     # three ways for everything under the film.
     rest = lambda r: " data-counts" + f' data-rest="{r}"'

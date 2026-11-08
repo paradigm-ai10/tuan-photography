@@ -555,3 +555,23 @@ html.hr-js .hr-qdoor.hr-in { transition-delay: calc(var(--i, 0) * 70ms); }
 /* the window above the three words fills only the top of the screen, so show the lower part of its photograph */
 .hr-words--win .hr-words__win img { object-position: center 85%; }
 .hr-float__back--low img { object-position: center 64%; }
+
+/* ================= The photographs arrive (2026-11-09): his pick was Mathilde de Chiara's opening, many small photographs
+   flying in with the logo. flock.js lays them out and moves them; one tile among them is the film, small and alive, and
+   it grows to the whole window, where the home page lands. ================= */
+.hr-flock { display: none; }
+[data-flock] .hr-flock { position: absolute; inset: 0; z-index: 1; display: block; overflow: hidden; will-change: transform; }
+.hr-tile { position: absolute; overflow: hidden; background: var(--band); opacity: 0; transform-origin: center; will-change: transform; }
+.hr-tile img, .hr-tile video { display: block; width: 100%; height: 100%; object-fit: cover; }
+.hr-tile__slice { position: absolute; inset: 0; background-repeat: no-repeat; opacity: 0; }
+[data-flock] .hr-load__paper { transition: none; }
+[data-flock] .hr-load__mark { will-change: transform; }
+[data-flock].hr-markgone .hr-load__mark { opacity: 0; transition: opacity 0.9s ease; }   /* ring: the name goes as the ring closes over it */
+[data-flock].hr-rowopen .hr-load__line { opacity: 0; transition: opacity 0.5s ease 0.25s; }   /* line: the row has opened out of it */
+[data-flock] .hr-cap { opacity: 0; transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.6s; }
+[data-flock].hr-shown .hr-cap { opacity: 1; }
+[data-flock] .hr-open::before { opacity: 0; transition: opacity 1s ease 0.5s; }
+[data-flock].hr-shown .hr-open::before { opacity: 1; }
+[data-flock][data-counts] .hr-open::after { opacity: 0; transition: opacity 1s ease 0.5s; }
+[data-flock][data-counts].hr-shown .hr-open::after { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { [data-flock] .hr-flock { display: none; } }

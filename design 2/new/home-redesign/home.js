@@ -3,7 +3,7 @@
    gather), c (drawn, then real), d (traced line by line, then real); with data-counts on <html> it is E,
    the trip so far counting up under the drawing and a caption for each scene of the film; data-colour adds the
    colour coming up under the lines as they are drawn, and data-pencil lays it down in coloured pencil (pencil.js). The loading screen is the live one (logo 1C, motion 21); here it
-   plays on every load so each version can be judged. A click or a key skips to the end; R plays it
+   plays on every load so each version can be judged. f is the photographs arriving (flock.js, 2026-11-09). A click or a key skips to the end; R plays it
    again; ?still shows the end at once (for the list page's pictures); "reduce motion" skips it. */
 (() => {
   'use strict';
@@ -134,9 +134,10 @@
   const seen = (img) => !img || (img.complete && img.naturalWidth > 0);
   const media = () => (HOME === 'a' ? !video || video.readyState >= 3
     : HOME === 'c' || HOME === 'd' ? seen(sketch) && (!video || video.readyState >= 2)
+    : HOME === 'f' ? !!(window.HRFlock && window.HRFlock.ready()) && (!video || video.readyState >= 2)
     : seen(cover));
   // how long the line takes to run under the name: D and E draw it in 1 s (his ask, 2026-11-05), the others 2.2 s
-  const FILL = HOME === 'd' ? 1000 : 2200;
+  const FILL = HOME === 'd' || HOME === 'f' ? 1000 : 2200;
   function fill() {
     return new Promise((res) => {
       const t0 = performance.now();
@@ -286,5 +287,13 @@
     finish();
   }
 
-  ({ a: openA, b: openB, c: openC, d: openD })[HOME]();
+  // F: the photographs arrive (flock.js): the logo holds, then the tiles come, gather, and the live one grows into the film
+  async function openF() {
+    await fill();
+    await wait(800); if (done) return;
+    if (!window.HRFlock) { finish(); return; }
+    await window.HRFlock.run({ wait, isDone: () => done, finish, video, speed });
+  }
+
+  ({ a: openA, b: openB, c: openC, d: openD, f: openF })[HOME]();
 })();
