@@ -1,73 +1,61 @@
 # tuan photography 陳亮元 — Project Memo 專案備忘錄
 
-*Last updated: 2026-11-02, handoff note. Read this first, then check the files to confirm.*
+*Last updated: 2026-11-09, late night, handoff note. Read this first, then check the files to confirm.*
 
 ## 現在狀態 Where things stand
 
-- **Designs 4 and 5 were dropped** (2026-11-05, his word): `/world/` and `/next/` are gone; code at the tags
-  `design4-dropped-2026-11-05`, `design5-dropped-2026-11-05`.
-- **Design 1 on localhost:8642 is the site.** Its Journey tab is now the new page,
-  `design 2/new/journey.html` (`/journey/` forwards there): flat map, click a country for its latest
-  trip, the map folds into a globe over the trip's photograph, a frosted list where the trip in view
-  stays clear. Merged 2026-10-29; 8644 and every experiment are closed.
-- **Design 3 (8650) was dropped on 2026-10-28** at his word, "drop 8650 entirely". Folder,
-  `tools/build3.py` and server entry removed; the code is at the tag `design3-dropped-2026-10-28`.
-  `start.command` now starts and opens 8642 only.
+- **Design 1 on localhost:8642 is the site.** Its Journey tab is `design 2/new/journey.html` (`/journey/`
+  forwards there). The live home page still opens with the logo loading screen (1C, motion 21); nothing
+  from the home redesign is on the live page yet.
+- **Home opening, where it stands (2026-11-09).** Everything drawn or brushed is over: he said the sketch
+  turning into the film "is not actually what I want" (40 to 49 crossed out). He wants photographs
+  arriving (scattered, in rows, flying in) and the home page still landing on the Barcelona film. From the
+  14 references on `design 2/new/home-gallery.html` he marked only **Mathilde de Chiara** Good, so fifteen
+  versions of that family were built overnight: `design 2/new/home-redesign/c-flock-*.html`, one engine
+  `flock.js` (plain JS, Web Animations), review list numbers **50 to 64**, group `opening8`, marked
+  "Your pick". Each: the logo shrinks into the corner, his photographs fly in and form a shape (diamond,
+  ribbon, column, a row out of the logo's line, contact sheet, stairs, strips, table, ring, columns, a wall
+  that becomes the film, a wall swept, into one window, a dealt stack, TUAN in photographs), one tile is the
+  film alive in slow motion, and it grows to the whole screen where the page's video takes over.
+- **Journey footprint map (another desk's work):** round six, five wall maps (`footprint-wall-*`), waiting
+  for his scores; see CLAUDE.md for the whole history. Untracked `footprint-swift-*` files in `design 2/new/`
+  belong to that session; do not commit them from here.
 - **93 photographs, 21 countries.** 22 US photographs have no camera data.
-- **Code-tab sidebar, decided 2026-10-29, he does the moving himself.** One sidebar group,
-  旅遊網站, holding one long-lived "desk" session per site tab (首頁 Home, 作品集 Gallery, 旅程 Journey,
-  攻略 Guides, 關於我 About) plus four outside the tabs: 靈感 Ideas, 照片 Photos, 網站整體 Site-wide,
-  報告 Reports (the automatic report runs). Every experiment for a tab is a side session started from
-  that tab's desk, so it nests under it; keep or drop archives the experiment and the desk stays.
-  Desks are created the first time that tab is worked on, not before. Existing sessions: "journey tab
-  design" becomes the Journey desk, "3D globe" sits beside it, "ideas" is the Ideas desk, "Travel website
-  session cleanup" is Site-wide. The 20 old report-run sessions (AI 情報報告, 網頁設計雷達, 週報, one
-  reminder) can go: every report is saved in `ideas/weekly/`. Do not create groups or move sessions
-  for him; he asked to do it himself.
+- **Review tooling.** `ideas/reviews/home-redesign.json` holds his scores; `tools/read_reviews.py` reads
+  them. Films and stills of these openings are made with headless Chrome on the GPU (`--use-angle=metal`),
+  timed from `html.hr-arrive`; the scripts live in the session scratchpad (`gal/filmfl.py`, `gal/stillfl.py`),
+  rewrite them if lost. The server (`tools/reviews_mixin.py`) now also serves `.mp4` clips under
+  `/__reviews/<name>/thumbs/` with byte ranges, for the reference page's recordings.
 
 ## 上次做到哪 Where we left off
 
-2026-11-02: nine general 3D skills installed on the Mac (MengTo scroll worlds, virtual tour, landscape,
-globe-gl, cobejs; davila7 3d-web-experience; freshtechbro web3d patterns, Blender pipeline, R3F); also
-uploaded to his Claude account (both sides, skills page version 18).
-Then he asked for a completely new 3D design and left for 3 to 4 hours: Design 4 was built, checked on
-desktop and phone, critiqued by a second agent and refined.
-
-2026-10-29 to 10-30, all on the Journey globe (live page unchanged except "polish only", which went
-live: arcs closer to the globe, "Read the trip", easier faded trips). Round after round of globe
-trials; what he said that decides the next step:
-- He likes **the wrap**: the flat map closing into the globe around Taiwan (A4's movement).
-- He dislikes: a blue map "pasted" on white; **a rectangle lifting off the background** (fixed by the
-  whole-page wrap: the map fills the page and its edges fade into the paper); his photographs inside
-  the countries ("weird", dropped); the globe being "plain, boring".
-- "Realistic" did **not** mean a real earth: he meant the design factor is missing. He proposed giving
-  references; I agreed (one per problem: globe look, transition, arrival, each with what he likes).
-- Review mechanism rebuilt: a Notes box on every version page (drag, minimize, N key, 1 to 5 score,
-  pins), the review page a plain list with scores.
-- Skills installed both places at his word: top-design, editorial-portfolio-chapters, shader-glsl
-  (and the 13 three.js ones the day before). Skills list page: 48.
+2026-11-09, one long night session on the Home opening:
+- He dropped the sketch-into-film idea and asked for photo-led reference sites. About 60 filmed, 14 kept on
+  `home-gallery.html` with a looping recording of each opening; he marked Mathilde de Chiara Good.
+- He asked for 10 to 20 bold versions in that feeling, to review in the morning ("use any skills"). Fifteen
+  built, reviewed by two agents (a visitor's eye, a motion designer) and by me frame by frame on desktop and
+  at phone width; fixed on the way: a class clash that blanked the page, the mosaic flashing white before the
+  film, the stack's translucent pile, phone layouts (table, ring, stack, TUAN on two lines).
+- TODO.md updated (the home entry carries the whole story); docx rebuilt.
 
 ## 接下來 Next up
 
-Open http://localhost:8642/journey/new/index.html: the three he gave 5 stars (the live page, marked
-Main; 2 Sea chart, scroll-craft; 3 Paper, the whole page wraps). Next he **brings 2 or 3 references**
-(or asks for an Awwwards shortlist), and the globe is designed from those. Code: `design 2/new/`
-`globe3d.js` (configs `paperwrap`, `ink`, `earth`, `chart`), `earth.css`, `craft.css`, `journey.js`
-(`dockCraft`).
+Open http://localhost:8642/journey/new/home-redesign/ and read his scores on 50 to 64:
+`python3 tools/read_reviews.py ideas/reviews/home-redesign.json --manifest "design 2/new/home-redesign/review-manifest.json"`.
+Remove the ones he scores 1 (his rule), keep the family, and refine the ones he likes: `flock.js` holds the
+fifteen as named configs (`V`), each a `layout`, `enter`, `hold`, `leave`; `tools/home_redesign.py`
+(`FLOCKS`, `FLOCK_PHOTOS`) writes the pages. When he picks one, it goes on the live home page through
+`tools/build.py`'s `loader()` (the live loading screen is `design 1/js/loader.js`).
 
 ## 等你決定 Waiting on you
 
-- **Journey globe** (2026-10-30): kept the three with 5 stars, the live one as main; next, references
-  for the globe's look, the wrap and the arrival. Front-end research report (skills, fonts, techniques, workflow, reference sites), 2026-10-30: https://claude.ai/artifact/9HiVVp4ySh6ih3izJeJXG3 Removed trials are at tags
-  `globe3d-five-versions-2026-10-29`, `journey-panels-three-2026-10-29`, `journey-artists-a1-a3-2026-10-29`,
-  `journey-photo-countries-2026-10-30`, `journey-earth-ink-2026-10-30`.
-
-- **Sea photograph** on the old Journey map: which photographs besides Aoraki, if any?
-- **Camera data for the 22 US photographs:** re-export from Lightroom with metadata, or drop the
-  raw files in.
+- **Home opening 50 to 64:** scores and notes. Also: should the opening play on every visit or once per visit
+  (the live loading screen plays once).
+- **Journey footprint round six** (other desk): scores on the five wall maps.
+- **Camera data for the 22 US photographs:** re-export from Lightroom with metadata, or drop the raw files in.
 - **Boston** has a book but no photographs yet.
 - **Older items:** the second guide (Vietnam and Japan have the most photos); Barcelona's SIM row;
-  newsletter sign-up; the old three Barcelona layouts; 紐西蘭暫緩.
+  newsletter sign-up; 紐西蘭暫緩.
 
 ## 如何接續 How to resume
 

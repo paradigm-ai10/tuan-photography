@@ -328,12 +328,13 @@
     'table': {
       n: 16, shape: 'own', mark: 'corner', hold: 1200,
       layout() {
-        const a = ars(), rh = clamp(H * 0.16, 64, 170), slots = [];
+        const narrow = W < 700, count = narrow ? 9 : 16;
+        const a = ars(), rh = clamp(H * (narrow ? 0.11 : 0.16), 56, 170), slots = [];
         const fw = rh * W / H;
         const film = { x: W / 2 - fw / 2, y: topY() + (H - topY()) / 2 - rh / 2, w: fw, h: rh, r: -2.5 };
         const taken = [film];
         const fits = (s) => taken.every((t) => s.x + s.w + 14 < t.x || t.x + t.w + 14 < s.x || s.y + s.h + 14 < t.y || t.y + t.h + 14 < s.y);
-        for (let k = 0; k < 16; k++) {
+        for (let k = 0; k < count; k++) {
           const w = rh * a[k], h = rh;
           let s = null;
           for (let tries = 0; tries < 400 && !s; tries++) {
@@ -343,8 +344,9 @@
           if (!s) s = { x: between(16, W - w - 16), y: between(topY(), H - h - 16), w, h, r: between(-7, 7) };
           taken.push(s); slots.push(s);
         }
-        slots.splice(8, 0, film);
-        return { slots, film: 8 };
+        const at = Math.floor(count / 2);
+        slots.splice(at, 0, film);
+        return { slots, film: at };
       },
       enter() {
         const order = tiles.map((_, i) => i).sort(() => rnd() - 0.5);
@@ -370,8 +372,9 @@
     'ring': {
       n: 18, shape: 'own', mark: 'stay', hold: 1200,
       layout() {
-        const a = ars(), rh = clamp(H * 0.125, 54, 130), slots = [];
-        const rx = W * 0.5 - rh * 0.9, ry = H * 0.5 - rh * 0.75;
+        const narrow = W < 700;
+        const a = ars(), rh = clamp(H * (narrow ? 0.075 : 0.125), 44, 130), slots = [];
+        const rx = W * 0.5 - rh * (narrow ? 1.1 : 0.9), ry = H * 0.5 - rh * 0.75;
         const N = 19;
         for (let k = 0; k < N; k++) {
           const ang = -Math.PI / 2 + k / N * Math.PI * 2 + 0.12;
@@ -494,7 +497,7 @@
     'stack': {
       n: 17, shape: 'own', mark: 'corner', hold: 500,
       layout() {
-        const a = ars(), rh = clamp(H * 0.42, 160, 420), slots = [];
+        const a = ars(), rh = Math.min(clamp(H * 0.42, 160, 420), (W - 40) / 1.6), slots = [];
         const cy = topY() + (H - topY()) / 2;
         for (let k = 0; k < 18; k++) {
           const isFilm = k === 17, w = isFilm ? rh * W / H : rh * a[k];
@@ -522,17 +525,26 @@
       n: 41, shape: 'square', mark: 'corner', hold: 1300,
       layout() {
         const L = ['XXX|.X.|.X.|.X.|.X.', 'X.X|X.X|X.X|X.X|XXX', '.X.|X.X|XXX|X.X|X.X', 'X...X|XX..X|X.X.X|X..XX|X...X'];
-        const widths = L.map((l) => l.split('|')[0].length), cols = widths.reduce((s, w) => s + w, 0) + 3;
-        const cell = Math.min((W - 32) / (cols * 1.14), (H - topY() - 40) / (5 * 1.14) * 0.9, 110);
+        const widths = L.map((l) => l.split('|')[0].length);
+        const twoLines = W < 700;   // TU over AN on a narrow screen
+        const lines = twoLines ? [[0, 1], [2, 3]] : [[0, 1, 2, 3]];
+        const lineCols = lines.map((ln) => ln.reduce((s, li) => s + widths[li], 0) + ln.length - 1);
+        const cols = Math.max(...lineCols), rows = lines.length * 5 + (lines.length - 1);
+        const cell = Math.min((W - 32) / (cols * 1.14), (H - topY() - 40) / (rows * 1.14) * 0.9, 110);
         const gap = cell * 0.14, pitch = cell + gap;
-        const x0 = W / 2 - (cols * pitch - gap) / 2, y0 = topY() + (H - topY() - (5 * pitch - gap)) / 2;
+        const y0 = topY() + (H - topY() - (rows * pitch - gap)) / 2;
         const slots = [];
-        let cx = 0;
-        L.forEach((l, li) => {
-          l.split('|').forEach((row, r) => [...row].forEach((ch, c) => { if (ch === 'X') slots.push({ x: x0 + (cx + c) * pitch, y: y0 + r * pitch, w: cell, h: cell, r: 0, letter: li, row: r }); }));
-          cx += widths[li] + 1;
+        let filmAt = { x: 0, y: 0 };
+        lines.forEach((ln, k) => {
+          const x0 = W / 2 - (lineCols[k] * pitch - gap) / 2, yl = y0 + k * 6 * pitch;
+          let cx = 0;
+          ln.forEach((li) => {
+            if (li === 2) filmAt = { x: x0 + (cx + 1) * pitch, y: yl + 2 * pitch };   // the A's crossbar, its middle cell
+            L[li].split('|').forEach((row, r) => [...row].forEach((ch, c) => { if (ch === 'X') slots.push({ x: x0 + (cx + c) * pitch, y: yl + r * pitch, w: cell, h: cell, r: 0, letter: li, row: r }); }));
+            cx += widths[li] + 1;
+          });
         });
-        const film = slots.findIndex((s) => s.letter === 2 && s.row === 2 && Math.abs(s.x - (x0 + (widths[0] + 1 + widths[1] + 1 + 1) * pitch)) < 1);
+        const film = slots.findIndex((s) => Math.abs(s.x - filmAt.x) < 1 && Math.abs(s.y - filmAt.y) < 1);
         return { slots, film: film < 0 ? 20 : film };
       },
       enter() {
