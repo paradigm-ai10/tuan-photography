@@ -7,6 +7,8 @@
     POST /__reviews/<name>                     replace it (JSON object, up to 1 MB), written atomically
     GET  /__reviews/<name>/thumbs/<file>.jpg   a still made by review_thumbs.py, read-only
     GET  /__reviews/<name>/thumbs/thumbs.json  the list of stills
+    GET  /__reviews/<name>/thumbs/<file>.mp4   a short clip recorded by Claude (2026-11-09, motion references),
+                                               read-only, with byte ranges so the browser can loop and seek it
 
 Before the first POST of each calendar day the file is copied to <name>.json.bak-YYYY-MM-DD
 (once a day, never overwritten), so a bad save can always be undone by hand.
@@ -31,7 +33,7 @@ import threading
 import time
 
 REVIEW_PATH = re.compile(r'^/__reviews/([a-z0-9-]{1,60})$')
-THUMB_PATH = re.compile(r'^/__reviews/([a-z0-9-]{1,60})/thumbs/([a-z0-9-]{1,80}\.jpg|thumbs\.json)$')
+THUMB_PATH = re.compile(r'^/__reviews/([a-z0-9-]{1,60})/thumbs/([a-z0-9-]{1,80}\.(?:jpg|mp4)|thumbs\.json)$')
 MAX_BODY = 1_000_000
 # one save at a time, across every handler thread: backup, write and replace never overlap
 _LOCK = threading.Lock()
@@ -78,8 +80,29 @@ class ReviewsMixin:
             except OSError:
                 self.send_error(404)
                 return True
-            self.send_response(200)
-            self.send_header('Content-Type', 'image/jpeg' if f.endswith('.jpg') else 'application/json; charset=utf-8')
+            kind = ('image/jpeg' if f.endswith('.jpg') else 'video/mp4' if f.endswith('.mp4')
+                    else 'application/json; charset=utf-8')
+            rng = re.match(r'^bytes=(\d*)-(\d*)$', self.headers.get('Range') or '')
+            if rng and f.endswith('.mp4') and (rng.group(1) or rng.group(2)):
+                size = len(data)
+                if rng.group(1):
+                    a = int(rng.group(1)); b = int(rng.group(2)) if rng.group(2) else size - 1
+                else:   # the last N bytes
+                    a = max(0, size - int(rng.group(2))); b = size - 1
+                b = min(b, size - 1)
+                if a > b:
+                    self.send_response(416)
+                    self.send_header('Content-Range', 'bytes */%d' % size)
+                    self.end_headers()
+                    return True
+                self.send_response(206)
+                self.send_header('Content-Range', 'bytes %d-%d/%d' % (a, b, size))
+                data = data[a:b + 1]
+            else:
+                self.send_response(200)
+            self.send_header('Content-Type', kind)
+            if f.endswith('.mp4'):
+                self.send_header('Accept-Ranges', 'bytes')
             self.send_header('Content-Length', str(len(data)))
             self.send_header('Cache-Control', 'no-store')
             self.end_headers()

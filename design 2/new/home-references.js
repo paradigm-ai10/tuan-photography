@@ -139,6 +139,20 @@
         });
         li.appendChild(pics);
       }
+      if (PAGE.clips) {   // a short clip of the site's opening, recorded by Claude, looping and silent
+        const v = el('video', 'refs-clip');
+        v.src = URL_ + '/thumbs/' + s.id + '.mp4';
+        v.muted = true; v.loop = true; v.playsInline = true; v.preload = 'metadata';
+        v.setAttribute('aria-label', s.name + ' 開場錄影 recording of its opening');
+        li.appendChild(v);
+        const cap = el('p', 'refs-clip-note');
+        cap.appendChild(document.createTextNode('錄下來的開場，重複播放 · A recording of its opening, on a loop · '));
+        const go = el('a', '', '打開網站 Open the site');
+        go.href = s.url; go.target = '_blank'; go.rel = 'noopener';
+        cap.appendChild(go);
+        li.appendChild(cap);
+        clips.push(v);
+      }
       li.appendChild(el('p', 'refs-look', s.look));
       const pair = el('div', 'refs-pair');
       const p1 = el('p'); p1.appendChild(el('b', '', '合 Fits')); p1.appendChild(document.createTextNode(s.fits));
@@ -168,7 +182,15 @@
       list.appendChild(li);
     });
     general.value = data.general || '';
+    // play only the clips on screen, each from its start, so the openings are seen whole
+    if (clips.length && 'IntersectionObserver' in window) {
+      const io = new IntersectionObserver((es) => es.forEach((e) => {
+        if (e.isIntersecting) { e.target.currentTime = 0; e.target.play().catch(() => {}); } else e.target.pause();
+      }), { threshold: 0.5 });
+      clips.forEach((v) => io.observe(v));
+    }
   }
+  const clips = [];
 
   general.addEventListener('input', () => { data.general = general.value; save(); });
 

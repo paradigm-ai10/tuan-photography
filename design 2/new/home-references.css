@@ -58,3 +58,6 @@ textarea:focus-visible, .refs-btn:focus-visible, a:focus-visible { outline: 2px 
 .refs-shots img { display: block; width: 100%; height: auto; border: 1px solid var(--line); }
 .refs-shots:hover img, .refs-shots:focus-visible img { border-color: var(--text-2); }
 .refs-wide { max-width: 64rem; }
+/* clips of a site's opening (home-gallery, 2026-11-09) */
+.refs-clip { display: block; width: 100%; height: auto; aspect-ratio: 8 / 5; background: var(--card); border: 1px solid var(--line); margin: 0 0 0.5rem; }
+.refs-clip-note { font-size: 0.8125rem; color: var(--text-2); margin: 0 0 1.25rem; }
