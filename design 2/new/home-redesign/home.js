@@ -292,7 +292,9 @@
     await fill();
     await wait(800); if (done) return;
     if (!window.HRFlock) { finish(); return; }
-    await window.HRFlock.run({ wait, isDone: () => done, finish, video, speed });
+    try { await window.HRFlock.run({ wait, isDone: () => done, finish, video, speed }); }
+    catch (e) { console.error(e); }
+    finally { if (!done) finish(); }   // whatever happens, the visitor gets the page
   }
 
   ({ a: openA, b: openB, c: openC, d: openD, f: openF })[HOME]();

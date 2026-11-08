@@ -77,7 +77,7 @@
   /* ---------------- the pieces of every choreography ---------------- */
   let tiles = [];   // [{ el, slot, film, img }] in slot order
   function place(plan, shape, ars) {
-    const { slots, film } = plan;
+    const slots = plan.slots, film = Math.min(plan.film, slots.length - 1);   // a short layout (a narrow phone) still gets its film tile
     const n = slots.length - 1;
     const used = photos.slice(0, n);
     photos.slice(n).forEach((p) => p.remove());
@@ -99,9 +99,9 @@
   // the tiles fly in from one side, every tile the same flight, the delays spread along the flock
   function flyIn({ from, rank, spread = 900, dur = 1700, tilt = 4, scale = 0.9, ease = OUT }) {
     return finished(tiles.map((t, i) => {
-      const r0 = t.slot.r;
+      const r0 = t.slot.r, k = 0.72 + 0.56 * rnd();   // a flock, not a block: each its own distance, all landing together
       return t.el.animate([
-        { opacity: 1, transform: tf(from.x, from.y, r0 + (i % 2 ? tilt : -tilt), scale) },
+        { opacity: 1, transform: tf(from.x * k, from.y * k, r0 + (i % 2 ? tilt : -tilt) * k, scale) },
         { opacity: 1, transform: tf(0, 0, r0, 1) }
       ], { duration: dur, delay: rank[i] * spread, easing: ease, fill: 'both' });
     }));
@@ -140,6 +140,8 @@
     const t = tiles.find((x) => x.film);
     const s = t.slot;
     t.el.style.zIndex = '3';
+    setTimeout(() => { if (!html.classList.contains('hr-shown')) html.classList.add('hr-out'); }, delay + dur * 0.35);   // the corner mark crosses from dark to the page's own
+    if (tv && api_.video) { try { api_.video.currentTime = tv.currentTime + (delay + dur) / 1000 * (tv.playbackRate || 0.3); } catch (e) { /* not yet seekable */ } }   // pre-seek: the final nudge is tiny
     return t.el.animate([
       { left: s.x + 'px', top: s.y + 'px', width: s.w + 'px', height: s.h + 'px', transform: tf(0, 0, s.r, 1) },
       { left: '0px', top: '0px', width: W + 'px', height: H + 'px', transform: 'none' }
@@ -162,17 +164,17 @@
     // 1 the diamond: the flock flies in along the diagonal and lands as a diamond; the far tiles peel away down the other
     //   diagonal while the live one grows
     'diamond': {
-      n: 24, shape: 'square', mark: 'corner', hold: 900,
+      n: 24, shape: 'square', mark: 'corner', hold: 700,
       layout: () => diamond(),
       enter() { return flyIn({ from: { x: W * 0.8, y: -H * 0.8 }, rank: diagonalRank(tiles.map((t) => t.slot)) }); },
       leave() {
         const f = centre(tiles.find((t) => t.film).slot), d = tiles.map((t) => dist(centre(t.slot), f)), m = Math.max(...d);
-        return peel({ dir: { x: -W * 0.9, y: H * 0.9 }, order: d.map((v) => 1 - v / m) });
+        return peel({ dir: { x: -W * 0.9, y: H * 0.9 }, order: d.map((v) => 1 - v / m), growDelay: 150 });
       }
     },
     // 2 a ribbon: the same diamond, but the prints come single file from the corner, a long train that coils into place
     'ribbon': {
-      n: 24, shape: 'square', mark: 'corner', hold: 1000,
+      n: 24, shape: 'square', mark: 'corner', hold: 700,
       layout: () => diamond(),
       enter() {
         const rank = diagonalRank(tiles.map((t) => t.slot));
@@ -187,7 +189,7 @@
     // 3 into one column: the diamond lands, then falls into one column down the middle that slides up through the
     //   screen; the live one stops in the middle and grows (her ending)
     'column': {
-      n: 24, shape: 'square', mark: 'corner', hold: 900,
+      n: 24, shape: 'square', mark: 'corner', hold: 600,
       layout: () => diamond(),
       enter() { return flyIn({ from: { x: W * 0.8, y: -H * 0.8 }, rank: diagonalRank(tiles.map((t) => t.slot)) }); },
       async leave(api) {
@@ -199,7 +201,7 @@
         const col = order.map((t, k) => ({ x: x - t.slot.x, y: yTop + k * pitch - t.slot.y }));
         await finished(order.map((t, k) => t.el.animate([
           { transform: tf(0, 0, 0, 1) }, { transform: tf(col[k].x, col[k].y, 0, 1) }
-        ], { duration: 950, delay: k * 22, easing: INOUT, fill: 'both' })));
+        ], { duration: 850, delay: Math.min(k, 8) * 22, easing: INOUT, fill: 'both' })));
         if (api.isDone()) return;
         // phase two: the column slides up until the film tile sits in the middle; the rest run on out of the top
         const rise = (yTop + fk * pitch) - (H / 2 - cell / 2);
@@ -222,7 +224,7 @@
     // 4 the line becomes a row: the logo's line runs to both edges and opens into one long row of photographs; the row
     //   parts and the live one grows
     'line': {
-      n: 11, shape: 'own', mark: 'line', hold: 1000,
+      n: 11, shape: 'own', mark: 'line', hold: 800,
       layout() {
         const line = document.querySelector('.hr-load__line').getBoundingClientRect();
         const rh = clamp(H * 0.2, 70, 210), a = ars(), gap = rh * 0.08;
@@ -249,12 +251,15 @@
     // 5 a contact sheet: four rows slide in from alternate sides and fill the screen; they slide back out the way
     //   they came and the live one grows
     'contact': {
-      n: 33, shape: 'own', mark: 'corner', hold: 900,
+      n: 33, shape: 'own', mark: 'corner', hold: 700,
       layout() {
-        const rh = (H - topY() - 40) / 4 * 0.84, a = ars();
+        const rows = W < 700 ? 6 : 4;
+        const rh = (H - topY() - 40) / rows * 0.84, a = ars();
         const list = a.slice(0, 33); list.splice(10, 0, W / H);   // the film among them, second row
-        const slots = rowsOwn(4, rh, list, W * 0.94);
-        return { slots, film: 10 };
+        const slots = rowsOwn(rows, rh, list, W * 0.94);
+        const film = Math.min(10, slots.length - 1);
+        if (!slots[film] || Math.abs(slots[film].w / slots[film].h - W / H) > 0.01) { const f = slots[film]; f.w = f.h * W / H; }   // its slot keeps the window's shape
+        return { slots, film };
       },
       enter() {
         return finished(tiles.map((t, i) => {
@@ -266,7 +271,7 @@
       },
       leave() {
         const anims = tiles.map((t, i) => t.film ? null : t.el.animate([
-          { transform: tf(0, 0, 0, 1) }, { transform: tf(t.slot.row % 2 === 0 ? -W * 1.1 : W * 1.1, 0, 0, 1) }
+          { transform: tf(0, 0, 0, 1) }, { transform: tf(t.slot.row % 2 === 0 ? W * 1.1 : -W * 1.1, 0, 0, 1) }   // on through, out the other side
         ], { duration: 1300, delay: (3 - t.slot.row) * 120 + (i % 8) * 30, easing: INOUT, fill: 'both' })).filter(Boolean);
         return Promise.all([finished(anims), grow(200, 1700)]);
       }
@@ -274,7 +279,7 @@
     // 6 stairs: five rows of squares, each a step further across, rising from below; then all of them gather onto
     //   the live one
     'stairs': {
-      n: 29, shape: 'square', mark: 'corner', hold: 1000,
+      n: 29, shape: 'square', mark: 'corner', hold: 700,
       layout() {
         const cell = Math.min(cellSize() * 1.15, (H - topY() - 30) / (5 * 1.14), (W - 40) / (6 + 2.4) / 1.1);
         const gap = cell * 0.14, pitch = cell + gap, step = cell * 0.6;
@@ -285,8 +290,8 @@
       },
       enter() {
         return finished(tiles.map((t) => t.el.animate([
-          { opacity: 0, transform: tf(0, H * 0.5, 0, 0.96) }, { opacity: 1, transform: tf(0, H * 0.1, 0, 1), offset: 0.3 }, { opacity: 1, transform: tf(0, 0, 0, 1) }
-        ], { duration: 1500, delay: t.slot.row * 150 + t.slot.col * 45, easing: OUT, fill: 'both' })));
+          { opacity: 0, transform: tf(0, H * 0.45, 0, 0.96), easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)' }, { opacity: 1, transform: tf(0, H * 0.3, 0, 0.98), offset: 0.22, easing: OUT }, { opacity: 1, transform: tf(0, 0, 0, 1) }
+        ], { duration: 1500, delay: t.slot.row * 150 + t.slot.col * 45, fill: 'both' })));
       },
       leave() {
         const f = centre(tiles.find((t) => t.film).slot), d = tiles.map((t) => dist(centre(t.slot), f)), m = Math.max(...d);
@@ -296,7 +301,7 @@
     // 7 strips passing: three strips of film run across the screen, the middle one the other way, and slow to a stop with
     //   the live frame in the middle; the outer strips part and it grows
     'strips': {
-      n: 32, shape: 'own', mark: 'corner', hold: 800,
+      n: 32, shape: 'own', mark: 'corner', hold: 300,
       layout() {
         const rh = (H - topY() - 30) / 3 * 0.78, a = ars(), gap = rh * 0.07, slots = [];
         const yGap = ((H - topY() - 30) - 3 * rh) / 2;
@@ -313,7 +318,7 @@
       enter() {
         return finished(tiles.map((t) => t.el.animate([
           { opacity: 1, transform: tf(t.slot.row === 1 ? W * 1.15 : -W * 1.15, 0, 0, 1) }, { opacity: 1, transform: tf(0, 0, 0, 1) }
-        ], { duration: 2800, delay: t.slot.row * 120, easing: 'cubic-bezier(0.16, 1, 0.3, 1)', fill: 'both' })));
+        ], { duration: 2600, delay: t.slot.row * 120, easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)', fill: 'both' })));
       },
       leave() {
         const anims = tiles.map((t) => t.film ? null : t.el.animate([
@@ -326,7 +331,7 @@
     // 8 laid on the table: prints dropped onto the paper one after another, a little tilted, never overlapping; then
     //   they slide off the table's edges and the live one straightens and grows
     'table': {
-      n: 16, shape: 'own', mark: 'corner', hold: 900,
+      n: 16, shape: 'own', mark: 'corner', hold: 700,
       layout() {
         const narrow = W < 700, count = narrow ? 9 : 16;
         const a = ars(), rh = clamp(H * (narrow ? 0.11 : 0.16), 56, 170), slots = [];
@@ -370,7 +375,7 @@
     // 9 around the name: the logo stays in the middle and the prints settle in a ring around it; then the ring closes
     //   onto the live one, which grows over the name
     'ring': {
-      n: 18, shape: 'own', mark: 'stay', hold: 1000,
+      n: 18, shape: 'own', mark: 'stay', hold: 800,
       layout() {
         const narrow = W < 700;
         const a = ars(), rh = clamp(H * (narrow ? 0.075 : 0.125), 44, 130), slots = [];
@@ -401,7 +406,7 @@
     // 10 columns rising: five columns of photographs rise from below at different speeds, like the slow columns of a
     //    gallery, and stop with the live one in the middle; the rest carry on out of the top
     'columns': {
-      n: 24, shape: 'own', mark: 'corner', hold: 700,
+      n: 24, shape: 'own', mark: 'corner', hold: 300,
       layout() {
         const cols = W < 700 ? 3 : 5, gap = clamp(W * 0.012, 8, 18);
         const cw = (W - gap * (cols + 1)) / cols, a = ars(), slots = [];
@@ -427,7 +432,7 @@
       enter() {
         return finished(tiles.map((t) => t.el.animate([
           { opacity: 1, transform: tf(0, H * (1.1 + (t.slot.col % 2) * 0.35), 0, 1) }, { opacity: 1, transform: tf(0, 0, 0, 1) }
-        ], { duration: 2600 + (t.slot.col % 3) * 300, delay: 0, easing: 'cubic-bezier(0.16, 1, 0.3, 1)', fill: 'both' })));
+        ], { duration: 2400 + (t.slot.col % 3) * 300, delay: 0, easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)', fill: 'both' })));
       },
       leave() {
         const anims = tiles.map((t) => t.film ? null : t.el.animate([
@@ -439,7 +444,7 @@
     // 11 the photographs become the film: a wall of them fills the screen edge to edge, then from the live one outward each
     //    turns into its own piece of the film's first frame, until the wall is the frame and it moves
     'mosaic': {
-      n: 39, shape: 'wall', mark: 'corner', hold: 800, mosaic: true, markGone: true, still: true,
+      n: 39, shape: 'wall', mark: 'corner', hold: 600, mosaic: true, markGone: true, still: true,
       layout() { return wallPlan(); },
       enter() { return flyIn({ from: { x: W * 0.6, y: -H * 0.6 }, rank: diagonalRank(tiles.map((t) => t.slot)), spread: 800, dur: 1600, tilt: 0, scale: 0.94 }); },
       leave(api) {
@@ -450,7 +455,7 @@
     // 12 ... swept from the corner: the wall arrives row by row from the sides, and the film comes up across it on the
     //    diagonal, top left to bottom right
     'sweep': {
-      n: 39, shape: 'wall', mark: 'corner', hold: 800, mosaic: true, markGone: true, still: true,
+      n: 39, shape: 'wall', mark: 'corner', hold: 600, mosaic: true, markGone: true, still: true,
       layout() { return wallPlan(); },
       enter() {
         return finished(tiles.map((t) => {
@@ -468,7 +473,7 @@
     // 13 into one window: a wall of small screens lights up window by window; then the view moves in on the live one until
     //    it is the whole screen
     'window': {
-      n: 39, shape: 'screen', mark: 'corner', hold: 900, still: true,
+      n: 39, shape: 'screen', mark: 'corner', hold: 700, still: true,
       layout() {
         const cols = W < 700 ? 4 : 8, rows = 5, gap = clamp(W * 0.01, 6, 14);
         const cw = Math.min((W - 32 - gap * (cols - 1)) / cols, (H - topY() - 24 - gap * (rows - 1)) / rows * W / H);
@@ -487,6 +492,7 @@
       async leave(api) {
         const f = tiles.find((t) => t.film), c = centre(f.slot), k = W / f.slot.w;
         html.classList.add('hr-markgone');   // the wall passes over the corner as the view moves in
+        setTimeout(() => html.classList.add('hr-out'), 900);
         layer.style.transformOrigin = `${c.x}px ${c.y}px`;
         tiles.forEach((t) => { if (!t.film) t.el.animate([{ opacity: 1 }, { opacity: 1, offset: 0.55 }, { opacity: 0 }], { duration: 1900, easing: 'linear', fill: 'both' }); });
         await layer.animate([{ transform: 'none' }, { transform: `translate(${W / 2 - c.x}px, ${H / 2 - c.y}px) scale(${k.toFixed(4)})` }],
@@ -496,7 +502,7 @@
     // 14 a stack, dealt: the prints drop into one pile in the middle; the top one is flicked away to the left, the next to the
     //    right, each showing the next, until the last in the pile is the live one, and it grows
     'stack': {
-      n: 17, shape: 'own', mark: 'corner', hold: 500,
+      n: 17, shape: 'own', mark: 'corner', hold: 400,
       layout() {
         const a = ars(), rh = Math.min(clamp(H * 0.42, 160, 420), (W - 40) / 1.6), slots = [];
         const cy = topY() + (H - topY()) / 2;
@@ -510,20 +516,20 @@
         // the pile builds from the bottom (the film first, then each print on top): later tiles above earlier ones
         tiles.forEach((t, i) => { t.el.style.zIndex = String(tiles.length - i); });
         return finished(tiles.map((t, i) => t.el.animate([
-          { opacity: 0, transform: tf(0, -110, t.slot.r - 2, 1.04) }, { opacity: 1, transform: tf(0, -90, t.slot.r - 2, 1.04), offset: 0.12 }, { opacity: 1, transform: tf(0, 0, t.slot.r, 1) }
-        ], { duration: 520, delay: (tiles.length - 1 - i) * 95, easing: OUT, fill: 'both' })));
+          { opacity: 0, transform: tf(0, -110, t.slot.r - 2, 1.04), easing: 'linear' }, { opacity: 1, transform: tf(0, -90, t.slot.r - 2, 1.04), offset: 0.12, easing: OUT }, { opacity: 1, transform: tf(0, 0, t.slot.r, 1) }
+        ], { duration: 520, delay: (tiles.length - 1 - i) * 95, fill: 'both' })));
       },
       leave() {
         const anims = tiles.map((t, i) => t.film ? null : t.el.animate([
-          { transform: tf(0, 0, t.slot.r, 1) }, { transform: tf(i % 2 ? -W * 0.85 : W * 0.85, between(-60, 60), t.slot.r + (i % 2 ? -14 : 14), 1) }
-        ], { duration: 480, delay: i * 125, easing: 'cubic-bezier(0.55, 0, 0.6, 1)', fill: 'both' })).filter(Boolean);
+          { transform: tf(0, 0, t.slot.r, 1) }, { transform: tf((i % 2 ? -1 : 1) * (W / 2 + t.slot.w / 2 + 60), between(-60, 60), t.slot.r + (i % 2 ? -14 : 14), 1) }
+        ], { duration: 420, delay: i * 125, easing: 'cubic-bezier(0.4, 0, 1, 1)', fill: 'both' })).filter(Boolean);
         return Promise.all([finished(anims), grow(13 * 125, 1600)]);
       }
     },
     // 15 TUAN, in photographs: the prints fly in and spell his name in the middle of the paper, letter by letter; then the
     //    letters gather onto the live one
     'letters': {
-      n: 41, shape: 'square', mark: 'corner', hold: 1000,
+      n: 41, shape: 'square', mark: 'corner', hold: 800,
       layout() {
         const L = ['XXX|.X.|.X.|.X.|.X.', 'X.X|X.X|X.X|X.X|XXX', '.X.|X.X|XXX|X.X|X.X', 'X...X|XX..X|X.X.X|X..XX|X...X'];
         const widths = L.map((l) => l.split('|')[0].length);
@@ -584,11 +590,12 @@
     if (api.isDone()) return;
     // the frame is whole: the real film starts from the same frame beneath, and the wall lifts away
     const v = api.video;
-    if (v) { v.currentTime = 0; v.playbackRate = 1; v.play().catch(() => {}); }
-    if (tv) tv.pause();
+    if (v) { v.currentTime = 0; v.playbackRate = 1; }
     await wait(350);
     const paper = document.querySelector('.hr-load__paper');
     if (paper) paper.style.opacity = '0';   // the wall now covers the window: the paper under it goes, so what shows through is the film
+    if (v) v.play().catch(() => {});   // the frame beneath is the poster's own until this moment
+    html.classList.add('hr-out');
     await layer.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 700, easing: 'ease', fill: 'both' }).finished.catch(() => {});
     api.mosaicDone = true;
   }
@@ -597,6 +604,7 @@
   /* ---------------- ready, run ---------------- */
   const spec = V[NAME];
   if (!spec) return;
+  if (/[?&]still\b/.test(location.search) || matchMedia('(prefers-reduced-motion: reduce)').matches) return;   // home.js shows the end at once; load nothing
   // choose the photographs now, so only the ones this version uses are loaded
   const needed = photos.slice(0, spec.n);
   needed.forEach((p) => { const im = p.querySelector('img'); im.src = im.dataset.src; });
@@ -605,7 +613,9 @@
     return needed.every((p) => { const im = p.querySelector('img'); return im.complete && im.naturalWidth > 0; }) && (spec.mosaic || tv.readyState >= 2);
   }
 
+  let api_ = {};
   async function run(api) {
+    api_ = api;
     W = innerWidth; H = innerHeight;
     const plan = spec.layout();
     place(plan);
@@ -633,7 +643,8 @@
     if (!api.mosaicDone && v && tv) {
       tv.pause();
       const at = tv.currentTime;
-      await new Promise((res) => { const on = () => { v.removeEventListener('seeked', on); res(); }; v.addEventListener('seeked', on); v.currentTime = at; setTimeout(res, 400); });
+      if (Math.abs(v.currentTime - at) > 0.04) await new Promise((res) => { const on = () => { v.removeEventListener('seeked', on); res(); }; v.addEventListener('seeked', on); v.currentTime = at; setTimeout(res, 300); });
+      if (api.isDone()) return;
       v.playbackRate = 0.3;
       v.play().catch(() => {});
       api.speed(0.3, 1, 1400);

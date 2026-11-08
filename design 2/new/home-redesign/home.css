@@ -565,6 +565,11 @@ html.hr-js .hr-qdoor.hr-in { transition-delay: calc(var(--i, 0) * 70ms); }
 .hr-tile img, .hr-tile video { display: block; width: 100%; height: 100%; object-fit: cover; }
 .hr-tile__slice { position: absolute; inset: 0; background-repeat: no-repeat; opacity: 0; }
 [data-flock] .hr-load__paper { transition: none; }
+/* hr-out comes as the film starts to grow: the dark mark in the corner fades while the page's own, white, comes in over the
+   film, one crossfade; the paper stays under the tiles until the end */
+[data-flock].hr-out .hr-load__paper { opacity: 1; }
+[data-flock].hr-out .hr-load__mark { transition: opacity 1s ease 0.3s; }
+[data-flock].hr-out .hr-top { transition: opacity 1s ease 0.5s; }
 [data-flock] .hr-load__mark { will-change: transform; }
 [data-flock].hr-markgone .hr-load__mark { opacity: 0; transition: opacity 0.9s ease; }   /* ring: the name goes as the ring closes over it */
 [data-flock].hr-rowopen .hr-load__line { opacity: 0; transition: opacity 0.5s ease 0.25s; }   /* line: the row has opened out of it */
