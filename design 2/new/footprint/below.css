@@ -1,0 +1,15 @@
+/* What comes under the footprint map (below.js): the page scrolls, the map is its first screen, and
+   his trips follow as a plain list. */
+html.fp-scroll, body.fp-scroll { height: auto; }
+body.fp-scroll { overflow-x: hidden; overflow-y: auto; }
+.fp-scroll .fp-stage { position: relative; inset: auto; height: calc(100svh - var(--bar)); }
+/* the top bar belongs to the map's screen and scrolls away with it, so it never sits over the list */
+.fp-scroll .fp-top { position: absolute; }
+
+.fp-below { padding: clamp(3rem, 8vh, 6rem) var(--edge) calc(var(--bar) + 4rem); max-width: 64rem; }
+.fp-below__h { margin: 0 0 1.5rem; font: 400 clamp(1.6rem, 1.2rem + 1.5vw, 2.4rem)/1.1 var(--f-name); }
+.fp-below__list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--hair); }
+.fp-below__list li { display: grid; grid-template-columns: minmax(8rem, 14rem) 1fr; gap: 0.25rem 1.5rem; padding: 0.9rem 0; border-bottom: 1px solid var(--hair); }
+.fp-below__date { font-size: 0.8125rem; letter-spacing: 0.06em; color: var(--ink-2); padding-top: 0.2rem; }
+.fp-below__where { font-family: var(--f-name); font-size: 1.125rem; line-height: 1.35; }
+@media (max-width: 560px) { .fp-below__list li { grid-template-columns: 1fr; } }

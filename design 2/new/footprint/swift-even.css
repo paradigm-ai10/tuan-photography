@@ -1,0 +1,75 @@
+/* Wall map, swift and even 同樣的節奏，快一倍以上 (footprint, round seven, 2026-11-09).
+   wall-widen-band's page at more than twice the pace, on a page that scrolls on to the list of his trips
+   (below.css): the stage is the first screen. bolder's earth washes, typeset's lettering. The script sets
+   every changing value as a custom property or a class. */
+:root {
+  --tn-ochre: oklch(80% 0.125 84);
+  --tn-terra: oklch(68% 0.125 40);
+  --tn-sage: oklch(72% 0.095 135);
+  --tn-slate: oklch(68% 0.08 238);
+  --tn-mauve: oklch(66% 0.085 338);
+  --tn-verdigris: oklch(71% 0.08 190);
+  --tn-home: var(--clay);
+  --tn-water: color-mix(in oklch, var(--ink) 80%, var(--slate));
+}
+
+/* ---- the sheet: the water-lines (drawn on the graphics card), then the map, each a whole-stage layer ---- */
+.wb-sheet { position: absolute; left: 0; top: 0; width: var(--sheet-w, 100%); height: var(--sheet-h, 100%); pointer-events: none; }
+.wb-sheet > canvas { position: absolute; left: 0; top: 0; display: block; width: var(--sheet-w, 100%); height: var(--sheet-h, 100%); }
+
+/* ---- the three numbers, in one row in the southern ocean (band's) ---- */
+.wb-row { position: absolute; inset: 0; pointer-events: none; }
+.wb-stat {
+  position: absolute; left: 0; top: 0;
+  transform: translate(var(--x, 0), var(--y, 0));
+  display: flex; align-items: flex-start; gap: calc(var(--f, 100px) * 0.08);
+  color: var(--ink); white-space: nowrap;
+}
+.wb-n {
+  font-family: var(--f-name); font-weight: 400; font-size: var(--f, 100px); line-height: 1;
+  font-variant-numeric: lining-nums tabular-nums; letter-spacing: -0.015em;
+  min-width: var(--nw, 0); text-align: right;
+  /* the box drawn in to the figures' ink (measured by the script), so the row sits on their line */
+  margin: calc(var(--n-top, 0px) * -1) 0 calc(var(--n-bot, 0px) * -1);
+}
+/* a figure in its cell: every figure as wide as the widest, so the count climbs in place */
+.wb-d { display: inline-block; width: var(--dw, 0.62em); text-align: center; }
+.wb-pct .wb-d { width: var(--pdw, 0.62em); }
+.wb-side { display: grid; justify-items: start; gap: 7px; margin-top: -3px; }
+.wb-label { font-size: 0.75rem; color: var(--ink); min-width: var(--lw, 0); }
+html[lang="zh-Hant"] .wb-label { font-size: 0.8125rem; letter-spacing: 0.16em; }
+.wb-share { display: flex; align-items: baseline; gap: 0.5em; }
+.wb-pct {
+  font-family: var(--f-name); font-weight: 400; font-size: 1rem; line-height: 1; color: var(--ink);
+  font-variant-numeric: lining-nums tabular-nums; min-width: var(--pw, 0); text-align: right;
+}
+html[lang="zh-Hant"] .wb-pct { text-align: left; }
+.wb-of { color: var(--ink-2); font-variant-numeric: lining-nums; }
+.wb-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; margin: 0; }
+
+/* the trip just begun: a very quiet line at the band's end, only while the ramp runs */
+.wb-trip, .wb-hint {
+  position: absolute; left: 0; top: 0; margin: 0;
+  transform: translate(var(--x, 0), var(--y, 0));
+  width: var(--tw, auto); text-align: right; white-space: nowrap;
+  color: var(--ink-3); font-variant-numeric: lining-nums tabular-nums;
+  opacity: 0; transition: opacity 0.4s var(--ease); pointer-events: none;
+}
+.wb-trip.is-on, .wb-hint.is-on { opacity: 1; }
+
+/* ---- arriving: the sheet and the numbers come up together after a short fade ---- */
+.fp--wwb .wb-sheet, .fp--wwb .wb-row { opacity: 0; transition: opacity 0.35s var(--ease); }
+.fp--wwb.is-ready .wb-sheet, .fp--wwb.is-ready .wb-row { opacity: 1; }
+/* a held frame (?at=) and the finished page (?still) are drawn at once */
+.fp--wwb.is-still .wb-sheet, .fp--wwb.is-still .wb-row, .fp--wwb.is-still .wb-trip, .fp--wwb.is-still .wb-hint { transition: none; }
+
+/* ---- the stage is the page's first screen, nothing of the map beyond it ---- */
+.fp--wwb .fp-stage { overflow: hidden; }
+
+/* ---- phones: a taller map across the width, the numbers in a row under it; on a short phone the stage
+   grows to hold them, and the map slides sideways under a finger (the page keeps the up and down) ---- */
+.fp-scroll.is-narrow .fp-stage { height: auto; min-height: max(calc(100svh - var(--bar)), var(--room, 0px)); }
+.fp--wwb.is-slide .fp-stage { touch-action: pan-y; }
+.is-narrow .wb-stat { flex-direction: column; align-items: center; gap: 10px; }
+.is-narrow .wb-side { margin-top: 0; gap: 6px; justify-items: center; }
+.is-narrow .wb-share { position: absolute; left: 0; top: 100%; margin-top: 12px; }

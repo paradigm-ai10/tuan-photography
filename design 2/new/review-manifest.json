@@ -2,11 +2,10 @@
   "name": "journey",
   "round": {
     "groups": [
-      "footprint-6"
+      "footprint-7"
     ],
     "ids": [
-      "footprint-ramp-band",
-      "footprint-ramp-widen"
+      "footprint-wall-widen-band"
     ]
   },
   "endpoint": "/__reviews/journey",
@@ -52,6 +51,13 @@
       "title": {
         "en": "The wall map, five ways",
         "zh": "牆面地圖，五種做法"
+      }
+    },
+    {
+      "id": "footprint-7",
+      "title": {
+        "en": "From home, faster",
+        "zh": "從家拉遠，快一點"
       }
     },
     {
@@ -257,6 +263,81 @@
       },
       "still": {
         "wait": 14000
+      }
+    },
+    {
+      "href": "footprint-swift-even.html",
+      "group": "footprint-7",
+      "title": {
+        "en": "The same, twice as fast",
+        "zh": "同樣的節奏，快一倍以上"
+      },
+      "desc": {
+        "en": "Your pick with the same moves, compressed: it rests in about four seconds instead of ten. Scrolling, a tap or a key jumps straight to the end.",
+        "zh": "你挑的那張，動作一樣，壓縮成大約 4 秒（原本約 10 秒）。一捲動、點一下或按鍵，就直接跳到最後。"
+      },
+      "still": {
+        "wait": 6000
+      }
+    },
+    {
+      "href": "footprint-swift-year.html",
+      "group": "footprint-7",
+      "title": {
+        "en": "One step a year",
+        "zh": "一年一步"
+      },
+      "desc": {
+        "en": "Nine beats, one per year you travelled, instead of sixteen trips: about three seconds. Scrolling, a tap or a key jumps straight to the end.",
+        "zh": "照年份走，九個節拍（原本十六趟）：大約 3 秒。一捲動、點一下或按鍵，就直接跳到最後。"
+      },
+      "still": {
+        "wait": 6000
+      }
+    },
+    {
+      "href": "footprint-swift-glide.html",
+      "group": "footprint-7",
+      "title": {
+        "en": "One breath out",
+        "zh": "一口氣拉遠"
+      },
+      "desc": {
+        "en": "No steps: the view widens from Taiwan to the whole world in one smooth move while the colours and numbers fill in, about three seconds. Scrolling, a tap or a key jumps straight to the end.",
+        "zh": "沒有分段：畫面一口氣從台灣拉遠到全世界，顏色和數字同時填滿，大約 3 秒。一捲動、點一下或按鍵，就直接跳到最後。"
+      },
+      "still": {
+        "wait": 6000
+      }
+    },
+    {
+      "href": "footprint-swift-numbers-lead.html",
+      "group": "footprint-7",
+      "title": {
+        "en": "The numbers first",
+        "zh": "數字先到"
+      },
+      "desc": {
+        "en": "The three numbers arrive in about a second; the map widens and colours just behind them, resting at about three seconds. Scrolling, a tap or a key jumps straight to the end.",
+        "zh": "三個數字大約 1 秒就到位，地圖跟在後面拉遠、上色，大約 3 秒停下。一捲動、點一下或按鍵，就直接跳到最後。"
+      },
+      "still": {
+        "wait": 6000
+      }
+    },
+    {
+      "href": "footprint-swift-peek.html",
+      "group": "footprint-7",
+      "title": {
+        "en": "A glimpse of what is below",
+        "zh": "露出下面"
+      },
+      "desc": {
+        "en": "The faster tempo, and the top of your trip list peeks in under the numbers, so the eye goes down by itself. Scrolling, a tap or a key jumps straight to the end.",
+        "zh": "快一點的節奏，加上數字下面露出一點旅行清單的開頭，讓人自然往下看。一捲動、點一下或按鍵，就直接跳到最後。"
+      },
+      "still": {
+        "wait": 6000
       }
     },
     {
@@ -989,15 +1070,15 @@
   "words": {},
   "ask": {
     "ids": [
-      "footprint-wall-widen-band",
-      "footprint-wall-relief",
-      "footprint-wall-numbers",
-      "footprint-wall-places",
-      "footprint-wall-follow"
+      "footprint-swift-even",
+      "footprint-swift-year",
+      "footprint-swift-glide",
+      "footprint-swift-numbers-lead",
+      "footprint-swift-peek"
     ],
     "question": {
-      "en": "Five wall maps from the two you liked (1 and 2 are those two, as they were). Give each a score and mark what to change.",
-      "zh": "從你喜歡的兩張做出的五種牆面地圖（第 1、2 張是原本那兩張）。每版給個分數，想改的地方按 M 標記。"
+      "en": "Five faster ways of the one you picked (1 is it, as it was). Each page now scrolls to your trip list. Give each a score and mark what to change.",
+      "zh": "你挑的那張的五種快一點的做法（第 1 張是原本那張）。每頁現在都可以往下捲到旅行清單。每版給個分數，想改的地方按 M 標記。"
     }
   }
 }
