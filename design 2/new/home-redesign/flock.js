@@ -27,7 +27,7 @@
   const tv = filmEl.querySelector('video');
   let W = innerWidth, H = innerHeight;
   const topY = () => clamp(H * 0.15, 76, 136);          // under the small mark in the corner
-  const cellSize = () => clamp(Math.min(W, H) * 0.095, 44, 104);
+  const cellSize = () => clamp(Math.min(W, H) * 0.11, 44, 120);
 
   /* ---------------- layouts: each returns { slots, film } with slots as { x, y, w, h, r } (top-left, rest tilt) ---------------- */
   // a diamond of upright squares, rows 1 3 5 7 5 3 1 (horizons stay level)
@@ -162,7 +162,7 @@
     // 1 the diamond: the flock flies in along the diagonal and lands as a diamond; the far tiles peel away down the other
     //   diagonal while the live one grows
     'diamond': {
-      n: 24, shape: 'square', mark: 'corner', hold: 1150,
+      n: 24, shape: 'square', mark: 'corner', hold: 900,
       layout: () => diamond(),
       enter() { return flyIn({ from: { x: W * 0.8, y: -H * 0.8 }, rank: diagonalRank(tiles.map((t) => t.slot)) }); },
       leave() {
@@ -181,7 +181,7 @@
       },
       leave() {
         const rank = diagonalRank(tiles.map((t) => t.slot));
-        return peel({ dir: { x: -W * 0.9, y: H * 0.9 }, order: rank, spread: 1000, dur: 1100, growDelay: 600 });
+        return peel({ dir: { x: -W * 0.9, y: H * 0.9 }, order: rank, spread: 700, dur: 1100, growDelay: 250 });
       }
     },
     // 3 into one column: the diamond lands, then falls into one column down the middle that slides up through the
@@ -225,7 +225,7 @@
       n: 11, shape: 'own', mark: 'line', hold: 1000,
       layout() {
         const line = document.querySelector('.hr-load__line').getBoundingClientRect();
-        const rh = clamp(H * 0.17, 70, 190), a = ars(), gap = rh * 0.08;
+        const rh = clamp(H * 0.2, 70, 210), a = ars(), gap = rh * 0.08;
         const slots = [];
         let w = 0; const ws = [];
         for (let k = 0; k < 12; k++) { const tw = k === 6 ? rh * W / H : rh * a[k < 6 ? k : k - 1]; ws.push(tw); w += tw + gap; }
@@ -249,7 +249,7 @@
     // 5 a contact sheet: four rows slide in from alternate sides and fill the screen; they slide back out the way
     //   they came and the live one grows
     'contact': {
-      n: 33, shape: 'own', mark: 'corner', hold: 1200,
+      n: 33, shape: 'own', mark: 'corner', hold: 900,
       layout() {
         const rh = (H - topY() - 40) / 4 * 0.84, a = ars();
         const list = a.slice(0, 33); list.splice(10, 0, W / H);   // the film among them, second row
@@ -268,7 +268,7 @@
         const anims = tiles.map((t, i) => t.film ? null : t.el.animate([
           { transform: tf(0, 0, 0, 1) }, { transform: tf(t.slot.row % 2 === 0 ? -W * 1.1 : W * 1.1, 0, 0, 1) }
         ], { duration: 1300, delay: (3 - t.slot.row) * 120 + (i % 8) * 30, easing: INOUT, fill: 'both' })).filter(Boolean);
-        return Promise.all([finished(anims), grow(400, 1700)]);
+        return Promise.all([finished(anims), grow(200, 1700)]);
       }
     },
     // 6 stairs: five rows of squares, each a step further across, rising from below; then all of them gather onto
@@ -326,7 +326,7 @@
     // 8 laid on the table: prints dropped onto the paper one after another, a little tilted, never overlapping; then
     //   they slide off the table's edges and the live one straightens and grows
     'table': {
-      n: 16, shape: 'own', mark: 'corner', hold: 1200,
+      n: 16, shape: 'own', mark: 'corner', hold: 900,
       layout() {
         const narrow = W < 700, count = narrow ? 9 : 16;
         const a = ars(), rh = clamp(H * (narrow ? 0.11 : 0.16), 56, 170), slots = [];
@@ -364,13 +364,13 @@
             { transform: tf(0, 0, t.slot.r, 1) }, { transform: tf(vx / L * W * 1.1, vy / L * H * 1.1, t.slot.r * 1.5, 1) }
           ], { duration: 1300, delay: (1 - d[i] / m) * 500, easing: INOUT, fill: 'both' });
         }).filter(Boolean);
-        return Promise.all([finished(anims), grow(400, 1700)]);
+        return Promise.all([finished(anims), grow(150, 1700)]);
       }
     },
     // 9 around the name: the logo stays in the middle and the prints settle in a ring around it; then the ring closes
     //   onto the live one, which grows over the name
     'ring': {
-      n: 18, shape: 'own', mark: 'stay', hold: 1200,
+      n: 18, shape: 'own', mark: 'stay', hold: 1000,
       layout() {
         const narrow = W < 700;
         const a = ars(), rh = clamp(H * (narrow ? 0.075 : 0.125), 44, 130), slots = [];
@@ -439,7 +439,7 @@
     // 11 the photographs become the film: a wall of them fills the screen edge to edge, then from the live one outward each
     //    turns into its own piece of the film's first frame, until the wall is the frame and it moves
     'mosaic': {
-      n: 39, shape: 'wall', mark: 'corner', hold: 1000, mosaic: true,
+      n: 39, shape: 'wall', mark: 'corner', hold: 800, mosaic: true, markGone: true, still: true,
       layout() { return wallPlan(); },
       enter() { return flyIn({ from: { x: W * 0.6, y: -H * 0.6 }, rank: diagonalRank(tiles.map((t) => t.slot)), spread: 800, dur: 1600, tilt: 0, scale: 0.94 }); },
       leave(api) {
@@ -450,7 +450,7 @@
     // 12 ... swept from the corner: the wall arrives row by row from the sides, and the film comes up across it on the
     //    diagonal, top left to bottom right
     'sweep': {
-      n: 39, shape: 'wall', mark: 'corner', hold: 1000, mosaic: true,
+      n: 39, shape: 'wall', mark: 'corner', hold: 800, mosaic: true, markGone: true, still: true,
       layout() { return wallPlan(); },
       enter() {
         return finished(tiles.map((t) => {
@@ -468,7 +468,7 @@
     // 13 into one window: a wall of small screens lights up window by window; then the view moves in on the live one until
     //    it is the whole screen
     'window': {
-      n: 39, shape: 'screen', mark: 'corner', hold: 1100,
+      n: 39, shape: 'screen', mark: 'corner', hold: 900, still: true,
       layout() {
         const cols = W < 700 ? 4 : 8, rows = 5, gap = clamp(W * 0.01, 6, 14);
         const cw = Math.min((W - 32 - gap * (cols - 1)) / cols, (H - topY() - 24 - gap * (rows - 1)) / rows * W / H);
@@ -486,6 +486,7 @@
       },
       async leave(api) {
         const f = tiles.find((t) => t.film), c = centre(f.slot), k = W / f.slot.w;
+        html.classList.add('hr-markgone');   // the wall passes over the corner as the view moves in
         layer.style.transformOrigin = `${c.x}px ${c.y}px`;
         tiles.forEach((t) => { if (!t.film) t.el.animate([{ opacity: 1 }, { opacity: 1, offset: 0.55 }, { opacity: 0 }], { duration: 1900, easing: 'linear', fill: 'both' }); });
         await layer.animate([{ transform: 'none' }, { transform: `translate(${W / 2 - c.x}px, ${H / 2 - c.y}px) scale(${k.toFixed(4)})` }],
@@ -516,13 +517,13 @@
         const anims = tiles.map((t, i) => t.film ? null : t.el.animate([
           { transform: tf(0, 0, t.slot.r, 1) }, { transform: tf(i % 2 ? -W * 0.85 : W * 0.85, between(-60, 60), t.slot.r + (i % 2 ? -14 : 14), 1) }
         ], { duration: 480, delay: i * 125, easing: 'cubic-bezier(0.55, 0, 0.6, 1)', fill: 'both' })).filter(Boolean);
-        return Promise.all([finished(anims), grow(16 * 125 + 200, 1500)]);
+        return Promise.all([finished(anims), grow(13 * 125, 1600)]);
       }
     },
     // 15 TUAN, in photographs: the prints fly in and spell his name in the middle of the paper, letter by letter; then the
     //    letters gather onto the live one
     'letters': {
-      n: 41, shape: 'square', mark: 'corner', hold: 1300,
+      n: 41, shape: 'square', mark: 'corner', hold: 1000,
       layout() {
         const L = ['XXX|.X.|.X.|.X.|.X.', 'X.X|X.X|X.X|X.X|XXX', '.X.|X.X|XXX|X.X|X.X', 'X...X|XX..X|X.X.X|X..XX|X...X'];
         const widths = L.map((l) => l.split('|')[0].length);
@@ -530,7 +531,7 @@
         const lines = twoLines ? [[0, 1], [2, 3]] : [[0, 1, 2, 3]];
         const lineCols = lines.map((ln) => ln.reduce((s, li) => s + widths[li], 0) + ln.length - 1);
         const cols = Math.max(...lineCols), rows = lines.length * 5 + (lines.length - 1);
-        const cell = Math.min((W - 32) / (cols * 1.14), (H - topY() - 40) / (rows * 1.14) * 0.9, 110);
+        const cell = Math.min((W - 88) / (cols * 1.14), (H - topY() - 40) / (rows * 1.14) * 0.9, 110);
         const gap = cell * 0.14, pitch = cell + gap;
         const y0 = topY() + (H - topY() - (rows * pitch - gap)) / 2;
         const slots = [];
@@ -609,7 +610,7 @@
     const plan = spec.layout();
     place(plan);
     html.classList.add('hr-arrive');   // the moment the tiles start (stills and films are timed from it)
-    if (spec.mark === 'corner') markToCorner(1100);
+    if (spec.mark === 'corner') { markToCorner(1000); await api.wait(560); if (api.isDone()) return; }   // the name is on its way before any tile comes
     else if (spec.mark === 'line') {
       const line = document.querySelector('.hr-load__line');
       document.querySelector('.hr-load').style.setProperty('--wide', (W / Math.max(1, line.offsetWidth) * 1.02).toFixed(3));
@@ -619,6 +620,12 @@
     }
     if (!spec.mosaic && tv) { tv.playbackRate = 0.3; tv.play().catch(() => {}); }   // the live tile: the film, small, in slow motion
     await spec.enter(api); if (api.isDone()) return;
+    if (!spec.still) {   // the hold breathes: the formation drifts up a little, and eases back as the film grows, so the end lands square
+      const T = spec.hold + 1900;
+      layer.animate([{ transform: 'none' }, { transform: `translateY(${(-H * 0.012).toFixed(1)}px)`, offset: spec.hold / T }, { transform: 'none' }],
+        { duration: T, easing: 'linear', fill: 'none' });
+    }
+    if (spec.markGone) html.classList.add('hr-markgone');   // the wall is about to cover the corner: the mark goes with the paper
     await api.wait(spec.hold); if (api.isDone()) return;
     await spec.leave(api); if (api.isDone()) return;
     // the film fills the window: the page's own film takes over from the tile's at the same moment of the same frame
