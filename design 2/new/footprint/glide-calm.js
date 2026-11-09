@@ -16,6 +16,9 @@
    - Everything else is One breath out's: the one continuous widening from Taiwan, the colours and the
      flights riding it in the order he went, the numbers climbing with them, the date line, the trip list
      below, and the first scroll, tap or key jumping to the end.
+   - data-zoom="none" (2026-11-09, his "what if we don't zoom"): the view never moves; the whole wall map
+     is there from the first frame, uncoloured, and only the colours, the flights and the numbers ramp, at
+     an even pace in the order he went.
    - ?still and reduced motion show the end at once; ?at=<ms> holds one moment of the move. */
 (() => {
   'use strict';
@@ -56,6 +59,7 @@
 
   // the page's tempo: every time in the move stretched by it (1 is One breath out's, resting at about 3 s)
   const TEMPO = clamp(parseFloat(body.dataset.tempo) || 1.45, 1, 3);
+  const STAY = body.dataset.zoom === 'none'; // the whole map from the start, the view never moving
   const HOLD = 300 * TEMPO; // the landing: close in on Taiwan, home in clay, the numbers at 0
   const GLIDE = 2500 * TEMPO; // the one move out to the whole wall map
   const breath = bezier(0.35, 0, 0.12, 1); // under way at once, half the widening done by 0.75 s, a long soft landing
@@ -681,7 +685,7 @@
     // and wholly inside the last view, so that the move only ever widens
     const twU = projU([121.0, 23.7]);
     const w0 = Math.min(V1.w, DEG * (narrow ? 40 : 62)), h0 = w0 / A;
-    const V0 = {
+    const V0 = STAY ? { ...V1 } : {
       x0: clamp(twU[0] - w0 * 0.55, V1.x0, V1.x0 + V1.w - w0),
       y0: clamp(twU[1] - (topF + (1 - band - topF) * 0.57) * h0, V1.y0, V1.y0 + V1.h - h0),
       w: w0, h: h0,
@@ -1038,9 +1042,9 @@ void main() {
     const grow = (b, p) => { const x0 = Math.max(W0.x0 - p, b.x0 - p), y0 = Math.max(W0.y0 - p, b.y0 - p); return { x0, y0, w: Math.min(W0.x0 + W0.w + p, b.x1 + p) - x0, h: Math.min(W0.y0 + W0.h + p, b.y1 + p) - y0 }; };
     const want = [];
     const a = union(zA, Infinity), b = union(zB, zA);
-    if (a) want.push(['A', grow(a, pad(zA)), 1.25 / (z0 * sf)]);
+    if (a && z0 > 1.05) want.push(['A', grow(a, pad(zA)), 1.25 / (z0 * sf)]);
     if (b) want.push(['B', grow(b, pad(zB)), 1.25 / (zA * sf)]);
-    want.push(['C', grow(ofView(W0), pad(1)), 1.25 / (Math.max(zB, 1) * sf)]);
+    want.push(['C', grow(ofView(W0), pad(1)), 1.25 / (Math.max(zB, STAY ? 1.5 : 1) * sf)]); // as fine as the moving pages' whole map
     return { zA, zB, want };
   }
   function drawSea(c) {

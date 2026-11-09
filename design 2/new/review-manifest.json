@@ -378,6 +378,36 @@
       }
     },
     {
+      "href": "footprint-whole-calm.html",
+      "group": "footprint-8",
+      "title": {
+        "en": "The whole map, no zoom, a little slower",
+        "zh": "整張地圖不拉遠，慢一點"
+      },
+      "desc": {
+        "en": "No zoom: the whole wall map is there from the first moment, uncoloured, and stays still; only your countries colour in, the flights draw and the numbers climb, in the order you went. Rests at about 4.7 seconds, the same tempo as 2. Scrolling, a tap or a key jumps straight to the end.",
+        "zh": "不拉遠：一開始就是整張地圖，還沒有顏色，畫面完全不動；只有你去過的國家照順序上色、航線畫出來、數字往上跳。大約 4.7 秒停下，跟第 2 張一樣快。一捲動、點一下或按鍵，就直接跳到最後。"
+      },
+      "still": {
+        "wait": 8000
+      }
+    },
+    {
+      "href": "footprint-whole-calmer.html",
+      "group": "footprint-8",
+      "title": {
+        "en": "The whole map, no zoom, slower still",
+        "zh": "整張地圖不拉遠，再慢一點"
+      },
+      "desc": {
+        "en": "The same still map, a little slower again: rests at about 6 seconds, the same tempo as 3. Scrolling, a tap or a key jumps straight to the end.",
+        "zh": "一樣是整張地圖不動，再慢一點：大約 6 秒停下，跟第 3 張一樣快。一捲動、點一下或按鍵，就直接跳到最後。"
+      },
+      "still": {
+        "wait": 8000
+      }
+    },
+    {
       "href": "footprint-scratch-passport.html",
       "group": "footprint-2",
       "title": {
@@ -1108,11 +1138,13 @@
   "ask": {
     "ids": [
       "footprint-glide-calm",
-      "footprint-glide-calmer"
+      "footprint-glide-calmer",
+      "footprint-whole-calm",
+      "footprint-whole-calmer"
     ],
     "question": {
-      "en": "One breath out (1, as it was) with your three notes: the earlier lettering on the map, a little slower, and the whole map with the numbers over it. Two tempos, 2 and 3. Give each a score and mark what to change.",
-      "zh": "「一口氣拉遠」（第 1 張是原本那張）照你的三點改了：地圖國名換回之前的字樣、慢一點、整張地圖露出來，數字壓在上面。第 2、3 張是兩種速度。每版給個分數，想改的地方按 M 標記。"
+      "en": "2 and 3 zoom out from Taiwan; 4 and 5 keep the whole map still, with only the colours and numbers moving. Same two tempos. Give each a score and mark what to change.",
+      "zh": "第 2、3 張從台灣拉遠；第 4、5 張整張地圖不動，只有顏色和數字在動。兩種速度一樣。每版給個分數，想改的地方按 M 標記。"
     }
   }
 }
