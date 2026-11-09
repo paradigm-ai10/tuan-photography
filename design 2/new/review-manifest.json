@@ -2,10 +2,10 @@
   "name": "journey",
   "round": {
     "groups": [
-      "footprint-7"
+      "footprint-8"
     ],
     "ids": [
-      "footprint-wall-widen-band"
+      "footprint-swift-glide"
     ]
   },
   "endpoint": "/__reviews/journey",
@@ -58,6 +58,13 @@
       "title": {
         "en": "From home, faster",
         "zh": "從家拉遠，快一點"
+      }
+    },
+    {
+      "id": "footprint-8",
+      "title": {
+        "en": "One breath out, calmer",
+        "zh": "一口氣拉遠，慢一點"
       }
     },
     {
@@ -338,6 +345,36 @@
       },
       "still": {
         "wait": 6000
+      }
+    },
+    {
+      "href": "footprint-glide-calm.html",
+      "group": "footprint-8",
+      "title": {
+        "en": "One breath out, a little slower",
+        "zh": "一口氣拉遠，慢一點"
+      },
+      "desc": {
+        "en": "One breath out at about one and a half times the time: it rests at about 4.7 seconds instead of 3. The names on the map are lettered as in round five again (the year under the large names, fine leaders to the small ones), and the whole map shows top to bottom with the numbers lying over its foot. Scrolling, a tap or a key jumps straight to the end.",
+        "zh": "一口氣拉遠，時間拉長約一倍半：大約 4.7 秒停下（原本約 3 秒）。地圖上的國名換回第五輪的字樣（大國的年份放在名字下面，小國用細線拉出來），地圖從上到下整張露出來，數字直接壓在地圖下方。一捲動、點一下或按鍵，就直接跳到最後。"
+      },
+      "still": {
+        "wait": 8000
+      }
+    },
+    {
+      "href": "footprint-glide-calmer.html",
+      "group": "footprint-8",
+      "title": {
+        "en": "One breath out, slower still",
+        "zh": "一口氣拉遠，再慢一點"
+      },
+      "desc": {
+        "en": "The same, a little slower again: it rests at about 6 seconds. The names on the map are lettered as in round five again (the year under the large names, fine leaders to the small ones), and the whole map shows top to bottom with the numbers lying over its foot. Scrolling, a tap or a key jumps straight to the end.",
+        "zh": "一樣的做法，再慢一點：大約 6 秒停下。地圖上的國名換回第五輪的字樣（大國的年份放在名字下面，小國用細線拉出來），地圖從上到下整張露出來，數字直接壓在地圖下方。一捲動、點一下或按鍵，就直接跳到最後。"
+      },
+      "still": {
+        "wait": 8000
       }
     },
     {
@@ -1070,15 +1107,12 @@
   "words": {},
   "ask": {
     "ids": [
-      "footprint-swift-even",
-      "footprint-swift-year",
-      "footprint-swift-glide",
-      "footprint-swift-numbers-lead",
-      "footprint-swift-peek"
+      "footprint-glide-calm",
+      "footprint-glide-calmer"
     ],
     "question": {
-      "en": "Five faster ways of the one you picked (1 is it, as it was). Each page now scrolls to your trip list. Give each a score and mark what to change.",
-      "zh": "你挑的那張的五種快一點的做法（第 1 張是原本那張）。每頁現在都可以往下捲到旅行清單。每版給個分數，想改的地方按 M 標記。"
+      "en": "One breath out (1, as it was) with your three notes: the earlier lettering on the map, a little slower, and the whole map with the numbers over it. Two tempos, 2 and 3. Give each a score and mark what to change.",
+      "zh": "「一口氣拉遠」（第 1 張是原本那張）照你的三點改了：地圖國名換回之前的字樣、慢一點、整張地圖露出來，數字壓在上面。第 2、3 張是兩種速度。每版給個分數，想改的地方按 M 標記。"
     }
   }
 }
