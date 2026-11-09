@@ -128,8 +128,8 @@
         "zh": "目前的正式版"
       },
       "desc": {
-        "en": "The Journey tab as it is now (since 31 October, your pick): the painted paper globe; the grand map arrives whole, parts into a wall of square prints and folds into the globe print by print, Taiwan's first; the trips on one line. The main one.",
-        "zh": "現在的旅程頁（10/31 你選的）：手繪紙地球；一打開是整張大地圖，往下捲分成一面方形相片牆，一張一張從台灣開始貼成地球；所有旅程掛在一條線上。這是主要版本。"
+        "en": "The Journey tab as it is now. Since 9 November the first screen is your footprint map (One breath out, slower still, which you gave 5): it zooms out from Taiwan while your countries colour in and the three numbers count up. On the first scroll it fades into the painted globe of 31 October, which folds print by print, Taiwan's first; the trips on one line. The main one.",
+        "zh": "現在的旅程頁。11/9 起，一打開是你的足跡地圖（你給 5 分的「一口氣拉遠，再慢一點」）：從台灣拉遠，去過的國家一個個上色，三個數字往上跳。一往下捲，它淡出，接到 10/31 那個手繪紙地球，一張一張從台灣開始貼成地球；所有旅程掛在一條線上。這是主要版本。"
       },
       "still": {
         "wait": 20000

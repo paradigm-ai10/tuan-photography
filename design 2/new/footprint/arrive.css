@@ -1,0 +1,38 @@
+/* The footprint map as the Journey tab's first screen (2026-11-09; arrive.js says how it is joined).
+   What the version pages took from footprint/base.css, kept to the map's stage, and the stage's place
+   on the page; swift-glide.css draws the map's own parts. The page's tokens are the map's, but for the
+   names and numbers (Playfair here) and the three earth colours, which kit.css does not have. */
+:root {
+  --clay: oklch(58% 0.12 45);
+  --olive: oklch(56% 0.07 115);
+  --slate: oklch(50% 0.04 240);
+}
+.jr-fp {
+  --f-name: "Playfair Display", "Noto Serif TC", serif;
+  --bar: 0px;
+  position: fixed; inset: 0 0 var(--bar) 0; z-index: 2;
+  background: var(--paper);
+  opacity: calc(1 - var(--fp-out, 0));
+}
+html.has-rv .jr-fp { --bar: 36px; } /* the review bar, on his Mac only */
+.jr-fp.is-gone { visibility: hidden; pointer-events: none; }
+
+.fp-label { font: 500 0.6875rem/1.3 var(--f-text); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-2); }
+html[lang="zh-Hant"] .fp-label { text-transform: none; letter-spacing: 0.12em; }
+.fp-tip { position: fixed; left: 0; top: 0; z-index: 30; transform: translate(var(--x, 0), var(--y, 0)); pointer-events: none; opacity: 0; transition: opacity 0.15s; background: var(--paper); border: 1px solid var(--hair); padding: 8px 10px; font-size: 0.8125rem; line-height: 1.35; display: grid; gap: 1px; max-width: 260px; }
+.fp-tip.is-on { opacity: 1; }
+.fp-tip b { font-family: "Playfair Display", "Noto Serif TC", serif; font-weight: 400; font-size: 1rem; }
+.fp-tip span { color: var(--ink-2); }
+
+/* the page's own arrival words and totals give way to the map's numbers; the heading stays for screen readers */
+[data-arrive] .jr-hero__words { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+[data-arrive] .jr-totals { visibility: hidden; }
+
+/* a phone: the map and its numbers are the page's first block, the globe's strip and the trips after */
+@media (max-width: 63.99rem) {
+  .jr-fp { position: relative; inset: auto; z-index: auto; opacity: 1; height: calc(100svh - var(--bar)); } /* swift-glide.css then sizes it to its block */
+  [data-arrive] .jr-hero { display: none; }
+  /* the top bar lies over the map's paper, as on the version pages, so the map sits as high as it did there */
+  [data-arrive] #top { position: absolute; top: 0; left: 0; right: 0; }
+}
+@media (prefers-reduced-motion: reduce) { .fp-tip { transition: none; } }

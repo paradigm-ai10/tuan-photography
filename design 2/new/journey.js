@@ -67,6 +67,9 @@
   /* ------------------------------------------------------------ the facts the map needs */
 
   const CRAFT = 'craft' in document.body.dataset;   // the scroll-craft round, see dockCraft()
+  // (2026-11-09, his call) the footprint map is the first screen (footprint/arrive.js): the fold starts
+  // with the first scroll, under the map as it fades
+  const ARRIVE = 'arrive' in document.body.dataset;
   const HOME_ID = S.countries.find((c) => K.km(c.ll, S.flightsFrom) < 80)?.id || 'taiwan';
   const years = [...new Set(K.trips.map((t) => +t.year))].sort((a, b) => b - a);
   const firstYear = {};                       // country id -> the year he first went
@@ -431,7 +434,8 @@
     // glide aside waits for it
     const L = document.body.dataset.fold === 'long' ? (window.JourneyTweak || {}).fold || 2.2 : 1;
     frame.style.setProperty('--fold-len', L);
-    const fold = clamp((y - H * 0.15) / (H * 0.85 * L), 0, 1);
+    const at0 = ARRIVE ? 0 : 0.15;
+    const fold = clamp((y - H * at0) / (H * (0.85 * L + 0.15 - at0)), 0, 1);
     const d = clamp((y - H * (1.12 + 0.85 * (L - 1))) / (H * 0.5), 0, 1);
     frame.style.setProperty('--arr', arr.toFixed(4));
     frame.style.setProperty('--dock', d3.easeCubicInOut(d).toFixed(4));
@@ -444,7 +448,12 @@
     const hold = CRAFT && $('.jr-hold');
     if (hold && hold.offsetHeight) return dockCraft(frame, hold);
     const hero = $('.jr-hero');
-    const d = clamp((scrollY - hero.offsetHeight * 0.15) / (hero.offsetHeight * 0.7), 0, 1);
+    // (a phone, with the footprint map first) the strip has become the globe by the time the map has
+    // scrolled away and the strip reaches the top
+    const fp = ARRIVE && document.getElementById('stage');
+    const d = fp && fp.offsetHeight
+      ? clamp((scrollY - fp.offsetHeight * 0.5) / (fp.offsetHeight * 0.5), 0, 1)
+      : clamp((scrollY - hero.offsetHeight * 0.15) / (Math.max(1, hero.offsetHeight) * 0.7), 0, 1);
     frame.style.setProperty('--dock', d3.easeCubicInOut(d).toFixed(4));
     // the map starts gliding aside first, then folds round into the globe as it settles
     map.setFold(d3.easeCubicInOut(clamp((d - 0.15) / 0.85, 0, 1)));

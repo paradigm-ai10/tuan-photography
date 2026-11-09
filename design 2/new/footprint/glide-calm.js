@@ -19,11 +19,15 @@
    - data-zoom="none" (2026-11-09, his "what if we don't zoom"): the view never moves; the whole wall map
      is there from the first frame, uncoloured, and only the colours, the flights and the numbers ramp, at
      an even pace in the order he went.
-   - ?still and reduced motion show the end at once; ?at=<ms> holds one moment of the move. */
+   - ?still and reduced motion show the end at once; ?at=<ms> holds one moment of the move.
+   - Since 2026-11-09 (his call, "好 用現在這個新的"), at data-tempo 1.85, the Journey tab's first screen:
+     journey.html carries the stage as <div class="fp-stage jr-fp" id="stage">, and arrive.js joins it to
+     the page. There the page's own top bar is used (FP.chrome is not) and kept clear of the engraving. */
 (() => {
   'use strict';
   const FP = window.FP;
-  FP.chrome();
+  const EMBED = !!document.querySelector('.jr-fp'); // the Journey tab's first screen (arrive.js)
+  if (!EMBED) FP.chrome();
   const query = new URLSearchParams(location.search);
   if (query.get('lang') === 'zh' || query.get('lang') === 'en') FP.setLang(query.get('lang'));
   const AT = query.has('at') ? Math.max(0, parseFloat(query.get('at')) || 0) : null;
@@ -665,8 +669,9 @@
     const list = boxes.map((b) => ({ x: b.x - pad, y: b.y - pad, w: b.w + 2 * pad, h: b.h + 2 * pad, soft, veil: true }));
     list.push({ x: tripBox.x - 5, y: tripBox.y - 5, w: tripBox.w + 10, h: tripBox.h + 10, soft: 14 });
     const sr = stage.getBoundingClientRect();
-    document.querySelectorAll('.fp-top__name, .fp-lang').forEach((n) => {
+    document.querySelectorAll('.fp-top__name, .fp-lang, .top__name, .top__nav a, .top__lang button').forEach((n) => {
       const r = n.getBoundingClientRect();
+      if (!r.width || r.bottom <= sr.top || r.top >= sr.bottom) return;
       list.push({ x: r.left - sr.left - 6, y: r.top - sr.top - 6, w: r.width + 12, h: r.height + 12, soft: 16 });
     });
     return list;
@@ -1660,21 +1665,25 @@ void main() {
 
   // a new window size: everything laid out again, the move carrying on from where it was. A phone's bars
   // coming and going while the page scrolls leave the first screen as it is, so nothing is redone then.
+  // (fp-relayout: the page around it changed, as when the Journey tab's top bar is drawn: laid out again
+  // whatever the size)
   let rt = 0;
-  addEventListener('resize', () => {
+  const relayout = (force) => {
     if (!started) return;
     clearTimeout(rt);
     rt = setTimeout(() => {
       const r = { w: stage.clientWidth, h: stage.clientHeight };
       const was = parseFloat(stage.style.getPropertyValue('--room')) || 0;
-      if (sized && r.w === sized.w && (r.h === sized.h || (G.narrow && r.h === Math.max(sized.h, was)))) return;
+      if (!force && sized && r.w === sized.w && (r.h === sized.h || (G.narrow && r.h === Math.max(sized.h, was)))) return;
       const t = AT != null ? AT : STILL || resting ? P.END + 1 : performance.now() - t0;
       pan = 0;
       if (!layout(false)) return;
       draw(Math.min(t, P.END + 1), 1e6);
       if (!STILL && AT == null && !raf && t < P.END) raf = requestAnimationFrame(loop);
     }, 160);
-  });
+  };
+  addEventListener('resize', () => relayout(false));
+  addEventListener('fp-relayout', () => relayout(true));
   // a new language: the words and the row measured again; the map keeps its plan
   FP.onLang(() => {
     if (!started) return;
