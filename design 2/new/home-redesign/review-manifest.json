@@ -1,1189 +1,1220 @@
 {
-  "name": "home-redesign",
-  "endpoint": "/__reviews/home-redesign",
-  "stills": "/__reviews/home-redesign/thumbs/",
-  "hub": "index.html",
-  "title": {
-    "en": "Home page, three directions",
-    "zh": "首頁：三個方向"
+ "name": "home-redesign",
+ "endpoint": "/__reviews/home-redesign",
+ "stills": "/__reviews/home-redesign/thumbs/",
+ "hub": "index.html",
+ "title": {
+  "en": "Home page, three directions",
+  "zh": "首頁：三個方向"
+ },
+ "siteTitle": "tuan photography 陳亮元",
+ "intro": {
+  "en": "Three whole home pages, each from a site you liked, each opening with your TUAN loading screen. Scroll all the way down on each. The loading screen plays every time here (on the real site it plays once per visit); click or press any key to skip it, R to see it again. On a page, , and . move between versions, 1 to 5 scores, N opens your notes, M marks a spot, B comes back here. Compare side by side plays them together.",
+  "zh": "三個完整的首頁，各自來自一個你喜歡的網站，都用你的 TUAN 載入畫面開場。每一個都捲到最下面看看。這裡每次都會播載入畫面（正式網站每次來訪只播一次）；點一下或按任何鍵跳過，按 R 再看一次。在頁面上，逗號和句號鍵（, .）換版本，1 到 5 打分數，N 打開筆記，M 標記一個地方，B 回到這裡。「並排比較」可以一起播。"
+ },
+ "groups": [
+  {
+   "id": "round1",
+   "title": {
+    "en": "First round: three directions",
+    "zh": "第一輪：三個方向"
+   }
   },
-  "siteTitle": "tuan photography 陳亮元",
-  "intro": {
-    "en": "Three whole home pages, each from a site you liked, each opening with your TUAN loading screen. Scroll all the way down on each. The loading screen plays every time here (on the real site it plays once per visit); click or press any key to skip it, R to see it again. On a page, , and . move between versions, 1 to 5 scores, N opens your notes, M marks a spot, B comes back here. Compare side by side plays them together.",
-    "zh": "三個完整的首頁，各自來自一個你喜歡的網站，都用你的 TUAN 載入畫面開場。每一個都捲到最下面看看。這裡每次都會播載入畫面（正式網站每次來訪只播一次）；點一下或按任何鍵跳過，按 R 再看一次。在頁面上，逗號和句號鍵（, .）換版本，1 到 5 打分數，N 打開筆記，M 標記一個地方，B 回到這裡。「並排比較」可以一起播。"
+  {
+   "id": "round2",
+   "title": {
+    "en": "Second round: the rest of the page, under E's opening",
+    "zh": "第二輪：E 的開場之後，首頁其餘的部分"
+   }
   },
-  "groups": [
-    {
-      "id": "round1",
-      "title": {
-        "en": "First round: three directions",
-        "zh": "第一輪：三個方向"
-      }
-    },
-    {
-      "id": "round2",
-      "title": {
-        "en": "Second round: the rest of the page, under E's opening",
-        "zh": "第二輪：E 的開場之後，首頁其餘的部分"
-      }
-    },
-    {
-      "id": "round3",
-      "title": {
-        "en": "Third round: from Singita, Belmond and Jimmy Chin, which you marked Good",
-        "zh": "第三輪：從你標喜歡的 Singita、Belmond、Jimmy Chin 來做"
-      }
-    },
-    {
-      "id": "round4",
-      "title": {
-        "en": "Fourth round: bold makeovers of 12, with the Queensboro train",
-        "zh": "第四輪：大膽改造第 12 個，主角是皇后區那張列車"
-      }
-    },
-    {
-      "id": "round5",
-      "title": {
-        "en": "Fifth round: the live site's layering, taken further",
-        "zh": "第五輪：把正式網站的層疊捲動做得更多"
-      }
-    },
-    {
-      "id": "opening2",
-      "title": {
-        "en": "The opening: colour while it is drawn",
-        "zh": "開場：邊畫邊上色"
-      }
-    },
-    {
-      "id": "opening3",
-      "title": {
-        "en": "The opening: brushed onto the film",
-        "zh": "開場：把影片刷出來"
-      }
-    },
-    {
-      "id": "opening4",
-      "title": {
-        "en": "The opening: brushed by hand",
-        "zh": "開場：像人手在刷"
-      }
-    },
-    {
-      "id": "opening5",
-      "title": {
-        "en": "The opening: six relatives of 33",
-        "zh": "開場：33 的六個變化"
-      }
-    },
-    {
-      "id": "opening6",
-      "title": {
-        "en": "The opening: the sketch turns into the film",
-        "zh": "開場：素描變成影片"
-      }
-    },
-    {
-      "id": "opening7",
-      "title": {
-        "en": "The opening: five more brushings",
-        "zh": "開場：再五種刷法"
-      }
-    },
-    {
-      "id": "opening8",
-      "title": {
-        "en": "The opening: the photographs arrive",
-        "zh": "開場：照片進場"
-      }
-    }
-  ],
-  "items": [
-    {
-      "href": "a-film.html",
-      "group": "round1",
-      "title": {
-        "en": "A short film",
-        "zh": "一段短片"
-      },
-      "desc": {
-        "en": "From Martha King. Your Barcelona clips as one 12-second film with nothing written on it, coming into focus as the logo opens. Then the page is drawn over it: one sentence on its own screen, photographs at changing sizes like pages of a printed book, a second sentence, three doors in words.",
-        "zh": "來自 Martha King。你的巴賽隆納影片剪成一段 12 秒的短片，上面不寫字，標誌打開時慢慢對焦。接著頁面從上面蓋過來：一句話佔一整個畫面，照片大小和位置變化，像一本印刷的書，第二句話，最後是三個用字做的入口。"
-      },
-      "still": {
-        "wait": 1500
-      },
-      "out": true
-    },
-    {
-      "href": "b-prints.html",
-      "group": "round1",
-      "title": {
-        "en": "Prints gather",
-        "zh": "照片聚集"
-      },
-      "desc": {
-        "en": "From Mathilde de Chiara. After the logo, twenty-one of your photographs fly in along the diagonal and settle in a row under it; Aoraki grows from the row into the whole window. Then one column down the middle of the paper, a sentence now and then.",
-        "zh": "來自 Mathilde de Chiara。標誌出來之後，你的二十一張照片沿著斜線飛進來，在標誌下面排成一排；Aoraki 從那一排長大到整個畫面。接著是紙中間的一條直欄照片，偶爾一句話。"
-      },
-      "still": {
-        "wait": 800
-      },
-      "out": true
-    },
-    {
-      "href": "c-drawn.html",
-      "group": "round1",
-      "title": {
-        "en": "Drawn, then real",
-        "zh": "先畫出來，再變成真的"
-      },
-      "desc": {
-        "en": "From Belgrade Arbor. The logo's line runs to both edges and becomes a horizon; a pencil drawing of the road to the Sagrada Família spreads up and down from it, then turns into your film. Then whole blocks of olive and slate, one thought on each with photographs set into it, and paper between.",
-        "zh": "來自 Belgrade Arbor。標誌的那條線延伸到兩邊變成地平線，聖家堂前面那條路的鉛筆素描從線往上下展開，再變成你的影片。接著是整塊橄欖綠和石板藍，每一塊一句話、照片嵌在裡面，中間是紙。"
-      },
-      "still": {
-        "wait": 1500
-      },
-      "out": true
-    },
-    {
-      "href": "c-traced.html",
-      "group": "round1",
-      "title": {
-        "en": "Traced, then real",
-        "zh": "一筆一筆勾出來，再變成真的"
-      },
-      "desc": {
-        "en": "C as you asked: the logo's line runs to both edges, then the road to the Sagrada Família is traced line by line, starting at the towers and spreading out, as if drawn by hand; the pencil shading comes in under the lines, then it turns into your film. Now quicker: the logo holds a moment and the name fades slowly, the drawing takes about 2 seconds, then lines, shading and film dissolve as one; the film is up in about 9 seconds. A click skips it.",
-        "zh": "照你說的改 C：標誌的線延伸到兩邊，接著聖家堂前那條路一筆一筆勾出來，從塔開始往外畫，像手在畫；畫完鉛筆的陰影慢慢出現在線條下面，再變成你的影片。現在比較快：標誌先停一下、名字慢慢淡掉，大約 2 秒畫完，線條、陰影和影片一口氣溶成一個畫面，9 秒左右進到影片，點一下可以跳過。"
-      },
-      "still": {
-        "wait": 1500
-      },
-      "out": true
-    },
-    {
-      "href": "c-counted.html",
-      "group": "round1",
-      "title": {
-        "en": "Traced and counted",
-        "zh": "勾出來，數一數"
-      },
-      "desc": {
-        "en": "D as you asked: while the road is drawn, the trip so far counts up along the foot of the drawing (21 countries, 41 flights, 93 photographs, read from the site's own data), then each scene of the film gets a small caption, the place and when, fading in and out with the scene.",
-        "zh": "照你說的改 D：畫路的同時，畫面下方數出到目前為止的旅程（21 個國家、41 趟航班、93 張照片，直接從網站的資料算出來），接著影片的每一個場景都有一行小字幕，寫地方和時間，跟著場景淡入淡出。"
-      },
-      "still": {
-        "wait": 2500
-      },
-      "main": true
-    },
-    {
-      "href": "f-drawn-down.html",
-      "group": "round2",
-      "title": {
-        "en": "Drawn, then real, all the way down",
-        "zh": "一路先畫再變真"
-      },
-      "desc": {
-        "en": "E's opening, then the same move as the opening all the way down: each photograph first appears as its own pencil drawing and turns into the photograph once it is well in view. Five photographs at changing sizes, two quiet sentences, the three doors.",
-        "zh": "E 的開場之後，整頁都用開場同一招：每張照片先以鉛筆素描出現，捲到畫面中間時才變成真的照片。五張照片大小交錯，兩句安靜的話，最後三個入口。"
-      },
-      "still": {
-        "wait": 2500
-      },
-      "out": true
-    },
-    {
-      "href": "g-pile.html",
-      "group": "round2",
-      "title": {
-        "en": "Prints on the table",
-        "zh": "桌上的照片"
-      },
-      "desc": {
-        "en": "E's opening, then one photograph to a screen: as you scroll, each print slides up and lies on top of the last, like prints in a pile, each with its place and when beneath. The way in becomes three photographs, Gallery, Journey and Guides.",
-        "zh": "E 的開場之後，一個畫面一張照片：往下捲，每張照片滑上來蓋住上一張，像桌上一疊照片，下面寫地點和時間。最後的入口變成三張照片：作品集、旅程、攻略。"
-      },
-      "still": {
-        "wait": 2500
-      },
-      "out": true
-    },
-    {
-      "href": "h-journal.html",
-      "group": "round2",
-      "title": {
-        "en": "The journal",
-        "zh": "旅行手帳"
-      },
-      "desc": {
-        "en": "E's opening, then four spreads of a printed travel journal: the photograph on one page, and on the other its place, when, and how it was made (camera, lens, aperture, shutter, ISO, read from the file), with a link to more from that country. The way in becomes a contents page with real counts.",
-        "zh": "E 的開場之後，像一本印出來的旅行手帳翻開四頁：一邊是照片，另一邊寫地點、時間和怎麼拍的（相機、鏡頭、光圈、快門、ISO，從照片檔案讀出來），再連到那個國家的更多照片。最後的入口變成目錄，附上真實的數字。"
-      },
-      "still": {
-        "wait": 2500
-      },
-      "out": true
-    },
-    {
-      "href": "i-beside.html",
-      "group": "round3",
-      "title": {
-        "en": "Words beside photographs",
-        "zh": "照片旁邊一句話"
-      },
-      "desc": {
-        "en": "After Singita. E's opening, then three big photographs, each with one short line beside it, never on it, the sides swapping. The way in is three tall photographs like windows (after Belmond): Gallery, Journey, Guides, each name beneath.",
-        "zh": "從 Singita 來的。E 的開場之後，三張大照片，每張旁邊一句短短的話（不寫在照片上），左右交換。最後的入口是三張直的照片，像窗戶（從 Belmond 來的）：作品集、旅程、攻略，名字寫在下面。"
-      },
-      "still": {
-        "wait": 2500
-      },
-      "out": true
-    },
-    {
-      "href": "j-windows.html",
-      "group": "round3",
-      "title": {
-        "en": "Windows",
-        "zh": "一扇一扇窗"
-      },
-      "desc": {
-        "en": "After Belmond. E's opening, then one row of six tall photographs across the whole width, one place each, the country and when beneath; each opens that country. Then the three words (after Jimmy Chin) under one photograph that fills the screen.",
-        "zh": "從 Belmond 來的。E 的開場之後，一整排六張直的照片橫跨整個畫面，一張一個地方，下面寫國家和時間，點了就到那個國家。最後是三個大字（從 Jimmy Chin 來的），在一張撐滿畫面的照片下面。"
-      },
-      "still": {
-        "wait": 2500
-      },
-      "out": true
-    },
-    {
-      "href": "k-three-words.html",
-      "group": "round3",
-      "title": {
-        "en": "Three words",
-        "zh": "三個字"
-      },
-      "desc": {
-        "en": "After Jimmy Chin. E's opening, two big photographs, then one that fills the screen with GALLERY, JOURNEY, GUIDES set huge and wide-spaced on the paper just beneath it, as the only way in. Nothing is written on the photograph.",
-        "zh": "從 Jimmy Chin 來的。E 的開場之後，兩張大照片，然後一張撐滿畫面的照片，下面紙上只有三個很大、很開的字：作品集、旅程、攻略，這就是入口。照片上不寫字。"
-      },
-      "still": {
-        "wait": 2500
-      },
-      "out": true
-    },
-    {
-      "href": "l-current-words.html",
-      "group": "round3",
-      "title": {
-        "en": "Your current home and the three words",
-        "zh": "現在的首頁加三個字"
-      },
-      "desc": {
-        "en": "Your ask: the three words merged with your current home. E's opening, then your live home page's own sections exactly as they are now (the line and its two buttons, the aurora, the Photographs wall with its viewer, Fuji, the Guides cards), then its last photograph, the Matterhorn and the flag, fills the screen with GALLERY, JOURNEY, GUIDES beneath it, and your Instagram footer closes it. The sections are read from the live page each time it is built, so they stay current.",
-        "zh": "照你說的：三個字和現在的首頁合在一起。E 的開場之後，接上現在正式首頁的內容，原封不動（那句話和兩個按鈕、極光、照片牆和點開的看圖、富士山、攻略卡片），最後那張馬特洪峰和國旗撐滿畫面，下面是作品集、旅程、攻略三個大字，再接你的 Instagram 頁尾。這些內容每次建置都從正式首頁讀進來，所以會跟著更新。"
-      },
-      "still": {
-        "wait": 2500
-      }
-    },
-    {
-      "href": "m-chapters.html",
-      "group": "round4",
-      "title": {
-        "en": "Chapters",
-        "zh": "一章一個地方"
-      },
-      "desc": {
-        "en": "Each place is a chapter on its own flat colour, its name set very large beside the photograph: New York in clay with the Queensboro train, Zermatt in slate, Sa Pa in olive, Mount Fuji on stone. Each photograph is uncovered upward as it arrives, like a print pulled from the tray. Then the three words under the aurora.",
-        "zh": "每個地方是一章，各有一整片顏色，地名很大地放在照片旁邊：紐約配陶土色和皇后區列車、策馬特配石板藍、沙壩配橄欖綠、富士山配石頭色。照片出現時由下往上露出來，像從顯影盤拿起一張相片。最後是極光下的三個大字。"
-      },
-      "still": {
-        "wait": 2500
-      },
-      "out": true
-    },
-    {
-      "href": "n-covers.html",
-      "group": "round4",
-      "title": {
-        "en": "Covers",
-        "zh": "封面"
-      },
-      "desc": {
-        "en": "One photograph to a screen like a magazine cover, its name set huge and split around it: Queensboro | Plaza, Mount | Fuji, Roys | Peak, Lake | Tekapo. The two halves slide in toward the photograph as it arrives. Then the three words under the Matterhorn.",
-        "zh": "一個畫面一張照片，像雜誌封面，名字很大地拆在照片兩邊：Queensboro | Plaza、Mount | Fuji、Roys | Peak、Lake | Tekapo，捲到時兩半往照片靠過來。最後是馬特洪峰下的三個大字。"
-      },
-      "still": {
-        "wait": 2500
-      },
-      "out": true
-    },
-    {
-      "href": "o-light-table.html",
-      "group": "round4",
-      "title": {
-        "en": "The light table",
-        "zh": "看片桌"
-      },
-      "desc": {
-        "en": "Like a photographer's light table: one big print held on the left, your picks laid out beside it. Point at or tap any of them and it becomes the big print. The Queensboro train is on the table first. Then the three words under Roys Peak.",
-        "zh": "像攝影師的看片桌：左邊一張大照片，右邊排著你的精選。滑過或點任何一張，它就變成大的那張。皇后區列車先放在桌上。最後是羅伊峰下的三個大字。"
-      },
-      "still": {
-        "wait": 2500
-      },
-      "out": true
-    },
-    {
-      "href": "p-split.html",
-      "group": "round4",
-      "title": {
-        "en": "Split",
-        "zh": "一半照片一半字"
-      },
-      "desc": {
-        "en": "Half the screen holds the photograph, the other half reads place by place: the place, its name, one line about what is in the photograph, when, and a link. As each place reaches the middle, its photograph takes over the held half. Queensboro Plaza first, then Zermatt at dusk, Sa Pa, Tekapo, the Calanque. Then the three words under Fuji.",
-        "zh": "畫面一半放照片，另一半一個地方一個地方讀下去：地點、名稱、一句照片裡有什麼、時間、連結。每個地方捲到中間時，它的照片就換上那一半。先是皇后區廣場站，接著暮色的策馬特、沙壩、蒂卡波、昂沃峽灣。最後是富士山下的三個大字。"
-      },
-      "still": {
-        "wait": 2500
-      },
-      "out": true
-    },
-    {
-      "href": "q-doors-first.html",
-      "group": "round4",
-      "title": {
-        "en": "The way in first",
-        "zh": "入口先來"
-      },
-      "desc": {
-        "en": "Straight after the film, the way in: three tall windows with the three words large beneath them, the Milky Way for Gallery, the Queensboro train for Journey, the Sagrada Família for Guides. Then your picks at changing sizes, and one last line.",
-        "zh": "影片一結束就是入口：三扇直的窗，下面是三個大字，銀河是作品集，皇后區列車是旅程，聖家堂是攻略。接著是你的精選照片大小交錯，最後一句話。"
-      },
-      "still": {
-        "wait": 2500
-      },
-      "out": true
-    },
-    {
-      "href": "r-windows.html",
-      "group": "round5",
-      "title": {
-        "en": "Windows in the paper",
-        "zh": "紙上的窗"
-      },
-      "desc": {
-        "en": "The live site's windows (a hole cut in the page, the photograph fixed behind it, drifting slowly as you pass) in more shapes: the Queensboro train fills a whole screen, the Milky Way shows through a tall hole framed by paper, Mount Fuji through two holes side by side onto one photograph, rows of your picks between. The three words sit under Roys Peak, itself a window.",
-        "zh": "正式網站的「窗」（頁面上挖一個洞，照片固定在後面，捲動時慢慢飄）做成更多形狀：皇后區列車撐滿一整個畫面，銀河從一個被紙框住的直窗看出去，富士山從並排的兩個洞看到同一張照片，中間是你的精選照片。三個大字在羅伊峰下面，那張也是一扇窗。"
-      },
-      "still": {
-        "wait": 2500
-      }
-    },
-    {
-      "href": "s-prints-over.html",
-      "group": "round5",
-      "title": {
-        "en": "Prints over a photograph",
-        "zh": "照片上飄過的照片"
-      },
-      "desc": {
-        "en": "One photograph holds the whole screen while your prints float up over it, some faster than others: first the Queensboro train behind Matterhorn, Sa Pa, Fuji and the church at Tekapo; then the aurora behind Roys Peak, the Calanque, the Golden Gate and the Milky Way. Then the three words under the Matterhorn.",
-        "zh": "一張照片撐住整個畫面，你的照片一張張從上面飄過，有快有慢：先是皇后區列車在後面，飄過馬特洪峰、沙壩、富士山、蒂卡波的教堂；再換極光在後面，飄過羅伊峰、昂沃峽灣、金門大橋、銀河。最後是馬特洪峰下的三個大字。"
-      },
-      "still": {
-        "wait": 2500
-      }
-    },
-    {
-      "href": "u-layered.html",
-      "group": "round5",
-      "title": {
-        "en": "12, layered more",
-        "zh": "第 12 個，多幾層"
-      },
-      "desc": {
-        "en": "Version 12 with more layers: your live line and buttons, then the Queensboro train as a full window, the photo wall with your picks, Mount Fuji with the bullet train through two holes, your Guides cards, the Tekapo church through a framed hole, and the three words under the Matterhorn and the flag, now a window too. Your Instagram footer closes it.",
-        "zh": "第 12 個多加幾層：正式首頁那句話和按鈕，接著皇后區列車一整扇窗，照片牆換成你的精選，富士山和新幹線從兩個洞看，攻略卡片，蒂卡波的教堂從一個被紙框住的洞看，最後是馬特洪峰和國旗下的三個大字，那張現在也是一扇窗，再接 Instagram 頁尾。"
-      },
-      "still": {
-        "wait": 2500
-      }
-    },
-    {
-      "href": "c-coloured.html",
-      "group": "opening2",
-      "title": {
-        "en": "Coloured as it is drawn",
-        "zh": "邊畫邊上色"
-      },
-      "desc": {
-        "en": "E as you asked: no grey pencil stage. While the road is drawn, the colour of the film's first frame washes in under the lines, starting at the towers and spreading out the way the pencil goes, pale at first and deepening. As the last lines land the colour is all there and the film starts moving; the lines and counts lift off it. The film is up about 2 seconds sooner than E. Only the opening changed; the rest of the page is E's.",
-        "zh": "照你說的改 E：拿掉灰色的鉛筆階段。畫路的同時，影片第一格的顏色在線條下面慢慢浮出來，從塔開始往外擴，跟鉛筆走的方向一樣，先淡淡的再越來越濃。最後幾筆畫完時顏色已經到位，影片直接開始動，線條和數字再淡掉。比 E 大約早 2 秒進到影片。只改了開場，下面的部分和 E 一樣。"
-      },
-      "still": {
-        "wait": 5200
-      },
-      "out": true
-    },
-    {
-      "href": "c-pencil-lines.html",
-      "group": "opening2",
-      "title": {
-        "en": "Drawn in coloured pencil",
-        "zh": "用色鉛筆畫出來"
-      },
-      "desc": {
-        "en": "The lines themselves are drawn in colour, with no grey pencil at all: each line is the colour of what it outlines. Then each is gone over again, wider and wider, until the colour fills out from the lines; long strokes colour the sky last. Same timing as E: the colour is all there as the last lines land, then the film starts moving. A click skips it.",
-        "zh": "線條本身就是彩色的，完全沒有灰色鉛筆：每一筆都是它畫的東西的顏色。接著每條線再被描過幾次，越描越粗，顏色從線條裡長出來填滿；天空最後用長長的筆觸塗上。時間和 E 一樣：最後幾筆畫完時顏色已經到位，影片接著開始動。點一下可以跳過。"
-      },
-      "still": {
-        "wait": 5000
-      }
-    },
-    {
-      "href": "c-pencil-hatch.html",
-      "group": "opening2",
-      "title": {
-        "en": "Hatched in colour",
-        "zh": "色鉛筆排線"
-      },
-      "desc": {
-        "en": "Grey lines as in E, and close behind them coloured pencil hatching: fine diagonal strokes, then a second layer crossing them, put down wherever the pencil has just been. The hatching texture shows until the film starts. Same timing as E: the colour is all there as the last lines land, then the film starts moving. A click skips it.",
-        "zh": "線條和 E 一樣是灰色的，緊跟在後面的是色鉛筆排線：細細的斜線，再一層交叉的斜線，鉛筆剛畫到哪裡就排到哪裡。影片開始前看得到排線的紋理。時間和 E 一樣：最後幾筆畫完時顏色已經到位，影片接著開始動。點一下可以跳過。"
-      },
-      "still": {
-        "wait": 5000
-      }
-    },
-    {
-      "href": "c-pencil-band.html",
-      "group": "opening2",
-      "title": {
-        "en": "Colour along each line",
-        "zh": "線條帶出顏色"
-      },
-      "desc": {
-        "en": "Grey lines, and each line carries a soft band of colour with it, as if the colour were rubbed in with a finger right after the line; the sky is filled with broad soft strokes. The gentlest of the five. Same timing as E: the colour is all there as the last lines land, then the film starts moving. A click skips it.",
-        "zh": "灰色線條，每一筆都帶著一圈柔和的顏色，像畫完一筆馬上用手指把顏色抹開；天空用寬寬軟軟的筆觸補上。五個裡面最柔和的。時間和 E 一樣：最後幾筆畫完時顏色已經到位，影片接著開始動。點一下可以跳過。"
-      },
-      "still": {
-        "wait": 5000
-      }
-    },
-    {
-      "href": "c-pencil-grain.html",
-      "group": "opening2",
-      "title": {
-        "en": "Colour in the paper's grain",
-        "zh": "顏色落進紙紋"
-      },
-      "desc": {
-        "en": "Grey lines, and the colour catches in the paper's tooth like a coloured pencil on rough paper: first a scatter of coloured specks, then denser, then solid, in three passes behind the lines. Same timing as E: the colour is all there as the last lines land, then the film starts moving. A click skips it.",
-        "zh": "灰色線條，顏色像色鉛筆畫在粗紙上，卡在紙的紋路裡：先是一點一點的色點，越來越密，最後塗滿，跟在線條後面分三次上色。時間和 E 一樣：最後幾筆畫完時顏色已經到位，影片接著開始動。點一下可以跳過。"
-      },
-      "still": {
-        "wait": 5000
-      }
-    },
-    {
-      "href": "c-pencil-scribble.html",
-      "group": "opening2",
-      "title": {
-        "en": "Scribbled in",
-        "zh": "塗鴉上色"
-      },
-      "desc": {
-        "en": "Grey lines, and quick zigzag scribbles of colour fill each patch the pencil has just reached, like colouring in fast by hand; a second round of scribbles crosses the first. Same timing as E: the colour is all there as the last lines land, then the film starts moving. A click skips it.",
-        "zh": "灰色線條，鉛筆剛畫到的地方馬上用快速的來回塗鴉上色，像用手很快地塗顏色；第二輪塗鴉再交叉塗過去。時間和 E 一樣：最後幾筆畫完時顏色已經到位，影片接著開始動。點一下可以跳過。"
-      },
-      "still": {
-        "wait": 5000
-      }
-    },
-    {
-      "href": "c-brush.html",
-      "group": "opening3",
-      "title": {
-        "en": "Brushed in",
-        "zh": "刷出來"
-      },
-      "desc": {
-        "en": "A wide brush sweeps left to right, row under row, top to bottom, on a slight slant, the strokes full of paint in the middle with dry, streaky edges and tails. Your logo first, as before; no pencil and no still picture: the film is already playing under the white, so every stroke uncovers moving footage, and once the last row is down the page is simply the film. The counts sit on the white strip at the foot and step aside before the brush gets there. A click skips it.",
-        "zh": "一支寬刷子由左往右刷，一排接一排從上往下，稍微斜一點；筆觸中間顏料飽滿，邊緣和尾巴乾乾的、有刷痕。先是你的標誌，和之前一樣；沒有鉛筆、也沒有靜止的畫面：白色底下影片已經在播，每一刷刷開的都是會動的畫面，最後一排刷完，畫面就是影片。數字在底部的白色上，刷子到之前先讓開。點一下可以跳過。"
-      },
-      "still": {
-        "wait": 4900
-      },
-      "out": true
-    },
-    {
-      "href": "c-brush-fine.html",
-      "group": "opening3",
-      "title": {
-        "en": "Many brushstrokes",
-        "zh": "一筆一筆刷"
-      },
-      "desc": {
-        "en": "A narrower brush and more rows, quicker strokes, a little more slant: more like painting a wall stroke by stroke. Your logo first, as before; no pencil and no still picture: the film is already playing under the white, so every stroke uncovers moving footage, and once the last row is down the page is simply the film. The counts sit on the white strip at the foot and step aside before the brush gets there. A click skips it.",
-        "zh": "比較窄的刷子、比較多排、每一刷更快、也更斜一點：比較像一筆一筆刷牆。先是你的標誌，和之前一樣；沒有鉛筆、也沒有靜止的畫面：白色底下影片已經在播，每一刷刷開的都是會動的畫面，最後一排刷完，畫面就是影片。數字在底部的白色上，刷子到之前先讓開。點一下可以跳過。"
-      },
-      "still": {
-        "wait": 4900
-      },
-      "out": true
-    },
-    {
-      "href": "c-brush-slant.html",
-      "group": "opening3",
-      "title": {
-        "en": "Brushed on a slant",
-        "zh": "斜斜地刷"
-      },
-      "desc": {
-        "en": "The same wide brush on a steep slant, so the picture opens corner to corner, the bottom right last. Your logo first, as before; no pencil and no still picture: the film is already playing under the white, so every stroke uncovers moving footage, and once the last row is down the page is simply the film. The counts sit on the white strip at the foot and step aside before the brush gets there. A click skips it.",
-        "zh": "同一支寬刷子，但斜得很明顯，畫面從一個角往對角打開，右下角最後刷開。先是你的標誌，和之前一樣；沒有鉛筆、也沒有靜止的畫面：白色底下影片已經在播，每一刷刷開的都是會動的畫面，最後一排刷完，畫面就是影片。數字在底部的白色上，刷子到之前先讓開。點一下可以跳過。"
-      },
-      "still": {
-        "wait": 4900
-      },
-      "out": true
-    },
-    {
-      "href": "c-hand.html",
-      "group": "opening4",
-      "title": {
-        "en": "Brushed by hand",
-        "zh": "手刷"
-      },
-      "desc": {
-        "en": "A wide brush, painted briskly, band after band from the top, one long stroke or two where the first runs dry. As a hand paints: one stroke at a time with a lift between, each a different length, angle and speed, arcing the way an arm does; the paint full where the brush lands and breaking into dry streaks as it runs out; then a few quick touches where the paper still shows. The film plays slowly under the brush and comes back to its own pace, so the first shot stays on a moment after the last stroke. The counts step aside before the brush reaches them. A click skips it.",
-        "zh": "一支寬刷子，刷得俐落，從上面一排一排往下，一筆刷到底，或是第一筆乾了再接一筆。像手在刷：一次一筆，中間會提起來，每一筆長短、角度、速度都不一樣，跟手臂一樣有弧度；刷子落下的地方顏料飽滿，越刷越乾，變成乾乾的刷痕；最後在還看得到白紙的地方補幾筆。刷的時候影片在底下慢慢播，刷完再回到正常速度，所以最後一筆之後第一個畫面還會停留一下。刷子到之前數字先讓開。點一下可以跳過。"
-      },
-      "still": {
-        "wait": 5500
-      }
-    },
-    {
-      "href": "c-hand-loaded.html",
-      "group": "opening4",
-      "title": {
-        "en": "A loaded brush",
-        "zh": "沾滿顏料的刷子"
-      },
-      "desc": {
-        "en": "More paint on a wider brush, slower and fuller strokes, fewer dry streaks. As a hand paints: one stroke at a time with a lift between, each a different length, angle and speed, arcing the way an arm does; the paint full where the brush lands and breaking into dry streaks as it runs out; then a few quick touches where the paper still shows. The film plays slowly under the brush and comes back to its own pace, so the first shot stays on a moment after the last stroke. The counts step aside before the brush reaches them. A click skips it.",
-        "zh": "更寬、沾更多顏料的刷子，筆觸比較慢、比較飽滿，乾刷痕比較少。像手在刷：一次一筆，中間會提起來，每一筆長短、角度、速度都不一樣，跟手臂一樣有弧度；刷子落下的地方顏料飽滿，越刷越乾，變成乾乾的刷痕；最後在還看得到白紙的地方補幾筆。刷的時候影片在底下慢慢播，刷完再回到正常速度，所以最後一筆之後第一個畫面還會停留一下。刷子到之前數字先讓開。點一下可以跳過。"
-      },
-      "still": {
-        "wait": 5500
-      }
-    },
-    {
-      "href": "c-hand-dry.html",
-      "group": "opening4",
-      "title": {
-        "en": "A dry brush",
-        "zh": "乾筆飛白"
-      },
-      "desc": {
-        "en": "Little paint, fast and loose: strokes at freer angles, more dry streaks (飛白) and flecks flung off the ends. As a hand paints: one stroke at a time with a lift between, each a different length, angle and speed, arcing the way an arm does; the paint full where the brush lands and breaking into dry streaks as it runs out; then a few quick touches where the paper still shows. The film plays slowly under the brush and comes back to its own pace, so the first shot stays on a moment after the last stroke. The counts step aside before the brush reaches them. A click skips it.",
-        "zh": "顏料少、刷得快又鬆：角度比較隨意，乾刷的飛白比較多，筆尾還會甩出一點點顏料。像手在刷：一次一筆，中間會提起來，每一筆長短、角度、速度都不一樣，跟手臂一樣有弧度；刷子落下的地方顏料飽滿，越刷越乾，變成乾乾的刷痕；最後在還看得到白紙的地方補幾筆。刷的時候影片在底下慢慢播，刷完再回到正常速度，所以最後一筆之後第一個畫面還會停留一下。刷子到之前數字先讓開。點一下可以跳過。"
-      },
-      "still": {
-        "wait": 5500
-      }
-    },
-    {
-      "href": "c-hand-dry-smooth.html",
-      "group": "opening4",
-      "title": {
-        "en": "A dry brush, smoothed",
-        "zh": "乾筆飛白，收得更順"
-      },
-      "desc": {
-        "en": "32 with a smoother change from brushing into the film, worked over in five rounds with two reviewers (a panel of first-time visitors and a motion designer). The film settles slowly from a little close the whole time; the brush finishes with a few wetter sweeps, the last one along the foot; every stroke lands narrow and lifts off tapering, its front a rounded, leaning nose; what paper is left thins away in short dashes, the spire first and small slivers early, the last streaks lingering at the edges; then the menu and caption, and the first shot holds a couple of seconds before the film moves on. A click skips it.",
-        "zh": "32 的進階版，刷完到影片的轉換更順，跟兩位評審（一組第一次看到網站的訪客、一位動態設計師）來回改了五輪。影片從頭到尾都在從稍微放大慢慢退回原本大小；刷子最後用幾筆比較濕的大筆收尾，最後一筆沿著底部；每一筆落下時窄、提起時漸細，筆頭是圓的、往後斜；剩下的白紙變成一小段一小段慢慢消失，聖家堂先清乾淨、零碎的小白邊先走，最後幾絲留在畫面邊緣；接著選單和字幕出現，第一個畫面停幾秒才換下一段。點一下可以跳過。"
-      },
-      "still": {
-        "wait": 5600
-      }
-    },
-    {
-      "href": "c-smooth-ink.html",
-      "group": "opening5",
-      "title": {
-        "en": "Calligraphy brush",
-        "zh": "毛筆一揮"
-      },
-      "desc": {
-        "en": "A big calligraphy brush: four quick, steep diagonal sweeps, thick and thin, with dry flying white (飛白). Same ending as 33: the paper left thins away, the spire first, then the menu and caption, and the first shot holds. Reviewed by a visitor panel and a motion designer, and fixed from their notes. A click skips it.",
-        "zh": "一支大毛筆：四筆又快又斜的大筆，筆畫有粗有細，帶著乾筆的飛白。收尾和 33 一樣：剩下的白紙慢慢消失、聖家堂先清乾淨，接著選單和字幕出現，第一個畫面停幾秒。請訪客和動態設計師評過，照他們的意見改過。點一下可以跳過。"
-      },
-      "still": {
-        "wait": 5600
-      }
-    },
-    {
-      "href": "c-smooth-alt.html",
-      "group": "opening5",
-      "title": {
-        "en": "Back and forth",
-        "zh": "來回刷"
-      },
-      "desc": {
-        "en": "A narrower brush going back and forth, left to right, then right to left, like painting a wall; even and calm. Same ending as 33: the paper left thins away, the spire first, then the menu and caption, and the first shot holds. Reviewed by a visitor panel and a motion designer, and fixed from their notes. A click skips it.",
-        "zh": "比較窄的刷子來回刷，先左到右、再右到左，像在刷牆，平均又安靜。收尾和 33 一樣：剩下的白紙慢慢消失、聖家堂先清乾淨，接著選單和字幕出現，第一個畫面停幾秒。請訪客和動態設計師評過，照他們的意見改過。點一下可以跳過。"
-      },
-      "still": {
-        "wait": 5600
-      }
-    },
-    {
-      "href": "c-smooth-centre.html",
-      "group": "opening5",
-      "title": {
-        "en": "From the spire out",
-        "zh": "從聖家堂往外刷"
-      },
-      "desc": {
-        "en": "The first stroke goes straight down the Sagrada Família, then the bands spread up and down from it, so the subject comes first. Same ending as 33: the paper left thins away, the spire first, then the menu and caption, and the first shot holds. Reviewed by a visitor panel and a motion designer, and fixed from their notes. A click skips it.",
-        "zh": "第一筆直直刷下聖家堂，再從那裡往上、往下一排一排刷開，主角最先出現。收尾和 33 一樣：剩下的白紙慢慢消失、聖家堂先清乾淨，接著選單和字幕出現，第一個畫面停幾秒。請訪客和動態設計師評過，照他們的意見改過。點一下可以跳過。"
-      },
-      "still": {
-        "wait": 5600
-      }
-    },
-    {
-      "href": "c-smooth-down.html",
-      "group": "opening5",
-      "title": {
-        "en": "Brushed downward",
-        "zh": "由上往下刷"
-      },
-      "desc": {
-        "en": "Columns brushed from the top down, left to right, all the way to the foot; then one sweep along it. Same ending as 33: the paper left thins away, the spire first, then the menu and caption, and the first shot holds. Reviewed by a visitor panel and a motion designer, and fixed from their notes. A click skips it.",
-        "zh": "從上往下一條一條刷，由左往右，一路刷到底；最後沿著底部刷一筆。收尾和 33 一樣：剩下的白紙慢慢消失、聖家堂先清乾淨，接著選單和字幕出現，第一個畫面停幾秒。請訪客和動態設計師評過，照他們的意見改過。點一下可以跳過。"
-      },
-      "still": {
-        "wait": 5600
-      }
-    },
-    {
-      "href": "c-smooth-arc.html",
-      "group": "opening5",
-      "title": {
-        "en": "Sweeping arcs",
-        "zh": "弧形大筆"
-      },
-      "desc": {
-        "en": "Every stroke the same gentle arch, like an arm swinging from the shoulder, band under band. Same ending as 33: the paper left thins away, the spire first, then the menu and caption, and the first shot holds. Reviewed by a visitor panel and a motion designer, and fixed from their notes. A click skips it.",
-        "zh": "每一筆都是同樣的弧線，像手臂從肩膀揮出去，一排接一排。收尾和 33 一樣：剩下的白紙慢慢消失、聖家堂先清乾淨，接著選單和字幕出現，第一個畫面停幾秒。請訪客和動態設計師評過，照他們的意見改過。點一下可以跳過。"
-      },
-      "still": {
-        "wait": 5600
-      }
-    },
-    {
-      "href": "c-smooth-cross.html",
-      "group": "opening5",
-      "title": {
-        "en": "Crossed strokes",
-        "zh": "交叉刷"
-      },
-      "desc": {
-        "en": "A rising pass with gaps, then a falling pass across it, like cross-hatching. Same ending as 33: the paper left thins away, the spire first, then the menu and caption, and the first shot holds. Reviewed by a visitor panel and a motion designer, and fixed from their notes. A click skips it.",
-        "zh": "先一輪往上斜的筆畫，中間留空，再一輪往下斜的交叉刷過去，像交叉排線。收尾和 33 一樣：剩下的白紙慢慢消失、聖家堂先清乾淨，接著選單和字幕出現，第一個畫面停幾秒。請訪客和動態設計師評過，照他們的意見改過。點一下可以跳過。"
-      },
-      "still": {
-        "wait": 5600
-      }
-    },
-    {
-      "href": "c-sketch-move.html",
-      "group": "opening6",
-      "title": {
-        "en": "A drawing that moves",
-        "zh": "會動的素描"
-      },
-      "desc": {
-        "en": "After the logo, the film itself is drawn in coloured pencil, from the Sagrada Família outward, and the drawing already moves, because it is the film playing slowly underneath. Then the hatching thickens, layer on layer, each stroke bolder, until no paper shows and the drawing has become the film. No counts. Same ending as 33: menu and caption after, and the first shot holds. A click skips it.",
-        "zh": "標誌之後，用彩色鉛筆把影片本身畫出來，從聖家堂往外畫；畫出來的素描本來就在動，因為底下就是慢慢播放的影片。接著筆觸一層一層加密、越畫越粗，直到看不到白紙，素描就變成了影片。沒有數字。收尾和 33 一樣：選單和字幕之後出現，第一個畫面停幾秒。點一下可以跳過。"
-      },
-      "still": {
-        "wait": 6600
-      },
-      "out": true
-    },
-    {
-      "href": "c-sketch-bleed.html",
-      "group": "opening6",
-      "title": {
-        "en": "Colour from the lines",
-        "zh": "顏色從線條長出來"
-      },
-      "desc": {
-        "en": "The film drawn in coloured pencil, then the colour soaks out from each line into the spaces between, darker places first and the sky last, like paint into paper. No counts. Same ending as 33: menu and caption after, and the first shot holds. A click skips it.",
-        "zh": "先用彩色鉛筆把影片畫出來，然後顏色從每條線往外滲進空白處，暗的地方先、天空最後，像顏料滲進紙裡。沒有數字。收尾和 33 一樣：選單和字幕之後出現，第一個畫面停幾秒。點一下可以跳過。"
-      },
-      "still": {
-        "wait": 6600
-      },
-      "out": true
-    },
-    {
-      "href": "c-sketch-tone.html",
-      "group": "opening6",
-      "title": {
-        "en": "The light first",
-        "zh": "光先進來"
-      },
-      "desc": {
-        "en": "The film drawn in coloured pencil, then it turns real by brightness: the sky and the sunlit stone first, the middle tones next, the shade under the trees last. No counts. Same ending as 33: menu and caption after, and the first shot holds. A click skips it.",
-        "zh": "先用彩色鉛筆畫出影片，接著依亮度變成真的：天空和照到陽光的石頭先，中間的顏色其次，樹下的陰影最後。沒有數字。收尾和 33 一樣：選單和字幕之後出現，第一個畫面停幾秒。點一下可以跳過。"
-      },
-      "still": {
-        "wait": 6600
-      },
-      "out": true
-    },
-    {
-      "href": "c-sketch-front.html",
-      "group": "opening6",
-      "title": {
-        "en": "Drawing, then film, in one sweep",
-        "zh": "一路畫過去，影片跟在後面"
-      },
-      "desc": {
-        "en": "One movement from the Sagrada Família outward: paper ahead, the pencil drawing at the front, the film close behind it, so every part is a drawing for a moment and then real. No counts. Same ending as 33: menu and caption after, and the first shot holds. A click skips it.",
-        "zh": "從聖家堂往外一路推過去：前面是白紙，最前緣是鉛筆素描，影片緊跟在後，所以每個地方都先當一下素描，再變成真的。沒有數字。收尾和 33 一樣：選單和字幕之後出現，第一個畫面停幾秒。點一下可以跳過。"
-      },
-      "still": {
-        "wait": 6600
-      },
-      "out": true
-    },
-    {
-      "href": "c-sketch-tracing.html",
-      "group": "opening6",
-      "title": {
-        "en": "Tracing paper",
-        "zh": "描圖紙"
-      },
-      "desc": {
-        "en": "The film plays faintly behind a sheet of tracing paper while E's traced lines, the ones you chose before, are drawn on it. Then the paper clears from the Sagrada Família outward, as wet tracing paper turns clear, and the lines go with it. No counts. Same ending as 33: menu and caption after, and the first shot holds. A click skips it.",
-        "zh": "影片在一張描圖紙後面淡淡地播，紙上畫出 E 那些你選過的描線。接著紙從聖家堂往外變透明，像描圖紙沾濕變清楚，線條跟著一起消失。沒有數字。收尾和 33 一樣：選單和字幕之後出現，第一個畫面停幾秒。點一下可以跳過。"
-      },
-      "still": {
-        "wait": 6600
-      },
-      "out": true
-    },
-    {
-      "href": "c-smooth-spiredown.html",
-      "group": "opening7",
-      "title": {
-        "en": "Down from the spire",
-        "zh": "從聖家堂往下刷"
-      },
-      "desc": {
-        "en": "The first stroke straight down the Sagrada Família, then columns brushed downward, spreading out from it to both sides. The two you gave 3, from the spire out and brushed downward, in one. No counts. Same ending as 33: menu and caption after, and the first shot holds. A click skips it.",
-        "zh": "第一筆直直刷過聖家堂，接著從它往兩邊一條一條往下刷。把你給 3 分的兩個（從聖家堂往外刷、由上往下刷）合在一起。沒有數字。收尾和 33 一樣：選單和字幕之後出現，第一個畫面停幾秒。點一下可以跳過。"
-      },
-      "still": {
-        "wait": 5600
-      },
-      "out": true
-    },
-    {
-      "href": "c-smooth-up.html",
-      "group": "opening7",
-      "title": {
-        "en": "Brushed up to the spire",
-        "zh": "往上刷到聖家堂"
-      },
-      "desc": {
-        "en": "Columns brushed upward from below the screen, starting at the two edges and closing in, the Sagrada Família left as paper until the last stroke, so the brushing ends on it. No counts. Same ending as 33: menu and caption after, and the first shot holds. A click skips it.",
-        "zh": "從畫面下方往上刷，先刷兩邊，再往中間靠，聖家堂留到最後一筆才刷出來，刷完剛好停在它身上。沒有數字。收尾和 33 一樣：選單和字幕之後出現，第一個畫面停幾秒。點一下可以跳過。"
-      },
-      "still": {
-        "wait": 5600
-      },
-      "out": true
-    },
-    {
-      "href": "c-smooth-broad.html",
-      "group": "opening7",
-      "title": {
-        "en": "A few broad strokes",
-        "zh": "幾筆大刷"
-      },
-      "desc": {
-        "en": "A much wider brush, unhurried: a handful of downward strokes across the screen, then one along the foot. No counts. Same ending as 33: menu and caption after, and the first shot holds. A click skips it.",
-        "zh": "換一支寬很多的刷子，不急：幾筆由上往下橫過整個畫面，最後沿底部刷一筆。沒有數字。收尾和 33 一樣：選單和字幕之後出現，第一個畫面停幾秒。點一下可以跳過。"
-      },
-      "still": {
-        "wait": 5600
-      },
-      "out": true
-    },
-    {
-      "href": "c-smooth-slant.html",
-      "group": "opening7",
-      "title": {
-        "en": "Slanted downstrokes",
-        "zh": "斜斜往下刷"
-      },
-      "desc": {
-        "en": "Your first idea for the brush, top down with some angle in it: strokes leaning from top left to bottom right, laid one after another from left to right, like rain on a window. No counts. Same ending as 33: menu and caption after, and the first shot holds. A click skips it.",
-        "zh": "你最早說的刷法：由上往下、帶一點角度。每一筆從左上斜到右下，由左往右一筆接一筆，像雨打在窗上。沒有數字。收尾和 33 一樣：選單和字幕之後出現，第一個畫面停幾秒。點一下可以跳過。"
-      },
-      "still": {
-        "wait": 5600
-      },
-      "out": true
-    },
-    {
-      "href": "c-smooth-lines.html",
-      "group": "opening7",
-      "title": {
-        "en": "Brushed over the drawing",
-        "zh": "刷過線稿"
-      },
-      "desc": {
-        "en": "Between the sketch and the brush: E's traced lines are drawn first, and the brush follows them out from the Sagrada Família, taking the lines away with the paper. No counts. Same ending as 33: menu and caption after, and the first shot holds. A click skips it.",
-        "zh": "介於素描和刷子之間：先畫出 E 的描線，刷子跟在後面從聖家堂往外刷，把線和白紙一起刷掉。沒有數字。收尾和 33 一樣：選單和字幕之後出現，第一個畫面停幾秒。點一下可以跳過。"
-      },
-      "still": {
-        "wait": 5600
-      },
-      "out": true
-    },
-    {
-      "href": "c-flock-diamond.html",
-      "group": "opening8",
-      "title": {
-        "en": "The diamond",
-        "zh": "菱形"
-      },
-      "desc": {
-        "en": "Closest to Mathilde de Chiara, which you marked Good. The logo shrinks into the corner where the page keeps it; 25 of your photographs fly in along the diagonal from the top right, as one flock, and land as a diamond of level squares. One square among them is alive: the Barcelona film, small, in slow motion. The far ones peel away down the other diagonal and the live one grows to the whole screen, where the film plays on. A click skips it.",
-        "zh": "最接近你標喜歡的 Mathilde de Chiara。標誌縮到角落（頁面本來就放在那裡），25 張你的照片從右上沿著對角線一群飛進來，落成一個由正方形排成的菱形。其中一格是活的：巴塞隆納的影片，小小的、慢動作。外圍的一張張往左下剝離，活的那格長大到整個畫面，影片接著播。點一下可以跳過。"
-      },
-      "still": {
-        "wait": 4200
-      }
-    },
-    {
-      "href": "c-flock-ribbon.html",
-      "group": "opening8",
-      "title": {
-        "en": "A ribbon of prints",
-        "zh": "一條照片帶"
-      },
-      "desc": {
-        "en": "The same diamond, but the prints come single file from the corner, a long train that coils into place one after another; they unwind out of the other corner in the same order while the live one grows.",
-        "zh": "一樣的菱形，但照片是從角落一張接一張排隊進來，像一條長長的帶子一張張捲進位置；再照同樣的順序從另一個角落退出去，活的那格同時長大。"
-      },
-      "still": {
-        "wait": 4200
-      }
-    },
-    {
-      "href": "c-flock-column.html",
-      "group": "opening8",
-      "title": {
-        "en": "Into one column",
-        "zh": "落成一直欄"
-      },
-      "desc": {
-        "en": "Her ending: the diamond lands, then falls into one column down the middle of the paper, and the column slides up through the screen; the live one stops in the middle and grows while the rest run on out of the top.",
-        "zh": "她的收尾：菱形落定後，掉成紙中央的一直欄，整欄往上滑過畫面；活的那格停在正中央長大，其他的繼續往上出去。"
-      },
-      "still": {
-        "wait": 4200
-      }
-    },
-    {
-      "href": "c-flock-line.html",
-      "group": "opening8",
-      "title": {
-        "en": "The line becomes a row",
-        "zh": "那條線變成一排照片"
-      },
-      "desc": {
-        "en": "The logo's own line: the name fades, the line runs to both edges, and a row of photographs opens out of it from the middle outward, each one unfolding from the line. The row parts to both sides and the live one in the middle grows.",
-        "zh": "用標誌本身那條線：名字淡去，線跑到兩邊，一排照片從線裡由中間往外一張張打開。整排往兩邊分開，中間活的那張長大。"
-      },
-      "still": {
-        "wait": 4200
-      }
-    },
-    {
-      "href": "c-flock-contact.html",
-      "group": "opening8",
-      "title": {
-        "en": "Contact sheet",
-        "zh": "印樣"
-      },
-      "desc": {
-        "en": "Four rows of photographs at their own shapes slide in from alternate sides and fill the screen like a contact sheet; they slide back out the way they came and the live one grows.",
-        "zh": "四排照片保持自己的形狀，從左右輪流滑進來，鋪滿畫面像一張印樣；再照原路滑出去，活的那張長大。"
-      },
-      "still": {
-        "wait": 4200
-      }
-    },
-    {
-      "href": "c-flock-stairs.html",
-      "group": "opening8",
-      "title": {
-        "en": "Stairs",
-        "zh": "階梯"
-      },
-      "desc": {
-        "en": "Five rows of squares, each a step further across, rise from below row by row into a staircase; then every one of them gathers onto the live one, shrinking under it as it grows: the many become the one.",
-        "zh": "五排正方形，每排往旁邊錯開一格，從下面一排排升上來排成階梯；然後全部往活的那格聚過去，在它底下縮小，它同時長大：很多張變成一張。"
-      },
-      "still": {
-        "wait": 4200
-      }
-    },
-    {
-      "href": "c-flock-strips.html",
-      "group": "opening8",
-      "title": {
-        "en": "Strips of film passing",
-        "zh": "一條條底片經過"
-      },
-      "desc": {
-        "en": "Three strips of photographs run across the screen, the middle one the other way, and slow to a stop with the live frame in the middle, like film passing a gate; the outer strips part up and down and it grows.",
-        "zh": "三條照片帶橫著跑過畫面，中間那條反方向，慢慢停下來時活的那格剛好在正中間，像底片經過片門；上下兩條往外分開，它長大。"
-      },
-      "still": {
-        "wait": 4200
-      }
-    },
-    {
-      "href": "c-flock-table.html",
-      "group": "opening8",
-      "title": {
-        "en": "Laid on the table",
-        "zh": "攤在桌上"
-      },
-      "desc": {
-        "en": "Prints dropped onto the paper one after another, each a little tilted, never overlapping, like photographs laid out on a desk; then they slide off the table's edges and the live one straightens and grows.",
-        "zh": "照片一張張掉到紙上，各自微微歪斜、不重疊，像攤在桌上的照片；然後從桌子四邊滑出去，活的那張轉正、長大。"
-      },
-      "still": {
-        "wait": 4200
-      }
-    },
-    {
-      "href": "c-flock-ring.html",
-      "group": "opening8",
-      "title": {
-        "en": "Around the name",
-        "zh": "圍著名字"
-      },
-      "desc": {
-        "en": "The only one where the logo stays in the middle: the prints settle in a ring around it, drifting in from outside; then the ring closes onto the live one, which grows over the name.",
-        "zh": "唯一讓標誌留在中間的：照片從外面飄進來，在名字四周圍成一圈；然後整圈往活的那張收攏，它蓋過名字長大。"
-      },
-      "still": {
-        "wait": 4200
-      }
-    },
-    {
-      "href": "c-flock-columns.html",
-      "group": "opening8",
-      "title": {
-        "en": "Columns rising",
-        "zh": "升起的直欄"
-      },
-      "desc": {
-        "en": "Five columns of photographs rise from below at different speeds, like the slow columns of a gallery, and come to rest with the live one in the middle; the rest carry on out of the top as it grows.",
-        "zh": "五條直欄的照片用不同的速度從下面升上來，像藝廊慢慢捲動的直欄，停下來時活的那張在正中間；其他的繼續往上出去，它長大。"
-      },
-      "still": {
-        "wait": 4200
-      }
-    },
-    {
-      "href": "c-flock-mosaic.html",
-      "group": "opening8",
-      "title": {
-        "en": "The photographs become the film",
-        "zh": "照片變成影片"
-      },
-      "desc": {
-        "en": "The boldest: a wall of 40 photographs flies in and fills the screen edge to edge. Then, from the middle outward, each photograph turns into its own piece of the film's first frame, until the wall is the frame, and the frame moves.",
-        "zh": "最大膽的一個：40 張照片飛進來，從邊到邊鋪滿畫面。然後從中間往外，每一張照片變成影片第一格裡屬於它那一塊，直到整面牆就是那一格，然後畫面動起來。"
-      },
-      "still": {
-        "wait": 4200
-      }
-    },
-    {
-      "href": "c-flock-sweep.html",
-      "group": "opening8",
-      "title": {
-        "en": "... swept from the corner",
-        "zh": "從角落掃過去"
-      },
-      "desc": {
-        "en": "The same wall, arriving row by row from the sides; the film comes up across it on the diagonal, from the top left to the bottom right.",
-        "zh": "同一面牆，改成一排一排從兩側進來；影片沿著對角線從左上掃到右下浮出來。"
-      },
-      "still": {
-        "wait": 4200
-      }
-    },
-    {
-      "href": "c-flock-window.html",
-      "group": "opening8",
-      "title": {
-        "en": "Into one window",
-        "zh": "走進其中一扇窗"
-      },
-      "desc": {
-        "en": "A wall of small screens lights up one by one; then the view moves in on the live one until it is the whole screen, like walking up to one window of a building.",
-        "zh": "一面小螢幕牆一格格亮起來；然後鏡頭往活的那格推進，直到它就是整個畫面，像走近一棟大樓的其中一扇窗。"
-      },
-      "still": {
-        "wait": 4200
-      }
-    },
-    {
-      "href": "c-flock-stack.html",
-      "group": "opening8",
-      "title": {
-        "en": "A stack, dealt",
-        "zh": "一疊照片，一張張發出去"
-      },
-      "desc": {
-        "en": "The prints drop into one big pile in the middle. The top one is flicked away to the left, the next to the right, each showing the next beneath, a quick look through the stack; the last in the pile is the live one, and it grows.",
-        "zh": "照片掉成中間一大疊。最上面那張往左一甩，下一張往右，每甩一張就露出下面那張，快速翻一遍；疊底最後一張是活的，它長大。"
-      },
-      "still": {
-        "wait": 4200
-      }
-    },
-    {
-      "href": "c-flock-letters.html",
-      "group": "opening8",
-      "title": {
-        "en": "TUAN, in photographs",
-        "zh": "用照片排出 TUAN"
-      },
-      "desc": {
-        "en": "The prints fly in and spell TUAN across the paper, letter by letter, 41 photographs as the pixels of his name; then the letters gather onto the live one in the A, and it grows.",
-        "zh": "照片飛進來，一個字母一個字母在紙上排出 TUAN，41 張照片當名字的像素；然後字母往 A 裡面活的那張聚過去，它長大。"
-      },
-      "still": {
-        "wait": 4200
-      }
-    }
-  ],
-  "tags": [
-    {
-      "id": "opening",
-      "en": "The opening",
-      "zh": "開場"
-    },
-    {
-      "id": "photos",
-      "en": "The photographs",
-      "zh": "照片"
-    },
-    {
-      "id": "words",
-      "en": "The words",
-      "zh": "文字"
-    },
-    {
-      "id": "rhythm",
-      "en": "Pace and space",
-      "zh": "節奏和留白"
-    },
-    {
-      "id": "doors",
-      "en": "The way in",
-      "zh": "入口"
-    },
-    {
-      "id": "film",
-      "en": "The film",
-      "zh": "影片"
-    }
-  ],
-  "phrases": [
-    {
-      "id": "elevated",
-      "en": "Elevated",
-      "zh": "有高級感"
-    },
-    {
-      "id": "ai",
-      "en": "Looks AI-made",
-      "zh": "有 AI 感"
-    },
-    {
-      "id": "too-long",
-      "en": "Too long",
-      "zh": "太長"
-    },
-    {
-      "id": "too-much",
-      "en": "Too much",
-      "zh": "太多了"
-    },
-    {
-      "id": "more",
-      "en": "More of this",
-      "zh": "多一點"
-    },
-    {
-      "id": "lovely",
-      "en": "Lovely",
-      "zh": "很美"
-    }
-  ],
-  "theme": {
-    "--rv-paper": "oklch(96.6% 0.011 82)",
-    "--rv-ink": "oklch(25% 0.012 60)",
-    "--rv-mark": "oklch(46% 0.092 47)",
-    "--rv-hair": "oklch(84.5% 0.015 78)",
-    "--rv-label": "\"Geist\", \"Noto Sans TC\", sans-serif",
-    "--rv-name": "\"Playfair Display\", \"Noto Serif TC\", serif"
+  {
+   "id": "round3",
+   "title": {
+    "en": "Third round: from Singita, Belmond and Jimmy Chin, which you marked Good",
+    "zh": "第三輪：從你標喜歡的 Singita、Belmond、Jimmy Chin 來做"
+   }
   },
-  "words": {},
-  "ask": {
-    "ids": [
-      "c-flock-diamond",
-      "c-flock-ribbon",
-      "c-flock-column",
-      "c-flock-line",
-      "c-flock-contact",
-      "c-flock-stairs",
-      "c-flock-strips",
-      "c-flock-table",
-      "c-flock-ring",
-      "c-flock-columns",
-      "c-flock-mosaic",
-      "c-flock-sweep",
-      "c-flock-window",
-      "c-flock-stack",
-      "c-flock-letters"
-    ],
-    "question": {
-      "en": "Fifteen ways the photographs can arrive, after Mathilde de Chiara, each ending on the film. Score each; mark the spot you mean.",
-      "zh": "照著 Mathilde de Chiara 做的十五種照片進場，每個最後都落在影片上。每個打個分數；想說哪裡就點那裡。"
-    }
+  {
+   "id": "round4",
+   "title": {
+    "en": "Fourth round: bold makeovers of 12, with the Queensboro train",
+    "zh": "第四輪：大膽改造第 12 個，主角是皇后區那張列車"
+   }
+  },
+  {
+   "id": "round5",
+   "title": {
+    "en": "Fifth round: the live site's layering, taken further",
+    "zh": "第五輪：把正式網站的層疊捲動做得更多"
+   }
+  },
+  {
+   "id": "opening2",
+   "title": {
+    "en": "The opening: colour while it is drawn",
+    "zh": "開場：邊畫邊上色"
+   }
+  },
+  {
+   "id": "opening3",
+   "title": {
+    "en": "The opening: brushed onto the film",
+    "zh": "開場：把影片刷出來"
+   }
+  },
+  {
+   "id": "opening4",
+   "title": {
+    "en": "The opening: brushed by hand",
+    "zh": "開場：像人手在刷"
+   }
+  },
+  {
+   "id": "opening5",
+   "title": {
+    "en": "The opening: six relatives of 33",
+    "zh": "開場：33 的六個變化"
+   }
+  },
+  {
+   "id": "opening6",
+   "title": {
+    "en": "The opening: the sketch turns into the film",
+    "zh": "開場：素描變成影片"
+   }
+  },
+  {
+   "id": "opening7",
+   "title": {
+    "en": "The opening: five more brushings",
+    "zh": "開場：再五種刷法"
+   }
+  },
+  {
+   "id": "opening8",
+   "title": {
+    "en": "The opening: the photographs arrive",
+    "zh": "開場：照片進場"
+   }
+  },
+  {
+   "id": "opening9",
+   "title": {
+    "en": "The opening: high-end, from your 4-star version",
+    "zh": "開場：高級感，從你打 4 分的那個做起"
+   }
   }
+ ],
+ "items": [
+  {
+   "href": "a-film.html",
+   "group": "round1",
+   "title": {
+    "en": "A short film",
+    "zh": "一段短片"
+   },
+   "desc": {
+    "en": "From Martha King. Your Barcelona clips as one 12-second film with nothing written on it, coming into focus as the logo opens. Then the page is drawn over it: one sentence on its own screen, photographs at changing sizes like pages of a printed book, a second sentence, three doors in words.",
+    "zh": "來自 Martha King。你的巴賽隆納影片剪成一段 12 秒的短片，上面不寫字，標誌打開時慢慢對焦。接著頁面從上面蓋過來：一句話佔一整個畫面，照片大小和位置變化，像一本印刷的書，第二句話，最後是三個用字做的入口。"
+   },
+   "still": {
+    "wait": 1500
+   },
+   "out": true
+  },
+  {
+   "href": "b-prints.html",
+   "group": "round1",
+   "title": {
+    "en": "Prints gather",
+    "zh": "照片聚集"
+   },
+   "desc": {
+    "en": "From Mathilde de Chiara. After the logo, twenty-one of your photographs fly in along the diagonal and settle in a row under it; Aoraki grows from the row into the whole window. Then one column down the middle of the paper, a sentence now and then.",
+    "zh": "來自 Mathilde de Chiara。標誌出來之後，你的二十一張照片沿著斜線飛進來，在標誌下面排成一排；Aoraki 從那一排長大到整個畫面。接著是紙中間的一條直欄照片，偶爾一句話。"
+   },
+   "still": {
+    "wait": 800
+   },
+   "out": true
+  },
+  {
+   "href": "c-drawn.html",
+   "group": "round1",
+   "title": {
+    "en": "Drawn, then real",
+    "zh": "先畫出來，再變成真的"
+   },
+   "desc": {
+    "en": "From Belgrade Arbor. The logo's line runs to both edges and becomes a horizon; a pencil drawing of the road to the Sagrada Família spreads up and down from it, then turns into your film. Then whole blocks of olive and slate, one thought on each with photographs set into it, and paper between.",
+    "zh": "來自 Belgrade Arbor。標誌的那條線延伸到兩邊變成地平線，聖家堂前面那條路的鉛筆素描從線往上下展開，再變成你的影片。接著是整塊橄欖綠和石板藍，每一塊一句話、照片嵌在裡面，中間是紙。"
+   },
+   "still": {
+    "wait": 1500
+   },
+   "out": true
+  },
+  {
+   "href": "c-traced.html",
+   "group": "round1",
+   "title": {
+    "en": "Traced, then real",
+    "zh": "一筆一筆勾出來，再變成真的"
+   },
+   "desc": {
+    "en": "C as you asked: the logo's line runs to both edges, then the road to the Sagrada Família is traced line by line, starting at the towers and spreading out, as if drawn by hand; the pencil shading comes in under the lines, then it turns into your film. Now quicker: the logo holds a moment and the name fades slowly, the drawing takes about 2 seconds, then lines, shading and film dissolve as one; the film is up in about 9 seconds. A click skips it.",
+    "zh": "照你說的改 C：標誌的線延伸到兩邊，接著聖家堂前那條路一筆一筆勾出來，從塔開始往外畫，像手在畫；畫完鉛筆的陰影慢慢出現在線條下面，再變成你的影片。現在比較快：標誌先停一下、名字慢慢淡掉，大約 2 秒畫完，線條、陰影和影片一口氣溶成一個畫面，9 秒左右進到影片，點一下可以跳過。"
+   },
+   "still": {
+    "wait": 1500
+   },
+   "out": true
+  },
+  {
+   "href": "c-counted.html",
+   "group": "round1",
+   "title": {
+    "en": "Traced and counted",
+    "zh": "勾出來，數一數"
+   },
+   "desc": {
+    "en": "D as you asked: while the road is drawn, the trip so far counts up along the foot of the drawing (21 countries, 41 flights, 93 photographs, read from the site's own data), then each scene of the film gets a small caption, the place and when, fading in and out with the scene.",
+    "zh": "照你說的改 D：畫路的同時，畫面下方數出到目前為止的旅程（21 個國家、41 趟航班、93 張照片，直接從網站的資料算出來），接著影片的每一個場景都有一行小字幕，寫地方和時間，跟著場景淡入淡出。"
+   },
+   "still": {
+    "wait": 2500
+   },
+   "main": true
+  },
+  {
+   "href": "f-drawn-down.html",
+   "group": "round2",
+   "title": {
+    "en": "Drawn, then real, all the way down",
+    "zh": "一路先畫再變真"
+   },
+   "desc": {
+    "en": "E's opening, then the same move as the opening all the way down: each photograph first appears as its own pencil drawing and turns into the photograph once it is well in view. Five photographs at changing sizes, two quiet sentences, the three doors.",
+    "zh": "E 的開場之後，整頁都用開場同一招：每張照片先以鉛筆素描出現，捲到畫面中間時才變成真的照片。五張照片大小交錯，兩句安靜的話，最後三個入口。"
+   },
+   "still": {
+    "wait": 2500
+   },
+   "out": true
+  },
+  {
+   "href": "g-pile.html",
+   "group": "round2",
+   "title": {
+    "en": "Prints on the table",
+    "zh": "桌上的照片"
+   },
+   "desc": {
+    "en": "E's opening, then one photograph to a screen: as you scroll, each print slides up and lies on top of the last, like prints in a pile, each with its place and when beneath. The way in becomes three photographs, Gallery, Journey and Guides.",
+    "zh": "E 的開場之後，一個畫面一張照片：往下捲，每張照片滑上來蓋住上一張，像桌上一疊照片，下面寫地點和時間。最後的入口變成三張照片：作品集、旅程、攻略。"
+   },
+   "still": {
+    "wait": 2500
+   },
+   "out": true
+  },
+  {
+   "href": "h-journal.html",
+   "group": "round2",
+   "title": {
+    "en": "The journal",
+    "zh": "旅行手帳"
+   },
+   "desc": {
+    "en": "E's opening, then four spreads of a printed travel journal: the photograph on one page, and on the other its place, when, and how it was made (camera, lens, aperture, shutter, ISO, read from the file), with a link to more from that country. The way in becomes a contents page with real counts.",
+    "zh": "E 的開場之後，像一本印出來的旅行手帳翻開四頁：一邊是照片，另一邊寫地點、時間和怎麼拍的（相機、鏡頭、光圈、快門、ISO，從照片檔案讀出來），再連到那個國家的更多照片。最後的入口變成目錄，附上真實的數字。"
+   },
+   "still": {
+    "wait": 2500
+   },
+   "out": true
+  },
+  {
+   "href": "i-beside.html",
+   "group": "round3",
+   "title": {
+    "en": "Words beside photographs",
+    "zh": "照片旁邊一句話"
+   },
+   "desc": {
+    "en": "After Singita. E's opening, then three big photographs, each with one short line beside it, never on it, the sides swapping. The way in is three tall photographs like windows (after Belmond): Gallery, Journey, Guides, each name beneath.",
+    "zh": "從 Singita 來的。E 的開場之後，三張大照片，每張旁邊一句短短的話（不寫在照片上），左右交換。最後的入口是三張直的照片，像窗戶（從 Belmond 來的）：作品集、旅程、攻略，名字寫在下面。"
+   },
+   "still": {
+    "wait": 2500
+   },
+   "out": true
+  },
+  {
+   "href": "j-windows.html",
+   "group": "round3",
+   "title": {
+    "en": "Windows",
+    "zh": "一扇一扇窗"
+   },
+   "desc": {
+    "en": "After Belmond. E's opening, then one row of six tall photographs across the whole width, one place each, the country and when beneath; each opens that country. Then the three words (after Jimmy Chin) under one photograph that fills the screen.",
+    "zh": "從 Belmond 來的。E 的開場之後，一整排六張直的照片橫跨整個畫面，一張一個地方，下面寫國家和時間，點了就到那個國家。最後是三個大字（從 Jimmy Chin 來的），在一張撐滿畫面的照片下面。"
+   },
+   "still": {
+    "wait": 2500
+   },
+   "out": true
+  },
+  {
+   "href": "k-three-words.html",
+   "group": "round3",
+   "title": {
+    "en": "Three words",
+    "zh": "三個字"
+   },
+   "desc": {
+    "en": "After Jimmy Chin. E's opening, two big photographs, then one that fills the screen with GALLERY, JOURNEY, GUIDES set huge and wide-spaced on the paper just beneath it, as the only way in. Nothing is written on the photograph.",
+    "zh": "從 Jimmy Chin 來的。E 的開場之後，兩張大照片，然後一張撐滿畫面的照片，下面紙上只有三個很大、很開的字：作品集、旅程、攻略，這就是入口。照片上不寫字。"
+   },
+   "still": {
+    "wait": 2500
+   },
+   "out": true
+  },
+  {
+   "href": "l-current-words.html",
+   "group": "round3",
+   "title": {
+    "en": "Your current home and the three words",
+    "zh": "現在的首頁加三個字"
+   },
+   "desc": {
+    "en": "Your ask: the three words merged with your current home. E's opening, then your live home page's own sections exactly as they are now (the line and its two buttons, the aurora, the Photographs wall with its viewer, Fuji, the Guides cards), then its last photograph, the Matterhorn and the flag, fills the screen with GALLERY, JOURNEY, GUIDES beneath it, and your Instagram footer closes it. The sections are read from the live page each time it is built, so they stay current.",
+    "zh": "照你說的：三個字和現在的首頁合在一起。E 的開場之後，接上現在正式首頁的內容，原封不動（那句話和兩個按鈕、極光、照片牆和點開的看圖、富士山、攻略卡片），最後那張馬特洪峰和國旗撐滿畫面，下面是作品集、旅程、攻略三個大字，再接你的 Instagram 頁尾。這些內容每次建置都從正式首頁讀進來，所以會跟著更新。"
+   },
+   "still": {
+    "wait": 2500
+   }
+  },
+  {
+   "href": "m-chapters.html",
+   "group": "round4",
+   "title": {
+    "en": "Chapters",
+    "zh": "一章一個地方"
+   },
+   "desc": {
+    "en": "Each place is a chapter on its own flat colour, its name set very large beside the photograph: New York in clay with the Queensboro train, Zermatt in slate, Sa Pa in olive, Mount Fuji on stone. Each photograph is uncovered upward as it arrives, like a print pulled from the tray. Then the three words under the aurora.",
+    "zh": "每個地方是一章，各有一整片顏色，地名很大地放在照片旁邊：紐約配陶土色和皇后區列車、策馬特配石板藍、沙壩配橄欖綠、富士山配石頭色。照片出現時由下往上露出來，像從顯影盤拿起一張相片。最後是極光下的三個大字。"
+   },
+   "still": {
+    "wait": 2500
+   },
+   "out": true
+  },
+  {
+   "href": "n-covers.html",
+   "group": "round4",
+   "title": {
+    "en": "Covers",
+    "zh": "封面"
+   },
+   "desc": {
+    "en": "One photograph to a screen like a magazine cover, its name set huge and split around it: Queensboro | Plaza, Mount | Fuji, Roys | Peak, Lake | Tekapo. The two halves slide in toward the photograph as it arrives. Then the three words under the Matterhorn.",
+    "zh": "一個畫面一張照片，像雜誌封面，名字很大地拆在照片兩邊：Queensboro | Plaza、Mount | Fuji、Roys | Peak、Lake | Tekapo，捲到時兩半往照片靠過來。最後是馬特洪峰下的三個大字。"
+   },
+   "still": {
+    "wait": 2500
+   },
+   "out": true
+  },
+  {
+   "href": "o-light-table.html",
+   "group": "round4",
+   "title": {
+    "en": "The light table",
+    "zh": "看片桌"
+   },
+   "desc": {
+    "en": "Like a photographer's light table: one big print held on the left, your picks laid out beside it. Point at or tap any of them and it becomes the big print. The Queensboro train is on the table first. Then the three words under Roys Peak.",
+    "zh": "像攝影師的看片桌：左邊一張大照片，右邊排著你的精選。滑過或點任何一張，它就變成大的那張。皇后區列車先放在桌上。最後是羅伊峰下的三個大字。"
+   },
+   "still": {
+    "wait": 2500
+   },
+   "out": true
+  },
+  {
+   "href": "p-split.html",
+   "group": "round4",
+   "title": {
+    "en": "Split",
+    "zh": "一半照片一半字"
+   },
+   "desc": {
+    "en": "Half the screen holds the photograph, the other half reads place by place: the place, its name, one line about what is in the photograph, when, and a link. As each place reaches the middle, its photograph takes over the held half. Queensboro Plaza first, then Zermatt at dusk, Sa Pa, Tekapo, the Calanque. Then the three words under Fuji.",
+    "zh": "畫面一半放照片，另一半一個地方一個地方讀下去：地點、名稱、一句照片裡有什麼、時間、連結。每個地方捲到中間時，它的照片就換上那一半。先是皇后區廣場站，接著暮色的策馬特、沙壩、蒂卡波、昂沃峽灣。最後是富士山下的三個大字。"
+   },
+   "still": {
+    "wait": 2500
+   },
+   "out": true
+  },
+  {
+   "href": "q-doors-first.html",
+   "group": "round4",
+   "title": {
+    "en": "The way in first",
+    "zh": "入口先來"
+   },
+   "desc": {
+    "en": "Straight after the film, the way in: three tall windows with the three words large beneath them, the Milky Way for Gallery, the Queensboro train for Journey, the Sagrada Família for Guides. Then your picks at changing sizes, and one last line.",
+    "zh": "影片一結束就是入口：三扇直的窗，下面是三個大字，銀河是作品集，皇后區列車是旅程，聖家堂是攻略。接著是你的精選照片大小交錯，最後一句話。"
+   },
+   "still": {
+    "wait": 2500
+   },
+   "out": true
+  },
+  {
+   "href": "r-windows.html",
+   "group": "round5",
+   "title": {
+    "en": "Windows in the paper",
+    "zh": "紙上的窗"
+   },
+   "desc": {
+    "en": "The live site's windows (a hole cut in the page, the photograph fixed behind it, drifting slowly as you pass) in more shapes: the Queensboro train fills a whole screen, the Milky Way shows through a tall hole framed by paper, Mount Fuji through two holes side by side onto one photograph, rows of your picks between. The three words sit under Roys Peak, itself a window.",
+    "zh": "正式網站的「窗」（頁面上挖一個洞，照片固定在後面，捲動時慢慢飄）做成更多形狀：皇后區列車撐滿一整個畫面，銀河從一個被紙框住的直窗看出去，富士山從並排的兩個洞看到同一張照片，中間是你的精選照片。三個大字在羅伊峰下面，那張也是一扇窗。"
+   },
+   "still": {
+    "wait": 2500
+   }
+  },
+  {
+   "href": "s-prints-over.html",
+   "group": "round5",
+   "title": {
+    "en": "Prints over a photograph",
+    "zh": "照片上飄過的照片"
+   },
+   "desc": {
+    "en": "One photograph holds the whole screen while your prints float up over it, some faster than others: first the Queensboro train behind Matterhorn, Sa Pa, Fuji and the church at Tekapo; then the aurora behind Roys Peak, the Calanque, the Golden Gate and the Milky Way. Then the three words under the Matterhorn.",
+    "zh": "一張照片撐住整個畫面，你的照片一張張從上面飄過，有快有慢：先是皇后區列車在後面，飄過馬特洪峰、沙壩、富士山、蒂卡波的教堂；再換極光在後面，飄過羅伊峰、昂沃峽灣、金門大橋、銀河。最後是馬特洪峰下的三個大字。"
+   },
+   "still": {
+    "wait": 2500
+   }
+  },
+  {
+   "href": "u-layered.html",
+   "group": "round5",
+   "title": {
+    "en": "12, layered more",
+    "zh": "第 12 個，多幾層"
+   },
+   "desc": {
+    "en": "Version 12 with more layers: your live line and buttons, then the Queensboro train as a full window, the photo wall with your picks, Mount Fuji with the bullet train through two holes, your Guides cards, the Tekapo church through a framed hole, and the three words under the Matterhorn and the flag, now a window too. Your Instagram footer closes it.",
+    "zh": "第 12 個多加幾層：正式首頁那句話和按鈕，接著皇后區列車一整扇窗，照片牆換成你的精選，富士山和新幹線從兩個洞看，攻略卡片，蒂卡波的教堂從一個被紙框住的洞看，最後是馬特洪峰和國旗下的三個大字，那張現在也是一扇窗，再接 Instagram 頁尾。"
+   },
+   "still": {
+    "wait": 2500
+   }
+  },
+  {
+   "href": "c-coloured.html",
+   "group": "opening2",
+   "title": {
+    "en": "Coloured as it is drawn",
+    "zh": "邊畫邊上色"
+   },
+   "desc": {
+    "en": "E as you asked: no grey pencil stage. While the road is drawn, the colour of the film's first frame washes in under the lines, starting at the towers and spreading out the way the pencil goes, pale at first and deepening. As the last lines land the colour is all there and the film starts moving; the lines and counts lift off it. The film is up about 2 seconds sooner than E. Only the opening changed; the rest of the page is E's.",
+    "zh": "照你說的改 E：拿掉灰色的鉛筆階段。畫路的同時，影片第一格的顏色在線條下面慢慢浮出來，從塔開始往外擴，跟鉛筆走的方向一樣，先淡淡的再越來越濃。最後幾筆畫完時顏色已經到位，影片直接開始動，線條和數字再淡掉。比 E 大約早 2 秒進到影片。只改了開場，下面的部分和 E 一樣。"
+   },
+   "still": {
+    "wait": 5200
+   },
+   "out": true
+  },
+  {
+   "href": "c-pencil-lines.html",
+   "group": "opening2",
+   "title": {
+    "en": "Drawn in coloured pencil",
+    "zh": "用色鉛筆畫出來"
+   },
+   "desc": {
+    "en": "The lines themselves are drawn in colour, with no grey pencil at all: each line is the colour of what it outlines. Then each is gone over again, wider and wider, until the colour fills out from the lines; long strokes colour the sky last. Same timing as E: the colour is all there as the last lines land, then the film starts moving. A click skips it.",
+    "zh": "線條本身就是彩色的，完全沒有灰色鉛筆：每一筆都是它畫的東西的顏色。接著每條線再被描過幾次，越描越粗，顏色從線條裡長出來填滿；天空最後用長長的筆觸塗上。時間和 E 一樣：最後幾筆畫完時顏色已經到位，影片接著開始動。點一下可以跳過。"
+   },
+   "still": {
+    "wait": 5000
+   }
+  },
+  {
+   "href": "c-pencil-hatch.html",
+   "group": "opening2",
+   "title": {
+    "en": "Hatched in colour",
+    "zh": "色鉛筆排線"
+   },
+   "desc": {
+    "en": "Grey lines as in E, and close behind them coloured pencil hatching: fine diagonal strokes, then a second layer crossing them, put down wherever the pencil has just been. The hatching texture shows until the film starts. Same timing as E: the colour is all there as the last lines land, then the film starts moving. A click skips it.",
+    "zh": "線條和 E 一樣是灰色的，緊跟在後面的是色鉛筆排線：細細的斜線，再一層交叉的斜線，鉛筆剛畫到哪裡就排到哪裡。影片開始前看得到排線的紋理。時間和 E 一樣：最後幾筆畫完時顏色已經到位，影片接著開始動。點一下可以跳過。"
+   },
+   "still": {
+    "wait": 5000
+   }
+  },
+  {
+   "href": "c-pencil-band.html",
+   "group": "opening2",
+   "title": {
+    "en": "Colour along each line",
+    "zh": "線條帶出顏色"
+   },
+   "desc": {
+    "en": "Grey lines, and each line carries a soft band of colour with it, as if the colour were rubbed in with a finger right after the line; the sky is filled with broad soft strokes. The gentlest of the five. Same timing as E: the colour is all there as the last lines land, then the film starts moving. A click skips it.",
+    "zh": "灰色線條，每一筆都帶著一圈柔和的顏色，像畫完一筆馬上用手指把顏色抹開；天空用寬寬軟軟的筆觸補上。五個裡面最柔和的。時間和 E 一樣：最後幾筆畫完時顏色已經到位，影片接著開始動。點一下可以跳過。"
+   },
+   "still": {
+    "wait": 5000
+   }
+  },
+  {
+   "href": "c-pencil-grain.html",
+   "group": "opening2",
+   "title": {
+    "en": "Colour in the paper's grain",
+    "zh": "顏色落進紙紋"
+   },
+   "desc": {
+    "en": "Grey lines, and the colour catches in the paper's tooth like a coloured pencil on rough paper: first a scatter of coloured specks, then denser, then solid, in three passes behind the lines. Same timing as E: the colour is all there as the last lines land, then the film starts moving. A click skips it.",
+    "zh": "灰色線條，顏色像色鉛筆畫在粗紙上，卡在紙的紋路裡：先是一點一點的色點，越來越密，最後塗滿，跟在線條後面分三次上色。時間和 E 一樣：最後幾筆畫完時顏色已經到位，影片接著開始動。點一下可以跳過。"
+   },
+   "still": {
+    "wait": 5000
+   }
+  },
+  {
+   "href": "c-pencil-scribble.html",
+   "group": "opening2",
+   "title": {
+    "en": "Scribbled in",
+    "zh": "塗鴉上色"
+   },
+   "desc": {
+    "en": "Grey lines, and quick zigzag scribbles of colour fill each patch the pencil has just reached, like colouring in fast by hand; a second round of scribbles crosses the first. Same timing as E: the colour is all there as the last lines land, then the film starts moving. A click skips it.",
+    "zh": "灰色線條，鉛筆剛畫到的地方馬上用快速的來回塗鴉上色，像用手很快地塗顏色；第二輪塗鴉再交叉塗過去。時間和 E 一樣：最後幾筆畫完時顏色已經到位，影片接著開始動。點一下可以跳過。"
+   },
+   "still": {
+    "wait": 5000
+   }
+  },
+  {
+   "href": "c-brush.html",
+   "group": "opening3",
+   "title": {
+    "en": "Brushed in",
+    "zh": "刷出來"
+   },
+   "desc": {
+    "en": "A wide brush sweeps left to right, row under row, top to bottom, on a slight slant, the strokes full of paint in the middle with dry, streaky edges and tails. Your logo first, as before; no pencil and no still picture: the film is already playing under the white, so every stroke uncovers moving footage, and once the last row is down the page is simply the film. The counts sit on the white strip at the foot and step aside before the brush gets there. A click skips it.",
+    "zh": "一支寬刷子由左往右刷，一排接一排從上往下，稍微斜一點；筆觸中間顏料飽滿，邊緣和尾巴乾乾的、有刷痕。先是你的標誌，和之前一樣；沒有鉛筆、也沒有靜止的畫面：白色底下影片已經在播，每一刷刷開的都是會動的畫面，最後一排刷完，畫面就是影片。數字在底部的白色上，刷子到之前先讓開。點一下可以跳過。"
+   },
+   "still": {
+    "wait": 4900
+   },
+   "out": true
+  },
+  {
+   "href": "c-brush-fine.html",
+   "group": "opening3",
+   "title": {
+    "en": "Many brushstrokes",
+    "zh": "一筆一筆刷"
+   },
+   "desc": {
+    "en": "A narrower brush and more rows, quicker strokes, a little more slant: more like painting a wall stroke by stroke. Your logo first, as before; no pencil and no still picture: the film is already playing under the white, so every stroke uncovers moving footage, and once the last row is down the page is simply the film. The counts sit on the white strip at the foot and step aside before the brush gets there. A click skips it.",
+    "zh": "比較窄的刷子、比較多排、每一刷更快、也更斜一點：比較像一筆一筆刷牆。先是你的標誌，和之前一樣；沒有鉛筆、也沒有靜止的畫面：白色底下影片已經在播，每一刷刷開的都是會動的畫面，最後一排刷完，畫面就是影片。數字在底部的白色上，刷子到之前先讓開。點一下可以跳過。"
+   },
+   "still": {
+    "wait": 4900
+   },
+   "out": true
+  },
+  {
+   "href": "c-brush-slant.html",
+   "group": "opening3",
+   "title": {
+    "en": "Brushed on a slant",
+    "zh": "斜斜地刷"
+   },
+   "desc": {
+    "en": "The same wide brush on a steep slant, so the picture opens corner to corner, the bottom right last. Your logo first, as before; no pencil and no still picture: the film is already playing under the white, so every stroke uncovers moving footage, and once the last row is down the page is simply the film. The counts sit on the white strip at the foot and step aside before the brush gets there. A click skips it.",
+    "zh": "同一支寬刷子，但斜得很明顯，畫面從一個角往對角打開，右下角最後刷開。先是你的標誌，和之前一樣；沒有鉛筆、也沒有靜止的畫面：白色底下影片已經在播，每一刷刷開的都是會動的畫面，最後一排刷完，畫面就是影片。數字在底部的白色上，刷子到之前先讓開。點一下可以跳過。"
+   },
+   "still": {
+    "wait": 4900
+   },
+   "out": true
+  },
+  {
+   "href": "c-hand.html",
+   "group": "opening4",
+   "title": {
+    "en": "Brushed by hand",
+    "zh": "手刷"
+   },
+   "desc": {
+    "en": "A wide brush, painted briskly, band after band from the top, one long stroke or two where the first runs dry. As a hand paints: one stroke at a time with a lift between, each a different length, angle and speed, arcing the way an arm does; the paint full where the brush lands and breaking into dry streaks as it runs out; then a few quick touches where the paper still shows. The film plays slowly under the brush and comes back to its own pace, so the first shot stays on a moment after the last stroke. The counts step aside before the brush reaches them. A click skips it.",
+    "zh": "一支寬刷子，刷得俐落，從上面一排一排往下，一筆刷到底，或是第一筆乾了再接一筆。像手在刷：一次一筆，中間會提起來，每一筆長短、角度、速度都不一樣，跟手臂一樣有弧度；刷子落下的地方顏料飽滿，越刷越乾，變成乾乾的刷痕；最後在還看得到白紙的地方補幾筆。刷的時候影片在底下慢慢播，刷完再回到正常速度，所以最後一筆之後第一個畫面還會停留一下。刷子到之前數字先讓開。點一下可以跳過。"
+   },
+   "still": {
+    "wait": 5500
+   }
+  },
+  {
+   "href": "c-hand-loaded.html",
+   "group": "opening4",
+   "title": {
+    "en": "A loaded brush",
+    "zh": "沾滿顏料的刷子"
+   },
+   "desc": {
+    "en": "More paint on a wider brush, slower and fuller strokes, fewer dry streaks. As a hand paints: one stroke at a time with a lift between, each a different length, angle and speed, arcing the way an arm does; the paint full where the brush lands and breaking into dry streaks as it runs out; then a few quick touches where the paper still shows. The film plays slowly under the brush and comes back to its own pace, so the first shot stays on a moment after the last stroke. The counts step aside before the brush reaches them. A click skips it.",
+    "zh": "更寬、沾更多顏料的刷子，筆觸比較慢、比較飽滿，乾刷痕比較少。像手在刷：一次一筆，中間會提起來，每一筆長短、角度、速度都不一樣，跟手臂一樣有弧度；刷子落下的地方顏料飽滿，越刷越乾，變成乾乾的刷痕；最後在還看得到白紙的地方補幾筆。刷的時候影片在底下慢慢播，刷完再回到正常速度，所以最後一筆之後第一個畫面還會停留一下。刷子到之前數字先讓開。點一下可以跳過。"
+   },
+   "still": {
+    "wait": 5500
+   }
+  },
+  {
+   "href": "c-hand-dry.html",
+   "group": "opening4",
+   "title": {
+    "en": "A dry brush",
+    "zh": "乾筆飛白"
+   },
+   "desc": {
+    "en": "Little paint, fast and loose: strokes at freer angles, more dry streaks (飛白) and flecks flung off the ends. As a hand paints: one stroke at a time with a lift between, each a different length, angle and speed, arcing the way an arm does; the paint full where the brush lands and breaking into dry streaks as it runs out; then a few quick touches where the paper still shows. The film plays slowly under the brush and comes back to its own pace, so the first shot stays on a moment after the last stroke. The counts step aside before the brush reaches them. A click skips it.",
+    "zh": "顏料少、刷得快又鬆：角度比較隨意，乾刷的飛白比較多，筆尾還會甩出一點點顏料。像手在刷：一次一筆，中間會提起來，每一筆長短、角度、速度都不一樣，跟手臂一樣有弧度；刷子落下的地方顏料飽滿，越刷越乾，變成乾乾的刷痕；最後在還看得到白紙的地方補幾筆。刷的時候影片在底下慢慢播，刷完再回到正常速度，所以最後一筆之後第一個畫面還會停留一下。刷子到之前數字先讓開。點一下可以跳過。"
+   },
+   "still": {
+    "wait": 5500
+   }
+  },
+  {
+   "href": "c-hand-dry-smooth.html",
+   "group": "opening4",
+   "title": {
+    "en": "A dry brush, smoothed",
+    "zh": "乾筆飛白，收得更順"
+   },
+   "desc": {
+    "en": "32 with a smoother change from brushing into the film, worked over in five rounds with two reviewers (a panel of first-time visitors and a motion designer). The film settles slowly from a little close the whole time; the brush finishes with a few wetter sweeps, the last one along the foot; every stroke lands narrow and lifts off tapering, its front a rounded, leaning nose; what paper is left thins away in short dashes, the spire first and small slivers early, the last streaks lingering at the edges; then the menu and caption, and the first shot holds a couple of seconds before the film moves on. A click skips it.",
+    "zh": "32 的進階版，刷完到影片的轉換更順，跟兩位評審（一組第一次看到網站的訪客、一位動態設計師）來回改了五輪。影片從頭到尾都在從稍微放大慢慢退回原本大小；刷子最後用幾筆比較濕的大筆收尾，最後一筆沿著底部；每一筆落下時窄、提起時漸細，筆頭是圓的、往後斜；剩下的白紙變成一小段一小段慢慢消失，聖家堂先清乾淨、零碎的小白邊先走，最後幾絲留在畫面邊緣；接著選單和字幕出現，第一個畫面停幾秒才換下一段。點一下可以跳過。"
+   },
+   "still": {
+    "wait": 5600
+   }
+  },
+  {
+   "href": "c-smooth-ink.html",
+   "group": "opening5",
+   "title": {
+    "en": "Calligraphy brush",
+    "zh": "毛筆一揮"
+   },
+   "desc": {
+    "en": "A big calligraphy brush: four quick, steep diagonal sweeps, thick and thin, with dry flying white (飛白). Same ending as 33: the paper left thins away, the spire first, then the menu and caption, and the first shot holds. Reviewed by a visitor panel and a motion designer, and fixed from their notes. A click skips it.",
+    "zh": "一支大毛筆：四筆又快又斜的大筆，筆畫有粗有細，帶著乾筆的飛白。收尾和 33 一樣：剩下的白紙慢慢消失、聖家堂先清乾淨，接著選單和字幕出現，第一個畫面停幾秒。請訪客和動態設計師評過，照他們的意見改過。點一下可以跳過。"
+   },
+   "still": {
+    "wait": 5600
+   }
+  },
+  {
+   "href": "c-smooth-alt.html",
+   "group": "opening5",
+   "title": {
+    "en": "Back and forth",
+    "zh": "來回刷"
+   },
+   "desc": {
+    "en": "A narrower brush going back and forth, left to right, then right to left, like painting a wall; even and calm. Same ending as 33: the paper left thins away, the spire first, then the menu and caption, and the first shot holds. Reviewed by a visitor panel and a motion designer, and fixed from their notes. A click skips it.",
+    "zh": "比較窄的刷子來回刷，先左到右、再右到左，像在刷牆，平均又安靜。收尾和 33 一樣：剩下的白紙慢慢消失、聖家堂先清乾淨，接著選單和字幕出現，第一個畫面停幾秒。請訪客和動態設計師評過，照他們的意見改過。點一下可以跳過。"
+   },
+   "still": {
+    "wait": 5600
+   }
+  },
+  {
+   "href": "c-smooth-centre.html",
+   "group": "opening5",
+   "title": {
+    "en": "From the spire out",
+    "zh": "從聖家堂往外刷"
+   },
+   "desc": {
+    "en": "The first stroke goes straight down the Sagrada Família, then the bands spread up and down from it, so the subject comes first. Same ending as 33: the paper left thins away, the spire first, then the menu and caption, and the first shot holds. Reviewed by a visitor panel and a motion designer, and fixed from their notes. A click skips it.",
+    "zh": "第一筆直直刷下聖家堂，再從那裡往上、往下一排一排刷開，主角最先出現。收尾和 33 一樣：剩下的白紙慢慢消失、聖家堂先清乾淨，接著選單和字幕出現，第一個畫面停幾秒。請訪客和動態設計師評過，照他們的意見改過。點一下可以跳過。"
+   },
+   "still": {
+    "wait": 5600
+   }
+  },
+  {
+   "href": "c-smooth-down.html",
+   "group": "opening5",
+   "title": {
+    "en": "Brushed downward",
+    "zh": "由上往下刷"
+   },
+   "desc": {
+    "en": "Columns brushed from the top down, left to right, all the way to the foot; then one sweep along it. Same ending as 33: the paper left thins away, the spire first, then the menu and caption, and the first shot holds. Reviewed by a visitor panel and a motion designer, and fixed from their notes. A click skips it.",
+    "zh": "從上往下一條一條刷，由左往右，一路刷到底；最後沿著底部刷一筆。收尾和 33 一樣：剩下的白紙慢慢消失、聖家堂先清乾淨，接著選單和字幕出現，第一個畫面停幾秒。請訪客和動態設計師評過，照他們的意見改過。點一下可以跳過。"
+   },
+   "still": {
+    "wait": 5600
+   }
+  },
+  {
+   "href": "c-smooth-arc.html",
+   "group": "opening5",
+   "title": {
+    "en": "Sweeping arcs",
+    "zh": "弧形大筆"
+   },
+   "desc": {
+    "en": "Every stroke the same gentle arch, like an arm swinging from the shoulder, band under band. Same ending as 33: the paper left thins away, the spire first, then the menu and caption, and the first shot holds. Reviewed by a visitor panel and a motion designer, and fixed from their notes. A click skips it.",
+    "zh": "每一筆都是同樣的弧線，像手臂從肩膀揮出去，一排接一排。收尾和 33 一樣：剩下的白紙慢慢消失、聖家堂先清乾淨，接著選單和字幕出現，第一個畫面停幾秒。請訪客和動態設計師評過，照他們的意見改過。點一下可以跳過。"
+   },
+   "still": {
+    "wait": 5600
+   }
+  },
+  {
+   "href": "c-smooth-cross.html",
+   "group": "opening5",
+   "title": {
+    "en": "Crossed strokes",
+    "zh": "交叉刷"
+   },
+   "desc": {
+    "en": "A rising pass with gaps, then a falling pass across it, like cross-hatching. Same ending as 33: the paper left thins away, the spire first, then the menu and caption, and the first shot holds. Reviewed by a visitor panel and a motion designer, and fixed from their notes. A click skips it.",
+    "zh": "先一輪往上斜的筆畫，中間留空，再一輪往下斜的交叉刷過去，像交叉排線。收尾和 33 一樣：剩下的白紙慢慢消失、聖家堂先清乾淨，接著選單和字幕出現，第一個畫面停幾秒。請訪客和動態設計師評過，照他們的意見改過。點一下可以跳過。"
+   },
+   "still": {
+    "wait": 5600
+   }
+  },
+  {
+   "href": "c-sketch-move.html",
+   "group": "opening6",
+   "title": {
+    "en": "A drawing that moves",
+    "zh": "會動的素描"
+   },
+   "desc": {
+    "en": "After the logo, the film itself is drawn in coloured pencil, from the Sagrada Família outward, and the drawing already moves, because it is the film playing slowly underneath. Then the hatching thickens, layer on layer, each stroke bolder, until no paper shows and the drawing has become the film. No counts. Same ending as 33: menu and caption after, and the first shot holds. A click skips it.",
+    "zh": "標誌之後，用彩色鉛筆把影片本身畫出來，從聖家堂往外畫；畫出來的素描本來就在動，因為底下就是慢慢播放的影片。接著筆觸一層一層加密、越畫越粗，直到看不到白紙，素描就變成了影片。沒有數字。收尾和 33 一樣：選單和字幕之後出現，第一個畫面停幾秒。點一下可以跳過。"
+   },
+   "still": {
+    "wait": 6600
+   },
+   "out": true
+  },
+  {
+   "href": "c-sketch-bleed.html",
+   "group": "opening6",
+   "title": {
+    "en": "Colour from the lines",
+    "zh": "顏色從線條長出來"
+   },
+   "desc": {
+    "en": "The film drawn in coloured pencil, then the colour soaks out from each line into the spaces between, darker places first and the sky last, like paint into paper. No counts. Same ending as 33: menu and caption after, and the first shot holds. A click skips it.",
+    "zh": "先用彩色鉛筆把影片畫出來，然後顏色從每條線往外滲進空白處，暗的地方先、天空最後，像顏料滲進紙裡。沒有數字。收尾和 33 一樣：選單和字幕之後出現，第一個畫面停幾秒。點一下可以跳過。"
+   },
+   "still": {
+    "wait": 6600
+   },
+   "out": true
+  },
+  {
+   "href": "c-sketch-tone.html",
+   "group": "opening6",
+   "title": {
+    "en": "The light first",
+    "zh": "光先進來"
+   },
+   "desc": {
+    "en": "The film drawn in coloured pencil, then it turns real by brightness: the sky and the sunlit stone first, the middle tones next, the shade under the trees last. No counts. Same ending as 33: menu and caption after, and the first shot holds. A click skips it.",
+    "zh": "先用彩色鉛筆畫出影片，接著依亮度變成真的：天空和照到陽光的石頭先，中間的顏色其次，樹下的陰影最後。沒有數字。收尾和 33 一樣：選單和字幕之後出現，第一個畫面停幾秒。點一下可以跳過。"
+   },
+   "still": {
+    "wait": 6600
+   },
+   "out": true
+  },
+  {
+   "href": "c-sketch-front.html",
+   "group": "opening6",
+   "title": {
+    "en": "Drawing, then film, in one sweep",
+    "zh": "一路畫過去，影片跟在後面"
+   },
+   "desc": {
+    "en": "One movement from the Sagrada Família outward: paper ahead, the pencil drawing at the front, the film close behind it, so every part is a drawing for a moment and then real. No counts. Same ending as 33: menu and caption after, and the first shot holds. A click skips it.",
+    "zh": "從聖家堂往外一路推過去：前面是白紙，最前緣是鉛筆素描，影片緊跟在後，所以每個地方都先當一下素描，再變成真的。沒有數字。收尾和 33 一樣：選單和字幕之後出現，第一個畫面停幾秒。點一下可以跳過。"
+   },
+   "still": {
+    "wait": 6600
+   },
+   "out": true
+  },
+  {
+   "href": "c-sketch-tracing.html",
+   "group": "opening6",
+   "title": {
+    "en": "Tracing paper",
+    "zh": "描圖紙"
+   },
+   "desc": {
+    "en": "The film plays faintly behind a sheet of tracing paper while E's traced lines, the ones you chose before, are drawn on it. Then the paper clears from the Sagrada Família outward, as wet tracing paper turns clear, and the lines go with it. No counts. Same ending as 33: menu and caption after, and the first shot holds. A click skips it.",
+    "zh": "影片在一張描圖紙後面淡淡地播，紙上畫出 E 那些你選過的描線。接著紙從聖家堂往外變透明，像描圖紙沾濕變清楚，線條跟著一起消失。沒有數字。收尾和 33 一樣：選單和字幕之後出現，第一個畫面停幾秒。點一下可以跳過。"
+   },
+   "still": {
+    "wait": 6600
+   },
+   "out": true
+  },
+  {
+   "href": "c-smooth-spiredown.html",
+   "group": "opening7",
+   "title": {
+    "en": "Down from the spire",
+    "zh": "從聖家堂往下刷"
+   },
+   "desc": {
+    "en": "The first stroke straight down the Sagrada Família, then columns brushed downward, spreading out from it to both sides. The two you gave 3, from the spire out and brushed downward, in one. No counts. Same ending as 33: menu and caption after, and the first shot holds. A click skips it.",
+    "zh": "第一筆直直刷過聖家堂，接著從它往兩邊一條一條往下刷。把你給 3 分的兩個（從聖家堂往外刷、由上往下刷）合在一起。沒有數字。收尾和 33 一樣：選單和字幕之後出現，第一個畫面停幾秒。點一下可以跳過。"
+   },
+   "still": {
+    "wait": 5600
+   },
+   "out": true
+  },
+  {
+   "href": "c-smooth-up.html",
+   "group": "opening7",
+   "title": {
+    "en": "Brushed up to the spire",
+    "zh": "往上刷到聖家堂"
+   },
+   "desc": {
+    "en": "Columns brushed upward from below the screen, starting at the two edges and closing in, the Sagrada Família left as paper until the last stroke, so the brushing ends on it. No counts. Same ending as 33: menu and caption after, and the first shot holds. A click skips it.",
+    "zh": "從畫面下方往上刷，先刷兩邊，再往中間靠，聖家堂留到最後一筆才刷出來，刷完剛好停在它身上。沒有數字。收尾和 33 一樣：選單和字幕之後出現，第一個畫面停幾秒。點一下可以跳過。"
+   },
+   "still": {
+    "wait": 5600
+   },
+   "out": true
+  },
+  {
+   "href": "c-smooth-broad.html",
+   "group": "opening7",
+   "title": {
+    "en": "A few broad strokes",
+    "zh": "幾筆大刷"
+   },
+   "desc": {
+    "en": "A much wider brush, unhurried: a handful of downward strokes across the screen, then one along the foot. No counts. Same ending as 33: menu and caption after, and the first shot holds. A click skips it.",
+    "zh": "換一支寬很多的刷子，不急：幾筆由上往下橫過整個畫面，最後沿底部刷一筆。沒有數字。收尾和 33 一樣：選單和字幕之後出現，第一個畫面停幾秒。點一下可以跳過。"
+   },
+   "still": {
+    "wait": 5600
+   },
+   "out": true
+  },
+  {
+   "href": "c-smooth-slant.html",
+   "group": "opening7",
+   "title": {
+    "en": "Slanted downstrokes",
+    "zh": "斜斜往下刷"
+   },
+   "desc": {
+    "en": "Your first idea for the brush, top down with some angle in it: strokes leaning from top left to bottom right, laid one after another from left to right, like rain on a window. No counts. Same ending as 33: menu and caption after, and the first shot holds. A click skips it.",
+    "zh": "你最早說的刷法：由上往下、帶一點角度。每一筆從左上斜到右下，由左往右一筆接一筆，像雨打在窗上。沒有數字。收尾和 33 一樣：選單和字幕之後出現，第一個畫面停幾秒。點一下可以跳過。"
+   },
+   "still": {
+    "wait": 5600
+   },
+   "out": true
+  },
+  {
+   "href": "c-smooth-lines.html",
+   "group": "opening7",
+   "title": {
+    "en": "Brushed over the drawing",
+    "zh": "刷過線稿"
+   },
+   "desc": {
+    "en": "Between the sketch and the brush: E's traced lines are drawn first, and the brush follows them out from the Sagrada Família, taking the lines away with the paper. No counts. Same ending as 33: menu and caption after, and the first shot holds. A click skips it.",
+    "zh": "介於素描和刷子之間：先畫出 E 的描線，刷子跟在後面從聖家堂往外刷，把線和白紙一起刷掉。沒有數字。收尾和 33 一樣：選單和字幕之後出現，第一個畫面停幾秒。點一下可以跳過。"
+   },
+   "still": {
+    "wait": 5600
+   },
+   "out": true
+  },
+  {
+   "href": "c-flock-diamond.html",
+   "group": "opening8",
+   "title": {
+    "en": "The diamond",
+    "zh": "菱形"
+   },
+   "desc": {
+    "en": "Closest to Mathilde de Chiara, which you marked Good. The logo shrinks into the corner where the page keeps it; 25 of your photographs fly in along the diagonal from the top right, as one flock, and land as a diamond of level squares. One square among them is alive: the Barcelona film, small, in slow motion. The far ones peel away down the other diagonal and the live one grows to the whole screen, where the film plays on. A click skips it.",
+    "zh": "最接近你標喜歡的 Mathilde de Chiara。標誌縮到角落（頁面本來就放在那裡），25 張你的照片從右上沿著對角線一群飛進來，落成一個由正方形排成的菱形。其中一格是活的：巴塞隆納的影片，小小的、慢動作。外圍的一張張往左下剝離，活的那格長大到整個畫面，影片接著播。點一下可以跳過。"
+   },
+   "still": {
+    "wait": 4200
+   }
+  },
+  {
+   "href": "c-flock-ribbon.html",
+   "group": "opening8",
+   "title": {
+    "en": "A ribbon of prints",
+    "zh": "一條照片帶"
+   },
+   "desc": {
+    "en": "The same diamond, but the prints come single file from the corner, a long train that coils into place one after another; they unwind out of the other corner in the same order while the live one grows.",
+    "zh": "一樣的菱形，但照片是從角落一張接一張排隊進來，像一條長長的帶子一張張捲進位置；再照同樣的順序從另一個角落退出去，活的那格同時長大。"
+   },
+   "still": {
+    "wait": 4200
+   }
+  },
+  {
+   "href": "c-flock-column.html",
+   "group": "opening8",
+   "title": {
+    "en": "Into one column",
+    "zh": "落成一直欄"
+   },
+   "desc": {
+    "en": "Her ending: the diamond lands, then falls into one column down the middle of the paper, and the column slides up through the screen; the live one stops in the middle and grows while the rest run on out of the top.",
+    "zh": "她的收尾：菱形落定後，掉成紙中央的一直欄，整欄往上滑過畫面；活的那格停在正中央長大，其他的繼續往上出去。"
+   },
+   "still": {
+    "wait": 4200
+   }
+  },
+  {
+   "href": "c-flock-line.html",
+   "group": "opening8",
+   "title": {
+    "en": "The line becomes a row",
+    "zh": "那條線變成一排照片"
+   },
+   "desc": {
+    "en": "The logo's own line: the name fades, the line runs to both edges, and a row of photographs opens out of it from the middle outward, each one unfolding from the line. The row parts to both sides and the live one in the middle grows.",
+    "zh": "用標誌本身那條線：名字淡去，線跑到兩邊，一排照片從線裡由中間往外一張張打開。整排往兩邊分開，中間活的那張長大。"
+   },
+   "still": {
+    "wait": 4200
+   }
+  },
+  {
+   "href": "c-flock-contact.html",
+   "group": "opening8",
+   "title": {
+    "en": "Contact sheet",
+    "zh": "印樣"
+   },
+   "desc": {
+    "en": "Four rows of photographs at their own shapes slide in from alternate sides and fill the screen like a contact sheet; they slide back out the way they came and the live one grows.",
+    "zh": "四排照片保持自己的形狀，從左右輪流滑進來，鋪滿畫面像一張印樣；再照原路滑出去，活的那張長大。"
+   },
+   "still": {
+    "wait": 4200
+   }
+  },
+  {
+   "href": "c-flock-ring.html",
+   "group": "opening8",
+   "title": {
+    "en": "Around the name",
+    "zh": "圍著名字"
+   },
+   "desc": {
+    "en": "The only one where the logo stays in the middle: the prints settle in a ring around it, drifting in from outside; then the ring closes onto the live one, which grows over the name.",
+    "zh": "唯一讓標誌留在中間的：照片從外面飄進來，在名字四周圍成一圈；然後整圈往活的那張收攏，它蓋過名字長大。"
+   },
+   "still": {
+    "wait": 4200
+   }
+  },
+  {
+   "href": "c-flock-mosaic.html",
+   "group": "opening8",
+   "title": {
+    "en": "The photographs become the film",
+    "zh": "照片變成影片"
+   },
+   "desc": {
+    "en": "The boldest: a wall of 40 photographs flies in and fills the screen edge to edge. Then, from the middle outward, each photograph turns into its own piece of the film's first frame, until the wall is the frame, and the frame moves.",
+    "zh": "最大膽的一個：40 張照片飛進來，從邊到邊鋪滿畫面。然後從中間往外，每一張照片變成影片第一格裡屬於它那一塊，直到整面牆就是那一格，然後畫面動起來。"
+   },
+   "still": {
+    "wait": 4200
+   }
+  },
+  {
+   "href": "c-flock-window.html",
+   "group": "opening8",
+   "title": {
+    "en": "Into one window",
+    "zh": "走進其中一扇窗"
+   },
+   "desc": {
+    "en": "A wall of small screens lights up one by one; then the view moves in on the live one until it is the whole screen, like walking up to one window of a building.",
+    "zh": "一面小螢幕牆一格格亮起來；然後鏡頭往活的那格推進，直到它就是整個畫面，像走近一棟大樓的其中一扇窗。"
+   },
+   "still": {
+    "wait": 4200
+   }
+  },
+  {
+   "href": "c-flock-luxe-wall.html",
+   "group": "opening9",
+   "title": {
+    "en": "The wall, slowly",
+    "zh": "慢慢築起的牆"
+   },
+   "desc": {
+    "en": "Nothing flies. 24 photographs rise into a wall with hairlines of paper between them, one after another in reading order. From the middle outward each becomes its piece of the film's first frame, the hairlines dissolve, and the frame moves. Your 4-star version, slowed and ordered.",
+    "zh": "沒有東西飛。24 張照片一張接一張、照閱讀的順序升起來，排成一面牆，照片之間留著細細的紙線。然後從中間往外，每一張變成影片第一格的其中一塊，紙線淡去，畫面動起來。你打 4 分那個，放慢、排好順序。"
+   },
+   "still": {
+    "wait": 3400
+   }
+  },
+  {
+   "href": "c-flock-luxe-rows.html",
+   "group": "opening9",
+   "title": {
+    "en": "Row by row",
+    "zh": "一排一排"
+   },
+   "desc": {
+    "en": "The same wall, but each row rises as one, top to bottom, and it becomes the film row by row the same way, like a blind being drawn.",
+    "zh": "同一面牆，改成一排一排地升起來，從上到下；變成影片時也一排一排，像拉下一片百葉。"
+   },
+   "still": {
+    "wait": 3300
+   }
+  },
+  {
+   "href": "c-flock-luxe-eight.html",
+   "group": "opening9",
+   "title": {
+    "en": "Eight, large",
+    "zh": "八張，大的"
+   },
+   "desc": {
+    "en": "Eight photographs only, each a quarter of the screen wide, rising from the middle outward in pairs; the film comes up through them the same way. Fewer and bigger: every photograph reads.",
+    "zh": "只有八張，每張四分之一個畫面寬，從中間往外一對一對升起來；影片也照同樣的順序從中間浮上來。更少、更大：每張都看得清楚。"
+   },
+   "still": {
+    "wait": 3400
+   }
+  },
+  {
+   "href": "c-flock-luxe-triptych.html",
+   "group": "opening9",
+   "title": {
+    "en": "Three panels",
+    "zh": "三聯幅"
+   },
+   "desc": {
+    "en": "Three tall photographs the height of the screen rise one after another, left to right, like a triptych on a gallery wall; each becomes its third of the film, left to right. The fewest moving parts of all.",
+    "zh": "三張直幅照片，跟畫面一樣高，從左到右一張接一張升起來，像藝廊牆上的三聯幅；再從左到右各自變成影片的三分之一。全部裡面動的東西最少的一個。"
+   },
+   "still": {
+    "wait": 3200
+   }
+  },
+  {
+   "href": "c-flock-luxe-mat.html",
+   "group": "opening9",
+   "title": {
+    "en": "Inside the mat",
+    "zh": "卡紙裡的一面牆"
+   },
+   "desc": {
+    "en": "Twelve photographs rise into a small wall set in a wide paper margin, like a print matted on a wall. The wall becomes the film's first frame inside the margin, then the margin recedes until the frame is the whole screen.",
+    "zh": "十二張照片在寬寬的紙邊裡升起來，排成一面小牆，像裱在卡紙裡的一幅作品。牆在卡紙裡變成影片的第一格，然後紙邊退開，直到畫面就是整個螢幕。"
+   },
+   "still": {
+    "wait": 3300
+   }
+  },
+  {
+   "href": "c-flock-luxe-one.html",
+   "group": "opening9",
+   "title": {
+    "en": "One print",
+    "zh": "一張"
+   },
+   "desc": {
+    "en": "The quietest: a single photograph in a wide margin, changing slowly to the next, and the next. The fourth is the film's first frame, and the margin recedes until it is the whole screen.",
+    "zh": "最安靜的一個：一張照片在寬寬的紙邊裡，慢慢換成下一張、再下一張。第四張是影片的第一格，紙邊退開，直到它就是整個螢幕。"
+   },
+   "still": {
+    "wait": 2000
+   }
+  },
+  {
+   "href": "c-flock-luxe-band.html",
+   "group": "opening9",
+   "title": {
+    "en": "The line opens into a band",
+    "zh": "那條線打開成一道帶"
+   },
+   "desc": {
+    "en": "The logo's own line runs to both edges and a band of four photographs unfolds from it. The band becomes the film's middle, then opens to the whole height. Your 3-star row, with the 4-star ending.",
+    "zh": "用標誌本身那條線：線跑到兩邊，一道四張照片的帶子從線裡展開。帶子先變成影片的中段，再往上下打開成整個畫面。你打 3 分的那一排，接上打 4 分的收尾。"
+   },
+   "still": {
+    "wait": 3200
+   }
+  },
+  {
+   "href": "c-flock-luxe-around.html",
+   "group": "opening9",
+   "title": {
+    "en": "Around the name, then the wall",
+    "zh": "先圍著名字，再成一面牆"
+   },
+   "desc": {
+    "en": "The logo stays in the middle. Photographs rise one by one around it, clockwise from the top left, until only its two places are empty; then the name goes, those fill, and the whole wall becomes the film from the middle outward.",
+    "zh": "標誌留在中間。照片從左上開始順時針一張張在它四周升起來，直到只剩它佔的兩格是空的；然後名字退去，那兩格補上，整面牆從中間往外變成影片。"
+   },
+   "still": {
+    "wait": 3800
+   }
+  },
+  {
+   "href": "c-flock-luxe-curtain.html",
+   "group": "opening9",
+   "title": {
+    "en": "The photographs part",
+    "zh": "照片讓開"
+   },
+   "desc": {
+    "en": "The wall rises column by column. Then the paper beneath goes, so the film shows in the hairlines, and the columns lift away one after another, left to right, uncovering the film already playing. Not a change into the film: a curtain drawn from it.",
+    "zh": "牆一欄一欄升起來。然後底下的紙先退掉，細線裡透出影片，接著一欄欄照片從左到右依序往上抬走，露出已經在播的影片。不是變成影片，是從影片前面拉開的一道簾子。"
+   },
+   "still": {
+    "wait": 3300
+   }
+  }
+ ],
+ "tags": [
+  {
+   "id": "opening",
+   "en": "The opening",
+   "zh": "開場"
+  },
+  {
+   "id": "photos",
+   "en": "The photographs",
+   "zh": "照片"
+  },
+  {
+   "id": "words",
+   "en": "The words",
+   "zh": "文字"
+  },
+  {
+   "id": "rhythm",
+   "en": "Pace and space",
+   "zh": "節奏和留白"
+  },
+  {
+   "id": "doors",
+   "en": "The way in",
+   "zh": "入口"
+  },
+  {
+   "id": "film",
+   "en": "The film",
+   "zh": "影片"
+  }
+ ],
+ "phrases": [
+  {
+   "id": "elevated",
+   "en": "Elevated",
+   "zh": "有高級感"
+  },
+  {
+   "id": "ai",
+   "en": "Looks AI-made",
+   "zh": "有 AI 感"
+  },
+  {
+   "id": "too-long",
+   "en": "Too long",
+   "zh": "太長"
+  },
+  {
+   "id": "too-much",
+   "en": "Too much",
+   "zh": "太多了"
+  },
+  {
+   "id": "more",
+   "en": "More of this",
+   "zh": "多一點"
+  },
+  {
+   "id": "lovely",
+   "en": "Lovely",
+   "zh": "很美"
+  }
+ ],
+ "theme": {
+  "--rv-paper": "oklch(96.6% 0.011 82)",
+  "--rv-ink": "oklch(25% 0.012 60)",
+  "--rv-mark": "oklch(46% 0.092 47)",
+  "--rv-hair": "oklch(84.5% 0.015 78)",
+  "--rv-label": "\"Geist\", \"Noto Sans TC\", sans-serif",
+  "--rv-name": "\"Playfair Display\", \"Noto Serif TC\", serif"
+ },
+ "words": {},
+ "ask": {
+  "ids": [
+   "c-flock-luxe-wall",
+   "c-flock-luxe-rows",
+   "c-flock-luxe-eight",
+   "c-flock-luxe-triptych",
+   "c-flock-luxe-mat",
+   "c-flock-luxe-one",
+   "c-flock-luxe-band",
+   "c-flock-luxe-around",
+   "c-flock-luxe-curtain"
+  ],
+  "question": {
+   "en": "Nine high-end openings from your 4-star version: nothing flies, few things move, slowly and in order, and every one ends on the film. Score each; mark the spot you mean.",
+   "zh": "從你打 4 分的那個做出來的九個高級感開場：沒有東西飛，動的少、慢、有順序，每個最後都落在影片上。每個打個分數；想說哪裡就點那裡。"
+  }
+ }
 }

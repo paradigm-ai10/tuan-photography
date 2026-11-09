@@ -5,7 +5,11 @@
    Fifteen choreographies, chosen by <html data-flock="…">, all plain JS and the Web Animations API: a layout
    (where the tiles settle), an entry (how they come), a hold, and a leaving (how the many become the one).
    home.js runs the loading screen (the line, TUAN, PHOTOGRAPHY) and then hands over to HRFlock.run().
-   The tiles' photographs are set here from data-src, so a version loads only the ones it uses. */
+   The tiles' photographs are set here from data-src, so a version loads only the ones it uses.
+   The high-end round (2026-11-09, 'luxe-…'): he scored "the photographs become the film" 4 and asked for 高級感, read as
+   few things moving, slowly, in order, nothing random. Nothing flies: the photographs rise into hairline grids, the grid
+   becomes the film's first frame piece by piece, and the frame moves. The seven he scored 1 (stairs, strips, table,
+   columns, sweep, stack, letters) lost their pages the same day; their configs stay here. */
 (() => {
   'use strict';
   const html = document.documentElement;
@@ -76,11 +80,12 @@
 
   /* ---------------- the pieces of every choreography ---------------- */
   let tiles = [];   // [{ el, slot, film, img }] in slot order
+  let chosen = photos;   // the photographs in the order this version wants them (spec.pick may reorder)
   function place(plan, shape, ars) {
     const slots = plan.slots, film = Math.min(plan.film, slots.length - 1);   // a short layout (a narrow phone) still gets its film tile
     const n = slots.length - 1;
-    const used = photos.slice(0, n);
-    photos.slice(n).forEach((p) => p.remove());
+    const used = chosen.slice(0, n);
+    photos.forEach((p) => { if (!used.includes(p)) p.remove(); });
     used.forEach((p) => { const im = p.querySelector('img'); if (!im.src) im.src = im.dataset.src; });
     tiles = [];
     let k = 0;
@@ -93,7 +98,7 @@
     });
     return tiles;
   }
-  const ars = () => photos.map((p) => Number(p.querySelector('img').dataset.ar) || 1.5);
+  const ars = () => chosen.map((p) => Number(p.querySelector('img').dataset.ar) || 1.5);
   const finished = (anims) => Promise.all(anims.map((a) => a.finished.catch(() => {})));
 
   // the tiles fly in from one side, every tile the same flight, the delays spread along the flock
@@ -573,10 +578,11 @@
     slots.forEach((s) => { s.x = s.col * cw; s.y = s.row * ch; });
     return { slots, film: 2 * cols + Math.floor(cols / 2) - 1 };
   }
-  // each tile turns into its own piece of the film's first frame, in the order given (0 first); then the frame moves
-  async function becomeFilm(api, order, spread) {
+  // each tile turns into its own piece of the film's first frame, in the order given (0 first); the frame covers `rect`
+  // (the window unless told otherwise), fitted as the page's own film is (object-fit: cover)
+  async function sliceIn(api, order, spread, rect = FULL(), dissolve = 650) {
     const poster = filmEl.dataset.poster;
-    const sc = Math.max(W / 1920, H / 1080), dw = 1920 * sc, dh = 1080 * sc, ox = (W - dw) / 2, oy = (H - dh) / 2;
+    const sc = Math.max(rect.w / 1920, rect.h / 1080), dw = 1920 * sc, dh = 1080 * sc, ox = rect.x + (rect.w - dw) / 2, oy = rect.y + (rect.h - dh) / 2;
     tiles.forEach((t) => {
       const s = document.createElement('span');
       s.className = 'hr-tile__slice';
@@ -586,31 +592,215 @@
       t.el.appendChild(s);
       t.slice = s;
     });
-    await finished(tiles.map((t, i) => t.slice.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 650, delay: order[i] * spread, easing: 'ease', fill: 'both' })));
-    if (api.isDone()) return;
-    // the frame is whole: the real film starts from the same frame beneath, and the wall lifts away
+    await finished(tiles.map((t, i) => t.slice.animate([{ opacity: 0 }, { opacity: 1 }], { duration: dissolve, delay: order[i] * spread, easing: 'ease', fill: 'both' })));
+  }
+  // the frame is whole and covers the window: the real film starts from the same frame beneath, and the wall lifts away
+  // (the paper with it, over the same time, so a margin or a hairline dissolves into the film rather than snapping)
+  async function filmTakesOver(api, fade = 700) {
     const v = api.video;
     if (v) { v.currentTime = 0; v.playbackRate = 1; }
     await wait(350);
     const paper = document.querySelector('.hr-load__paper');
-    if (paper) paper.style.opacity = '0';   // the wall now covers the window: the paper under it goes, so what shows through is the film
+    if (paper) { paper.style.transition = `opacity ${fade}ms ease`; paper.style.opacity = '0'; }
     if (v) v.play().catch(() => {});   // the frame beneath is the poster's own until this moment
     html.classList.add('hr-out');
-    await layer.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 700, easing: 'ease', fill: 'both' }).finished.catch(() => {});
+    await layer.animate([{ opacity: 1 }, { opacity: 0 }], { duration: fade, easing: 'ease', fill: 'both' }).finished.catch(() => {});
     api.mosaicDone = true;
   }
+  async function becomeFilm(api, order, spread, opts = {}) {
+    await sliceIn(api, order, spread, opts.rect, opts.dissolve);
+    if (api.isDone()) return;
+    await filmTakesOver(api);
+  }
+  // the whole layer grows as one from `rect` (which has the window's shape) to the window: what was a print in a margin
+  // is the whole screen, its hairlines with it
+  function growLayer(rect, dur = 1800, delay = 0) {
+    const cx = rect.x + rect.w / 2, cy = rect.y + rect.h / 2, k = W / rect.w;
+    layer.style.transformOrigin = `${cx.toFixed(1)}px ${cy.toFixed(1)}px`;
+    setTimeout(() => { if (!html.classList.contains('hr-shown')) html.classList.add('hr-out'); }, delay + dur * 0.35);
+    return layer.animate([{ transform: 'none' }, { transform: `translate(${(W / 2 - cx).toFixed(1)}px, ${(H / 2 - cy).toFixed(1)}px) scale(${k.toFixed(4)})` }],
+      { duration: dur, delay, easing: PART, fill: 'both' }).finished.catch(() => {});
+  }
   const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+
+  /* ---------------- the high-end round: hairline grids, rising in order, becoming the film ---------------- */
+  const FULL = () => ({ x: 0, y: 0, w: W, h: H });
+  const narrow = () => W < 700;
+  const HAIR = () => clamp(Math.round(Math.min(W, H) * 0.004), 2, 4);   // the paper between the photographs
+  function hairGrid(cols, rows, gap, rect) {
+    const cw = (rect.w - (cols - 1) * gap) / cols, ch = (rect.h - (rows - 1) * gap) / rows;
+    return grid(cols, rows, cw, ch, gap, rect.x, rect.y);
+  }
+  // a rectangle of the window's shape, `frac` of its width, centred in the paper below the mark
+  function matRect(frac) {
+    const room = H - topY() - 24;
+    const w = Math.min(W * frac, room * W / H), h = w * H / W;
+    return { x: (W - w) / 2, y: topY() + (room - h) / 2, w, h };
+  }
+  const centreRank = (list, c) => { const d = list.map((t) => dist(centre(t.slot), c)), m = Math.max(...d) || 1; return d.map((v) => v / m); };
+  // some tiles rise into place, each after the one before
+  function rise(list, { step = 90, dur = 1100, lift = 14, start = 0, order = null } = {}) {
+    return finished(list.map((t, k) => t.el.animate([
+      { opacity: 0, transform: tf(0, lift, 0, 0.985) }, { opacity: 1, transform: tf(0, 0, 0, 1) }
+    ], { duration: dur, delay: start + (order ? order[k] : k) * step, easing: OUT, fill: 'both' })));
+  }
+  const wallGrid = () => hairGrid(narrow() ? 3 : 6, narrow() ? 8 : 4, HAIR(), FULL());
+  const wallFilm = (slots) => { const cols = Math.max(...slots.map((s) => s.col)) + 1, rows = Math.max(...slots.map((s) => s.row)) + 1; return Math.floor(rows / 2) * cols + Math.floor(cols / 2) - 1; };
+  Object.assign(V, {
+    // 16 the wall, slowly: 24 photographs rise into a wall with hairlines of paper between them, in reading order; from the
+    //    middle outward each turns into its piece of the film's first frame, the hairlines dissolve, and the frame moves
+    'luxe-wall': {
+      n: 23, shape: 'wall', mark: 'fade', hold: 1000, mosaic: true, markGone: true, still: true,
+      layout() { const slots = wallGrid(); return { slots, film: wallFilm(slots) }; },
+      enter() { return rise(tiles, { step: 70, dur: 1100 }); },
+      leave(api) { return becomeFilm(api, centreRank(tiles, { x: W / 2, y: H / 2 }), 1500, { dissolve: 800 }); }
+    },
+    // 17 row by row: the same wall, each row rising as one, top to bottom; it becomes the film row by row the same way
+    'luxe-rows': {
+      n: 23, shape: 'wall', mark: 'fade', hold: 1000, mosaic: true, markGone: true, still: true,
+      layout() { const slots = wallGrid(); return { slots, film: wallFilm(slots) }; },
+      enter() { return rise(tiles, { step: narrow() ? 190 : 380, dur: 1200, order: tiles.map((t) => t.slot.row) }); },
+      leave(api) { const rows = Math.max(...tiles.map((t) => t.slot.row)); return becomeFilm(api, tiles.map((t) => t.slot.row / rows), 1400, { dissolve: 800 }); }
+    },
+    // 18 eight, large: eight photographs only, each a quarter of the width, rising from the middle outward; the film comes
+    //    up through them the same way
+    'luxe-eight': {
+      n: 7, shape: 'wall', mark: 'fade', hold: 1100, mosaic: true, filmAsPhoto: true, markGone: true, still: true,
+      layout() { const slots = hairGrid(narrow() ? 2 : 4, narrow() ? 4 : 2, HAIR(), FULL()); return { slots, film: narrow() ? 3 : 5 }; },
+      enter() { return rise(tiles, { step: 1000, dur: 1400, lift: 16, order: centreRank(tiles, { x: W / 2, y: H / 2 }) }); },
+      leave(api) { return becomeFilm(api, centreRank(tiles, { x: W / 2, y: H / 2 }), 1200, { dissolve: 900 }); }
+    },
+    // 19 three panels: three tall photographs, the height of the screen, rise one after another left to right; each becomes
+    //    its third of the film, left to right
+    'luxe-triptych': {
+      n: 2, shape: 'wall', mark: 'fade', hold: 1100, mosaic: true, filmAsPhoto: true, markGone: true, still: true,
+      pick(ps) {   // upright photographs for the tall panels (his order kept: the train first), wide ones when the panels are stacked on a phone
+        const up = innerWidth >= 700, fits = (p) => (Number(p.querySelector('img').dataset.ar) < 0.85) === up ? 0 : 1;
+        return [...ps].sort((a, b) => fits(a) - fits(b));
+      },
+      layout() { const slots = narrow() ? hairGrid(1, 3, HAIR(), FULL()) : hairGrid(3, 1, HAIR(), FULL()); return { slots, film: 1 }; },
+      enter() { return rise(tiles, { step: 420, dur: 1400, lift: 18 }); },
+      leave(api) { return becomeFilm(api, tiles.map((t, i) => i / 2), 1100, { dissolve: 900 }); }
+    },
+    // 20 inside the mat: twelve photographs rise into a small wall set in a wide paper margin, like a print matted on a wall;
+    //    the wall becomes the film's first frame, then the margin recedes until the frame is the whole screen
+    'luxe-mat': {
+      n: 11, shape: 'wall', mark: 'corner', hold: 1000, mosaic: true, still: true,
+      layout() { const r = this.rect = matRect(narrow() ? 0.76 : 0.6); const cols = narrow() ? 2 : 4; return { slots: hairGrid(cols, 3, HAIR(), r), film: cols + Math.floor(cols / 2) }; },
+      enter() { return rise(tiles, { step: 110, dur: 1100 }); },
+      async leave(api) {
+        const r = this.rect;
+        await sliceIn(api, centreRank(tiles, { x: r.x + r.w / 2, y: r.y + r.h / 2 }), 1300, r, 800); if (api.isDone()) return;
+        await api.wait(400); if (api.isDone()) return;
+        await growLayer(r, 1800); if (api.isDone()) return;
+        await filmTakesOver(api);
+      }
+    },
+    // 21 one print: a single photograph in a wide margin, changing slowly to the next, and the next; the fourth is the film's
+    //    first frame, and the margin recedes until it is the whole screen
+    'luxe-one': {
+      n: 3, shape: 'wall', mark: 'corner', hold: 500, mosaic: true, still: true,
+      layout() { const r = this.rect = matRect(narrow() ? 0.78 : 0.5); return { slots: Array.from({ length: 4 }, () => ({ ...r, r: 0 })), film: 3 }; },
+      async enter(api) {
+        tiles.forEach((t, i) => { t.el.style.zIndex = String(i + 1); });   // each above the one before
+        await rise([tiles[0]], { dur: 1200 }); if (api.isDone()) return;
+        for (let i = 1; i < tiles.length; i++) {
+          await api.wait(650); if (api.isDone()) return;
+          await finished([tiles[i].el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 750, easing: 'ease', fill: 'both' })]); if (api.isDone()) return;
+        }
+      },
+      async leave(api) { await growLayer(this.rect, 1700); if (api.isDone()) return; await filmTakesOver(api); }
+    },
+    // 22 the line opens into a band: the logo's line runs to both edges and a band of four photographs unfolds from it; the band
+    //    becomes the film's middle, then opens to the whole height
+    'luxe-band': {
+      n: 3, shape: 'wall', mark: 'line', hold: 1000, mosaic: true, filmAsPhoto: true, still: true,
+      layout() {
+        const line = document.querySelector('.hr-load__line').getBoundingClientRect();
+        const cols = narrow() ? 2 : 4, bh = clamp(H * 0.36, 160, 440);
+        this.lineY = line.top + line.height / 2;
+        this.band = { y: this.lineY - bh / 2, h: bh };
+        return { slots: hairGrid(cols, 1, HAIR(), FULL()), film: cols / 2 };   // the tiles are the full height; the layer shows the band of them
+      },
+      enter() {
+        const b = this.band, mid = (tiles.length - 1) / 2;
+        this.clip = `inset(${b.y.toFixed(1)}px 0 ${(H - b.y - b.h).toFixed(1)}px 0)`;
+        layer.style.clipPath = this.clip;
+        return finished(tiles.map((t, i) => t.el.animate([
+          { opacity: 1, clipPath: `inset(${(this.lineY - 1).toFixed(1)}px 0 ${(H - this.lineY - 1).toFixed(1)}px 0)` }, { opacity: 1, clipPath: 'inset(0 0 0 0)' }
+        ], { duration: 1200, delay: 200 + Math.abs(i - mid) * 320, easing: OUT, fill: 'both' })));
+      },
+      async leave(api) {
+        const mid = (tiles.length - 1) / 2;
+        await sliceIn(api, tiles.map((t, i) => Math.abs(i - mid) / Math.max(1, mid)), 1200, FULL(), 850); if (api.isDone()) return;
+        await api.wait(350); if (api.isDone()) return;
+        setTimeout(() => { if (!html.classList.contains('hr-shown')) html.classList.add('hr-out'); }, 600);
+        await layer.animate([{ clipPath: this.clip }, { clipPath: 'inset(0 0 0 0)' }], { duration: 1700, easing: PART, fill: 'both' }).finished.catch(() => {});
+        if (api.isDone()) return;
+        await filmTakesOver(api);
+      }
+    },
+    // 23 around the name, then the wall: the logo stays in the middle; photographs rise one by one round it, clockwise from the
+    //    top left; then the name goes and the two places it kept fill, and the whole wall becomes the film from the middle
+    'luxe-around': {
+      n: 11, shape: 'wall', mark: 'stay', hold: 900, mosaic: true, still: true,
+      layout() {
+        const cols = narrow() ? 2 : 4, rows = narrow() ? 5 : 3;
+        const slots = hairGrid(cols, rows, HAIR(), FULL());
+        const midRow = Math.floor(rows / 2), keep = narrow() ? [0, 1] : [1, 2];
+        slots.forEach((s) => { s.late = s.row === midRow && keep.includes(s.col); });
+        return { slots, film: slots.findIndex((s) => s.late && s.col === keep[1]) };
+      },
+      async enter(api) {
+        const ring = tiles.filter((t) => !t.slot.late);
+        const key = (t) => { const c = centre(t.slot); return (Math.atan2(c.y - H / 2, c.x - W / 2) + Math.PI * 0.75 + Math.PI * 2) % (Math.PI * 2); };
+        ring.sort((a, b) => key(a) - key(b));
+        await rise(ring, { step: 170, dur: 1100 }); if (api.isDone()) return;
+        await api.wait(500); if (api.isDone()) return;
+        html.classList.add('hr-markgone');
+        await rise(tiles.filter((t) => t.slot.late), { step: 240, dur: 1100, lift: 0, start: 450 });
+      },
+      leave(api) { return becomeFilm(api, centreRank(tiles, { x: W / 2, y: H / 2 }), 1500, { dissolve: 800 }); }
+    },
+    // 24 the photographs part: the wall rises column by column; then the paper beneath goes (the film shows in the hairlines)
+    //    and the columns lift away one after another, left to right, uncovering the film already playing
+    'luxe-curtain': {
+      n: 23, shape: 'wall', mark: 'fade', hold: 900, mosaic: true, markGone: true, still: true,
+      layout() { const slots = wallGrid(); return { slots, film: wallFilm(slots) }; },
+      enter() { return rise(tiles, { step: narrow() ? 300 : 160, dur: 1200, order: tiles.map((t) => t.slot.col) }); },
+      async leave(api) {
+        const v = api.video;
+        if (v) { v.currentTime = 0; v.playbackRate = 1; }
+        const paper = document.querySelector('.hr-load__paper');
+        if (paper) { paper.style.transition = 'opacity 600ms ease'; paper.style.opacity = '0'; }
+        await api.wait(700); if (api.isDone()) return;
+        if (v) v.play().catch(() => {});
+        html.classList.add('hr-out');
+        await finished(tiles.map((t) => t.el.animate([{ transform: 'none' }, { transform: tf(0, -H * 1.05, 0, 1) }],
+          { duration: 1500, delay: t.slot.col * (narrow() ? 300 : 220), easing: INOUT, fill: 'both' })));
+        api.mosaicDone = true;
+      }
+    }
+  });
 
   /* ---------------- ready, run ---------------- */
   const spec = V[NAME];
   if (!spec) return;
   if (/[?&]still\b/.test(location.search) || matchMedia('(prefers-reduced-motion: reduce)').matches) return;   // home.js shows the end at once; load nothing
   // choose the photographs now, so only the ones this version uses are loaded
-  const needed = photos.slice(0, spec.n);
+  if (spec.pick) chosen = spec.pick(photos);
+  const needed = chosen.slice(0, spec.n + (spec.filmAsPhoto ? 1 : 0));
   needed.forEach((p) => { const im = p.querySelector('img'); im.src = im.dataset.src; });
-  if (!spec.mosaic) { tv.src = tv.dataset.src; tv.load(); } else { tv.remove(); const im = document.createElement('img'); im.src = filmEl.dataset.poster; im.alt = ''; filmEl.appendChild(im); }
+  let fim = null;
+  if (!spec.mosaic) { tv.src = tv.dataset.src; tv.load(); }
+  else {   // no live tile: the film's tile is a still, the film's first frame, or one more photograph where a still of the film would give the ending away
+    tv.remove(); fim = document.createElement('img'); fim.alt = '';
+    fim.src = spec.filmAsPhoto ? chosen[spec.n].querySelector('img').dataset.src : filmEl.dataset.poster;
+    filmEl.appendChild(fim);
+  }
+  const loaded = (im) => im.complete && im.naturalWidth > 0;
   function ready() {
-    return needed.every((p) => { const im = p.querySelector('img'); return im.complete && im.naturalWidth > 0; }) && (spec.mosaic || tv.readyState >= 2);
+    return needed.every((p) => loaded(p.querySelector('img'))) && (spec.mosaic ? loaded(fim) : tv.readyState >= 2);
   }
 
   let api_ = {};
@@ -621,6 +811,8 @@
     place(plan);
     html.classList.add('hr-arrive');   // the moment the tiles start (stills and films are timed from it)
     if (spec.mark === 'corner') { markToCorner(1000); await api.wait(560); if (api.isDone()) return; }   // the name is on its way before any tile comes
+    else if (spec.mark === 'fade') { html.classList.add('hr-markgone'); await api.wait(350); if (api.isDone()) return; }   // a wall edge to edge would cover it: the name simply goes, and the photographs rise
+    else if (spec.mark === 'stay') { await api.wait(300); if (api.isDone()) return; }   // a beat with the name alone first
     else if (spec.mark === 'line') {
       const line = document.querySelector('.hr-load__line');
       document.querySelector('.hr-load').style.setProperty('--wide', (W / Math.max(1, line.offsetWidth) * 1.02).toFixed(3));
