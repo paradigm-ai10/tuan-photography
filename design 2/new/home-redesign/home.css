@@ -27,9 +27,10 @@ html.hr-loading .hr-load { position: fixed; inset: 0; z-index: 20; display: bloc
 .hr-load__name span:last-child { margin-right: -0.28em; }
 .hr-load__line { height: 1px; background: var(--text); transform-origin: left center; transform: scaleX(var(--p, 0)); }
 .hr-load__sub { align-self: start; justify-content: space-between; margin-top: clamp(0.55rem, 0.35rem + 0.5vw, 0.85rem);
-  font: 500 clamp(0.75rem, 0.6rem + 0.5vw, 1.05rem)/1 var(--mark); text-transform: uppercase; color: var(--text-2); opacity: 0; }
+  font: 500 clamp(0.75rem, 0.6rem + 0.5vw, 1.05rem)/1 var(--mark); text-transform: uppercase; color: var(--text-2); }
+.hr-load__sub span { opacity: 0; }   /* the letters carry the fade-in, not the word, so hr-horizon can still fade the word out (an animation on it would hold it at 1) */
 html.hr-full .hr-load__name span { animation: hr-rise 0.9s var(--out) both; animation-delay: calc(var(--i, 0) * 110ms); }
-html.hr-full .hr-load__sub { animation: hr-fade 0.9s ease both 0.55s; }
+html.hr-full .hr-load__sub span { animation: hr-fade 0.9s ease both 0.55s; }
 html.hr-out .hr-load { pointer-events: none; }
 html.hr-out .hr-load__mark, html.hr-out .hr-load__paper { opacity: 0; }
 @keyframes hr-rise { from { opacity: 0; transform: translateY(0.12em); } to { opacity: 1; transform: none; } }
@@ -564,6 +565,7 @@ html.hr-js .hr-qdoor.hr-in { transition-delay: calc(var(--i, 0) * 70ms); }
 .hr-tile { position: absolute; overflow: hidden; background: var(--band); opacity: 0; transform-origin: center; will-change: transform; }
 .hr-tile img, .hr-tile video { display: block; width: 100%; height: 100%; object-fit: cover; }
 .hr-tile__slice { position: absolute; inset: 0; background-repeat: no-repeat; opacity: 0; }
+.hr-flock__back { position: absolute; inset: 0; background-repeat: no-repeat; opacity: 0; }   /* band: the whole first frame behind the band, opened out at the end */
 [data-flock] .hr-load__paper { transition: none; }
 /* hr-out comes as the film starts to grow: the dark mark in the corner fades while the page's own, white, comes in over the
    film, one crossfade; the paper stays under the tiles until the end */

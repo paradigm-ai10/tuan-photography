@@ -32,7 +32,11 @@
 - Read his scores on 50 to 64, removed the seven he scored 1, built the high-end round of nine in `flock.js`
   (new helpers `sliceIn`, `filmTakesOver`, `growLayer`, `rise`, `hairGrid`, `matRect`; `mark: 'fade'`;
   `filmAsPhoto`), filmed all nine on desktop and at phone width, had a motion designer review them, took the
-  stills, registered them on the review list with `ask` set.
+  stills, registered them on the review list with `ask` set. From the review: the rise fades on its own gentle
+  curve, large panels wipe instead of dissolving, the film starts at 0.35 speed and eases up so the frame it was
+  built to is held, the band was rebuilt (band-height tiles, the whole frame behind them opened out at the end),
+  PHOTOGRAPHY now fades with the name in line mode (the letters carry the fade-in), and `media/barcelona.mp4` was
+  re-encoded yuv420p (it was 4:4:4, which iPhones cannot decode; 6.3 MB).
 - TODO.md's home entry carries the whole story; docx rebuilt.
 
 ## 接下來 Next up
