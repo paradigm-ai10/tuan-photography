@@ -29,6 +29,7 @@ const V = document.body.dataset.globe || 'paper';
 const GORE = { lift: 0.03, seg: [720, 360], frame1: 3.05, look: 0.3, paint: 'globe', wave: true, gores: true, rise: true, pen: true, unlit: true, bleed: true, gloss: true, noGrat: true };
 const GALLERY = { ...GORE, gores: false, tiles: [24, 12] };
 const LUXE = { ...GORE, gores: false, glide: 0.07, fit: true };
+const JOIN = { ...GORE, gores: false, paint: 'footprint', gall: true, match: true, pen: false, rise: false, bleed: false, fit: true };
 const WIND = { ...GALLERY, photos: 'tileBacks', flip: true, backdrop: ['matterhorn-lake', 'roys-peak', 'fuji-lake', 'sapa-valley'] };
 const CFG = {
   paper: { lift: 0.07, seg: [360, 180] },
@@ -155,12 +156,24 @@ const CFG = {
   'luxe-unveil-develop': { ...LUXE, photos: 'through', unveil: true, mono: true },
   'luxe-hang-develop': { ...LUXE, bleed: false, tiles: [6, 3], photos: 'tileBacks', mono: true, hang: { gap: 0.12, lift: 0.1, axis: 'y' } },
   'luxe-hang-whole': { ...LUXE, bleed: false, tiles: [6, 3], photos: 'through', hang: { gap: 0.12, lift: 0.1, axis: 'y', whole: true } },
+  // the join (2026-11-09, his "Yes, design it", after the footprint map became the first screen): the map
+  // and the globe are one sheet. The globe is painted as the footprint map is (paint 'footprint': the
+  // paper, the engraved sea, his countries in the map's own colours), its flat sheet is laid out in the
+  // map's projection (gall: Gall's stereographic) and placed by the camera exactly where the map lies on
+  // the screen (match, from FP.view), so as the map's names and numbers lift away, the map itself folds.
+  //   join-wrap    the whole sheet curls round onto the ball, Taiwan's first, in one piece
+  //   join-prints  the sheet parts into square prints laid on the ball, Taiwan's first (the live fold)
+  //   join-unveil  the sheet curls away off his newest photograph beneath, which stays under a paper veil
+  'join-wrap': { ...JOIN },
+  'join-prints': { ...JOIN, tiles: [24, 12] },
+  'join-unveil': { ...JOIN, glide: 0.07, photos: 'through', unveil: true },
 }[V];
 const HOME_LL = [S.flightsFrom[1], S.flightsFrom[0]];
 const CRAFT = 'craft' in document.body.dataset;
 
 const R = 1;
-const START = 150;                 // the flat map is centred on the Pacific, Taiwan in view (as before)
+let START = 150;                   // the flat map is centred on the Pacific, Taiwan in view (as before; the
+                                   // join versions take the footprint map's middle meridian, FP.view.lon0)
 const TAU = Math.PI * 2, RAD = Math.PI / 180;
 const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
 const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
@@ -183,6 +196,11 @@ function rgb(name) {
 }
 
 /* ------------------------------------------------------------ the bend */
+
+// (gall, the join versions) the flat sheet's height for a latitude: Gall's stereographic, as the footprint
+// map draws it, in the sheet's units (a radian of longitude across); the shader's gy() is the same sum
+const GALL = !!CFG.gall, GK = 1 + Math.SQRT2;
+const gy = (b) => (GALL ? GK * Math.tan(b / 2) : b);
 
 // how far the sheet is curved across (kx) and up and down (ky) at fold f
 function bends(f) {
@@ -256,8 +274,8 @@ function tilePlace(q, b, h, f, center, out) {
   const ya = ac * s, pa = bc * s, lift = TILE_LIFT * Math.sin(Math.PI * s), wx = 1 + (Math.cos(bc) - 1) * s;
   const nx = Math.cos(pa) * Math.sin(ya), ny = Math.sin(pa), nz = Math.cos(pa) * Math.cos(ya);
   const ex = Math.cos(ya), ez = -Math.sin(ya), mx = -Math.sin(pa) * Math.sin(ya), my = Math.cos(pa), mz = -Math.sin(pa) * Math.cos(ya);
-  let cx = ac * R + (Math.cos(bc) * Math.sin(ac) - ac) * R * s + nx * lift, cy = bc * R + (Math.sin(bc) - bc) * R * s + ny * lift, cz = R + (Math.cos(bc) * Math.cos(ac) - 1) * R * s + nz * lift;
-  let X = ox * wx * R, Y = oy * R, Z = h * R;
+  let cx = ac * R + (Math.cos(bc) * Math.sin(ac) - ac) * R * s + nx * lift, cy = gy(bc) * R + (Math.sin(bc) - gy(bc)) * R * s + ny * lift, cz = R + (Math.cos(bc) * Math.cos(ac) - 1) * R * s + nz * lift;
+  let X = ox * wx * R, Y = (GALL ? gy(bc + oy) - gy(bc) + (oy - gy(bc + oy) + gy(bc)) * s : oy) * R, Z = h * R;
   if (TILE_FLIP) {
     // tossed: pushed a little aside its own way, turned over in flight, and turned back once the ball is whole
     const tn = tileTurn(col, row), kx = [1, 0, -1, 0][tn], ky = [0, 1, 0, -1][tn], ps = tileSlant(col, row);
@@ -279,7 +297,7 @@ function place(lon, lat, h, st, out = new THREE.Vector3()) {
   if (CFG.wave) {
     const a = u / R, b = v / R, w = waveW(lon, lat, st.fold);
     const nx = Math.cos(b) * Math.sin(a), ny = Math.sin(b), nz = Math.cos(b) * Math.cos(a);
-    const fx = u, fy = v, fz = R + h * R;
+    const fx = u, fy = gy(b) * R, fz = R + h * R;
     const sx = nx * R * (1 + h), sy = ny * R * (1 + h), sz = nz * R * (1 + h);
     out.set(fx + (sx - fx) * w, fy + (sy - fy) * w, fz + (sz - fz) * w);
     out.lonR = lonR;
@@ -294,7 +312,8 @@ function place(lon, lat, h, st, out = new THREE.Vector3()) {
   return out;
 }
 const MORPH = /* glsl */`
-  uniform float uKx, uKy, uR, uCenter, uRaise, uMix, uWave, uFold, uRise, uReveal, uSoft, uGores, uGore0, uTiles, uTileGap, uTileLift, uTileFlip, uTileScatter, uTileRate, uTileMode, uTileKeep, uTurn, uTime;
+  uniform float uKx, uKy, uR, uCenter, uRaise, uMix, uWave, uFold, uRise, uReveal, uSoft, uGores, uGore0, uTiles, uTileGap, uTileLift, uTileFlip, uTileScatter, uTileRate, uTileMode, uTileKeep, uTurn, uTime, uGall;
+  float gy(float b) { return uGall > 0.5 ? 2.4142136 * tan(b * 0.5) : b; }
   uniform vec4 uWin, uWind, uHang;
   uniform vec2 uHome, uTileN;
   uniform sampler2D uMask, uMaskPrev;
@@ -471,8 +490,8 @@ const MORPH = /* glsl */`
       vec3 nr = vec3(cos(pa) * sin(ya), sin(pa), cos(pa) * cos(ya));
       vec3 ex = vec3(cos(ya), 0.0, -sin(ya)), my = vec3(-sin(pa) * sin(ya), cos(pa), -sin(pa) * cos(ya));
       vec3 nc = vec3(cos(bc) * sin(ac), sin(bc), cos(bc) * cos(ac));
-      vec3 c = mix(vec3(ac * uR, bc * uR, uR), nc * uR, s) + nr * uTileLift * sin(3.1415927 * s);
-      vec3 L = vec3(o.x * mix(1.0, cos(bc), s), o.y, h) * uR, nf = nr;
+      vec3 c = mix(vec3(ac * uR, gy(bc) * uR, uR), nc * uR, s) + nr * uTileLift * sin(3.1415927 * s);
+      vec3 L = vec3(o.x * mix(1.0, cos(bc), s), mix(gy(bc + o.y) - gy(bc), o.y, s), h) * uR, nf = nr;
       vec2 om = o;
       if (uTileFlip > 0.5) {
         vec2 tc = floor(aTile * uTileN);
@@ -518,7 +537,7 @@ const MORPH = /* glsl */`
       float d = acos(clamp(sin(b) * sin(uHome.y) + cos(b) * cos(uHome.y) * cos(lon - uHome.x), -1.0, 1.0)) / 3.1415927;
       float w = smoothstep(0.0, 1.0, clamp(uFold * 1.7 - d * 0.7, 0.0, 1.0));
       n = normalize(mix(vec3(0.0, 0.0, 1.0), ns, w)); vDev = w;
-      return mix(vec3(u, v, uR + h * uR), ns * uR * (1.0 + h), w);
+      return mix(vec3(u, gy(b) * uR, uR + h * uR), ns * uR * (1.0 + h), w);
     }
     float kx = max(uKx, 1e-3), ky = max(uKy, 1e-3);
     float a = u * kx, b = v * ky;
@@ -574,6 +593,7 @@ function painter(world, colours, photos) {
       return;
     }
     if (CFG.paint === 'globe') return paintGlobe(c, path, world, visited, colours, firstOf, y, hover);
+    if (CFG.paint === 'footprint') return paintFootprint(c, path, world, visited, colours, firstOf, y, hover);
     if (CFG.paint === 'chart') return paintChart(c, path, world, visited, colours, firstOf, y, hover);
     if (CFG.paint === 'cut') return paintCut(c, path, world, visited, colours, firstOf, y, hover);
     if (CFG.paint === 'ink') return paintInk(c, path, world, visited, colours, firstOf, y, hover);
@@ -876,6 +896,100 @@ function paintGlobe(c, path, world, visited, col, firstOf, y, hover) {
   c.restore();
 }
 
+// "footprint" (the join, 2026-11-09): the globe painted as the footprint map on the first screen is
+// (footprint/glide-calm.js), so the one can become the other. The page's paper; the sea engraved in fine
+// lines round every coast, close and dark by the shore and thinning out to sea; a faint graticule every 15
+// degrees and a firmer equator; the land the same paper, fine ink borders and coasts; his countries washed
+// in the colours the map gave them (FP.view.tones, by map id), the pigment pooled along their edges, and a
+// country too small to see as a dab of its colour in a fine ring. The sizes are set for the flat sheet on a
+// wide window, about two and a half texture pixels to a screen pixel.
+let FPB = null;
+async function footprintBase(world) {
+  if (FPB) return FPB;
+  const mk = (w, h) => Object.assign(document.createElement('canvas'), { width: w, height: h });
+  const paper = rgb('--paper'), water = rgb('--tn-water'), ink = rgb('--ink');
+  // the paper, the engraved sea, the land and the graticule: painted off the page (footprint/sea-worker.js),
+  // so the footprint map's arrival above keeps its pace; on the page itself, a ring at a time, where a
+  // browser cannot paint off the page
+  let big = null;
+  if (window.Worker && window.OffscreenCanvas) {
+    big = await new Promise((ok) => {
+      const w = new Worker('footprint/sea-worker.js');
+      const give = (v) => { w.terminate(); ok(v); };
+      w.onmessage = (e) => give(e.data.bitmap);
+      w.onerror = () => give(null);
+      w.postMessage({ land: world.land, TW, TH, paper, water, ink });
+    });
+  }
+  if (!big) {
+    big = mk(TW, TH);
+    const c = big.getContext('2d'), path = d3.geoPath(eq, c);
+    c.fillStyle = paper; c.fillRect(0, 0, TW, TH);
+    const ring = mk(TW, TH), rc = ring.getContext('2d'), rp = d3.geoPath(eq, rc);
+    rc.lineJoin = 'round';
+    const RINGS = d3.range(12).map((i) => 4 + i * 5 + i * i * 0.25);
+    for (let i = 0; i < RINGS.length; i++) {
+      const d = RINGS[i];
+      rc.globalCompositeOperation = 'source-over'; rc.clearRect(0, 0, TW, TH);
+      rc.strokeStyle = '#000'; rc.lineWidth = 2 * d + 2; rc.beginPath(); rp(world.land); rc.stroke();
+      rc.globalCompositeOperation = 'destination-out'; rc.lineWidth = 2 * d; rc.beginPath(); rp(world.land); rc.stroke();
+      rc.globalCompositeOperation = 'source-in'; rc.fillStyle = water; rc.fillRect(0, 0, TW, TH);
+      c.globalAlpha = 0.44 * Math.pow(1 - i / RINGS.length, 1.3) + 0.04; c.drawImage(ring, 0, 0); c.globalAlpha = 1;
+      await new Promise((ok) => setTimeout(ok, 0));
+    }
+    ring.width = ring.height = 0;
+    c.fillStyle = paper; c.beginPath(); path(world.land); c.fill();
+    c.strokeStyle = ink; c.lineWidth = 1.05; c.globalAlpha = 0.15; c.beginPath();
+    path(d3.geoGraticule().step([15, 15]).extentMinor([[-180, -75.01], [180, 75.01]])()); c.stroke();
+    c.globalAlpha = 0.28; c.beginPath(); path({ type: 'LineString', coordinates: d3.range(-180, 181, 2).map((lon) => [lon, 0]) }); c.stroke();
+    c.globalAlpha = 1;
+  }
+  // the mottle of a dried wash: soft value noise, laid over each wash at a low strength
+  const M = 256, mot = mk(M, M), mc = mot.getContext('2d'), mi = mc.createImageData(M, M);
+  for (let y = 0; y < M; y++) for (let x = 0; x < M; x++) {
+    const th = (x / M) * TAU, ph = (y / M) * TAU;
+    const n = noise3(Math.cos(th) * 1.6, Math.sin(th) * 1.6, Math.cos(ph) * 1.6 + Math.sin(ph) * 1.6) * 0.6 + noise3(Math.cos(th) * 4, Math.sin(th) * 4, Math.cos(ph) * 4) * 0.4;
+    const v = 255 - n * 120, i = (y * M + x) * 4;
+    mi.data[i] = v; mi.data[i + 1] = v; mi.data[i + 2] = v; mi.data[i + 3] = 255;
+  }
+  mc.putImageData(mi, 0, 0);
+  return (FPB = { big, mottle: mc.createPattern(mot, 'repeat') });
+}
+function paintFootprint(c, path, world, visited, col, firstOf, y, hover) {
+  c.drawImage(FPB.big, 0, 0);
+  const tones = (window.FP && FP.view && FP.view.tones) || new Map();
+  const been = visited.filter((f) => firstOf[f.id] <= y);
+  const small = [];
+  c.save(); c.globalCompositeOperation = 'multiply';
+  for (const f of been) {
+    const tone = tones.get(f.id) || col.been;
+    const [[x0, y0], [x1, y1]] = path.bounds(f);
+    if (Math.max(x1 - x0, y1 - y0) < 16) { small.push([f, tone]); continue; }
+    // the wash, mottled where it dried, then the pigment pooled along the edge inside it
+    c.globalAlpha = f.id === hover ? 0.85 : 0.63; c.fillStyle = tone; c.beginPath(); path(f); c.fill();
+    c.save(); c.beginPath(); path(f); c.clip();
+    c.globalAlpha = 0.16; c.fillStyle = FPB.mottle; c.fillRect(x0, y0, x1 - x0, y1 - y0);
+    c.lineJoin = 'round'; c.strokeStyle = tone; c.beginPath(); path(f);
+    c.globalAlpha = 0.28; c.lineWidth = 8; c.stroke(); c.globalAlpha = 0.34; c.lineWidth = 3.5; c.stroke();
+    c.restore();
+  }
+  c.restore();
+  c.globalAlpha = 1;
+  // the engraving: borders, then coasts
+  c.lineJoin = 'round'; c.lineCap = 'round'; c.strokeStyle = col.ink;
+  c.globalAlpha = 0.5; c.lineWidth = 1.05; c.beginPath(); path(world.borders); c.stroke();
+  c.globalAlpha = 1; c.lineWidth = 1.85; c.beginPath(); path(world.land); c.stroke();
+  // the small ones: a dab of colour in a fine ring
+  for (const [f, tone] of small) {
+    const [x, yy] = eq(d3.geoCentroid(f));
+    c.globalCompositeOperation = 'multiply'; c.globalAlpha = 0.85; c.fillStyle = tone;
+    c.beginPath(); c.arc(x, yy, 8, 0, TAU); c.fill();
+    c.globalCompositeOperation = 'source-over'; c.globalAlpha = 1; c.lineWidth = 1.8; c.strokeStyle = col.ink;
+    c.beginPath(); c.arc(x, yy, 8.6, 0, TAU); c.stroke();
+  }
+  c.globalAlpha = 1;
+}
+
 // "Developed": the world drawn quietly on the page's own paper, and every country he has been to
 // filled with his photograph from there. Each piece of a country (an island, a mainland) gets the
 // photograph fitted to its own outline, cropped like a print, never stretched.
@@ -1014,6 +1128,17 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     sea: rgb('oklch(90% 0.028 198)'), land: rgb('--paper'), coast: rgb('oklch(38% 0.035 55)'), ink3: rgb('oklch(45% 0.03 60)'),
     been: rgb('oklch(82% 0.065 48)'), beenOn: rgb('oklch(76% 0.09 46)'), beenRim: rgb('oklch(64% 0.08 42)'), fly: rgb('oklch(40% 0.05 45)'),
   });
+  if (CFG.paint === 'footprint') Object.assign(colours, { sea: rgb('--paper'), land: rgb('--paper'), coast: rgb('--ink'), ink: rgb('--ink') });
+  // (match) the footprint map's frame and colours: wait for the map to be laid out (a few seconds at most),
+  // then take its middle meridian, so the flat sheet's seam runs down the Atlantic where the map's does
+  if (CFG.match) {
+    await new Promise((ok) => {
+      if (window.FP && FP.view) return ok();
+      const done = () => { removeEventListener('fp-view', done); ok(); };
+      addEventListener('fp-view', done); setTimeout(done, 4000);
+    });
+    if (window.FP && FP.view) START = FP.view.lon0;
+  }
   const [world] = await Promise.all([K.world(), reliefP]);
   const photos = CFG.paint === 'photo' ? await countryPhotos() : {};
   if (CFG.paint === 'earth') earthBase(world, reliefImg);
@@ -1023,6 +1148,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     await Promise.all([document.fonts.load('400 36px "Playfair Display"', 'PACIFIC'), document.fonts.load('500 46px "Noto Serif TC"', '太平洋大西洋印度')]).catch(() => {});
     globeBase(world, K.lang);
   }
+  if (CFG.paint === 'footprint') await footprintBase(world);
   const paint = painter(world, colours, photos);
 
   // the facts, as journey.js has them
@@ -1066,7 +1192,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
   let front = 0;
 
   const U = {
-    uKx: { value: 0 }, uKy: { value: 0 }, uR: { value: R }, uCenter: { value: START * RAD },
+    uKx: { value: 0 }, uKy: { value: 0 }, uR: { value: R }, uCenter: { value: START * RAD }, uGall: { value: GALL ? 1 : 0 },
     uRaise: { value: CFG.raise || 0 }, uMix: { value: 1 }, uLit: { value: 0 },
     uPrev: { value: texes[1] }, uBack: { value: new THREE.Color(colours.land) },
     uWave: { value: CFG.wave ? 1 : 0 }, uFold: { value: 0 }, uHome: { value: new THREE.Vector2(HOME_LL[0] * RAD, HOME_LL[1] * RAD) },
@@ -1563,7 +1689,9 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     setLines(sets.past, past); setLines(sets.here, here); setLines(sets.now, now);
     // the gores and the prints: the lines are lifted off while they are apart, and laid back on the closed globe
     const gate = CFG.gores || CFG.tiles ? Math.max(1 - smooth(0.02, 0.14, st.fold), smooth(CFG.wind || HANG ? 0.97 : TILE_TWO ? 0.8 : CFG.flip ? 0.95 : 0.9, 1, st.fold)) : 1;
-    for (const k of Object.keys(ops)) if (sets[k].material.opacity !== opsNow[k] * gate) sets[k].material.opacity = opsNow[k] * gate;
+    // (match) the footprint map draws its own flights while it lies over the sheet: the globe's come in as it folds
+    const gm = gate * (CFG.match ? smooth(0.05, 0.3, st.fold) : 1);
+    for (const k of Object.keys(ops)) if (sets[k].material.opacity !== opsNow[k] * gm) sets[k].material.opacity = opsNow[k] * gm;
   }
 
   // a dot or a plane laid on the surface at a place, facing out
@@ -1582,7 +1710,8 @@ window.JourneyMap = async function makeGlobe(svgEl) {
   }
   function placeMarks() {
     // (wind) the dots are put away while the prints are in the air
-    const aloft = (CFG.wind || HANG) && st.fold > 0.06 && st.fold < 0.97;
+    // (match) and while the footprint map lies over the flat sheet, whose own dots are its
+    const aloft = ((CFG.wind || HANG) && st.fold > 0.06 && st.fold < 0.97) || (CFG.match && st.fold < 0.2);
     homeDot.visible = !aloft;
     for (const f of flights) { f.end.visible = f.end.on && f.first <= year && !rewound && !aloft; if (f.end.visible) lay(f.end, ...f.to, base + 0.001, f.end.r); }
     lay(homeDot, ...home, base + 0.002, homeDot.r);
@@ -1619,7 +1748,19 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     const w0 = HANG ? TAU * 1.12 : 2 * Math.PI * (CFG.bleed ? 1 : 1.01), h0 = HANG ? Math.PI * 1.2 : CFG.bleed ? 0 : 136 * RAD * 1.06;
     const fw = w0 * (1 - g) + s1 * g, fh = h0 * (1 - g) + s1 * g;
     const cy = HANG ? 0 : (CFG.bleed ? 8 : 12) * RAD * (1 - f), plane = R * (1 - g) + 0.25 * g;
-    const ppw = Math.min(r.w / fw, r.h / fh);
+    let ppw = Math.min(r.w / fw, r.h / fh);
+    // the point under the camera lands in the middle of the box it is given
+    let ax = r.x + r.w / 2, ay = r.y + r.h / 2;
+    // (match, the join versions) at the start of the fold the flat sheet lies exactly where the footprint
+    // map lies on the screen: its scale (FP.view.k, pixels to a radian of longitude, the sheet's unit) and
+    // the point under the camera put where the map puts it; the frame goes over to the globe's as it folds
+    const fv = CFG.match && window.FP && FP.view && !FP.view.narrow ? FP.view : null;
+    if (fv && g < 1) {
+      const b = box.getBoundingClientRect(), [px, py] = fv.at(st.center, 0);
+      const mx = px - b.left, my = py - b.top - cy * fv.k, e = smooth(0, 1, g);
+      ppw = Math.exp(Math.log(fv.k) * (1 - e) + Math.log(ppw) * e);
+      ax = mx + (ax - mx) * e; ay = my + (ay - my) * e;
+    }
     const fov = camera.fov * RAD;
     const d = (H / ppw) / (2 * Math.tan(fov / 2));
     const lookDown = (CFG.look || 0) * g + (CFG.wave ? 0.5 * Math.sin(Math.PI * g) : 0);
@@ -1629,7 +1770,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     camera.zoom = 1;
     camera.updateProjectionMatrix();
     // a lens shift, so the frame's middle lands in the middle of the box it is given
-    const tx = ((r.x + r.w / 2) / W) * 2 - 1, ty = 1 - ((r.y + r.h / 2) / H) * 2;
+    const tx = (ax / W) * 2 - 1, ty = 1 - (ay / H) * 2;
     camera.projectionMatrix.elements[8] = -tx;
     camera.projectionMatrix.elements[9] = -ty;
     // (fit: the 高級感 versions and the live page) the forming globe is kept whole inside the part of its box that is on
@@ -2064,6 +2205,8 @@ window.JourneyMap = async function makeGlobe(svgEl) {
   };
   tweak();
   trip(null);
+  // (match) the footprint map laid out again (a new window size): the flat sheet follows it
+  if (CFG.match) addEventListener('fp-view', () => kick());
   kick();
   return { flyOut, settled, at, forward, trip, setFold };
 };

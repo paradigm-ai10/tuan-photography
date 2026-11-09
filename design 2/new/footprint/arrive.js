@@ -7,9 +7,10 @@
    - the page's own EN / 中文 words switch the map's words too;
    - once the page's top bar is drawn (journey.js draws it after the map may have been laid out), the map
      is laid out again, so the engraving keeps clear of its words;
-   - on a wide window the map fades away over the first 0.3 of a screen of scroll, while the globe beneath
-     is already folding (journey.js starts the fold at once when data-arrive is set). On a phone the map
-     is the page's first block and scrolls away with it. */
+   - on a wide window the map fades away over the first 0.3 of a screen of scroll (data-fade, on the join
+     versions 0.12), while the globe beneath is already folding (journey.js starts the fold at once when
+     data-arrive is set, or at data-fold-at). On a phone the map is the page's first block and scrolls
+     away with it. */
 (() => {
   'use strict';
   const stage = document.getElementById('stage');
@@ -40,10 +41,11 @@
   if (top) new MutationObserver(() => dispatchEvent(new Event('fp-relayout'))).observe(top, { childList: true });
 
   const wide = matchMedia('(min-width: 64rem)');
+  const FADE = parseFloat(document.body.dataset.fade) || 0.3;
   let frame = 0;
   function fade() {
     frame = 0;
-    const out = wide.matches ? Math.min(1, Math.max(0, scrollY / (innerHeight * 0.3))) : 0;
+    const out = wide.matches ? Math.min(1, Math.max(0, scrollY / (innerHeight * FADE))) : 0;
     stage.style.setProperty('--fp-out', out.toFixed(4));
     stage.classList.toggle('is-gone', out > 0.98);
     if (out > 0.02 && window.FP) FP.tip(0, 0, null);

@@ -1549,6 +1549,7 @@ void main() {
     for (const cv of [mapCv, seaCv, washCv]) { cv.width = Math.round(G.w * DPR); cv.height = Math.round(G.sheetH * DPR); }
     metrics.clear(); LBL.clear(); shown = {};
     plan();
+    publish();
     // the work: the water fields, then each wash at the scale it is first seen; each with the moment it is needed
     const jobs = [];
     const needAt = (z) => { for (let t = HOLD; t <= P.viewEnd; t += 16) if (zOf(viewAt(t)) < z) return t; return P.viewEnd; };
@@ -1581,6 +1582,22 @@ void main() {
     if (!pending.length) return;
     pending.shift().run();
     if (pending.length) setTimeout(work, 0);
+  }
+
+  // (the Journey tab) where the map lies on the screen at rest, and his countries' colours, for the globe
+  // beneath to be laid out and painted as the same sheet (globe3d.js, data-globe="join-…"): its middle
+  // meridian, a place's point on the screen, the pixels to a radian of longitude, the colour of each country
+  // by its map id. Sent again whenever the map is laid out again (fp-view).
+  function publish() {
+    if (!EMBED) return;
+    const v = restView(), s = G.F.w / v.w, ox = G.F.x - v.x0 * s, oy = G.F.y - v.y0 * s;
+    const sr = stage.getBoundingClientRect();
+    FP.view = {
+      lon0: LON0, narrow: !!G.narrow, k: (s * U) / Math.SQRT2,
+      at: (lon, lat) => { const u = projU([lon, lat]); return [sr.left + ox + u[0] * s, sr.top + oy + u[1] * s]; },
+      tones: new Map(MINE.map((m) => [m.c.iso, m.tone.css])),
+    };
+    dispatchEvent(new Event('fp-view'));
   }
 
   // at rest: the last frame, and a mark for whoever times the page

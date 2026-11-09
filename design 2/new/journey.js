@@ -434,7 +434,8 @@
     // glide aside waits for it
     const L = document.body.dataset.fold === 'long' ? (window.JourneyTweak || {}).fold || 2.2 : 1;
     frame.style.setProperty('--fold-len', L);
-    const at0 = ARRIVE ? 0 : 0.15;
+    // (the join versions, data-fold-at) the fold waits for the map's names and numbers to have lifted away
+    const at0 = ARRIVE ? parseFloat(document.body.dataset.foldAt) || 0 : 0.15;
     const fold = clamp((y - H * at0) / (H * (0.85 * L + 0.15 - at0)), 0, 1);
     const d = clamp((y - H * (1.12 + 0.85 * (L - 1))) / (H * 0.5), 0, 1);
     frame.style.setProperty('--arr', arr.toFixed(4));
@@ -539,7 +540,8 @@
     // a page may bring its own map (the 3D globe trial, globe3d.js) that answers the same six words
     map = await (window.JourneyMap || makeMap)($('#jr-svg'));
     state = null; folioYear = null; shown = null;
-    if (returnTo()) map.settled(totals); else map.flyOut(totals);
+    // (the footprint map first) the map above has its own arrival: the globe beneath is ready at once
+    if (returnTo() || ARRIVE) map.settled(totals); else map.flyOut(totals);
     let raf = 0;
     if (onScroll) removeEventListener('scroll', onScroll);
     onScroll = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(follow); };

@@ -35,4 +35,6 @@ html[lang="zh-Hant"] .fp-label { text-transform: none; letter-spacing: 0.12em; }
   /* the top bar lies over the map's paper, as on the version pages, so the map sits as high as it did there */
   [data-arrive] #top { position: absolute; top: 0; left: 0; right: 0; }
 }
+/* (the join versions) the globe's sheet lies exactly under the map, so it does not drift with the scroll */
+[data-globe^="join"] .jr-map .g3 { transform: none; }
 @media (prefers-reduced-motion: reduce) { .fp-tip { transition: none; } }
