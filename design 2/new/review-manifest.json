@@ -2,7 +2,7 @@
   "name": "journey",
   "round": {
     "groups": [
-      "footprint-9"
+      "journey-cam"
     ],
     "ids": [
       "journey"
@@ -72,6 +72,13 @@
       "title": {
         "en": "The map becomes the globe",
         "zh": "地圖變成地球"
+      }
+    },
+    {
+      "id": "journey-cam",
+      "title": {
+        "en": "Your trips as one camera move",
+        "zh": "旅程變成一段鏡頭"
       }
     },
     {
@@ -439,6 +446,54 @@
       "desc": {
         "en": "The map curls away into the globe and uncovers your newest trip's photograph underneath, under a light paper veil. The globe is now painted like your footprint map (the same paper, sea lines and country colours) and lies exactly under it, so as you start to scroll only the names and numbers fade away and the map itself folds. Scroll slowly to watch it. Your pick: since 9 November it is the live page (number 1), smoothed.",
         "zh": "地圖捲成地球的時候，底下露出你最近一趟旅行的照片，上面蓋一層淡淡的紙。地球現在畫得跟你的足跡地圖一樣（同樣的紙、海上的細線、國家的顏色），而且剛好疊在它正下方，所以一開始往下捲，只有國名和數字淡掉，地圖本身直接捲成地球。慢慢往下捲比較看得清楚。你選了這張：11/9 起是正式版（第 1 張），而且調順了。"
+      },
+      "still": {
+        "wait": 14000
+      }
+    },
+    {
+      "id": "journey-cam-turn",
+      "href": "journey-cam-turn.html",
+      "group": "journey-cam",
+      "title": {
+        "en": "Turns with your scroll",
+        "zh": "跟著捲動轉"
+      },
+      "desc": {
+        "en": "The whole globe stays in view and turns with your scroll from trip to trip, instead of turning on its own when a new trip comes up. After the fold, your trips are the chapters of one camera move that your scroll conducts: the globe holds on a trip while you read it and travels in the last part of the way to the next, the same at the same place every time, forward or back. A long passage rises higher on the way, as a flight does. Built with the scroll-world skill; the start is the live page as it is. On a phone it stays as the live page.",
+        "zh": "整顆地球都在畫面裡，跟著你的捲動從一趟轉到下一趟，而不是換到新的一趟才自己轉過去。地圖捲成地球之後，你的每一趟旅程是一段鏡頭的一章，由你的捲動帶著走：讀某一趟時地球停在那裡，捲到下一趟的最後一段才移過去；同一個位置每次都一樣，往上往下都可以。距離遠的（例如緬甸到美國）中途會升高一點，像飛機一樣。用 scroll-world 這個 skill 做的；開頭和正式版一樣，手機上也維持正式版。"
+      },
+      "still": {
+        "wait": 14000
+      }
+    },
+    {
+      "id": "journey-cam-closer",
+      "href": "journey-cam-closer.html",
+      "group": "journey-cam",
+      "title": {
+        "en": "Closer at each trip",
+        "zh": "靠近每一趟"
+      },
+      "desc": {
+        "en": "The camera comes in low over the globe, so each trip's countries fill the space beside the list, and glides on to the next. After the fold, your trips are the chapters of one camera move that your scroll conducts: the globe holds on a trip while you read it and travels in the last part of the way to the next, the same at the same place every time, forward or back. A long passage rises higher on the way, as a flight does. Built with the scroll-world skill; the start is the live page as it is. On a phone it stays as the live page.",
+        "zh": "鏡頭貼近地球，讓每一趟去的國家佔滿清單旁邊的空間，再滑到下一趟。地圖捲成地球之後，你的每一趟旅程是一段鏡頭的一章，由你的捲動帶著走：讀某一趟時地球停在那裡，捲到下一趟的最後一段才移過去；同一個位置每次都一樣，往上往下都可以。距離遠的（例如緬甸到美國）中途會升高一點，像飛機一樣。用 scroll-world 這個 skill 做的；開頭和正式版一樣，手機上也維持正式版。"
+      },
+      "still": {
+        "wait": 14000
+      }
+    },
+    {
+      "id": "journey-cam-horizon",
+      "href": "journey-cam-horizon.html",
+      "group": "journey-cam",
+      "title": {
+        "en": "Over the horizon",
+        "zh": "地平線"
+      },
+      "desc": {
+        "en": "The camera comes down near the globe, so its curve becomes a horizon low on the screen with your photograph as the sky above, and each trip's countries rise up over the curve. After the fold, your trips are the chapters of one camera move that your scroll conducts: the globe holds on a trip while you read it and travels in the last part of the way to the next, the same at the same place every time, forward or back. A long passage rises higher on the way, as a flight does. Built with the scroll-world skill; the start is the live page as it is. On a phone it stays as the live page.",
+        "zh": "鏡頭降到地球旁邊，地球的弧線變成畫面下方的地平線，上面是你的照片當天空，每一趟去的國家從弧線上升起來。地圖捲成地球之後，你的每一趟旅程是一段鏡頭的一章，由你的捲動帶著走：讀某一趟時地球停在那裡，捲到下一趟的最後一段才移過去；同一個位置每次都一樣，往上往下都可以。距離遠的（例如緬甸到美國）中途會升高一點，像飛機一樣。用 scroll-world 這個 skill 做的；開頭和正式版一樣，手機上也維持正式版。"
       },
       "still": {
         "wait": 14000
@@ -1174,11 +1229,13 @@
   "words": {},
   "ask": {
     "ids": [
-      "journey"
+      "journey-cam-turn",
+      "journey-cam-closer",
+      "journey-cam-horizon"
     ],
     "question": {
-      "en": "Number 1 is now Off a photograph, made live and smoothed: the map's names fade with a little weight, the fold follows your scroll like a heavy sheet, and the stalls while scrolling past the trips are gone. Scroll it slowly from the top, then score it and mark anything still rough.",
-      "zh": "第 1 張現在就是「掀開露出照片」，已經上線也調順了：國名淡掉時帶一點重量，地圖捲起來像一張有重量的紙跟著你捲，往下捲過一趟趟旅程時的卡頓也沒了。從最上面慢慢往下捲，再給分數，哪裡還不順就標出來。"
+      "en": "1 is the live page. 2 to 4 keep its opening and fold, then turn your trips into one camera move your scroll conducts: the whole globe turning, the camera close over each trip, or the globe's curve as a horizon under your photograph. Scroll slowly past the fold and through a few trips, then score each and mark what to change.",
+      "zh": "第 1 張是正式版。第 2 到 4 張開頭和捲成地球都一樣，之後把你的旅程變成一段由捲動帶著走的鏡頭：整顆地球跟著轉、鏡頭貼近每一趟、或地球的弧線變成你照片下的地平線。慢慢捲過地球、再捲過幾趟旅程，每張給分，哪裡要改就標出來。"
     }
   }
 }

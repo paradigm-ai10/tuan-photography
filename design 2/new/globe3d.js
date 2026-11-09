@@ -30,6 +30,7 @@ const GORE = { lift: 0.03, seg: [720, 360], frame1: 3.05, look: 0.3, paint: 'glo
 const GALLERY = { ...GORE, gores: false, tiles: [24, 12] };
 const LUXE = { ...GORE, gores: false, glide: 0.07, fit: true };
 const JOIN = { ...GORE, gores: false, paint: 'footprint', gall: true, match: true, pen: false, rise: false, bleed: false, fit: true };
+const UNVEIL = { ...JOIN, glide: 0.07, photos: 'through', unveil: true };
 const WIND = { ...GALLERY, photos: 'tileBacks', flip: true, backdrop: ['matterhorn-lake', 'roys-peak', 'fuji-lake', 'sapa-valley'] };
 const CFG = {
   paper: { lift: 0.07, seg: [360, 180] },
@@ -166,7 +167,22 @@ const CFG = {
   //   join-unveil  the sheet curls away off his newest photograph beneath, which stays under a paper veil
   'join-wrap': { ...JOIN },
   'join-prints': { ...JOIN, tiles: [24, 12] },
-  'join-unveil': { ...JOIN, glide: 0.07, photos: 'through', unveil: true },
+  'join-unveil': { ...UNVEIL },
+  // round ten (2026-11-09, the build-threejs-scroll-worlds skill, his "play around with this"): the live page,
+  // and after the fold his trips as the chapters of one camera move that the scroll conducts (cam). Each trip
+  // is a chapter; the scroll between two trips is the passage between them, the same at the same scroll every
+  // time, forward or back, through the same spring as the fold; the globe holds on a trip while it is read
+  // and travels in the last part of the way to the next (wide windows only; a phone keeps the live page's)
+  // The trips stand close in the list, so the camera does not pulse at each one: it glides on, and a long
+  // passage (Myanmar to the United States) rises higher on the way, as a flight does, so the turn stays legible.
+  //   join-unveil-turn     the whole globe, turned by the scroll from trip to trip
+  //   join-unveil-closer   the camera low over the globe, its countries filling the box, gliding from trip
+  //                        to trip and rising for the long passages
+  //   join-unveil-horizon  the camera comes down near the globe: its curve is a horizon low on the screen,
+  //                        his photograph the sky above, each trip's countries rising up over the curve
+  'join-unveil-turn': { ...UNVEIL, cam: { kind: 'turn' } },
+  'join-unveil-closer': { ...UNVEIL, cam: { kind: 'closer', zoom: 1.9, rise: 1 } },
+  'join-unveil-horizon': { ...UNVEIL, cam: { kind: 'horizon', zoom: 2.5, rise: 0.5, fov: 34, lift: 38, drop: 0.6 } },
 }[V];
 const HOME_LL = [S.flightsFrom[1], S.flightsFrom[0]];
 const CRAFT = 'craft' in document.body.dataset;
@@ -1639,7 +1655,57 @@ window.JourneyMap = async function makeGlobe(svgEl) {
   // the gores close facing the flat map's own middle (the strips are cut there), and the prints land
   // where they were hung; only the finished globe turns to the trip being read
   const turned = () => (CFG.gores || CFG.tiles ? smooth(0.82, 1, st.fold) : st.fold);
-  const facing = () => [START + turnBy(START, st.spin[0] + st.drag[0]) * turned(), clamp(st.spin[1] + st.drag[1], -60, 60) * turned()];
+  const facing = () => {
+    let lon = st.spin[0] + st.drag[0], lat = st.spin[1] + st.drag[1];
+    // (cam) once the globe has gone aside, the chapter the scroll has reached decides where it faces
+    if (cam.w > 0) { lon += turnBy(lon, cam.at[0] + st.drag[0]) * cam.w; lat += (cam.at[1] + st.drag[1] - lat) * cam.w; }
+    return [START + turnBy(START, lon) * turned(), clamp(lat, -60, 60) * turned()];
+  };
+
+  /* (cam) the trips as chapters of one camera move, conducted by the scroll */
+  const CAM = CFG.cam || null, camWide = matchMedia('(min-width: 64rem)');
+  const cam = { w: 0, at: [0, 0], alt: 0, exact: 0, now: 0, vel: 0 };
+  const whereOf = (tt) => d3.geoCentroid({ type: 'MultiPoint', coordinates: tt.countries.map((c) => ll(c.ll)) });
+  let camTrips = null;
+  // (the chapters' spring, CAM.spring per second, is a little slower than the fold's, so a quick scroll
+  // through several trips is one calm sweep rather than a jolt per trip)
+  // the chapter for this scroll: which trip has reached the reading line (as journey.js reads it), and
+  // how far the next one has come towards it; the trip at the line's own place, unwrapped so each passage
+  // to the next turns the short way round
+  function chapter(dock) {
+    if (!CAM || !camWide.matches) { cam.w = 0; return; }
+    // (gathered again when the page redraws its list, as a change of language does)
+    if (!camTrips || (camTrips[0] && !camTrips[0].el.isConnected)) {
+      camTrips = [...document.querySelectorAll('.jr-trip')].map((el) => ({ el, t: K.byId(el.dataset.trip) })).filter((x) => x.t && x.t.countries.length);
+      let lon = START;
+      camTrips.forEach((x) => { const c = whereOf(x.t); lon += turnBy(lon, c[0]); x.at = [lon, clamp(c[1], -35, 35)]; });
+      // how far each passage goes (a quarter of the way round or more counts in full)
+      camTrips.forEach((x, i) => { const y = camTrips[i + 1]; x.far = y ? Math.min(1, d3.geoDistance(x.at, y.at) / (Math.PI / 2)) : 0; });
+    }
+    if (!camTrips.length) return;
+    const n = camTrips.length, line = innerHeight * 0.35 + 40;
+    const tops = camTrips.map((x) => x.el.getBoundingClientRect().top);
+    let k = -1;
+    tops.forEach((tp, i) => { if (tp < line) k = i; });
+    cam.exact = k >= n - 1 ? n - 1 : k < 0 ? 0 : k + clamp((line - tops[k]) / Math.max(1, tops[k + 1] - tops[k]), 0, 1);
+    cam.w = smooth(0.5, 1, dock);
+  }
+  function camStep(dt) {
+    if (!cam.w) return;
+    if (K.reduced) { cam.now = Math.round(cam.exact); cam.vel = 0; }   // reduced motion: straight to the nearest trip
+    else {
+      const w = CAM.spring || 7, x0 = cam.now - cam.exact, c1 = cam.vel + w * x0, e = Math.exp(-w * dt);
+      const x = (x0 + c1 * dt) * e;
+      cam.vel = (cam.vel - w * c1 * dt) * e;
+      cam.now = cam.exact + x;
+      if (Math.abs(x) < 0.0005 && Math.abs(cam.vel) < 0.005) { cam.now = cam.exact; cam.vel = 0; }
+    }
+    const n = camTrips.length, i = clamp(Math.floor(cam.now), 0, n - 1), j = Math.min(n - 1, i + 1);
+    // held on the trip while it is read, then on the way to the next in the last part, easing in and out
+    const m = j === i ? 0 : smooth(0.35, 1, cam.now - i), a = camTrips[i].at, b = camTrips[j].at;
+    cam.at = [a[0] + (b[0] - a[0]) * m, a[1] + (b[1] - a[1]) * m];
+    cam.alt = Math.sin(Math.PI * m) * camTrips[i].far * (CAM.rise || 0);   // how high the passage has risen
+  }
 
   // the lift of a flight's arc at t along it: a little for the short hops, more for the long ones
   const arcH = (d, t) => CFG.lift * (CFG.wave ? 1 + 2.4 * Math.sin(Math.PI * st.fold) : 1) * Math.min(1, d / 1.4 + 0.25) * Math.sin(Math.PI * t);
@@ -1707,6 +1773,8 @@ window.JourneyMap = async function makeGlobe(svgEl) {
 
   // a dot or a plane laid on the surface at a place, facing out
   const look = new THREE.Matrix4(), xa = new THREE.Vector3(), ya = new THREE.Vector3(), za = new THREE.Vector3();
+  // (cam) the dots and rings keep about their size on the screen when the camera comes close
+  let markK = 1;
   function lay(obj, lon, lat, h, scale, ahead) {
     place(lon, lat, h, st, tmp);
     obj.position.copy(tmp);
@@ -1717,7 +1785,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     ya.crossVectors(za, xa);
     look.makeBasis(xa, ya, za);
     obj.quaternion.setFromRotationMatrix(look);
-    obj.scale.setScalar(scale);
+    obj.scale.setScalar(scale * markK);
   }
   function placeMarks() {
     // (wind) the dots are put away while the prints are in the air
@@ -1772,6 +1840,14 @@ window.JourneyMap = async function makeGlobe(svgEl) {
       ppw = Math.exp(Math.log(fv.k) * (1 - e) + Math.log(ppw) * e);
       ax = mx + (ax - mx) * e; ay = my + (ay - my) * e;
     }
+    // (cam) the chapter's framing: the whole globe, a close look or the horizon, risen for a long passage
+    if (CAM) {
+      camera.fov = 20 + ((CAM.fov || 20) - 20) * cam.w;
+      const z = CAM.zoom ? 1 + (CAM.zoom - 1) * (1 - cam.alt) * cam.w : 1;
+      ppw *= z;
+      markK = Math.pow(z, -0.8);
+      if (CAM.drop) ay += r.h * CAM.drop * cam.w;
+    }
     const fov = camera.fov * RAD;
     const d = (H / ppw) / (2 * Math.tan(fov / 2));
     const lookDown = (CFG.look || 0) * g + (CFG.wave ? 0.5 * Math.sin(Math.PI * g) : 0);
@@ -1786,7 +1862,9 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     camera.projectionMatrix.elements[9] = -ty;
     // (fit: the 高級感 versions and the live page) the forming globe is kept whole inside the part of its box that is on
     // screen: drawn smaller if it would be taller than that, and moved down or up if it would spill over
-    const wf = CFG.fit ? (HANG ? smooth(0.7, 0.85, f) : smooth(0.25, 0.5, f)) : 0;
+    let wf = CFG.fit ? (HANG ? smooth(0.7, 0.85, f) : smooth(0.25, 0.5, f)) : 0;
+    // (cam) a close look or the horizon is meant to spill over the box
+    if (CAM && CAM.zoom) wf *= 1 - cam.w * (CAM.drop ? 1 : 1 - cam.alt);
     if (wf > 0) {
       camera.updateMatrixWorld();
       const top = Math.max(r.y, 0) + 16, bot = Math.min(r.y + r.h, H) - 16, fpx = H / 2 / Math.tan(fov / 2);
@@ -1875,6 +1953,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
       const d = ops[k] - opsNow[k];
       if (Math.abs(d) > 0.003) { opsNow[k] += d * per(0.14); linesDirty = true; } else if (opsNow[k] !== ops[k]) { opsNow[k] = ops[k]; linesDirty = true; }
     }
+    if (CAM) { chapter(parseFloat(getComputedStyle(fig).getPropertyValue('--dock')) || 0); camStep(dt); }
     const [kx, ky] = bends(st.fold);
     const [c, tl] = facing();
     if (kx !== st.kx || ky !== st.ky || c !== st.center || tl !== st.tilt) linesDirty = true;
@@ -1894,7 +1973,8 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     for (const t of texes) t.offset.x = off;
     if (mat.bumpMap) mat.bumpMap.offset.x = off;
     if (mat.specularMap) mat.specularMap.offset.x = off;
-    group.rotation.x = tl * RAD - 0.32 * st.drop * st.drop;
+    // (cam horizon) the globe tipped back under the camera, so the trip's countries rise towards its curve
+    group.rotation.x = (tl - (CAM && CAM.lift ? CAM.lift * cam.w : 0)) * RAD - 0.32 * st.drop * st.drop;
     group.position.set(0, -0.25 * st.drop, 0.5 * st.drop);
     group.updateMatrixWorld();
     if (linesDirty) { buildLines(); placeMarks(); linesDirty = false; }
@@ -1960,7 +2040,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     // the earth keeps living while it is a globe: the clouds drift, light runs along the trip
     // (the earth's clouds, and the wind's prints rocking in the air) drawn on every frame
     const alive = (CFG.earth ? st.fold > 0.85 : CFG.wind && st.fold > 0.04 && st.fold < 0.99) && !K.reduced && !document.hidden;
-    if (alive || moving || ringAt !== ringWant || st.fold !== st.want || st.vel || tweens.size || Object.keys(ops).some((k) => opsNow[k] !== ops[k])) kick();
+    if (alive || moving || ringAt !== ringWant || st.fold !== st.want || st.vel || (cam.w && (cam.now !== cam.exact || cam.vel)) || tweens.size || Object.keys(ops).some((k) => opsNow[k] !== ops[k])) kick();
   }
   const tween = (dur, step) => new Promise((done) => {
     const t0 = performance.now();
@@ -2138,8 +2218,9 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     stops.length = 0;
     if (t) for (const s of t.stops) { const d = dot(colours.sea, colours.route, 0.0095); d.at = ll(s.at.ll); stops.push(d); }
     linesDirty = true;
-    const where = (tt) => d3.geoCentroid({ type: 'MultiPoint', coordinates: tt.countries.map((c) => ll(c.ll)) });
-    face(t && t.countries.length ? where(t) : where(K.trips[0]));
+    // (cam, a wide window) the scroll turns it, chapter by chapter
+    if (CAM && camWide.matches) { kick(); return; }
+    face(t && t.countries.length ? whereOf(t) : whereOf(K.trips[0]));
   }
   function at(y, here) {
     const was = year;
