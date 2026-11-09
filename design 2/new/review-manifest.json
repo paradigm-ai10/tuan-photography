@@ -393,21 +393,6 @@
       }
     },
     {
-      "href": "footprint-whole-calmer.html",
-      "group": "footprint-8",
-      "title": {
-        "en": "The whole map, no zoom, slower still",
-        "zh": "整張地圖不拉遠，再慢一點"
-      },
-      "desc": {
-        "en": "The same still map, a little slower again: rests at about 6 seconds, the same tempo as 3. Scrolling, a tap or a key jumps straight to the end.",
-        "zh": "一樣是整張地圖不動，再慢一點：大約 6 秒停下，跟第 3 張一樣快。一捲動、點一下或按鍵，就直接跳到最後。"
-      },
-      "still": {
-        "wait": 8000
-      }
-    },
-    {
       "href": "footprint-scratch-passport.html",
       "group": "footprint-2",
       "title": {
@@ -1139,8 +1124,7 @@
     "ids": [
       "footprint-glide-calm",
       "footprint-glide-calmer",
-      "footprint-whole-calm",
-      "footprint-whole-calmer"
+      "footprint-whole-calm"
     ],
     "question": {
       "en": "2 and 3 zoom out from Taiwan; 4 and 5 keep the whole map still, with only the colours and numbers moving. Same two tempos. Give each a score and mark what to change.",
