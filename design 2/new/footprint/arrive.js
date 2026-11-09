@@ -19,17 +19,22 @@
   // the review bar shows on his Mac only; the map keeps its height clear there, as on the version pages
   if (/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname)) root.classList.add('has-rv');
 
+  // (the listeners go once they have heard the first move, so later scrolling never waits on them)
   const waiting = [];
   let moved = false;
+  const onScroll = () => { if (scrollY > 2) go(); };
+  const onKey = (e) => { if (['ArrowDown', 'PageDown', ' ', 'End'].includes(e.key)) go(); };
   const go = () => {
     if (moved) return;
     moved = true;
+    removeEventListener('wheel', go); removeEventListener('touchmove', go);
+    removeEventListener('scroll', onScroll); removeEventListener('keydown', onKey);
     waiting.splice(0).forEach((fn) => fn());
   };
   addEventListener('wheel', go, { passive: true });
   addEventListener('touchmove', go, { passive: true });
-  addEventListener('scroll', () => { if (scrollY > 2) go(); }, { passive: true });
-  addEventListener('keydown', (e) => { if (['ArrowDown', 'PageDown', ' ', 'End'].includes(e.key)) go(); });
+  addEventListener('scroll', onScroll, { passive: true });
+  addEventListener('keydown', onKey);
   window.FPBelow = { onFirstMove(fn) { if (moved) fn(); else waiting.push(fn); } };
 
   document.addEventListener('click', (e) => {
@@ -40,17 +45,36 @@
   const top = document.getElementById('top');
   if (top) new MutationObserver(() => dispatchEvent(new Event('fp-relayout'))).observe(top, { childList: true });
 
+  // (data-spring, the live page) the fade follows the scroll through the same spring as the globe's sheet
+  // beneath (globe3d.js, CFG.spring), so a mouse wheel's step lifts the names away over a moment, not at
+  // once, and the two keep together
   const wide = matchMedia('(min-width: 64rem)');
   const FADE = parseFloat(document.body.dataset.fade) || 0.3;
-  let frame = 0;
-  function fade() {
+  const SPRING = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : parseFloat(document.body.dataset.spring) || 0;
+  let frame = 0, out = 0, vel = 0, last = 0, shown = -1;
+  const want = () => (wide.matches ? Math.min(1, Math.max(0, scrollY / (innerHeight * FADE))) : 0);
+  function show(v) {
+    if (v === shown) return;
+    shown = v;
+    stage.style.setProperty('--fp-out', v.toFixed(4));
+    stage.classList.toggle('is-gone', v > 0.98);
+    if (v > 0.02 && window.FP) FP.tip(0, 0, null);
+  }
+  function fade(now) {
     frame = 0;
-    const out = wide.matches ? Math.min(1, Math.max(0, scrollY / (innerHeight * FADE))) : 0;
-    stage.style.setProperty('--fp-out', out.toFixed(4));
-    stage.classList.toggle('is-gone', out > 0.98);
-    if (out > 0.02 && window.FP) FP.tip(0, 0, null);
+    const to = want();
+    if (!SPRING || !now) { out = to; vel = 0; last = 0; show(out); return; }
+    const dt = last && now - last < 100 ? (now - last) / 1000 : 1 / 60;
+    last = now;
+    const x0 = out - to, c1 = vel + SPRING * x0, e = Math.exp(-SPRING * dt);
+    const x = (x0 + c1 * dt) * e;
+    vel = (vel - SPRING * c1 * dt) * e;
+    out = Math.min(1, Math.max(0, to + x));
+    if (Math.abs(out - to) < 0.002 && Math.abs(vel) < 0.01) { out = to; vel = 0; }
+    show(out);
+    if (out !== to || vel) frame = requestAnimationFrame(fade); else last = 0;
   }
   addEventListener('scroll', () => { if (!frame) frame = requestAnimationFrame(fade); }, { passive: true });
-  addEventListener('resize', fade);
-  fade();
+  addEventListener('resize', () => fade(0));
+  fade(0);
 })();

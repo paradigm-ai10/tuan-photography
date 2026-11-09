@@ -170,6 +170,9 @@ const CFG = {
 }[V];
 const HOME_LL = [S.flightsFrom[1], S.flightsFrom[0]];
 const CRAFT = 'craft' in document.body.dataset;
+// (data-spring, the live page since 2026-11-09) the fold follows the scroll as a spring with no bounce,
+// this quick (per second), in place of CFG.glide; footprint/arrive.js fades the map above with the same
+const SPRING = parseFloat(document.body.dataset.spring) || 0;
 
 const R = 1;
 let START = 150;                   // the flat map is centred on the Pacific, Taiwan in view (as before; the
@@ -955,6 +958,14 @@ async function footprintBase(world) {
   mc.putImageData(mi, 0, 0);
   return (FPB = { big, mottle: mc.createPattern(mot, 'repeat') });
 }
+// each outline projected once and kept (a Path2D and its bounds): a repaint, as each trip is read,
+// then only fills and strokes what it already has, instead of projecting the whole world again
+const FPP = new Map(), fpSvg = d3.geoPath(eq);
+function fpPath(g) {
+  let o = FPP.get(g);
+  if (!o) { o = { p: new Path2D(fpSvg(g) || ''), b: fpSvg.bounds(g) }; FPP.set(g, o); }
+  return o;
+}
 function paintFootprint(c, path, world, visited, col, firstOf, y, hover) {
   c.drawImage(FPB.big, 0, 0);
   const tones = (window.FP && FP.view && FP.view.tones) || new Map();
@@ -963,22 +974,22 @@ function paintFootprint(c, path, world, visited, col, firstOf, y, hover) {
   c.save(); c.globalCompositeOperation = 'multiply';
   for (const f of been) {
     const tone = tones.get(f.id) || col.been;
-    const [[x0, y0], [x1, y1]] = path.bounds(f);
+    const { p, b: [[x0, y0], [x1, y1]] } = fpPath(f);
     if (Math.max(x1 - x0, y1 - y0) < 16) { small.push([f, tone]); continue; }
     // the wash, mottled where it dried, then the pigment pooled along the edge inside it
-    c.globalAlpha = f.id === hover ? 0.85 : 0.63; c.fillStyle = tone; c.beginPath(); path(f); c.fill();
-    c.save(); c.beginPath(); path(f); c.clip();
+    c.globalAlpha = f.id === hover ? 0.85 : 0.63; c.fillStyle = tone; c.fill(p);
+    c.save(); c.clip(p);
     c.globalAlpha = 0.16; c.fillStyle = FPB.mottle; c.fillRect(x0, y0, x1 - x0, y1 - y0);
-    c.lineJoin = 'round'; c.strokeStyle = tone; c.beginPath(); path(f);
-    c.globalAlpha = 0.28; c.lineWidth = 8; c.stroke(); c.globalAlpha = 0.34; c.lineWidth = 3.5; c.stroke();
+    c.lineJoin = 'round'; c.strokeStyle = tone;
+    c.globalAlpha = 0.28; c.lineWidth = 8; c.stroke(p); c.globalAlpha = 0.34; c.lineWidth = 3.5; c.stroke(p);
     c.restore();
   }
   c.restore();
   c.globalAlpha = 1;
   // the engraving: borders, then coasts
   c.lineJoin = 'round'; c.lineCap = 'round'; c.strokeStyle = col.ink;
-  c.globalAlpha = 0.5; c.lineWidth = 1.05; c.beginPath(); path(world.borders); c.stroke();
-  c.globalAlpha = 1; c.lineWidth = 1.85; c.beginPath(); path(world.land); c.stroke();
+  c.globalAlpha = 0.5; c.lineWidth = 1.05; c.stroke(fpPath(world.borders).p);
+  c.globalAlpha = 1; c.lineWidth = 1.85; c.stroke(fpPath(world.land).p);
   // the small ones: a dab of colour in a fine ring
   for (const [f, tone] of small) {
     const [x, yy] = eq(d3.geoCentroid(f));
@@ -1620,7 +1631,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
   const planeGeo = planeShape();
 
   /* the state */
-  const st = { fold: 0, want: 0, kx: 0, ky: 0, center: START, spin: [121, 23.5], tilt: 0, drag: [0, 0], drop: CFG.rise && !K.reduced ? 1 : 0 };
+  const st = { fold: 0, want: 0, vel: 0, kx: 0, ky: 0, center: START, spin: [121, 23.5], tilt: 0, drag: [0, 0], drop: CFG.rise && !K.reduced ? 1 : 0 };
   let year = Infinity, hereYear = null, nowTrip = null, hover = null, flying = false;
   const ops = { grat: 0, fly: 1, past: 0, here: 0, now: 0 }, opsNow = { ...ops };
   let rewound = false;
@@ -1819,7 +1830,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
 
   /* drawing: only when something moved */
   const tweens = new Set();
-  let raf = 0, linesDirty = true;
+  let raf = 0, linesDirty = true, lastNow = 0;
   function kick() { if (!raf) raf = requestAnimationFrame(frame); }
   // while the map's own box is changing size in CSS (a variation moves the globe aside), keep drawing
   let moving = 0;
@@ -1831,9 +1842,30 @@ window.JourneyMap = async function makeGlobe(svgEl) {
   if (CRAFT) addEventListener('scroll', kick, { passive: true });
   function frame(now) {
     raf = 0;
+    // the time since the last frame (a frame after a pause counts as one ordinary frame), so every
+    // follow below keeps the same weight on a 60 or a 120 Hz screen and through a late frame
+    const dt = lastNow && now - lastNow < 100 ? (now - lastNow) / 1000 : 1 / 60;
+    lastNow = now;
+    const per = (k) => 1 - Math.pow(1 - k, dt * 60);   // a share per sixtieth of a second, for this frame
     for (const tw of [...tweens]) if (tw(now) === false) tweens.delete(tw);
     // the fold carries a little weight: it follows the scroll instead of jumping with it
-    if (CFG.wave && st.fold !== st.want) { const d = st.want - st.fold; st.fold = Math.abs(d) < 0.0008 ? st.want : st.fold + d * (CFG.glide || 0.11); linesDirty = true; }
+    if (CFG.wave && (st.fold !== st.want || st.vel)) {
+      if (SPRING) {
+        // (the live page) a spring with no bounce: the sheet starts from rest gently, keeps its speed when
+        // the scroll changes pace, and settles without overshooting
+        const w = SPRING, x0 = st.fold - st.want, v0 = st.vel || 0, c1 = v0 + w * x0, e = Math.exp(-w * dt);
+        const x = (x0 + c1 * dt) * e;
+        st.vel = (v0 - w * c1 * dt) * e;
+        let f = st.want + x;
+        if (f <= 0 || f >= 1) { f = clamp(f, 0, 1); st.vel = 0; }   // at either end the sheet simply stops
+        if (Math.abs(f - st.want) < 0.0004 && Math.abs(st.vel) < 0.004) { f = st.want; st.vel = 0; }
+        st.fold = f;
+      } else {
+        const d = st.want - st.fold;
+        st.fold = Math.abs(d) < 0.0008 ? st.want : st.fold + d * per(CFG.glide || 0.11);
+      }
+      linesDirty = true;
+    }
     U.uFold.value = st.fold; U.uTime.value = now / 1000;
     if (CFG.wave && !K.reduced) {
       if (st.fold > 0.985 && !st.closed) { st.closed = true; pulseHome(); }
@@ -1841,7 +1873,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     }
     for (const k of Object.keys(ops)) {
       const d = ops[k] - opsNow[k];
-      if (Math.abs(d) > 0.003) { opsNow[k] += d * 0.14; linesDirty = true; } else if (opsNow[k] !== ops[k]) { opsNow[k] = ops[k]; linesDirty = true; }
+      if (Math.abs(d) > 0.003) { opsNow[k] += d * per(0.14); linesDirty = true; } else if (opsNow[k] !== ops[k]) { opsNow[k] = ops[k]; linesDirty = true; }
     }
     const [kx, ky] = bends(st.fold);
     const [c, tl] = facing();
@@ -1928,7 +1960,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     // the earth keeps living while it is a globe: the clouds drift, light runs along the trip
     // (the earth's clouds, and the wind's prints rocking in the air) drawn on every frame
     const alive = (CFG.earth ? st.fold > 0.85 : CFG.wind && st.fold > 0.04 && st.fold < 0.99) && !K.reduced && !document.hidden;
-    if (alive || moving || ringAt !== ringWant || st.fold !== st.want || tweens.size || Object.keys(ops).some((k) => opsNow[k] !== ops[k])) kick();
+    if (alive || moving || ringAt !== ringWant || st.fold !== st.want || st.vel || tweens.size || Object.keys(ops).some((k) => opsNow[k] !== ops[k])) kick();
   }
   const tween = (dur, step) => new Promise((done) => {
     const t0 = performance.now();
@@ -2092,7 +2124,7 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     // the fold keeps the scroll's even pace and no stretch of it rushes
     if (CFG.tiles) a = a < 0.5 ? Math.cbrt(a / 4) : 1 - Math.cbrt(2 * (1 - a)) / 2;
     if (CFG.wave && !K.reduced) { if (Math.abs(a - st.want) < 0.0005) return; st.want = a; }
-    else { if (Math.abs(a - st.fold) < 0.0005) return; st.fold = a; st.want = a; }
+    else { if (Math.abs(a - st.fold) < 0.0005) return; st.fold = a; st.want = a; st.vel = 0; }
     ops.grat = CFG.noGrat ? 0 : rewound || a > 0 ? (CFG.earth ? 0.16 : 0.55) * a : 0;
     kick();
   }
