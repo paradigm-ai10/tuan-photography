@@ -13,6 +13,16 @@
   const OPT = (SCRIPT && SCRIPT.dataset) || {};
   const RW = window.ReviewWords;
   const esc = (s) => String(s == null ? '' : s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  // when a group (one round of versions) was built: manifest group "built": "2026-11-10T14:30"
+  const builtAt = (s) => {
+    const m = /^(\d{4})-(\d{2})-(\d{2})(?:[T ](\d{2}):(\d{2}))?/.exec(String(s));
+    if (!m) return '';
+    const [, y, mo, d, hh, mm] = m;
+    const time = hh ? `${hh}:${mm}` : '';
+    if (lang() === 'zh') return t('built', { d: `${y}年${+mo}月${+d}日${time ? ' ' + time : ''}` });
+    const mon = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][+mo - 1];
+    return t('built', { d: `${+d} ${mon} ${y}${time ? ', ' + time : ''}` });
+  };
   const lang = () => {
     const k = window.Kit && window.Kit.lang;
     if (k === 'zh' || k === 'en') return k;
@@ -158,6 +168,7 @@
         <header class="rvh-gh">
           ${g.title ? `<h2 class="rvh-gt">${esc(pick(g.title))}</h2>` : ''}
           <span class="rvh-gc">${esc(vs.length === 1 ? t('version1') : t('versions', { n: vs.length }))}</span>
+          ${g.built ? `<span class="rvh-gc rvh-gb">${esc(builtAt(g.built))}</span>` : ''}
           ${g.id ? `<input class="rvh-gn" type="text" data-g="${esc(g.id)}" value="${esc(note)}" placeholder="${esc(t('groupNote'))}" aria-label="${esc(t('groupNote'))}: ${esc(pick(g.title))}">` : ''}
         </header>
         ${vis.length ? `<div class="rvh-grid">${vis.map(card).join('')}</div>` : ''}

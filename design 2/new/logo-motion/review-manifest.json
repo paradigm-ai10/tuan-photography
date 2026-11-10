@@ -15,6 +15,7 @@
   "groups": [
     {
       "id": "round1",
+      "built": "2026-11-04T22:48",
       "title": {
         "en": "First round, six motions",
         "zh": "第一輪，六種動法"
@@ -22,6 +23,7 @@
     },
     {
       "id": "round2",
+      "built": "2026-11-05T10:48",
       "title": {
         "en": "Second round: the line keeps loading, the rest changes",
         "zh": "第二輪：線照樣跑，其他地方換"
@@ -29,6 +31,7 @@
     },
     {
       "id": "round3",
+      "built": "2026-11-05T10:55",
       "title": {
         "en": "Third round: the line, TUAN first, then four ways to open",
         "zh": "第三輪：先跑線、TUAN 先出來，四種打開的方式"
@@ -36,6 +39,7 @@
     },
     {
       "id": "round4",
+      "built": "2026-11-05T16:52",
       "title": {
         "en": "Fourth round: 16, fine-tuned",
         "zh": "第四輪：微調第 16 版"

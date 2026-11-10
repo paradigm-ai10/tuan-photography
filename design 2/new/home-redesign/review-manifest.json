@@ -15,6 +15,7 @@
  "groups": [
   {
    "id": "round1",
+   "built": "2026-11-05T19:01",
    "title": {
     "en": "First round: three directions",
     "zh": "第一輪：三個方向"
@@ -22,6 +23,7 @@
   },
   {
    "id": "round2",
+   "built": "2026-11-05T21:31",
    "title": {
     "en": "Second round: the rest of the page, under E's opening",
     "zh": "第二輪：E 的開場之後，首頁其餘的部分"
@@ -29,6 +31,7 @@
   },
   {
    "id": "round3",
+   "built": "2026-11-06T01:04",
    "title": {
     "en": "Third round: from Singita, Belmond and Jimmy Chin, which you marked Good",
     "zh": "第三輪：從你標喜歡的 Singita、Belmond、Jimmy Chin 來做"
@@ -36,6 +39,7 @@
   },
   {
    "id": "round4",
+   "built": "2026-11-06T01:25",
    "title": {
     "en": "Fourth round: bold makeovers of 12, with the Queensboro train",
     "zh": "第四輪：大膽改造第 12 個，主角是皇后區那張列車"
@@ -43,6 +47,7 @@
   },
   {
    "id": "round5",
+   "built": "2026-11-06T01:41",
    "title": {
     "en": "Fifth round: the live site's layering, taken further",
     "zh": "第五輪：把正式網站的層疊捲動做得更多"
@@ -50,6 +55,7 @@
   },
   {
    "id": "opening2",
+   "built": "2026-11-06T10:44",
    "title": {
     "en": "The opening: colour while it is drawn",
     "zh": "開場：邊畫邊上色"
@@ -57,6 +63,7 @@
   },
   {
    "id": "opening3",
+   "built": "2026-11-06T11:51",
    "title": {
     "en": "The opening: brushed onto the film",
     "zh": "開場：把影片刷出來"
@@ -64,6 +71,7 @@
   },
   {
    "id": "opening4",
+   "built": "2026-11-06T12:22",
    "title": {
     "en": "The opening: brushed by hand",
     "zh": "開場：像人手在刷"
@@ -71,6 +79,7 @@
   },
   {
    "id": "opening5",
+   "built": "2026-11-06T13:26",
    "title": {
     "en": "The opening: six relatives of 33",
     "zh": "開場：33 的六個變化"
@@ -78,6 +87,7 @@
   },
   {
    "id": "opening6",
+   "built": "2026-11-06T16:57",
    "title": {
     "en": "The opening: the sketch turns into the film",
     "zh": "開場：素描變成影片"
@@ -85,6 +95,7 @@
   },
   {
    "id": "opening7",
+   "built": "2026-11-06T16:57",
    "title": {
     "en": "The opening: five more brushings",
     "zh": "開場：再五種刷法"
@@ -92,6 +103,7 @@
   },
   {
    "id": "opening8",
+   "built": "2026-11-09T01:00",
    "title": {
     "en": "The opening: the photographs arrive",
     "zh": "開場：照片進場"
@@ -99,6 +111,7 @@
   },
   {
    "id": "opening9",
+   "built": "2026-11-09T10:15",
    "title": {
     "en": "The opening: high-end, from your 4-star version",
     "zh": "開場：高級感，從你打 4 分的那個做起"
@@ -106,6 +119,7 @@
   },
   {
    "id": "opening10",
+   "built": "2026-11-10T17:29",
    "title": {
     "en": "The opening: photographs across the whole screen, from the five you liked",
     "zh": "開場：照片佔滿畫面，從你選的五個做起"
