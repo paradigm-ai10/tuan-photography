@@ -565,6 +565,7 @@ html.hr-js .hr-qdoor.hr-in { transition-delay: calc(var(--i, 0) * 70ms); }
 .hr-tile { position: absolute; overflow: hidden; background: var(--band); opacity: 0; transform-origin: center; will-change: transform; }
 .hr-tile img, .hr-tile video { display: block; width: 100%; height: 100%; object-fit: cover; }
 .hr-tile__slice { position: absolute; inset: 0; background-repeat: no-repeat; opacity: 0; }
+.hr-flock__plane { position: absolute; transform-origin: 50% 50%; will-change: transform; }   /* tilted: the wall laid back in space */
 .hr-flock__back { position: absolute; inset: 0; background-repeat: no-repeat; opacity: 0; }   /* band: the whole first frame behind the band, opened out at the end */
 [data-flock] .hr-load__paper { transition: none; }
 /* hr-out comes as the film starts to grow: the dark mark in the corner fades while the page's own, white, comes in over the

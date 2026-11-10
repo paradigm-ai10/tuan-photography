@@ -103,6 +103,13 @@
     "en": "The opening: high-end, from your 4-star version",
     "zh": "開場：高級感，從你打 4 分的那個做起"
    }
+  },
+  {
+   "id": "opening10",
+   "title": {
+    "en": "The opening: photographs across the whole screen, from the five you liked",
+    "zh": "開場：照片佔滿畫面，從你選的五個做起"
+   }
   }
  ],
  "items": [
@@ -1125,6 +1132,96 @@
    "still": {
     "wait": 3500
    }
+  },
+  {
+   "href": "c-flock-deep-zoom.html",
+   "group": "opening10",
+   "title": {
+    "en": "Into the middle",
+    "zh": "走進正中間"
+   },
+   "desc": {
+    "en": "After Zoom Parallax. Eight of your photographs at different sizes fill the screen round the film, which plays slowly in the middle. Then the camera goes in: each grows about the middle of the screen at its own pace, the outer ones leave the frame first, and the film becomes the whole screen.",
+    "zh": "參考 Zoom Parallax。八張大小不一的照片佔滿畫面，中間那格是慢慢在播的影片。接著鏡頭往裡走：每張以畫面中心放大、速度各不相同，外圈先離開畫面，最後影片佔滿整個螢幕。"
+   },
+   "still": {
+    "wait": 4000
+   }
+  },
+  {
+   "href": "c-flock-wall-zoom.html",
+   "group": "opening10",
+   "title": {
+    "en": "The wall, then into it",
+    "zh": "先成一面牆，再走進去"
+   },
+   "desc": {
+    "en": "Mathilde's calm, Camille Mormal's ending. Photographs the shape of the screen rise from the middle outward, one ring at a time, until they cover it, hairlines of paper between them. Then the camera goes into the middle one, the film.",
+    "zh": "Mathilde 的安靜，加上 Camille Mormal 的結尾。和螢幕同比例的照片從中間一圈一圈往外升起，直到鋪滿畫面，中間留細細的紙縫。接著鏡頭走進正中間那格，也就是影片。"
+   },
+   "still": {
+    "wait": 4000
+   }
+  },
+  {
+   "href": "c-flock-open-out.html",
+   "group": "opening10",
+   "title": {
+    "en": "The gallery opens",
+    "zh": "照片牆被推開"
+   },
+   "desc": {
+    "en": "After Animated Scroll Gallery. Nine prints in a block in the middle, paper all round. The middle one, the film, grows to the whole screen and pushes the other eight out ahead of it, each keeping its place in the block.",
+    "zh": "參考 Animated Scroll Gallery。九張照片排成一塊放在中間，四周是紙。正中間那張（影片）慢慢長大到整個螢幕，同時把其他八張往外推出去，每張都維持原本在方塊裡的位置。"
+   },
+   "still": {
+    "wait": 4000
+   }
+  },
+  {
+   "href": "c-flock-tilted.html",
+   "group": "opening10",
+   "title": {
+    "en": "A tilted wall",
+    "zh": "傾斜的照片牆"
+   },
+   "desc": {
+    "en": "After 3D Marquee. The whole screen is a wall of your photographs laid back in space, its columns drifting slowly up and down. Then the wall swings flat and the camera goes into the film, which was among them all along.",
+    "zh": "參考 3D Marquee。整個畫面是一面往後傾斜的照片牆，一欄欄照片慢慢上下漂移。接著牆轉正，鏡頭走進其中一格，原來影片一直藏在裡面。"
+   },
+   "still": {
+    "wait": 4000
+   }
+  },
+  {
+   "href": "c-flock-flicker-row.html",
+   "group": "opening10",
+   "title": {
+    "en": "One place, many photographs",
+    "zh": "同一個位置，換過很多張"
+   },
+   "desc": {
+    "en": "After Camille Mormal. One print in the middle changes through eight photographs at a steady beat, and the film is the last. A row opens out of it to both edges of the screen. Then the row slides away and the film grows to the whole screen.",
+    "zh": "參考 Camille Mormal。中間一張照片以穩定的節奏換過八張，最後一張是影片。接著從它兩側展開一整排照片到螢幕兩邊。然後這排往兩側滑開，影片長大到整個螢幕。"
+   },
+   "still": {
+    "wait": 4000
+   }
+  },
+  {
+   "href": "c-flock-diamond-calm.html",
+   "group": "opening10",
+   "title": {
+    "en": "The diamond, quietly",
+    "zh": "菱形，安靜版"
+   },
+   "desc": {
+    "en": "Mathilde de Chiara, the one you liked, made quieter. Her diamond of squares, but nothing flies: the squares come up from the middle outward. Then they sink back into the paper from the outside in, and the live one in the middle grows into the film.",
+    "zh": "你喜歡的 Mathilde de Chiara，做得更安靜。一樣是方塊排成菱形，但沒有東西飛：方塊從中間往外一個個浮上來。然後從外圈往內退回紙裡，中間那格活的影片長大成整個畫面。"
+   },
+   "still": {
+    "wait": 4000
+   }
   }
  ],
  "tags": [
@@ -1202,19 +1299,16 @@
  "words": {},
  "ask": {
   "ids": [
-   "c-flock-luxe-wall",
-   "c-flock-luxe-rows",
-   "c-flock-luxe-eight",
-   "c-flock-luxe-triptych",
-   "c-flock-luxe-mat",
-   "c-flock-luxe-one",
-   "c-flock-luxe-band",
-   "c-flock-luxe-around",
-   "c-flock-luxe-curtain"
+   "c-flock-deep-zoom",
+   "c-flock-wall-zoom",
+   "c-flock-open-out",
+   "c-flock-tilted",
+   "c-flock-flicker-row",
+   "c-flock-diamond-calm"
   ],
   "question": {
-   "en": "Nine high-end openings from your 4-star version: nothing flies, few things move, slowly and in order, and every one ends on the film. Score each; mark the spot you mean.",
-   "zh": "從你打 4 分的那個做出來的九個高級感開場：沒有東西飛，動的少、慢、有順序，每個最後都落在影片上。每個打個分數；想說哪裡就點那裡。"
+   "en": "Six openings from the five you marked Good: Mathilde, Camille Mormal, Animated Scroll Gallery, Zoom Parallax and 3D Marquee. Each fills the screen with your photographs and ends on the film. Score each; mark the spot you mean.",
+   "zh": "從你標 Good 的五個（Mathilde、Camille Mormal、Animated Scroll Gallery、Zoom Parallax、3D Marquee）做出的六個開場。每個都用你的照片佔滿畫面，最後落在影片上。每個打個分數；想說哪裡就點那裡。"
   }
  }
 }

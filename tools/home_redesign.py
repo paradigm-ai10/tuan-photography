@@ -224,6 +224,13 @@ FLOCKS = [
     ("luxe-band", "The line opens into a band", "那條線打開成一道帶"),
     ("luxe-around", "Around the name, then the wall", "先圍著名字，再成一面牆"),
     ("luxe-curtain", "The photographs part", "照片讓開"),
+    # round ten (2026-11-10), from the five he marked Good on home-direction.html
+    ("deep-zoom", "Into the middle", "走進正中間"),
+    ("wall-zoom", "The wall, then into it", "先成一面牆，再走進去"),
+    ("open-out", "The gallery opens", "照片牆被推開"),
+    ("tilted", "A tilted wall", "傾斜的照片牆"),
+    ("flicker-row", "One place, many photographs", "同一個位置，換過很多張"),
+    ("diamond-calm", "The diamond, quietly", "菱形，安靜版"),
 ]
 
 

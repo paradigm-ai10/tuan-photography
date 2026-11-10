@@ -630,7 +630,7 @@
   // the whole layer grows as one from `rect` (which has the window's shape) to the window: what was a print in a margin
   // is the whole screen, its hairlines with it
   function growLayer(rect, dur = 1800, delay = 0) {
-    const cx = rect.x + rect.w / 2, cy = rect.y + rect.h / 2, k = W / rect.w;
+    const cx = rect.x + rect.w / 2, cy = rect.y + rect.h / 2, k = Math.max(W / rect.w, H / rect.h);   // covers, if the rect is a hair off the window's shape
     layer.style.transformOrigin = `${cx.toFixed(1)}px ${cy.toFixed(1)}px`;
     setTimeout(() => { if (!html.classList.contains('hr-shown')) html.classList.add('hr-out'); }, delay + dur * 0.35);
     return layer.animate([{ transform: 'none' }, { transform: `translate(${(W / 2 - cx).toFixed(1)}px, ${(H / 2 - cy).toFixed(1)}px) scale(${k.toFixed(4)})` }],
@@ -825,6 +825,160 @@
         await finished(tiles.map((t) => t.el.animate([{ transform: 'none' }, { transform: tf(0, -H * 1.05, 0, 1) }],
           { duration: 1500, delay: t.slot.col * step, easing: INOUT, fill: 'both' })));
         api.mosaicDone = true;
+      }
+    }
+  });
+
+  /* ---------------- round ten (2026-11-10): from the five he marked Good on the two-directions page ----------------
+     Mathilde de Chiara (the calm), Camille Mormal (one print among many grows to the whole screen), Animated Scroll Gallery
+     and Zoom Parallax (the photographs fill the screen and the camera goes into the middle one), 3D Marquee (a tilted wall
+     of photographs drifting). Every one keeps the film alive in its tile, slowly, from the start, and ends on it. */
+  // a rectangle of the window's shape, `frac` of the window, centred
+  const midRect = (frac) => ({ x: W * (1 - frac) / 2, y: H * (1 - frac) / 2, w: W * frac, h: H * frac });
+  const ringRank = (list) => { const c = { x: W / 2, y: H / 2 }, d = list.map((t) => dist(centre(t.slot), c)); const idx = d.map((_, i) => i).sort((a, b) => d[a] - d[b] || a - b); const r = []; idx.forEach((i, k) => { r[i] = k; }); return r; };
+  Object.assign(V, {
+    // 25 into the middle (Zoom Parallax): seven photographs of different sizes round the film, the whole screen; then the
+    //    camera goes in: each grows about the middle of the screen at its own rate, the outer ones passing out of the frame
+    //    first, until the film is the whole screen
+    'deep-zoom': {
+      n: 8, shape: 'own', mark: 'corner', hold: 900, big: true, still: true,
+      layout() {
+        // [left, top, width, height] as fractions of the window, the film (index 0) a quarter of it in the middle
+        const F = narrow()
+          ? [[0.3, 0.375, 0.4, 0.25], [0.06, 0.1, 0.5, 0.22], [0.6, 0.12, 0.34, 0.2], [0.04, 0.4, 0.22, 0.2], [0.74, 0.37, 0.22, 0.24], [0.08, 0.66, 0.36, 0.22], [0.5, 0.68, 0.44, 0.2], [0.33, 0.9, 0.3, 0.08], [0.36, 0.02, 0.2, 0.08]]
+          : [[0.375, 0.375, 0.25, 0.25], [0.12, 0.08, 0.3, 0.26], [0.55, 0.06, 0.18, 0.28], [0.76, 0.2, 0.16, 0.3], [0.06, 0.4, 0.26, 0.26], [0.68, 0.56, 0.24, 0.3], [0.2, 0.72, 0.22, 0.22], [0.45, 0.68, 0.18, 0.26], [0.44, 0.05, 0.09, 0.14]];
+        const slots = F.map(([x, y, w, h]) => ({ x: x * W, y: y * H, w: w * W, h: h * H, r: 0 }));
+        return { slots, film: 0 };
+      },
+      enter() { return rise(tiles, { step: 170, dur: 1300, order: ringRank(tiles) }); },
+      leave() {
+        const f = tiles.find((t) => t.film), k = W / f.slot.w, dur = 2600;
+        setTimeout(() => { if (!html.classList.contains('hr-shown')) html.classList.add('hr-out'); }, dur * 0.35);
+        return finished(tiles.map((t, i) => {
+          t.el.style.transformOrigin = `${(W / 2 - t.slot.x).toFixed(1)}px ${(H / 2 - t.slot.y).toFixed(1)}px`;
+          if (t.film) t.el.style.zIndex = '3';
+          const s = t.film ? k : k * (1.25 + (i % 4) * 0.22);   // the others faster than the film, so they leave the frame
+          return t.el.animate([{ transform: 'none' }, { transform: `scale(${s.toFixed(4)})` }], { duration: dur, easing: PART, fill: 'both' });
+        }));
+      }
+    },
+    // 26 the wall, then into it (Mathilde's calm, Camille Mormal's ending): photographs the window's shape rise from the
+    //    middle outward, one ring after another, until they cover the screen; then the camera goes into the middle one
+    'wall-zoom': {
+      n: 24, shape: 'wall', mark: 'fade', markGone: true, hold: 1000, still: true,
+      layout() {
+        const c = narrow() ? 3 : 5;   // as many columns as rows, so every one has the window's shape
+        const slots = hairGrid(c, c, HAIR(), FULL());
+        return { slots, film: Math.floor(c * c / 2) };
+      },
+      enter() {
+        const c = Math.round(Math.sqrt(tiles.length)), m = (c - 1) / 2;
+        const ring = tiles.map((t) => Math.max(Math.abs(t.slot.col - m), Math.abs(t.slot.row - m)));
+        return rise(tiles, { step: 520, dur: 1400, order: ring });
+      },
+      leave() { const f = tiles.find((t) => t.film); return growLayer(f.slot, 2600); }
+    },
+    // 27 the gallery opens (Animated Scroll Gallery): nine prints the window's shape in a block in the middle, paper round it;
+    //    the middle one grows to the whole screen and pushes the other eight out ahead of it, each keeping its place
+    'open-out': {
+      n: 8, shape: 'wall', mark: 'corner', hold: 1000, big: true, still: true,
+      layout() { const r = this.rect = midRect(narrow() ? 0.86 : 0.6); return { slots: hairGrid(3, 3, Math.max(6, W * 0.008), r), film: 4 }; },
+      enter() { return rise(tiles, { step: 260, dur: 1300, order: ringRank(tiles) }); },
+      leave() {
+        const f = tiles.find((t) => t.film), fc = centre(f.slot), k = W / f.slot.w, dur = 2200;
+        const away = tiles.filter((t) => !t.film).map((t) => {
+          const c = centre(t.slot), dx = (c.x - fc.x) * (k - 1) + (W / 2 - fc.x), dy = (c.y - fc.y) * (k - 1) + (H / 2 - fc.y);
+          return t.el.animate([{ transform: 'none' }, { transform: tf(dx, dy, 0, 1) }], { duration: dur, easing: PART, fill: 'both' });
+        });
+        return Promise.all([finished(away), grow(0, dur)]);
+      }
+    },
+    // 28 a tilted wall (3D Marquee): the whole screen a wall of photographs laid back in space, its columns drifting slowly up
+    //    and down; the wall swings flat and the camera goes into the film, which was among them all along
+    'tilted': {
+      n: 48, shape: 'wall', mark: 'fade', markGone: true, hold: 1600, still: true,
+      layout() {
+        const cols = narrow() ? 5 : 7, rows = 7, PW = narrow() ? W * 2.6 : Math.max(W, H) * 2.1;
+        const gap = Math.max(8, W * 0.008), cw = (PW - gap * (cols - 1)) / cols, ch = cw * H / W, PH = rows * ch + (rows - 1) * gap;
+        this.plane = { x: (W - PW) / 2, y: (H - PH) / 2, w: PW, h: PH };
+        return { slots: grid(cols, rows, cw, ch, gap, 0, 0), film: Math.floor(rows / 2) * cols + Math.floor(cols / 2) };
+      },
+      TILT: 'rotateX(46deg) rotateZ(-32deg)',
+      enter() {
+        const p = this.plane, el = this.el = document.createElement('div');
+        el.className = 'hr-flock__plane';
+        el.style.left = p.x + 'px'; el.style.top = p.y + 'px'; el.style.width = p.w + 'px'; el.style.height = p.h + 'px';
+        el.style.transform = `perspective(1600px) translate(0px, 0px) scale(1.08) ${this.TILT}`;
+        tiles.forEach((t) => el.appendChild(t.el));
+        layer.appendChild(el);
+        // each column drifts, the odd ones up and the even ones down, slowly, from the moment they start to rise
+        const T = 12000, D = tiles[0].slot.h * 0.9;
+        this.drift = tiles.map((t) => t.film ? null : t.el.animate([{ transform: 'none' }, { transform: tf(0, t.slot.col % 2 ? -D : D, 0, 1) }], { duration: T, easing: 'linear', fill: 'both', composite: 'add' }));
+        const fc = tiles.find((t) => t.film).slot.col;   // the film's column stays still, so it is where it was when the wall swings flat
+        tiles.forEach((t, i) => { if (t.slot.col === fc && this.drift[i]) { this.drift[i].cancel(); this.drift[i] = null; } });
+        return rise(tiles, { step: 150, dur: 1300, order: tiles.map((t) => t.slot.col) });
+      },
+      leave() {
+        this.drift.forEach((a) => a && a.pause());
+        const f = tiles.find((t) => t.film).slot, k = W / f.w, p = this.plane;
+        const fx = p.x + f.x + f.w / 2 - W / 2, fy = p.y + f.y + f.h / 2 - H / 2;   // the film's centre from the plane's (the window's) centre
+        setTimeout(() => { if (!html.classList.contains('hr-shown')) html.classList.add('hr-out'); }, 1600);
+        return this.el.animate([
+          { transform: `perspective(1600px) translate(0px, 0px) scale(1.08) ${this.TILT}` },
+          { transform: `perspective(1600px) translate(${(-fx * k).toFixed(1)}px, ${(-fy * k).toFixed(1)}px) scale(${k.toFixed(4)}) rotateX(0deg) rotateZ(0deg)` }
+        ], { duration: 3000, easing: PART, fill: 'both' }).finished.catch(() => {});
+      }
+    },
+    // 29 one place, many photographs (Camille Mormal): one print in the middle changes through eight photographs, and the
+    //    film is the last; a row opens out of it to both edges of the screen; the row slides away and the film grows
+    'flicker-row': {
+      n: 16, shape: 'own', mark: 'corner', hold: 1000, big: true, still: true,
+      layout() {
+        const w = W * (narrow() ? 0.5 : 0.24), h = w * H / W, gap = Math.max(10, W * 0.012), y = (H - h) / 2, x0 = (W - w) / 2;
+        const slots = [];
+        for (let i = 0; i < 8; i++) slots.push({ x: x0, y, w, h, r: 0, cycle: i });
+        slots.push({ x: x0, y, w, h, r: 0 });   // the film
+        for (let d = 1; d <= 4; d++) { slots.push({ x: x0 - d * (w + gap), y, w, h, r: 0, side: -d }); slots.push({ x: x0 + d * (w + gap), y, w, h, r: 0, side: d }); }
+        return { slots, film: 8 };
+      },
+      async enter(api) {
+        const cyc = tiles.filter((t) => t.slot.cycle !== undefined), film = tiles.find((t) => t.film), row = tiles.filter((t) => t.slot.side);
+        cyc.forEach((t, i) => { t.el.style.zIndex = String(2 + i); });
+        film.el.style.zIndex = '12';
+        row.forEach((t) => { t.el.style.zIndex = '1'; });
+        await rise([cyc[0]], { dur: 1100 }); if (api.isDone()) return;
+        for (let i = 1; i < cyc.length; i++) {   // a steady beat, slower at the start and the end
+          await api.wait(i < 3 || i > 5 ? 420 : 300); if (api.isDone()) return;
+          cyc[i].el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 160, easing: 'ease', fill: 'both' });
+        }
+        await api.wait(500); if (api.isDone()) return;
+        await finished([film.el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 500, easing: 'ease', fill: 'both' })]); if (api.isDone()) return;
+        cyc.forEach((t) => { t.el.style.visibility = 'hidden'; });
+        await api.wait(300); if (api.isDone()) return;
+        // the row opens out from behind the film, the nearest first
+        await finished(row.map((t) => t.el.animate([
+          { opacity: 1, transform: tf(film.slot.x - t.slot.x, 0, 0, 1) },
+          { opacity: 1, transform: tf(0, 0, 0, 1) }
+        ], { duration: 1500, delay: (Math.abs(t.slot.side) - 1) * 120, easing: OUT, fill: 'both' })));
+      },
+      leave() {
+        const row = tiles.filter((t) => t.slot.side), dur = 2000;
+        const away = row.map((t) => t.el.animate([{ opacity: 1, transform: 'none' }, { opacity: 1, transform: tf(Math.sign(t.slot.side) * W * 0.9, 0, 0, 1) }],
+          { duration: dur, delay: (4 - Math.abs(t.slot.side)) * 60, easing: INOUT, fill: 'both' }));
+        return Promise.all([finished(away), grow(250, dur)]);
+      }
+    },
+    // 30 the diamond, quietly (Mathilde de Chiara, his yardstick): her diamond of squares, but nothing flies: the squares come
+    //    up from the middle outward; then they go back into the paper from the outside in, and the live one in the middle grows
+    'diamond-calm': {
+      n: 24, shape: 'square', mark: 'corner', hold: 1000, still: true,
+      layout: () => diamond(),
+      enter() { return rise(tiles, { step: 80, dur: 1200, order: ringRank(tiles) }); },
+      leave() {
+        const r = ringRank(tiles), m = Math.max(...r);
+        const away = tiles.map((t, i) => t.film ? null : t.el.animate([{ opacity: 1, transform: 'none' }, { opacity: 0, transform: tf(0, 0, 0, 0.96) }],
+          { duration: 900, delay: (m - r[i]) * 45, easing: OUT, fill: 'both' })).filter(Boolean);
+        return Promise.all([finished(away), grow(m * 45 + 300, 1900)]);
       }
     }
   });
