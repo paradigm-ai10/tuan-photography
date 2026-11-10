@@ -1,0 +1,94 @@
+/* After Mathilde De Chiara (2026-11-10): an exact copy of mathildedechiara.com's home, with his
+   photographs. Her warm off-white, her serif name at the left, the diamond, the column, the four
+   corners of small words. Her Editorial New is a paid face; Cormorant Garamond (his logo's) stands in. */
+:root {
+  --md-bg: #f7f5f2;
+  --md-ink: #333;
+  --md-ink-2: #8a8784;
+  --md-rule: #d9d6d1;
+  --md-serif: "Cormorant Garamond", "Noto Serif TC", Georgia, serif;
+  --md-sans: "Geist", "Helvetica Neue", Helvetica, Arial, "Noto Sans TC", sans-serif;
+  --md-edge: 43px;
+}
+html, body { margin: 0; height: 100%; overflow: hidden; background: var(--md-bg); color: var(--md-ink); }
+body { font-family: var(--md-sans); -webkit-font-smoothing: antialiased; }
+html[lang="en"] [lang="zh-Hant"], html[lang="zh-Hant"] [lang="en"] { display: none; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+a { color: inherit; text-decoration: none; }
+
+.md { position: fixed; inset: 0; overflow: hidden; touch-action: none; }
+.md-stage { position: absolute; inset: 0; }
+.md-tile {
+  position: absolute; left: 0; top: 0; overflow: hidden; background: #e9e6e1;
+  will-change: transform; cursor: pointer;
+}
+.md-tile img { display: block; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+
+/* the name, revealed upward through a mask, then lifted away */
+.md-name { position: absolute; left: 72px; top: 50%; margin: 0; transform: translateY(-50%); font-weight: 400; pointer-events: none; z-index: 2; }
+.md-mask { display: block; overflow: hidden; }
+.md-mask > span { display: block; transform: translateY(105%); transition: transform 0.9s cubic-bezier(0.23, 1, 0.32, 1); }
+.md-name > .md-mask:first-child { font: 500 clamp(2rem, 1.2rem + 1.9vw, 2.65rem)/1.15 var(--md-serif); letter-spacing: -0.01em; }
+.md-sub { font: 400 0.8125rem/1.6 var(--md-sans); color: var(--md-ink-2); margin-top: 0.15rem; }
+.md-sub > span { transition-delay: 0.08s; }
+.md.is-name .md-mask > span { transform: none; }
+.md.is-name-out .md-mask > span { transform: translateY(-105%); transition-duration: 0.7s; transition-timing-function: cubic-bezier(0.77, 0, 0.175, 1); }
+
+/* the small diamond on the photograph at the reading line */
+.md-mark {
+  position: absolute; left: 50%; top: 50%; width: 9px; height: 9px; margin: -5px 0 0 -5px;
+  border: 1px solid #fff; transform: rotate(45deg); opacity: 0; transition: opacity 0.4s; pointer-events: none; z-index: 3;
+}
+.md.is-ui .md-mark { opacity: 1; }
+.md.is-grid .md-mark { opacity: 0; }
+
+/* the four corners and the line across the middle */
+.md-ui > * { opacity: 0; transition: opacity 0.8s cubic-bezier(0.23, 1, 0.32, 1); }
+.md.is-ui .md-ui > * { opacity: 1; }
+.md-ui > :nth-child(2), .md-ui > :nth-child(3) { transition-delay: 0.1s; }
+.md-ui > :nth-child(5) { transition-delay: 0.2s; }
+.md-ui > :nth-child(6), .md-ui > :nth-child(7) { transition-delay: 0.3s; }
+.md-count {
+  position: absolute; left: var(--md-edge); top: 50%; margin: 0; transform: translateY(-52%);
+  font: italic 400 2.6rem/1 var(--md-serif); letter-spacing: -0.01em; z-index: 2;
+}
+.md-rule { position: absolute; top: 50%; height: 1px; background: var(--md-rule); }
+.md-rule-l { left: 200px; width: calc(50% - var(--md-side) / 2 - 87px - 200px + 0px); }
+.md-rule-r { right: 138px; width: calc(50% - var(--md-side) / 2 - 87px - 138px); }
+.md-about { position: absolute; right: var(--md-edge); top: 50%; transform: translateY(-50%); font-size: 0.9375rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.md-about:hover, .md-about:focus-visible { color: var(--md-ink-2); }
+.md-cat { position: absolute; right: var(--md-edge); top: 42px; text-align: right; }
+.md-cat h2, .md-mode h2 {
+  margin: 0 0 1.4rem; font: italic 500 1.375rem/1.1 var(--md-serif); text-transform: uppercase; letter-spacing: 0.01em;
+  display: inline-block; border-bottom: 1px solid currentColor; padding-bottom: 1px;
+}
+.md-cat ul { list-style: none; margin: 0; padding: 0; }
+.md-cat li { margin: 0; }
+.md-cat button { font-size: 0.9375rem; line-height: 1.4; letter-spacing: 0.06em; color: var(--md-ink-2); transition: color 0.2s; }
+.md-cat button[aria-pressed="true"], .md-cat button:hover, .md-cat button:focus-visible { color: #000; }
+.md-where { position: absolute; left: var(--md-edge); bottom: 42px; margin: 0; font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; }
+.md-mode { position: absolute; right: var(--md-edge); bottom: 40px; text-align: right; }
+.md-mode h2 { margin-bottom: 1.1rem; }
+.md-mode p { margin: 0; font-size: 0.9375rem; letter-spacing: 0.06em; }
+.md-mode i, .cp-lang i { font-style: normal; color: var(--md-rule); margin: 0 0.55em; }
+.md-mode button { color: var(--md-ink-2); }
+.md-mode button[aria-pressed="true"], .md-mode button:hover, .md-mode button:focus-visible { color: #000; }
+.cp-lang { position: absolute; left: var(--md-edge); top: 42px; margin: 0; font-size: 0.75rem; letter-spacing: 0.12em; }
+.cp-lang button { color: var(--md-ink-2); }
+.cp-lang button[aria-pressed="true"] { color: #000; }
+:focus-visible { outline: 1px solid var(--md-ink); outline-offset: 3px; }
+
+@media (max-width: 700px) {
+  :root { --md-edge: 18px; }
+  .md-name { left: 24px; }
+  .md-rule { display: none; }
+  .md-count { top: auto; bottom: 74px; transform: none; font-size: 2rem; }
+  .md-about { top: auto; bottom: 46px; transform: none; right: var(--md-edge); font-size: 0.8125rem; }
+  .md-where { bottom: 22px; }
+  .md-mode { bottom: auto; top: 42px; left: auto; }
+  .md-cat { display: none; }
+  .md-mode h2 { font-size: 1rem; margin-bottom: 0.5rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .md-mask > span, .md-ui > * { transition-duration: 0.01s; }
+}

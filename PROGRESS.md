@@ -1,6 +1,24 @@
 # tuan photography 陳亮元 — Project Memo 專案備忘錄
 
-*Last updated: 2026-11-09, midday, handoff note. Read this first, then check the files to confirm.*
+*Last updated: 2026-11-10, evening, handoff note. Read this first, then check the files to confirm.*
+
+## 接下來 Next up (2026-11-10, paused mid-task at his word)
+
+He kept two references on `home-direction.html` (Mathilde De Chiara and Camille Mormal, the rest marked
+Not for me) and asked for **exact copies of both** ("跟他們做的一模一樣") with his photographs.
+- `tools/home_copies.py` writes `design 2/new/home-redesign/copy-photos.js`, `copy-mathilde.html`, `copy-camille.html`.
+- **Mathilde copy: built, first pass works** (`copy-mathilde.js`, `.css`): name rises at the left, photographs
+  stream in on the diagonal into a 6x6 diamond turned 45 degrees, pull apart along the diagonal into one column,
+  then 01 /30, the line, About, continents, place, Slider / Grid. To do: compare frame by frame with hers
+  (her frames are recorded with the scratchpad `ref/probe2.py`; rewrite if lost) and tune timing.
+- **Camille copy: not built yet.** `copy-camille.css` and `.js` still to write. Hers (studied): dark #141414,
+  a small % loader in the middle, landscape cards pop in across a wall, the wall zooms into the centre card
+  until it fills the screen, then a title on the photograph, + at left and right, Work / About at the top,
+  1 — 8 at the foot, eight thumbnails bottom right; the wheel shrinks it into a row of tall cards (324x450 at 1440).
+  Being an exact copy it is dark and has words on the photograph: say so to him when showing it.
+- Then add both to `review-manifest.json` as a new group with `"built"`, stills, `ask`, and send the links.
+- Also done today: every review-list group shows when it was built (`built` in the manifests, version-review
+  skill v9 on both sides); reference pages have a Lightroom-style Good / Unmarked / Not for me filter (`refs-filter.js`).
 
 ## 現在狀態 Where things stand
 
