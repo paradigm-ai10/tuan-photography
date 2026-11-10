@@ -61,3 +61,10 @@ textarea:focus-visible, .refs-btn:focus-visible, a:focus-visible { outline: 2px 
 /* clips of a site's opening (home-gallery, 2026-11-09) */
 .refs-clip { display: block; width: 100%; height: auto; aspect-ratio: 8 / 5; background: var(--card); border: 1px solid var(--line); margin: 0 0 0.5rem; }
 .refs-clip-note { font-size: 0.8125rem; color: var(--text-2); margin: 0 0 1.25rem; }
+/* the flag filter above the list (refs-filter.js, 2026-11-10) */
+.refs-filter { position: sticky; top: 0; z-index: 2; display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; padding: 0.75rem 0; margin-bottom: 0.5rem; background: var(--bg); border-bottom: 1px solid var(--line); }
+.refs-filter-label { font-size: 0.8125rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-2); margin-right: 0.25rem; }
+.refs-filter-count { margin-left: auto; }
+.refs-filter-btn { padding: 0.45rem 0.8rem; }
+.refs-filter-btn[aria-pressed="false"] { color: var(--text-2); text-decoration: line-through; }
+.refs-list > [hidden] { display: none; }
