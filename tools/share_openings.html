@@ -1,0 +1,223 @@
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>TUAN Openings</title>
+<link rel="stylesheet" href="@@FONTS@@">
+<style>
+/* layout: one quiet centred column on paper; each idea is a row of two stills, white beside black;
+   a version plays in a full-window stage over the list, two play side by side in the same stage */
+:root {
+  --bg: oklch(96.6% 0.011 82);
+  --band: oklch(91.8% 0.013 80);
+  --line: oklch(84.5% 0.015 78);
+  --text: oklch(25% 0.012 60);
+  --text-2: oklch(45% 0.017 62);
+  --accent: oklch(46% 0.092 47);
+  --night: oklch(18.5% 0.003 60);
+  --serif: "Playfair Display", "Noto Serif TC", Georgia, serif;
+  --sans: "Geist", "Noto Sans TC", system-ui, sans-serif;
+  --logo: "Cormorant Garamond", "Playfair Display", Georgia, serif;
+  --edge-l: max(16px, env(safe-area-inset-left, 0px));
+  --edge-r: max(16px, env(safe-area-inset-right, 0px));
+  --out: cubic-bezier(0.16, 1, 0.3, 1);
+  color-scheme: light;
+}
+html, body { background: var(--bg); color: var(--text); }
+body { font: 400 1.0625rem/1.6 var(--sans); padding-left: var(--edge-l); padding-right: var(--edge-r); padding-block: 0 4rem; -webkit-font-smoothing: antialiased; }
+:root.is-playing, :root.is-playing body { overflow: hidden; }
+:root[lang="zh-Hant"] [lang="en"], :root:not([lang="zh-Hant"]) [lang="zh-Hant"] { display: none; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; border-radius: 0; cursor: pointer; text-align: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+.caps { font: 500 0.72rem/1.2 var(--sans); letter-spacing: 0.14em; text-transform: uppercase; }
+:root[lang="zh-Hant"] .caps { font-size: 0.85rem; letter-spacing: 0.08em; }
+.word { font: 500 0.72rem/1.2 var(--sans); letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); min-height: 2.75rem; display: inline-flex; align-items: center; gap: 0.45em; text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 0.4em; text-decoration-thickness: 1px; transition: text-decoration-color 0.2s ease; }
+:root[lang="zh-Hant"] .word { font-size: 0.9rem; letter-spacing: 0.08em; }
+.word[aria-pressed="true"] { color: var(--text); text-decoration-color: currentColor; }
+@media (hover: hover) and (pointer: fine) { .word:hover { text-decoration-color: currentColor; } }
+
+.wrap { max-width: 68rem; margin-inline: auto; display: grid; gap: clamp(3rem, 7vw, 5.5rem); }
+.top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: 1.1rem; border-bottom: 1px solid var(--line); }
+.mark { display: inline-flex; flex-direction: column; align-items: center; gap: 0.2rem; }
+.mark b { font: 300 1.5rem/1 var(--logo); letter-spacing: 0.32em; margin-right: -0.32em; }
+.mark i { display: block; width: 100%; height: 1px; background: currentColor; opacity: 0.5; }
+.mark span { font: 500 0.56rem/1 var(--logo); letter-spacing: 0.42em; margin-right: -0.42em; text-transform: lowercase; color: var(--text-2); }
+.lang { display: flex; gap: 1.1rem; }
+
+.intro { display: grid; gap: 1.1rem; justify-items: center; text-align: center; }
+.intro h1 { font: 400 clamp(2.3rem, 1.45rem + 3.4vw, 4.25rem)/1.08 var(--serif); text-wrap: balance; }
+:root[lang="zh-Hant"] .intro h1, :root[lang="zh-Hant"] .idea h2 { font-weight: 500; }
+.intro p { max-width: 34rem; color: var(--text-2); text-wrap: pretty; }
+.intro small { font-size: 0.9375rem; color: var(--text-2); }
+
+.idea { display: grid; gap: 1.25rem; }
+.idea__head { display: grid; gap: 0.35rem; justify-items: center; text-align: center; }
+.idea h2 { font: 400 clamp(1.75rem, 1.3rem + 1.5vw, 2.4rem)/1.15 var(--serif); text-wrap: balance; }
+.idea__head p { max-width: 36rem; color: var(--text-2); font-size: 0.9375rem; text-wrap: pretty; }
+.idea__pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(0.75rem, 2.4vw, 2rem); }
+.idea--one .idea__pair { grid-template-columns: minmax(0, 34rem); justify-content: center; }
+.idea__both { display: flex; justify-content: center; }
+
+.card { display: grid; gap: 0.7rem; width: 100%; }
+.card__still { display: block; overflow: hidden; background: var(--band); aspect-ratio: 16 / 10; }
+.card__still img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--out); }
+.card__line { display: flex; align-items: baseline; gap: 0.8rem; }
+.card__n { font: 400 1.9rem/1 var(--serif); font-variant-numeric: lining-nums; }
+.card__ground { color: var(--text-2); }
+.card__go { margin-left: auto; color: var(--accent); }
+@media (hover: hover) and (pointer: fine) { .card:hover .card__still img { transform: scale(1.02); } }
+
+.foot { display: grid; gap: 0.5rem; justify-items: center; text-align: center; padding-top: 2.5rem; border-top: 1px solid var(--line); }
+.foot p { font: 400 1.25rem/1.4 var(--serif); }
+.foot a { color: var(--accent); text-underline-offset: 0.3em; text-decoration-thickness: 1px; }
+.foot small { color: var(--text-2); font-size: 0.8125rem; }
+
+/* the stage: one version filling the window, or two side by side, each drawn at one size and shrunk to fit */
+.stage { position: fixed; inset: 0; z-index: 20; display: flex; flex-direction: column; background: var(--bg); padding-top: env(safe-area-inset-top, 0px); }
+.stage__frames { flex: 1; min-height: 0; display: grid; }
+.stage.is-pair .stage__frames { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(0.5rem, 2vw, 1.5rem); align-content: center; padding: 1rem var(--edge-r) 0.5rem var(--edge-l); }
+.cell { margin: 0; display: grid; gap: 0.5rem; justify-items: center; min-width: 0; }
+.box { position: relative; overflow: hidden; width: 100%; height: 100%; background: var(--band); }
+.stage.is-pair .box { height: auto; aspect-ratio: var(--ar); width: min(100%, calc((100dvh - 11rem) * var(--ar))); outline: 1px solid var(--line); }
+.box iframe { display: block; border: 0; width: 100%; height: 100%; }
+.stage.is-pair .box iframe { position: absolute; left: 0; top: 0; width: calc(var(--w) * 1px); height: calc(var(--h) * 1px); transform: scale(var(--k, 0.5)); transform-origin: 0 0; }
+.cell figcaption { display: none; }
+.stage.is-pair .cell figcaption { display: flex; }
+.stage__bar { display: flex; flex-wrap: wrap; align-items: center; gap: 0 1.6rem; padding: 0.2rem var(--edge-r) calc(0.2rem + env(safe-area-inset-bottom, 0px)) var(--edge-l); border-top: 1px solid var(--line); background: var(--bg); }
+.stage__name { font: 400 1.05rem/1.3 var(--serif); margin-right: auto; min-width: 0; }
+@media (max-width: 47.99rem) {
+  .stage__name { flex-basis: 100%; padding-top: 0.6rem; }
+  .stage__bar { gap: 0 1.2rem; }
+}
+@media (prefers-reduced-motion: reduce) { .card__still img, .word { transition: none; } }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <span class="mark" role="img" aria-label="tuan photography"><b aria-hidden="true">TUAN</b><i aria-hidden="true"></i><span aria-hidden="true">photography</span></span>
+    <p class="lang"><button class="word" type="button" data-lang="en">EN</button><button class="word" type="button" data-lang="zh">中文</button></p>
+  </header>
+
+  <section class="intro">
+    <h1><span lang="en">Which opening?</span><span lang="zh-Hant">哪一個開場？</span></h1>
+    <p><span lang="en">I'm choosing how my photography site opens. Every version starts on the name and ends on a short film of Barcelona. Play a few, then tell me the number you like best.</span><span lang="zh-Hant">我在挑攝影網站的開場。每一版都從名字開始，最後停在一段巴塞隆納的影片。播幾個看看，再告訴我你最喜歡幾號。</span></p>
+    <small><span lang="en">White and black are the same opening on two grounds. No sound.</span><span lang="zh-Hant">白底和黑底是同一個開場，只差背景。沒有聲音。</span></small>
+  </section>
+@@ROWS@@
+
+  <footer class="foot">
+    <p><span lang="en">Tell me your number: <a href="https://www.instagram.com/tuan_1127/" target="_blank" rel="noopener">@tuan_1127</a> on Instagram.</span><span lang="zh-Hant">告訴我你選幾號：Instagram <a href="https://www.instagram.com/tuan_1127/" target="_blank" rel="noopener">@tuan_1127</a>。</span></p>
+    <small><span lang="en">© 2026 tuan photography 陳亮元. All photographs are my own.</span><span lang="zh-Hant">© 2026 tuan photography 陳亮元。所有照片都是我自己拍的。</span></small>
+  </footer>
+</div>
+
+<div class="stage" id="stage" hidden>
+  <div class="stage__frames" id="frames"></div>
+  <div class="stage__bar">
+    <p class="stage__name" id="stage-name" aria-live="polite"></p>
+    <button class="word" type="button" data-act="twin" id="act-twin"></button>
+    <button class="word" type="button" data-act="both" id="act-both"><span lang="en">Both side by side</span><span lang="zh-Hant">兩個並排</span></button>
+    <button class="word" type="button" data-act="again"><span lang="en">Play again</span><span lang="zh-Hant">再播一次</span></button>
+    <button class="word" type="button" data-act="back" id="act-back"><span lang="en">All openings</span><span lang="zh-Hant">回到全部</span></button>
+  </div>
+</div>
+
+<script>
+(() => {
+  'use strict';
+  const V = @@TABLE@@;
+  const root = document.documentElement, $ = (s) => document.querySelector(s);
+  const stage = $('#stage'), frames = $('#frames'), nameEl = $('#stage-name'), twinBtn = $('#act-twin'), bothBtn = $('#act-both');
+  const both = (en, zh) => `<span lang="en">${en}</span><span lang="zh-Hant">${zh}</span>`;
+  const ground = (v) => (v.dark ? ['black', '黑底'] : ['white', '白底']);
+
+  // language: the same key the opening pages read, so they follow the choice made here
+  const saved = () => { try { return localStorage.getItem('tlap-lang'); } catch (e) { return null; } };
+  function setLang(l) {
+    root.lang = l === 'zh' ? 'zh-Hant' : 'en';
+    try { localStorage.setItem('tlap-lang', l); } catch (e) {}
+    document.querySelectorAll('[data-lang]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.lang === l)));
+  }
+  setLang(saved() || (/^zh/i.test(navigator.language || '') ? 'zh' : 'en'));
+
+  let now = [], ro = null;
+  const narrow = () => matchMedia('(max-width: 47.99rem)').matches;
+
+  function show(list) {
+    now = list;
+    const pair = list.length > 1;
+    if (ro) ro.disconnect();
+    frames.textContent = '';
+    stage.classList.toggle('is-pair', pair);
+    // two side by side: each page is laid out at one size (a desk, or a phone on a narrow screen) and shrunk to its box
+    const W = narrow() ? 390 : 1440, H = narrow() ? 780 : 900;
+    const made = list.map((n) => {
+      const v = V[n], g = ground(v);
+      const cell = document.createElement('figure'); cell.className = 'cell';
+      const box = document.createElement('div'); box.className = 'box';
+      const f = document.createElement('iframe');
+      f.src = `o${n}.html`; f.title = `${n}, ${v.en} (${g[0]})`; f.allow = 'autoplay';
+      if (pair) { box.style.setProperty('--ar', (W / H).toFixed(4)); box.style.setProperty('--w', W); box.style.setProperty('--h', H); }
+      box.append(f);
+      const cap = document.createElement('figcaption');
+      cap.innerHTML = `<button class="word" type="button" data-play="${n}">${n} · ${both(g[0], g[1])}</button>`;
+      cell.append(box, cap); frames.append(cell);
+      return { f, box };
+    });
+    if (pair) {
+      ro = new ResizeObserver((es) => es.forEach((e) => e.target.style.setProperty('--k', (e.contentRect.width / W).toFixed(5))));
+      made.forEach((m) => ro.observe(m.box));
+      // two pages that finish loading apart start again in the same moment
+      const at = [];
+      made.forEach((m) => m.f.addEventListener('load', () => {
+        at.push(performance.now());
+        if (at.length === made.length && Math.max(...at) - Math.min(...at) > 250) again();
+      }, { once: true }));
+    }
+    const a = V[list[0]];
+    nameEl.innerHTML = pair ? `${list.join(' + ')} · ${both(a.en, a.zh)}` : `${list[0]} · ${both(a.en, a.zh)} · ${both(...ground(a))}`;
+    twinBtn.hidden = pair || !a.twin;
+    if (a.twin) twinBtn.innerHTML = both(`See it on ${ground(V[a.twin])[0]}`, `看${ground(V[a.twin])[1]}`);
+    bothBtn.hidden = pair || !a.twin;
+    stage.hidden = false;
+    root.classList.add('is-playing');
+    $('#act-back').focus({ preventScroll: true });
+  }
+  function again() {
+    frames.querySelectorAll('iframe').forEach((f) => { try { f.contentWindow.location.reload(); } catch (e) { f.src = f.getAttribute('src'); } });
+  }
+  function hide() {
+    if (ro) ro.disconnect();
+    frames.textContent = ''; now = [];
+    stage.hidden = true;
+    root.classList.remove('is-playing');
+  }
+
+  // each view has a name, also put in the address so a link can open on one opening: v-7, both-5-6, all.
+  // The page never waits for the address: a viewer whose frame cannot keep one still gets the view.
+  let view = '';
+  function apply(h) {
+    let m;
+    if ((m = /^v-(\d+)$/.exec(h)) && V[m[1]]) { view = h; show([+m[1]]); }
+    else if ((m = /^both-(\d+)-(\d+)$/.exec(h)) && V[m[1]] && V[m[2]]) { view = h; show([+m[1], +m[2]]); }
+    else { view = 'all'; hide(); }
+  }
+  function go(h) {
+    apply(h);
+    try { if (location.hash.slice(1) !== view) location.hash = view; } catch (e) {}
+  }
+  addEventListener('hashchange', () => { const h = location.hash.slice(1); if (h && h !== view) apply(h); });
+
+  document.addEventListener('click', (e) => {
+    const b = e.target.closest('button');
+    if (!b) return;
+    if (b.dataset.lang) setLang(b.dataset.lang);
+    else if (b.dataset.play) go('v-' + b.dataset.play);
+    else if (b.dataset.both) go('both-' + b.dataset.both);
+    else if (b.dataset.act === 'back') go('all');
+    else if (b.dataset.act === 'again') again();
+    else if (b.dataset.act === 'twin') go('v-' + V[now[0]].twin);
+    else if (b.dataset.act === 'both') { const a = now[0], t = V[a].twin, w = V[a].dark ? [t, a] : [a, t]; go('both-' + w.join('-')); }
+  });
+  addEventListener('keydown', (e) => { if (e.key === 'Escape' && !stage.hidden) go('all'); });
+  if (location.hash.length > 1) apply(location.hash.slice(1));
+})();
+</script>
