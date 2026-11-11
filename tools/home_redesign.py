@@ -247,6 +247,11 @@ FLOCKS = [
     ("around-reveal", "Around the name, then Barcelona, at once", "圍著名字，巴塞隆納馬上出來"),
     ("tilted-rows", "The tilted wall, rows sliding", "傾斜照片牆，一排排橫向滑動"),
     ("camille-code", "Camille Mormal, from her own code", "Camille Mormal，照她網站的程式"),
+    # from his third notes
+    ("tilted-lift", "The tilted wall: the film lifts off it", "傾斜照片牆：影片從牆上浮起來"),
+    ("tilted-part", "The tilted wall: the rows part", "傾斜照片牆：一排排滑開"),
+    ("tilted-flat-flip", "The tilted wall: it swings flat, then the cards turn", "傾斜照片牆：轉正後卡片翻面"),
+    ("camille-flow", "Camille's move, flowing in", "Camille 的轉場，流進來"),
 ]
 
 

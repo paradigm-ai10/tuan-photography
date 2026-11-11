@@ -1385,15 +1385,63 @@
   }
   // the wall has become the film's first frame: the film starts beneath at once and the wall lifts off it quickly, so
   // there is no beat of stillness between "Barcelona is whole" and "Barcelona moves"
-  async function filmAtOnce(api, fade = 350, rate = 0.6) {
+  async function filmAtOnce(api, fade = 1000, rate = 0.6) {
     const v = api.video, paper = document.querySelector('.hr-load__paper');
     if (v) { v.currentTime = 0; v.playbackRate = rate; }
-    if (paper) { paper.style.transition = 'opacity 150ms linear'; paper.style.opacity = '0'; }
+    // the paper goes at once, while the wall still covers everything: fading it under a wall that is itself fading let it
+    // wash through for a few frames (the flash he saw, 2026-11-11)
+    if (paper) { paper.style.transition = 'none'; paper.style.opacity = '0'; void paper.offsetWidth; }
+    // a still of a film and the film itself are drawn a shade apart by the browser, so cutting or fading quickly from one
+    // to the other shows as a pulse. The film is therefore drawn onto a canvas over the wall first: the same picture as the
+    // cards' backs to the pixel, and moving at once. The canvas then gives way to the film beneath slowly, while it moves.
+    let on = true;
+    if (v && v.videoWidth) {
+      const cv = document.createElement('canvas'), f = frameFit(FULL());
+      cv.className = 'hr-flock__back';
+      cv.width = v.videoWidth; cv.height = v.videoHeight;
+      Object.assign(cv.style, { inset: 'auto', left: f.ox.toFixed(1) + 'px', top: f.oy.toFixed(1) + 'px', width: f.dw.toFixed(1) + 'px', height: f.dh.toFixed(1) + 'px', opacity: '1' });
+      const ctx = cv.getContext('2d');
+      ctx.drawImage(v, 0, 0);
+      layer.appendChild(cv);
+      const draw = () => { if (!on) return; ctx.drawImage(v, 0, 0); requestAnimationFrame(draw); };
+      requestAnimationFrame(draw);
+    }
     if (v) v.play().catch(() => {});
     html.classList.add('hr-out');
     if (v) api.speed(rate, 1, 1100);
-    await layer.animate([{ opacity: 1 }, { opacity: 0 }], { duration: fade, easing: 'ease', fill: 'both' }).finished.catch(() => {});
+    await layer.animate([{ opacity: 1 }, { opacity: 0 }], { duration: fade, easing: 'ease-in-out', fill: 'both' }).finished.catch(() => {});
+    on = false;
     api.mosaicDone = true;
+  }
+  // the film's first frame as this browser draws it, for the pieces on the cards' backs: the exported poster is a shade
+  // off the playing film, which showed as a shift when one gave way to the other
+  function liveStill(api) {
+    const v = api.video;
+    return new Promise((res) => {
+      try {
+        if (!v || v.readyState < 2 || !v.videoWidth) { res(); return; }
+        const cv = document.createElement('canvas');
+        cv.width = v.videoWidth; cv.height = v.videoHeight;
+        cv.getContext('2d').drawImage(v, 0, 0);
+        cv.toBlob((b) => { if (b) filmEl.dataset.poster = URL.createObjectURL(b); res(); }, 'image/jpeg', 0.95);
+        setTimeout(res, 400);
+      } catch (e) { res(); }
+    });
+  }
+  // every card in `list` ({ el, back }) turns right over, in no order: few at first, many in the middle, few at the end
+  function turnOver(list, { spread = 2500, dur = 760, P = 1100 } = {}) {
+    return finished(list.flatMap((q) => {
+      const u = rnd(), delay = 250 + spread * (u + Math.sin(2 * Math.PI * u) / (2 * Math.PI));
+      return [
+        q.el.animate([
+          { transform: `perspective(${P}px) rotateY(0deg)`, easing: 'cubic-bezier(0.5, 0, 0.9, 0.6)' },
+          { transform: `perspective(${P}px) rotateY(90deg)`, offset: 0.5 },
+          { transform: `perspective(${P}px) rotateY(-90deg)`, offset: 0.5, easing: 'cubic-bezier(0.1, 0.4, 0.3, 1)' },
+          { transform: `perspective(${P}px) rotateY(0deg)` }
+        ], { duration: dur, delay, fill: 'both' }),
+        q.back.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 1, delay: delay + dur / 2, fill: 'both' })   // the back, from the edge-on instant
+      ];
+    }));
   }
   Object.assign(V, {
     // 40 the cards turn over (the flip, fixed): the name is gone before the wall flies in. Then each photograph turns over
@@ -1401,10 +1449,11 @@
     //    after another in no order, few at first, many in the middle, few at the end; on each back, its piece of Barcelona.
     //    A shadow shows behind a card only while it turns. The moment the last one lands, the frame moves.
     'cards-flip': {
-      n: 39, shape: 'wall', mark: 'fade', markHold: 900, markFade: 1200, markWait: 1150, hold: 500, mosaic: true, markGone: true, still: true,
+      n: 39, shape: 'wall', mark: 'fade', markHold: 300, markFade: 1200, markWait: 1150, hold: 500, mosaic: true, markGone: true, still: true,
       layout() { return wallPlan(); },
       enter() { return flyIn({ from: { x: W * 0.6, y: -H * 0.6 }, rank: diagonalRank(tiles.map((t) => t.slot)), spread: 800, dur: 1600, tilt: 0, scale: 0.94 }); },
       async leave(api) {
+        await liveStill(api);
         const under = document.createElement('div');   // what is behind a card while it is edge-on
         under.className = 'hr-flock__back hr-flock__under';
         paintFrame(under, FULL(), 0, 0);   // the same frame, in shadow: a card edge-on shows what its back is about to
@@ -1417,19 +1466,7 @@
           t.el.appendChild(s);
           t.back = s;
         });
-        const SPREAD = 2500, DUR = 760, P = narrow() ? 700 : 1100;
-        await finished(tiles.flatMap((t) => {
-          const u = rnd(), delay = 250 + SPREAD * (u + Math.sin(2 * Math.PI * u) / (2 * Math.PI));
-          return [
-            t.el.animate([
-              { transform: `perspective(${P}px) rotateY(0deg)`, easing: 'cubic-bezier(0.5, 0, 0.9, 0.6)' },
-              { transform: `perspective(${P}px) rotateY(90deg)`, offset: 0.5 },
-              { transform: `perspective(${P}px) rotateY(-90deg)`, offset: 0.5, easing: 'cubic-bezier(0.1, 0.4, 0.3, 1)' },
-              { transform: `perspective(${P}px) rotateY(0deg)` }
-            ], { duration: DUR, delay, fill: 'both' }),
-            t.back.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 1, delay: delay + DUR / 2, fill: 'both' })   // the back, from the edge-on instant
-          ];
-        }));
+        await turnOver(tiles, { spread: 2500, P: narrow() ? 700 : 1100 });
         if (api.isDone()) return;
         await filmAtOnce(api);
       }
@@ -1471,7 +1508,7 @@
     //    slides along the tilted plane, alternate rows opposite ways: fast as the photographs come up, slowing all the
     //    while, and at rest exactly as the wall finishes swinging flat, so the camera lands on the film.
     'tilted-rows': {
-      n: 48, shape: 'wall', mark: 'fade', markGone: true, markHold: 900, markFade: 1200, markWait: 1150, hold: 1700, still: true,
+      n: 48, shape: 'wall', mark: 'fade', markGone: true, markHold: 300, markFade: 1200, markWait: 1150, hold: 1700, still: true,
       layout() { return V.tilted.layout.call(this); },
       TILT: 'rotateX(46deg) rotateZ(-32deg)',
       dir: (row) => (row % 2 ? 1 : -1),
@@ -1484,22 +1521,23 @@
         const cols = Math.max(...tiles.map((t) => t.slot.col)) + 1, nRows = Math.max(...tiles.map((t) => t.slot.row)) + 1;
         const pitch = tiles[1].slot.x - tiles[0].slot.x;
         const rowEls = [...Array(nRows)].map(() => { const r = document.createElement('div'); r.className = 'hr-flock__row'; el.appendChild(r); return r; });
-        const list = [];
+        const list = this.list = [];
+        this.rowEls = rowEls;
         tiles.forEach((t) => {
           rowEls[t.slot.row].appendChild(t.el);
-          list.push({ el: t.el, col: t.slot.col });
+          list.push({ el: t.el, col: t.slot.col, row: t.slot.row, x: t.slot.x, y: t.slot.y });
           // two more photographs on the side each row comes from, so no row runs out (copies of its far end, never seen with them)
           const dir = this.dir(t.slot.row), far = dir > 0 ? t.slot.col >= cols - 2 : t.slot.col <= 1;
           if (!far || t.film) return;
           const c = t.el.cloneNode(true);
           c.style.left = (t.slot.x - dir * cols * pitch) + 'px';
           rowEls[t.slot.row].appendChild(c);
-          list.push({ el: c, col: dir > 0 ? 0 : cols - 1 });
+          list.push({ el: c, col: dir > 0 ? 0 : cols - 1, row: t.slot.row, x: t.slot.x - dir * cols * pitch, y: t.slot.y });
         });
         const risen = rise(list, { step: 150, dur: 1300, order: list.map((q) => q.col) });
         // the ramp: one long ease-out per row, about five times its average speed at first, at rest at the end
         this.D = (row) => pitch * (1.3 + 0.18 * ((row * 3) % 4));
-        const T = (cols - 1) * 150 + 1300 + this.hold + 3000;
+        const T = (cols - 1) * 150 + 1300 + this.hold + (this.restAfter ?? 3000);   // at rest this long after the wall starts to change
         rowEls.forEach((r, row) => r.animate([{ transform: 'translateX(0px)' }, { transform: `translateX(${(this.dir(row) * this.D(row)).toFixed(1)}px)` }],
           { duration: T, easing: 'cubic-bezier(0.12, 0.62, 0.2, 1)', fill: 'both' }));
         return risen;
@@ -1526,7 +1564,7 @@
     //      so the card opens on the picture as it grows.
     //    Here the middle card is the film, the ground is his paper, and the name has gone before the first card shows.
     'camille-code': {
-      n: 24, shape: 'wall', mark: 'fade', markGone: true, markHold: 900, markFade: 1000, markWait: 0, hold: 0, still: true,
+      n: 24, shape: 'wall', mark: 'fade', markGone: true, markHold: 300, markFade: 1000, markWait: 0, hold: 0, still: true,
       geo() {
         const s0 = 30 * W / 1440, r = (W - 4 * s0) / 4, a = r * H / W;
         return { s0, r, a, h: a + s0, l: r + s0, o: 0.5 * (a + s0), n: H + 0.5 * (5 * a + 4 * s0 - H), p: 12 * a, d: W + 2, c: H + 2 };
@@ -1561,6 +1599,149 @@
         await frames(T, (ms) => {
           const { prog, i } = set(ms);
           if (!seeked && prog >= 0.4) {   // the page's own film waits at the frame the card will have reached
+            seeked = true;
+            if (tv && api.video) { try { api.video.currentTime = tv.currentTime + (T - ms) / 1000 * (tv.playbackRate || 0.3); } catch (e) { /* not yet seekable */ } }
+          }
+          if (!out && i > 0.985) { out = true; html.classList.add('hr-out'); }
+        });
+      },
+      leave() { return Promise.resolve(); }
+    }
+  });
+
+  /* ---------------- from his third notes (2026-11-11, night) ----------------
+     "Why is there a flash between the flipping and Barcelona moving" (cards-flip: fixed in filmAtOnce and liveStill);
+     "a different version of the transition from tilting to displaying" (three: lift, part, flat-flip); Camille's
+     "acceleration at first is a bit odd, keep the pictures moving a little longer before the middle one comes out"
+     (camille-flow); and, in Anything else, "all of the TUAN comes too fast, slower TUAN" (home.css and home.js, every
+     opening of this family). */
+  const rowNow = (el) => new DOMMatrixReadOnly(getComputedStyle(el).transform).m41;   // where a sliding row is at this instant
+  Object.assign(V, {
+    // 44 the tilted wall: the film lifts off it. The rows slide and slow as before; then the film alone rises from the
+    //    wall, turning to face you as it grows to the whole screen, while the wall stays tilted beneath and pales away.
+    'tilted-lift': {
+      n: 48, shape: 'wall', mark: 'fade', markGone: true, markHold: 300, markFade: 1200, markWait: 1150, hold: 1500, restAfter: 700, still: true,
+      layout() { return V.tilted.layout.call(this); },
+      TILT: 'rotateX(46deg) rotateZ(-32deg)',
+      dir: (row) => (row % 2 ? 1 : -1),
+      enter() { return V['tilted-rows'].enter.call(this); },
+      async leave(api) {
+        const ft = tiles.find((t) => t.film), f = ft.slot, p = this.plane, el = ft.el, k = W / f.w, DUR = 2500;
+        const left = p.x + f.x + rowNow(this.rowEls[f.row]), top = p.y + f.y;
+        const START = `perspective(1600px) translate(0px, 0px) scale(1.08) ${this.TILT}`;
+        // out of its row and onto the layer, drawn exactly where it was: the same projection about the window's middle
+        el.getAnimations().forEach((a) => a.cancel());
+        Object.assign(el.style, { opacity: '1', left: left + 'px', top: top + 'px', transformOrigin: `${(W / 2 - left).toFixed(1)}px ${(H / 2 - top).toFixed(1)}px`, transform: START, zIndex: '3' });
+        layer.appendChild(el);
+        if (tv) { tv.play().catch(() => {}); if (api.video) { try { api.video.currentTime = tv.currentTime + DUR / 1000 * (tv.playbackRate || 0.3); } catch (e) { /* not yet seekable */ } } }
+        const fx = left + f.w / 2 - W / 2, fy = top + f.h / 2 - H / 2;
+        setTimeout(() => { if (!html.classList.contains('hr-shown')) html.classList.add('hr-out'); }, DUR * 0.7);
+        await finished([
+          el.animate([{ transform: START }, { transform: `perspective(1600px) translate(${(-fx * k).toFixed(1)}px, ${(-fy * k).toFixed(1)}px) scale(${k.toFixed(4)}) rotateX(0deg) rotateZ(0deg)` }],
+            { duration: DUR, easing: PART, fill: 'both' }),
+          this.el.animate([{ opacity: 1 }, { opacity: 0.3 }], { duration: DUR * 0.75, easing: 'ease', fill: 'both' })
+        ]);
+      }
+    },
+    // 45 the tilted wall: the rows part. The film is playing, whole, behind the wall; it first shows in the lines between
+    //    the photographs, then the rows slide away along the wall, the middle row first, alternate rows opposite ways,
+    //    and it is uncovered band by band. Nothing zooms and nothing is handed over.
+    'tilted-part': {
+      n: 48, shape: 'wall', mark: 'fade', markGone: true, markHold: 300, markFade: 1200, markWait: 1150, hold: 1300, restAfter: 1800, mosaic: true, still: true,
+      layout() { return V.tilted.layout.call(this); },
+      TILT: 'rotateX(46deg) rotateZ(-32deg)',
+      dir: (row) => (row % 2 ? 1 : -1),
+      enter() { return V['tilted-rows'].enter.call(this); },
+      async leave(api) {
+        const v = api.video, paper = document.querySelector('.hr-load__paper');
+        if (v) { v.currentTime = 0; v.playbackRate = 0.5; v.play().catch(() => {}); api.speed(0.5, 1, 2600); }
+        if (paper) { paper.style.transition = 'opacity 600ms ease'; paper.style.opacity = '0'; }
+        html.classList.add('hr-out');
+        await api.wait(450); if (api.isDone()) return;
+        const fr = tiles.find((t) => t.film).slot.row, far = this.plane.w * 1.4;
+        await finished(this.rowEls.map((r, row) => {
+          const cur = rowNow(r);
+          return r.animate([{ transform: `translateX(${cur.toFixed(1)}px)` }, { transform: `translateX(${(cur + this.dir(row) * far).toFixed(1)}px)` }],
+            { duration: 1700, delay: Math.abs(row - fr) * 130, easing: 'cubic-bezier(0.6, 0, 0.9, 0.45)', fill: 'both' });
+        }));
+        api.mosaicDone = true;
+      }
+    },
+    // 46 the tilted wall: it swings flat, then the cards turn. His two favourites joined: the wall swings up to face you
+    //    as a whole wall of photographs, edge to edge, and each one then turns over like a card, in no order, to its
+    //    piece of Barcelona; the frame moves as the last lands.
+    'tilted-flat-flip': {
+      n: 48, shape: 'wall', mark: 'fade', markGone: true, markHold: 300, markFade: 1200, markWait: 1150, hold: 900, restAfter: 2400, mosaic: true, still: true,
+      layout() { return V.tilted.layout.call(this); },
+      TILT: 'rotateX(46deg) rotateZ(-32deg)',
+      dir: (row) => (row % 2 ? 1 : -1),
+      enter() { return V['tilted-rows'].enter.call(this); },
+      async leave(api) {
+        const p = this.plane, s = narrow() ? 0.5 : 0.6;
+        await this.el.animate([
+          { transform: `perspective(1600px) translate(0px, 0px) scale(1.08) ${this.TILT}` },
+          { transform: `perspective(1600px) translate(0px, 0px) scale(${s}) rotateX(0deg) rotateZ(0deg)` }
+        ], { duration: 2400, easing: PART, fill: 'both' }).finished.catch(() => {});
+        if (api.isDone()) return;
+        await liveStill(api);
+        const under = document.createElement('div');
+        under.className = 'hr-flock__back hr-flock__under';
+        paintFrame(under, FULL(), 0, 0);
+        layer.insertBefore(under, this.el);
+        under.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 300, easing: 'ease', fill: 'both' });
+        const f = frameFit(FULL());
+        this.list.forEach((q) => {
+          // where this photograph sits on the screen now the wall is flat, so its back is its own piece of the frame
+          const X = W / 2 + s * (p.x + q.x + rowNow(this.rowEls[q.row]) - W / 2), Y = H / 2 + s * (p.y + q.y - H / 2);
+          const b = document.createElement('span');
+          b.className = 'hr-tile__slice';
+          b.style.backgroundImage = `url("${filmEl.dataset.poster}")`;
+          b.style.backgroundSize = `${(f.dw / s).toFixed(1)}px ${(f.dh / s).toFixed(1)}px`;
+          b.style.backgroundPosition = `${((f.ox - X) / s).toFixed(1)}px ${((f.oy - Y) / s).toFixed(1)}px`;
+          q.el.appendChild(b);
+          q.back = b;
+        });
+        // the lines between the photographs are in shadow while the cards turn; they clear as the last ones land
+        under.animate([{ filter: 'brightness(0.8)' }, { filter: 'brightness(1)' }], { duration: 500, delay: 250 + 1900 + 760 - 500, easing: 'ease', fill: 'both' });
+        await turnOver(this.list, { spread: 1900, P: (narrow() ? 700 : 1100) / s });
+        if (api.isDone()) return;
+        await filmAtOnce(api);
+      }
+    },
+    // 47 Camille's move, flowing in (his note on "from her own code": the acceleration at first is odd; keep the pictures
+    //    moving a little longer before the middle one comes out). Her layout, sizes, brick columns and zoom, but the cards
+    //    no longer creep in and then rush: every card enters already at speed and slows into place, the far ones later,
+    //    so the wall flows in and settles for about two and a half seconds before the zoom begins (hers: about one).
+    'camille-flow': {
+      n: 24, shape: 'wall', mark: 'fade', markGone: true, markHold: 300, markFade: 1100, markWait: 1050, hold: 0, still: true,
+      geo() { return V['camille-code'].geo.call(this); },
+      layout() { return V['camille-code'].layout.call(this); },
+      async enter(api) {
+        const { s0, r, a, h, l, o, n, p, d, c } = this.geo(), s1 = s0 * d / r, g = c + s1, u = d + s1;
+        const eZ = bez(0.72, 0, 0.11, 1), TAU = 760, TC = 4400, Z0 = 2600, T = Z0 + 3000, K = 1 - Math.exp(-TC / TAU);
+        const P = tiles.map((t) => {
+          const k = t.slot.k, col = Math.floor(k / 5), row = k % 5, v = col - 2, w = row - 2, f = col % 2 === 1, R = Math.abs(v);
+          return {
+            el: t.el,
+            y0: f ? -(n - o + (4 - row) * p + R * a + 20) : n + row * p + R * a + 20,
+            xs: 0.5 * (W - r) + v * l, ys: 0.5 * (H - a) + w * h - (f ? o : 0),
+            xf: 0.5 * (W - d) + v * u, yf: 0.5 * (H - c) + w * g - (f ? 0.5 * g : 0)
+          };
+        });
+        const set = (ms) => {
+          const e = ms >= TC ? 1 : (1 - Math.exp(-ms / TAU)) / K;   // every card comes in at speed and slows: no creep, no rush
+          const i = eZ(cl01((ms - Z0) / (T - Z0))), k = (r + (d - r) * i) / r;
+          for (const q of P) q.el.style.transform = `translate3d(${(q.xs + (q.xf - q.xs) * i).toFixed(2)}px, ${(q.ys + (q.yf - q.ys) * i + q.y0 * (1 - e)).toFixed(2)}px, 0) scale(${k.toFixed(5)})`;
+          if (tv) tv.style.transform = `scale(${(1.5 - 0.5 * i).toFixed(4)})`;
+          return i;
+        };
+        tiles.forEach((t) => { t.el.style.transformOrigin = '0 0'; });
+        set(0);
+        tiles.forEach((t) => { t.el.style.opacity = '1'; });
+        let seeked = false, out = false;
+        await frames(T, (ms) => {
+          const i = set(ms);
+          if (!seeked && ms >= Z0) {
             seeked = true;
             if (tv && api.video) { try { api.video.currentTime = tv.currentTime + (T - ms) / 1000 * (tv.playbackRate || 0.3); } catch (e) { /* not yet seekable */ } }
           }

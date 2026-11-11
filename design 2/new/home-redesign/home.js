@@ -137,7 +137,7 @@
     : HOME === 'f' ? !!(window.HRFlock && window.HRFlock.ready()) && (!video || video.readyState >= 2)
     : seen(cover));
   // how long the line takes to run under the name: D and E draw it in 1 s (his ask, 2026-11-05), the others 2.2 s
-  const FILL = HOME === 'd' || HOME === 'f' ? 1000 : 2200;
+  const FILL = HOME === 'f' ? 1400 : HOME === 'd' ? 1000 : 2200;   // F slower since 2026-11-11 ("slower TUAN")
   function fill() {
     return new Promise((res) => {
       const t0 = performance.now();
@@ -290,7 +290,7 @@
   // F: the photographs arrive (flock.js): the logo holds, then the tiles come, gather, and the live one grows into the film
   async function openF() {
     await fill();
-    await wait(800); if (done) return;
+    await wait(2900); if (done) return;   // FLOCK_NAME: the name's slower arrival (2.3 s in home.css) and a moment with it whole
     if (!window.HRFlock) { finish(); return; }
     try { await window.HRFlock.run({ wait, isDone: () => done, finish, video, speed }); }
     catch (e) { console.error(e); }

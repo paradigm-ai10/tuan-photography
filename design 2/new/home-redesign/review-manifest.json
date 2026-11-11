@@ -156,6 +156,14 @@
     "en": "Fixed from your second notes",
     "zh": "照你第二次的筆記修好的"
    }
+  },
+  {
+   "id": "notes-1111c",
+   "built": "2026-11-11T17:09",
+   "title": {
+    "en": "From your third notes: three tilted endings, Camille flowing in",
+    "zh": "照你第三次的筆記：傾斜牆的三種結尾、Camille 流進來"
+   }
   }
  ],
  "items": [
@@ -1463,6 +1471,66 @@
    "still": {
     "wait": 3500
    }
+  },
+  {
+   "href": "c-flock-tilted-lift.html",
+   "group": "notes-1111c",
+   "title": {
+    "en": "The tilted wall: the film lifts off it",
+    "zh": "傾斜照片牆：影片從牆上浮起來"
+   },
+   "desc": {
+    "en": "A different ending for the tilted wall. The rows slide and slow as in 3; then the film alone rises off the wall, turning to face you as it grows to the whole screen, while the wall stays tilted beneath it and pales away.",
+    "zh": "傾斜照片牆的另一種結尾。前面跟 3 一樣一排排滑動、慢下來；接著只有影片那一張從牆上浮起來，一邊轉正一邊放大到整個畫面，牆留在下面保持傾斜、慢慢變淡。"
+   },
+   "still": {
+    "wait": 3500
+   }
+  },
+  {
+   "href": "c-flock-tilted-part.html",
+   "group": "notes-1111c",
+   "title": {
+    "en": "The tilted wall: the rows part",
+    "zh": "傾斜照片牆：一排排滑開"
+   },
+   "desc": {
+    "en": "A different ending for the tilted wall. Barcelona is playing, whole, behind the wall. It first shows in the thin lines between the photographs; then the rows slide away along the wall, the middle row first, neighbouring rows opposite ways, and it is uncovered band by band. Nothing zooms.",
+    "zh": "傾斜照片牆的另一種結尾。巴塞隆納其實一直在牆後面完整地播放。先從照片之間的細縫透出來；接著一排排沿著牆滑開，中間那排先走，相鄰兩排方向相反，一條一條露出巴塞隆納。沒有任何放大。"
+   },
+   "still": {
+    "wait": 3500
+   }
+  },
+  {
+   "href": "c-flock-tilted-flat-flip.html",
+   "group": "notes-1111c",
+   "title": {
+    "en": "The tilted wall: it swings flat, then the cards turn",
+    "zh": "傾斜照片牆：轉正後卡片翻面"
+   },
+   "desc": {
+    "en": "Your two favourites joined. The tilted wall swings up to face you as one flat wall of photographs across the whole screen; then each photograph turns over like a card, in no order, to its piece of Barcelona, and the frame moves as the last one lands.",
+    "zh": "把你最喜歡的兩個接在一起。傾斜的牆轉正，變成鋪滿整個畫面的一面照片牆；接著每張照片像卡片一樣不按順序翻過去，變成巴塞隆納的一小塊，最後一張翻好時畫面就開始動。"
+   },
+   "still": {
+    "wait": 3500
+   }
+  },
+  {
+   "href": "c-flock-camille-flow.html",
+   "group": "notes-1111c",
+   "title": {
+    "en": "Camille's move, flowing in",
+    "zh": "Camille 的轉場，流進來"
+   },
+   "desc": {
+    "en": "From your note on 4. Her layout, brick columns and zoom, but the cards no longer creep in and then rush (that was the odd acceleration): every card comes in already at speed and slows into place, the far ones later, so the wall flows in. And the photographs keep moving about two and a half seconds before the middle one starts to come out, where hers has about one.",
+    "zh": "照你在 4 寫的筆記。她的排列、像磚牆的欄位和放大都一樣，但卡片不再先慢慢爬再突然加速（就是你說怪的地方）：每張卡片一進來就有速度，再慢慢停到位置上，遠的晚一點到，整面牆像流進來。而且照片會多流動一會兒，大約兩秒半，中間那張才開始放大；她的大約只有一秒。"
+   },
+   "still": {
+    "wait": 3500
+   }
   }
  ],
  "tags": [
@@ -1541,25 +1609,26 @@
  "ask": {
   "ids": [
    "c-flock-cards-flip",
-   "c-flock-around-reveal",
-   "c-flock-tilted-rows",
-   "c-flock-camille-code"
+   "c-flock-tilted-lift",
+   "c-flock-tilted-part",
+   "c-flock-tilted-flat-flip",
+   "c-flock-camille-flow"
   ],
   "question": {
-   "en": "The four fixed from your second notes (5 to 8). The four they replace are under Earlier rounds with your notes. Score these.",
-   "zh": "照你第二次筆記修好的四個（5 到 8）。被取代的那四個收在 Earlier rounds，筆記都還在。請幫這四個打分數。"
+   "en": "1 has its flash fixed. 5, 6 and 7 are three other endings for the tilted wall (3 is the one you saw). 8 is Camille flowing in. TUAN now arrives more slowly on all of them. Score these five.",
+   "zh": "1 的閃一下修掉了。5、6、7 是傾斜照片牆的另外三種結尾（3 是你看過的那個）。8 是流進來的 Camille。所有版本的 TUAN 都變慢了。請幫這五個打分數。"
   }
  },
  "round": {
   "ids": [
-   "c-flock-mosaic",
-   "c-flock-luxe-around",
-   "c-flock-tilted",
-   "c-flock-camille-measured",
    "c-flock-cards-flip",
    "c-flock-around-reveal",
    "c-flock-tilted-rows",
-   "c-flock-camille-code"
+   "c-flock-camille-code",
+   "c-flock-tilted-lift",
+   "c-flock-tilted-part",
+   "c-flock-tilted-flat-flip",
+   "c-flock-camille-flow"
   ]
  }
 }
