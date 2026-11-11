@@ -565,6 +565,15 @@ html.hr-js .hr-qdoor.hr-in { transition-delay: calc(var(--i, 0) * 70ms); }
 .hr-tile { position: absolute; overflow: hidden; background: var(--band); opacity: 0; transform-origin: center; will-change: transform; }
 .hr-tile img, .hr-tile video { display: block; width: 100%; height: 100%; object-fit: cover; }
 .hr-tile__slice { position: absolute; inset: 0; background-repeat: no-repeat; opacity: 0; }
+.hr-tile__live { width: 100%; height: 100%; }   /* cards-flip: a card's back drawn live from the film */
+/* a black ground for one opening, as Camille Mormal's (his ask to try it, 2026-11-11): the loading screen only. The page
+   beneath stays light; the film covers the black before the loading screen goes. */
+[data-ground="dark"] { --night: oklch(18.5% 0.003 60); --on-night: oklch(96% 0.008 82); }
+[data-ground="dark"] .hr-load__paper { background: var(--night); }
+[data-ground="dark"] .hr-load__mark { color: var(--on-night); }
+[data-ground="dark"] .hr-load__sub { color: color-mix(in oklch, var(--on-night) 70%, transparent); }
+[data-ground="dark"] .hr-load__line { background: var(--on-night); }
+[data-ground="dark"] .hr-tile { background: color-mix(in oklch, var(--on-night) 8%, var(--night)); }
 .hr-flock__plane { position: absolute; transform-origin: 50% 50%; will-change: transform; }   /* tilted: the wall laid back in space */
 .hr-flock__back { position: absolute; inset: 0; background-repeat: no-repeat; opacity: 0; }
 .hr-flock__under { filter: brightness(0.8); }   /* cards-flip: behind a card while it turns, the frame itself in shadow */

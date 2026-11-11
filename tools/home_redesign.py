@@ -252,7 +252,9 @@ FLOCKS = [
     ("tilted-part", "The tilted wall: the rows part", "傾斜照片牆：一排排滑開"),
     ("tilted-flat-flip", "The tilted wall: it swings flat, then the cards turn", "傾斜照片牆：轉正後卡片翻面"),
     ("camille-flow", "Camille's move, flowing in", "Camille 的轉場，流進來"),
+    ("camille-night", "Camille's move, on black", "Camille 的轉場，黑底"),
 ]
+FLOCK_DARK = {"camille-night"}   # openings whose loading screen is black, the name white (his "try this", 2026-11-11)
 
 
 def flock_tiles():
@@ -414,7 +416,8 @@ def build():
     # film_s ending (the caption, the first shot's cut) as 33
     for mode, en, zh in FLOCKS:
         (OUT / f"c-flock-{mode}.html").write_text(page("f", f"c-flock-{mode}", en, zh, film_s, c, flock_tiles(),
-                                                       f' data-counts data-flock="{mode}"', scripts='<script src="flock.js"></script>\n'), encoding="utf-8")
+                                                       f' data-counts data-flock="{mode}"' + (' data-ground="dark"' if mode in FLOCK_DARK else ""),
+                                                       scripts='<script src="flock.js"></script>\n'), encoding="utf-8")
     # Round two (his ask, 2026-11-05: "continue designing the rest of the home page"): E's opening kept,
     # three ways for everything under the film.
     rest = lambda r: " data-counts" + f' data-rest="{r}"'

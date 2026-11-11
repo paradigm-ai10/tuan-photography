@@ -1432,6 +1432,7 @@
   function turnOver(list, { spread = 2500, dur = 760, P = 1100 } = {}) {
     return finished(list.flatMap((q) => {
       const u = rnd(), delay = 250 + spread * (u + Math.sin(2 * Math.PI * u) / (2 * Math.PI));
+      q.at = performance.now() + delay + dur / 2;
       return [
         q.el.animate([
           { transform: `perspective(${P}px) rotateY(0deg)`, easing: 'cubic-bezier(0.5, 0, 0.9, 0.6)' },
@@ -1452,23 +1453,59 @@
       n: 39, shape: 'wall', mark: 'fade', markHold: 300, markFade: 1200, markWait: 1150, hold: 500, mosaic: true, markGone: true, still: true,
       layout() { return wallPlan(); },
       enter() { return flyIn({ from: { x: W * 0.6, y: -H * 0.6 }, rank: diagonalRank(tiles.map((t) => t.slot)), spread: 800, dur: 1600, tilt: 0, scale: 0.94 }); },
+      // his note, 2026-11-11 (night): "while it was flipping the video behind should already start". The film starts as the
+      // first card turns and runs, slowly, behind the wall; each card's back is the film itself, drawn live from it, so a
+      // card turns over onto a piece of Barcelona that is already moving. When the last has turned the wall IS the film,
+      // and it lifts off the real one beneath, which is at the very same frame.
       async leave(api) {
-        await liveStill(api);
-        const under = document.createElement('div');   // what is behind a card while it is edge-on
+        const v = api.video;
+        if (!v || !v.videoWidth) {   // no film to draw from: the stills, as before
+          await liveStill(api);
+          tiles.forEach((t) => { const s = document.createElement('span'); s.className = 'hr-tile__slice'; paintFrame(s, FULL(), t.slot.x, t.slot.y); t.el.appendChild(s); t.back = s; });
+          await turnOver(tiles, { spread: 2500, P: narrow() ? 700 : 1100 });
+          if (api.isDone()) return;
+          await filmAtOnce(api);
+          return;
+        }
+        const f = frameFit(FULL()), VW = v.videoWidth, VH = v.videoHeight, dpr = Math.min(2, window.devicePixelRatio || 1);
+        v.currentTime = 0; v.playbackRate = 0.32;   // slowly while the cards turn, so its first shot is still young when the wall is whole
+        v.play().catch(() => {});
+        // behind a card while it is edge-on: the same film, in shadow
+        const under = document.createElement('canvas');
         under.className = 'hr-flock__back hr-flock__under';
-        paintFrame(under, FULL(), 0, 0);   // the same frame, in shadow: a card edge-on shows what its back is about to
+        under.width = VW; under.height = VH;
+        Object.assign(under.style, { inset: 'auto', left: f.ox.toFixed(1) + 'px', top: f.oy.toFixed(1) + 'px', width: f.dw.toFixed(1) + 'px', height: f.dh.toFixed(1) + 'px' });
+        const uctx = under.getContext('2d');
+        uctx.drawImage(v, 0, 0);
         layer.insertBefore(under, layer.firstChild);
         under.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 300, easing: 'ease', fill: 'both' });
         tiles.forEach((t) => {
-          const s = document.createElement('span');
-          s.className = 'hr-tile__slice';
-          paintFrame(s, FULL(), t.slot.x, t.slot.y);
-          t.el.appendChild(s);
-          t.back = s;
+          const c = document.createElement('canvas');
+          c.className = 'hr-tile__slice hr-tile__live';
+          c.width = Math.max(2, Math.round(t.slot.w * dpr)); c.height = Math.max(2, Math.round(t.slot.h * dpr));
+          t.el.appendChild(c);
+          t.back = c; t.ctx = c.getContext('2d');
+          t.src = [(t.slot.x - f.ox) / f.dw * VW, (t.slot.y - f.oy) / f.dh * VH, t.slot.w / f.dw * VW, t.slot.h / f.dh * VH];
         });
-        await turnOver(tiles, { spread: 2500, P: narrow() ? 700 : 1100 });
-        if (api.isDone()) return;
-        await filmAtOnce(api);
+        let on = true;
+        const draw = (now) => {
+          if (!on) return;
+          uctx.drawImage(v, 0, 0);
+          for (const t of tiles) if (now >= t.at - 80) t.ctx.drawImage(v, t.src[0], t.src[1], t.src[2], t.src[3], 0, 0, t.back.width, t.back.height);
+          requestAnimationFrame(draw);
+        };
+        const turned = turnOver(tiles, { spread: 2500, P: narrow() ? 700 : 1100 });
+        requestAnimationFrame(draw);
+        await turned;
+        if (api.isDone()) { on = false; return; }
+        // the wall is the film now: the paper goes unseen, and the wall lifts off the real film, frame for frame the same
+        const paper = document.querySelector('.hr-load__paper');
+        if (paper) { paper.style.transition = 'none'; paper.style.opacity = '0'; void paper.offsetWidth; }
+        html.classList.add('hr-out');
+        api.speed(0.32, 1, 1500);   // and up to its own pace once every card has turned
+        await layer.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 900, easing: 'ease-in-out', fill: 'both' }).finished.catch(() => {});
+        on = false;
+        api.mosaicDone = true;
       }
     },
     // 41 around the name, then Barcelona (the timing, fixed): as before until the name has gone. Barcelona then comes up
@@ -1718,20 +1755,24 @@
       layout() { return V['camille-code'].layout.call(this); },
       async enter(api) {
         const { s0, r, a, h, l, o, n, p, d, c } = this.geo(), s1 = s0 * d / r, g = c + s1, u = d + s1;
-        const eZ = bez(0.72, 0, 0.11, 1), TAU = 760, TC = 4400, Z0 = 2600, T = Z0 + 3000, K = 1 - Math.exp(-TC / TAU);
+        const eZ = bez(0.72, 0, 0.11, 1), TAU = 760, TC = 4400, Z0 = 2600, ZD = 4300, T = Z0 + ZD, K = 1 - Math.exp(-TC / TAU);
+        // his note (night, 2026-11-11): the growing should last longer, and the pictures should still be moving while it grows.
+        // So the zoom takes 4.3 s (it was 3), and under the quick arrival every column keeps a second, slow travel that only
+        // comes to rest when the zoom is nearly done: columns 1, 3, 5 still rising, 2 and 4 still sinking, slower and slower.
+        const A = 2 * h, TS = Z0 + 0.88 * ZD;
         const P = tiles.map((t) => {
           const k = t.slot.k, col = Math.floor(k / 5), row = k % 5, v = col - 2, w = row - 2, f = col % 2 === 1, R = Math.abs(v);
           return {
             el: t.el,
-            y0: f ? -(n - o + (4 - row) * p + R * a + 20) : n + row * p + R * a + 20,
+            y0: f ? -(n - o + (4 - row) * p + R * a + 20) : n + row * p + R * a + 20, way: f ? -1 : 1,
             xs: 0.5 * (W - r) + v * l, ys: 0.5 * (H - a) + w * h - (f ? o : 0),
             xf: 0.5 * (W - d) + v * u, yf: 0.5 * (H - c) + w * g - (f ? 0.5 * g : 0)
           };
         });
         const set = (ms) => {
           const e = ms >= TC ? 1 : (1 - Math.exp(-ms / TAU)) / K;   // every card comes in at speed and slows: no creep, no rush
-          const i = eZ(cl01((ms - Z0) / (T - Z0))), k = (r + (d - r) * i) / r;
-          for (const q of P) q.el.style.transform = `translate3d(${(q.xs + (q.xf - q.xs) * i).toFixed(2)}px, ${(q.ys + (q.yf - q.ys) * i + q.y0 * (1 - e)).toFixed(2)}px, 0) scale(${k.toFixed(5)})`;
+          const i = eZ(cl01((ms - Z0) / (T - Z0))), k = (r + (d - r) * i) / r, slow = A * Math.pow(1 - cl01(ms / TS), 2);
+          for (const q of P) q.el.style.transform = `translate3d(${(q.xs + (q.xf - q.xs) * i).toFixed(2)}px, ${(q.ys + (q.yf - q.ys) * i + q.y0 * (1 - e) + q.way * slow).toFixed(2)}px, 0) scale(${k.toFixed(5)})`;
           if (tv) tv.style.transform = `scale(${(1.5 - 0.5 * i).toFixed(4)})`;
           return i;
         };
@@ -1751,6 +1792,10 @@
       leave() { return Promise.resolve(); }
     }
   });
+
+  // 48 Camille's move on a black ground, as hers, the name in white (his "what if ... try this", 2026-11-11). The ground is the
+  //    page's (data-ground="dark" on <html>, home.css); the move is camille-flow's, to the frame.
+  V['camille-night'] = { ...V['camille-flow'] };
 
   /* ---------------- ready, run ---------------- */
   const spec = V[NAME];

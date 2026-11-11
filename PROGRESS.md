@@ -2,22 +2,20 @@
 
 *Last updated: 2026-11-11, afternoon, handoff note. Read this first, then check the files to confirm.*
 
-## 接下來 Next up (2026-11-11, night)
+## 接下來 Next up (2026-11-11, late night)
 
 Home opening: his TUAN PHOTOGRAPHY loader stays; the open question is the move from it into the home page (the
-Barcelona film). All versions are specs in `design 2/new/home-redesign/flock.js`, pages `c-flock-<name>.html` from
-`FLOCKS` in `tools/home_redesign.py`. This round on the list (http://localhost:8642/journey/new/home-redesign/):
-1 `cards-flip`, 2 `around-reveal`, 3 `tilted-rows`, 4 `camille-code`, 5 `tilted-lift`, 6 `tilted-part`,
-7 `tilted-flat-flip`, 8 `camille-flow`. Their parents (mosaic 4, luxe-around 3, tilted 5, camille-measured) and the
-intermediate four are under Earlier rounds with his scores and notes.
-- Read ALL of his review each time, including "Anything else" at the end of `read_reviews.py`'s output (he asked).
-- His standing notes: TUAN arrives slowly (home.css `[data-flock]` letter timings, home.js `FILL` 1400 and the 2900 ms
-  wait in `openF`), holds, fades slowly, and is gone before any photograph; no pause and no flash between "Barcelona
-  whole" and "Barcelona moving" (`filmAtOnce`: paper gone at once, the film drawn on a canvas over the wall, then a
-  slow hand-over; `liveStill` for the cards' backs); tilted wall rows move sideways with a fast-to-slow ramp.
-- `camille-code` is her site's own script to the number (`Load.resizeA`, `Load.fx` in her `static/js/d.js`);
-  `camille-flow` is his tuning of it (exponential arrival, zoom from 2.6 s).
-First move next time: `python3 tools/read_reviews.py ideas/reviews/home-redesign.json --manifest "design 2/new/home-redesign/review-manifest.json" --since 2026-11-11` and read to the end.
+Barcelona film). Specs are in `design 2/new/home-redesign/flock.js`, pages `c-flock-<name>.html` from `FLOCKS` in
+`tools/home_redesign.py`. This round on the list (http://localhost:8642/journey/new/home-redesign/), four left:
+1 `cards-flip` (the film now runs behind the cards, each back drawn live from it), 2 `around-reveal` (**5, Love it**),
+3 `camille-flow` (zoom 4.3 s, columns still drifting through it), 4 `camille-night` (the same on black, the name white;
+`data-ground="dark"` on the page, `FLOCK_DARK` in the generator: his own "try this", an exception to light-only).
+He flagged Reject on every tilted-wall version (`tilted-rows`, `-lift`, `-part`, `-flat-flip`) and on `camille-code`;
+they are crossed out under Earlier rounds. Do not bring the tilted wall back unless he asks.
+- Read ALL of his review each time, to the end ("Anything else", and the flags: `flag: reject`).
+- Standing notes: TUAN arrives slowly, holds, fades slowly, gone before any photograph; no pause and no flash between
+  "Barcelona whole" and "Barcelona moving"; the film should already be running while a wall gives way to it.
+First move next time: `python3 tools/read_reviews.py ideas/reviews/home-redesign.json --manifest "design 2/new/home-redesign/review-manifest.json" --since 2026-11-11`, read to the end; if he settles on one, ask before making it the live home page.
 
 ## 現在狀態 Where things stand
 

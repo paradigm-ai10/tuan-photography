@@ -164,6 +164,14 @@
     "en": "From your third notes: three tilted endings, Camille flowing in",
     "zh": "照你第三次的筆記：傾斜牆的三種結尾、Camille 流進來"
    }
+  },
+  {
+   "id": "notes-1111d",
+   "built": "2026-11-11T17:28",
+   "title": {
+    "en": "From your fourth notes: Camille on black",
+    "zh": "照你第四次的筆記：黑底的 Camille"
+   }
   }
  ],
  "items": [
@@ -1420,8 +1428,8 @@
     "zh": "卡片翻過去"
    },
    "desc": {
-    "en": "The fix of The cards turn. TUAN PHOTOGRAPHY now holds a moment, fades slowly and is gone before any photograph comes in. Each photograph then turns right over like a card (it used to swing back the way it came, which is what looked odd), one after another in no order, few at first, many in the middle, few at the end. Barcelona moves the moment the last card lands.",
-    "zh": "「照片像卡片翻面」的修正版。TUAN PHOTOGRAPHY 先停一下、慢慢淡出，完全消失後照片才進來。接著每張照片像卡片一樣整個翻過去（原本是轉到一半又轉回來，所以看起來怪），不按順序一張接一張，開頭少、中間多、結尾少。最後一張翻好的那一刻，巴塞隆納就開始動。"
+    "en": "TUAN holds, fades slowly and is gone before any photograph comes. Each photograph then turns right over like a card, in no order. New: the film starts behind the wall as the first card turns, so every card turns over onto a piece of Barcelona that is already moving; when the last has turned, the wall is the film.",
+    "zh": "TUAN 先停一下、慢慢淡出，完全消失後照片才進來。接著每張照片像卡片一樣不按順序整個翻過去。這次改的：第一張卡片開始翻的時候，影片就已經在牆後面播了，所以每張卡片翻過來都是一塊正在動的巴塞隆納；最後一張翻好，整面牆就是影片。"
    },
    "still": {
     "wait": 3500
@@ -1455,7 +1463,8 @@
    },
    "still": {
     "wait": 3500
-   }
+   },
+   "out": true
   },
   {
    "href": "c-flock-camille-code.html",
@@ -1470,7 +1479,8 @@
    },
    "still": {
     "wait": 3500
-   }
+   },
+   "out": true
   },
   {
    "href": "c-flock-tilted-lift.html",
@@ -1485,7 +1495,8 @@
    },
    "still": {
     "wait": 3500
-   }
+   },
+   "out": true
   },
   {
    "href": "c-flock-tilted-part.html",
@@ -1500,7 +1511,8 @@
    },
    "still": {
     "wait": 3500
-   }
+   },
+   "out": true
   },
   {
    "href": "c-flock-tilted-flat-flip.html",
@@ -1515,21 +1527,37 @@
    },
    "still": {
     "wait": 3500
-   }
+   },
+   "out": true
   },
   {
    "href": "c-flock-camille-flow.html",
    "group": "notes-1111c",
    "title": {
-    "en": "Camille's move, flowing in",
-    "zh": "Camille 的轉場，流進來"
+    "en": "Camille's move, flowing in, longer",
+    "zh": "Camille 的轉場，流進來，加長版"
    },
    "desc": {
-    "en": "From your note on 4. Her layout, brick columns and zoom, but the cards no longer creep in and then rush (that was the odd acceleration): every card comes in already at speed and slows into place, the far ones later, so the wall flows in. And the photographs keep moving about two and a half seconds before the middle one starts to come out, where hers has about one.",
-    "zh": "照你在 4 寫的筆記。她的排列、像磚牆的欄位和放大都一樣，但卡片不再先慢慢爬再突然加速（就是你說怪的地方）：每張卡片一進來就有速度，再慢慢停到位置上，遠的晚一點到，整面牆像流進來。而且照片會多流動一會兒，大約兩秒半，中間那張才開始放大；她的大約只有一秒。"
+    "en": "Camille's layout, brick columns and zoom, on your paper. Every card comes in already at speed and slows into place. New from your note: the part where the photographs grow and Barcelona takes the stage is longer (4.3 s, was 3), and the photographs keep moving all through it, three columns still rising and two still sinking, slower and slower, until the zoom is nearly done.",
+    "zh": "Camille 的排列、像磚牆的欄位和放大，用你的紙色。每張卡片一進來就有速度，再慢慢停到位置上。照你的筆記改的：照片慢慢變大、巴塞隆納登場的那一段變長了（4.3 秒，原本 3 秒），而且這段時間照片一直還在動：三欄繼續往上、兩欄繼續往下，越來越慢，直到放大快結束才停。"
    },
    "still": {
     "wait": 3500
+   }
+  },
+  {
+   "href": "c-flock-camille-night.html",
+   "group": "notes-1111d",
+   "title": {
+    "en": "Camille's move, on black",
+    "zh": "Camille 的轉場，黑底"
+   },
+   "desc": {
+    "en": "Your \"try this\": the same move as 3, frame for frame, but on a black ground as Camille's is, with TUAN PHOTOGRAPHY and its line in white. Only the opening is black; the film covers it and the page beneath stays light.",
+    "zh": "你說的「試試看」：跟 3 一模一樣的動作，但像 Camille 一樣用黑色背景，TUAN PHOTOGRAPHY 和那條線是白色。只有開場是黑的；影片蓋上去之後，下面的頁面還是淺色。"
+   },
+   "still": {
+    "wait": 4400
    }
   }
  ],
@@ -1609,26 +1637,20 @@
  "ask": {
   "ids": [
    "c-flock-cards-flip",
-   "c-flock-tilted-lift",
-   "c-flock-tilted-part",
-   "c-flock-tilted-flat-flip",
-   "c-flock-camille-flow"
+   "c-flock-camille-flow",
+   "c-flock-camille-night"
   ],
   "question": {
-   "en": "1 has its flash fixed. 5, 6 and 7 are three other endings for the tilted wall (3 is the one you saw). 8 is Camille flowing in. TUAN now arrives more slowly on all of them. Score these five.",
-   "zh": "1 的閃一下修掉了。5、6、7 是傾斜照片牆的另外三種結尾（3 是你看過的那個）。8 是流進來的 Camille。所有版本的 TUAN 都變慢了。請幫這五個打分數。"
+   "en": "Four left. 2 has your 5. 1 now has the film running behind the cards as they turn; 3 is the longer Camille with the photographs still moving; 4 is the same on black. Score 1, 3 and 4.",
+   "zh": "剩下四個。2 你給了 5 分。1 現在卡片翻的時候影片已經在後面播；3 是加長、照片持續在動的 Camille；4 是同一個動作的黑底版。請幫 1、3、4 打分數。"
   }
  },
  "round": {
   "ids": [
    "c-flock-cards-flip",
    "c-flock-around-reveal",
-   "c-flock-tilted-rows",
-   "c-flock-camille-code",
-   "c-flock-tilted-lift",
-   "c-flock-tilted-part",
-   "c-flock-tilted-flat-flip",
-   "c-flock-camille-flow"
+   "c-flock-camille-flow",
+   "c-flock-camille-night"
   ]
  }
 }
