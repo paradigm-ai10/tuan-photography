@@ -231,6 +231,9 @@ FLOCKS = [
     ("tilted", "A tilted wall", "傾斜的照片牆"),
     ("flicker-row", "One place, many photographs", "同一個位置，換過很多張"),
     ("diamond-calm", "The diamond, quietly", "菱形，安靜版"),
+    # the two he kept, exactly (2026-11-11): their moves between his opening and his home page
+    ("exact-mathilde", "Mathilde De Chiara's move, exactly", "照 Mathilde De Chiara 的轉場，一模一樣"),
+    ("exact-camille", "Camille Mormal's move, exactly", "照 Camille Mormal 的轉場，一模一樣"),
 ]
 
 

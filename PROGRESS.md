@@ -4,11 +4,12 @@
 
 ## 接下來 Next up (2026-11-11)
 
-Exact copies of the two references he kept are built and on the home review list as 73 and 74
-(group `copies`, marked Your pick): `copy-mathilde.html` and `copy-camille.html` in `design 2/new/home-redesign/`,
-written by `tools/home_copies.py` (rerun after `data/site.json` changes). First move next time: read his
-scores and notes on 73 and 74 and take the one he chooses further. The Camille copy is dark with a name on the
-photograph, as hers; both break his rules and he was told.
+He corrected the brief: his opening (the line, TUAN, PHOTOGRAPHY) stays exactly as decided; what he is stuck on is the
+move from that opening into his home page (the Barcelona film). So the two references he kept are copied as that move:
+`exact-mathilde` and `exact-camille` in `flock.js` (pages `c-flock-exact-*.html`, from `FLOCKS` in `tools/home_redesign.py`),
+on the review list as 73 and 74, marked Your pick. The standalone whole-site copies (`copy-mathilde.html`,
+`copy-camille.html`, `tools/home_copies.py`) were the wrong reading; kept on disk, off the list.
+First move next time: read his scores on 73 and 74.
 
 ## 現在狀態 Where things stand
 

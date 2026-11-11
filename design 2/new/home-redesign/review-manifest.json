@@ -127,10 +127,10 @@
   },
   {
    "id": "copies",
-   "built": "2026-11-11T15:07",
+   "built": "2026-11-11T15:12",
    "title": {
-    "en": "Exact copies of the two you kept",
-    "zh": "照你留下的兩個，一模一樣做"
+    "en": "The two you kept, their moves exactly, from TUAN to the home page",
+    "zh": "你留下的兩個：從 TUAN 到首頁的轉場，一模一樣照做"
    }
   }
  ],
@@ -1246,33 +1246,33 @@
    }
   },
   {
-   "href": "copy-mathilde.html",
+   "href": "c-flock-exact-mathilde.html",
    "group": "copies",
    "title": {
-    "en": "After Mathilde De Chiara, exactly",
-    "zh": "照 Mathilde De Chiara 一模一樣"
+    "en": "Mathilde De Chiara's move, exactly",
+    "zh": "照 Mathilde De Chiara 的轉場，一模一樣"
    },
    "desc": {
-    "en": "Her home page move for move, with your photographs. Your name rises at the left, the photographs stream in along the diagonal and lock into her diamond, pull apart into one column down the middle, then her four corners: 01 / 36 with the line across, About, the continents, the place, Slider / Grid. The wheel moves the column; Grid shows them all.",
-    "zh": "她的首頁一步一步照做，換成你的照片。名字從左邊升起，照片沿斜線飛進來鎖成她的菱形，再拉開成中間一直列，然後四個角落出現：01 / 36 和橫線、About、各洲、地點、Slider / Grid。滾輪移動那一列；Grid 一次看全部。"
+    "en": "Your opening as it is (the line, TUAN, PHOTOGRAPHY, the name to the corner), then her move exactly: your photographs stream in along the diagonal and lock into her diamond, the diamond pulls apart into one column down the middle, the film stops at the middle of it and grows into your home page.",
+    "zh": "你的開場不變（那條線、TUAN、PHOTOGRAPHY、名字移到角落），接著一模一樣照她的轉場：照片沿斜線飛進來鎖成她的菱形，菱形拉開成中間一直列，影片停在正中間，再放大成你的首頁。"
    },
    "still": {
-    "wait": 5000
+    "wait": 3500
    }
   },
   {
-   "href": "copy-camille.html",
+   "href": "c-flock-exact-camille.html",
    "group": "copies",
    "title": {
-    "en": "After Camille Mormal, exactly",
-    "zh": "照 Camille Mormal 一模一樣"
+    "en": "Camille Mormal's move, exactly",
+    "zh": "照 Camille Mormal 的轉場，一模一樣"
    },
    "desc": {
-    "en": "Her home page move for move, with your photographs. A small percentage counts up, cards pop in across a dark wall, the wall zooms into the middle one until it fills the screen, then Work / About, the country's name, a + at each side, 1 to 8 and eight thumbnails. The wheel shrinks it into a row of tall cards. As hers it is dark and has a name on the photograph; both break your site's rules.",
-    "zh": "她的首頁一步一步照做，換成你的照片。中間小小的百分比數上去，照片一張張跳出來鋪滿深色的牆，牆往中間那張放大直到佔滿畫面，然後 Work / About、國名、兩邊的 +、1 到 8 和八張小圖。滾輪把它縮成一列直的照片。跟她一樣是深色、照片上有字，這兩點違反你網站的規則。"
+    "en": "Your opening as it is, then her move exactly: a wall of photographs the window's shape pops in one by one in no order across the whole screen while it drifts up a little, then the camera goes into the middle one, the film, until it is your home page. On your paper, not her dark ground.",
+    "zh": "你的開場不變，接著一模一樣照她的轉場：一整面照片牆，一張張不按順序跳出來鋪滿畫面、整面微微往上飄，接著鏡頭走進正中間那張（影片），直到它變成你的首頁。用你的紙色，不是她的深色。"
    },
    "still": {
-    "wait": 6000
+    "wait": 3000
    }
   }
  ],
@@ -1351,12 +1351,12 @@
  "words": {},
  "ask": {
   "ids": [
-   "copy-mathilde",
-   "copy-camille"
+   "c-flock-exact-mathilde",
+   "c-flock-exact-camille"
   ],
   "question": {
-   "en": "The two you kept, copied exactly with your photographs. How close are they, and which one would you take further?",
-   "zh": "你留下的兩個，用你的照片一模一樣做出來了。像不像？你想拿哪一個繼續做？"
+   "en": "Your TUAN opening unchanged, then each one's move exactly into your home page. Which move do you want?",
+   "zh": "你的 TUAN 開場不變，接著各照她們的轉場一模一樣進到首頁。你要哪一個？"
   }
  }
 }

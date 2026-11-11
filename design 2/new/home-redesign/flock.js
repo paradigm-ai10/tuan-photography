@@ -983,6 +983,105 @@
     }
   });
 
+  /* ---------------- the two kept, exactly (2026-11-11) ----------------
+     He kept Mathilde De Chiara and Camille Mormal and wants their moves exactly, between his own opening (the line, TUAN,
+     PHOTOGRAPHY, unchanged) and his home page (the Barcelona film). These copy each site's move frame for frame, from
+     recordings of the sites; the ending is his film filling the window. Both are driven frame by frame (transform only). */
+  const E4 = (t) => 1 - Math.pow(1 - t, 4);
+  const EIO = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+  const cl01 = (t) => clamp(t, 0, 1);
+  const frames = (ms, fn) => new Promise((res) => {
+    const t0 = performance.now();
+    const step = (now) => { const t = now - t0; fn(t); if (t < ms && !api_.isDone?.()) requestAnimationFrame(step); else res(); };
+    requestAnimationFrame(step);
+  });
+  Object.assign(V, {
+    // 31 Mathilde De Chiara, exactly: the photographs stream in along the diagonal from the upper right and lock into her
+    //    diamond (a 6 by 6 grid of squares turned 45 degrees, every cell filled); the diamond pulls apart along the diagonal,
+    //    the squares turn straight and grow into one column down the middle with the film at the reading line; then the
+    //    film grows to the whole window and the column runs off above and below it
+    'exact-mathilde': {
+      n: 35, shape: 'square', mark: 'corner', hold: 650, still: true,
+      layout() {
+        const D = Math.min(H * 0.9, W * (narrow() ? 0.92 : 0.56)), p = D / Math.SQRT2 / 6, c = p * 0.87;
+        this.p = p; this.c = c;
+        this.side = narrow() ? Math.min(W * 0.62, H * 0.38) : Math.min(W * 0.218, H * 0.349);
+        const slots = [];
+        for (let k = 0; k < 36; k++) slots.push({ x: W / 2 - c / 2, y: H / 2 - c / 2, w: c, h: c, r: 0, cell: k });
+        return { slots, film: 14 };
+      },
+      cellXY(k) {
+        const u = ((k % 6) - 2.5) * this.p, v = (Math.floor(k / 6) - 2.5) * this.p;
+        return { x: (u - v) / Math.SQRT2, y: (u + v) / Math.SQRT2 };   // from the window's middle
+      },
+      enter() {
+        const far = Math.hypot(W, H) * 0.75;
+        this.d = tiles.map(() => rnd());
+        tiles.forEach((t) => { t.el.style.opacity = '0'; t.el.style.zIndex = t.film ? '3' : '1'; });
+        return frames(2000, (ms) => tiles.forEach((t, i) => {
+          const q = this.cellXY(t.slot.cell), diag = (t.slot.cell % 6) + Math.floor(t.slot.cell / 6);
+          const start = (10 - diag) * 70 + this.d[i] * 220, f = E4(cl01((ms - start) / 900)), k = far * (1 - f) * 0.707 * (0.85 + this.d[i] * 0.3);
+          t.el.style.opacity = ms > start ? '1' : '0';
+          t.el.style.transform = `translate(${(q.x + k).toFixed(1)}px, ${(q.y - k).toFixed(1)}px) rotate(45deg)`;
+        }));
+      },
+      async leave(api) {
+        // the column's order: down the diamond's diagonal; the film keeps its place in it, at the reading line
+        const order = tiles.map((t, i) => i).sort((a, b) => {
+          const A = tiles[a].slot.cell, B = tiles[b].slot.cell;
+          return (Math.floor(A / 6) + A % 6) - (Math.floor(B / 6) + B % 6) || (A % 6) - (B % 6);
+        });
+        const at = []; order.forEach((i, k) => { at[i] = k; });
+        const fi = tiles.findIndex((t) => t.film), mid = at[fi], n = tiles.length;
+        const side = this.side, pitch = side * 1.118, sc = side / this.c;
+        await frames(1500, (ms) => tiles.forEach((t, i) => {
+          const q = this.cellXY(t.slot.cell), k2 = at[i] - mid;
+          const off = k2 * pitch * 0.42, lx = -off * 0.707 + (this.d[i] - 0.5) * 30, ly = off * 0.707;
+          const a = EIO(cl01((ms - (n - at[i]) * 6) / 650));
+          const b = EIO(cl01((ms - 520 - Math.abs(k2) * 14) / 900));
+          let x = q.x + (lx - q.x) * a, y = q.y + (ly - q.y) * a, s = 1 - 0.08 * a;
+          if (b > 0) { x = lx + (0 - lx) * b; y = ly + (k2 * pitch - ly) * b; s = 0.92 + (sc - 0.92) * b; }
+          const r = 45 * (1 - EIO(cl01((ms - 200) / 1000)));
+          t.el.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) rotate(${r.toFixed(2)}deg) scale(${s.toFixed(4)})`;
+        }));
+        if (api.isDone()) return;
+        await api.wait(450); if (api.isDone()) return;
+        // the film's box is now the square at the reading line: hand it to grow(), the rest leave above and below
+        const f = tiles[fi];
+        f.slot = { x: W / 2 - side / 2, y: H / 2 - side / 2, w: side, h: side, r: 0 };
+        Object.assign(f.el.style, { left: f.slot.x + 'px', top: f.slot.y + 'px', width: side + 'px', height: side + 'px', transform: 'none' });
+        const away = tiles.map((t, i) => {
+          if (t.film) return null;
+          const k2 = at[i] - mid, from = `translate(0px, ${(k2 * pitch).toFixed(1)}px) scale(${sc.toFixed(4)})`;
+          return t.el.animate([{ transform: from }, { transform: `translate(0px, ${(k2 * pitch + Math.sign(k2) * H * 0.9).toFixed(1)}px) scale(${sc.toFixed(4)})` }],
+            { duration: 1700, delay: 120, easing: PART, fill: 'both' });
+        }).filter(Boolean);
+        await Promise.all([finished(away), grow(120, 1700)]);
+      }
+    },
+    // 32 Camille Mormal, exactly: a wall of photographs the window's shape, the screen and beyond, one in the middle the
+    //    film; they pop in one by one in no order while the wall drifts up a little; then the camera goes into the middle
+    //    one until the film is the whole window
+    'exact-camille': {
+      n: 48, shape: 'wall', mark: 'fade', markGone: true, hold: 350, still: true,
+      layout() {
+        const cw = narrow() ? W * 0.38 : W * 0.2326, ch = cw * H / W, g = narrow() ? 10 : W * 0.0174;
+        const cols = Math.ceil(W / (cw + g) / 2) * 2 + 1, rows = Math.ceil(H / (ch + g) / 2) * 2 + 1;
+        const x0 = W / 2 - ((cols - 1) / 2) * (cw + g) - cw / 2, y0 = H / 2 - ((rows - 1) / 2) * (ch + g) - ch / 2;
+        const slots = grid(cols, rows, cw, ch, g, x0, y0).slice(0, 49);
+        const film = slots.findIndex((s) => s.col === (cols - 1) / 2 && s.row === (rows - 1) / 2);
+        return { slots, film };
+      },
+      enter() {
+        const T = 1700;
+        layer.animate([{ transform: 'translateY(18px)' }, { transform: 'none' }], { duration: T + 350, easing: 'linear', fill: 'both' });
+        return finished(tiles.map((t) => t.el.animate([{ opacity: 0 }, { opacity: 1 }],
+          { duration: 180, delay: t.film ? T * 0.55 : rnd() * T, easing: 'linear', fill: 'both' })));
+      },
+      leave() { const f = tiles.find((t) => t.film); return growLayer(f.slot, 1500); }
+    }
+  });
+
   /* ---------------- ready, run ---------------- */
   const spec = V[NAME];
   if (!spec) return;
