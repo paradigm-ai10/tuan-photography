@@ -140,6 +140,14 @@
     "en": "Camille's move, refined",
     "zh": "Camille 的轉場，精修"
    }
+  },
+  {
+   "id": "notes-1111",
+   "built": "2026-11-11T16:28",
+   "title": {
+    "en": "From your notes on the four",
+    "zh": "照你在這四個上寫的筆記做"
+   }
   }
  ],
  "items": [
@@ -1327,6 +1335,66 @@
    "still": {
     "wait": 1500
    }
+  },
+  {
+   "href": "c-flock-mosaic-flip.html",
+   "group": "notes-1111",
+   "title": {
+    "en": "The cards turn",
+    "zh": "照片像卡片翻面"
+   },
+   "desc": {
+    "en": "From your note on The photographs become the film. TUAN stays a moment longer and fades slowly while the wall flies in. Then, instead of spreading from the middle, the photographs turn over like cards one by one in no order, each showing its own piece of Barcelona on its back, until the wall is the frame and it moves.",
+    "zh": "照你在「照片變成影片」的筆記。TUAN 多停一下、慢慢淡出，同時照片牆飛進來。接著不是從中間往外擴散，而是每張照片像卡片一樣、不按順序一張張翻面，背面是巴塞隆納的一小塊，翻完就是整個畫面，然後影片開始動。"
+   },
+   "still": {
+    "wait": 3000
+   }
+  },
+  {
+   "href": "c-flock-around-barcelona.html",
+   "group": "notes-1111",
+   "title": {
+    "en": "Around the name, then Barcelona",
+    "zh": "先圍著名字，再露出巴塞隆納"
+   },
+   "desc": {
+    "en": "From your note on Around the name. Your photographs rise round TUAN (no astrophotography now); TUAN fades; Barcelona comes up behind, where the name was, under the whole ring; then the photographs go, the inner ones first, leaving Barcelona, which moves.",
+    "zh": "照你在「先圍著名字」的筆記。照片圍著 TUAN 升起（拿掉了星空和極光）；TUAN 淡出後，巴塞隆納從名字的位置浮現在整圈照片後面；接著照片由內往外消失，留下巴塞隆納，影片開始動。"
+   },
+   "still": {
+    "wait": 3000
+   }
+  },
+  {
+   "href": "c-flock-tilted-moving.html",
+   "group": "notes-1111",
+   "title": {
+    "en": "The tilted wall, moving",
+    "zh": "會動的傾斜照片牆"
+   },
+   "desc": {
+    "en": "From your note on A tilted wall. Every column now slides along the tilted plane, alternate ones up and down, at a pace you can see, from the moment they rise until the wall swings flat; the film's column glides to rest just as the camera goes in. (In the first one the slide was hidden under the rise, which is why it looked still.)",
+    "zh": "照你在「傾斜的照片牆」的筆記。每一欄現在都在傾斜的平面上滑動，相鄰兩欄一上一下，速度看得出來，從照片升起一直到牆轉平；影片那一欄在鏡頭進去前剛好慢慢停下。（原本那版的滑動被照片升起的動畫蓋掉了，所以看起來不動。）"
+   },
+   "still": {
+    "wait": 3000
+   }
+  },
+  {
+   "href": "c-flock-camille-slow.html",
+   "group": "notes-1111",
+   "title": {
+    "en": "Camille, slower into the zoom",
+    "zh": "Camille，慢一點進入放大"
+   },
+   "desc": {
+    "en": "From your note on Camille measured again. The field flows for longer before the camera starts in, and the camera starts so gently that you cannot tell where the flowing ends and the zoom begins.",
+    "zh": "照你在「重新量過的 Camille」的筆記。照片流動得更久才開始放大，而且放大起步非常輕，看不出流動在哪裡結束、放大在哪裡開始。"
+   },
+   "still": {
+    "wait": 3000
+   }
   }
  ],
  "tags": [
@@ -1404,14 +1472,14 @@
  "words": {},
  "ask": {
   "ids": [
-   "c-flock-camille-measured",
-   "c-flock-luxe-around",
-   "c-flock-mosaic",
-   "c-flock-tilted"
+   "c-flock-mosaic-flip",
+   "c-flock-around-barcelona",
+   "c-flock-tilted-moving",
+   "c-flock-camille-slow"
   ],
   "question": {
-   "en": "Your latest choices: Camille's move measured again (77), Around the name then the wall (65), The photographs become the film (56) and A tilted wall (70). Score them side by side.",
-   "zh": "你最新留下的選擇：重新量過的 Camille 轉場（77）、先圍著名字再成一面牆（65）、照片變成影片（56）、傾斜的照片牆（70）。並排比較後打分數。"
+   "en": "Four new ones from your notes, each beside the one it came from. Score them.",
+   "zh": "照你的筆記做的四個新版本，都放在原本那版旁邊。請打分數。"
   }
  },
  "round": {
@@ -1419,7 +1487,11 @@
    "c-flock-camille-measured",
    "c-flock-luxe-around",
    "c-flock-mosaic",
-   "c-flock-tilted"
+   "c-flock-tilted",
+   "c-flock-mosaic-flip",
+   "c-flock-around-barcelona",
+   "c-flock-tilted-moving",
+   "c-flock-camille-slow"
   ]
  }
 }

@@ -237,6 +237,11 @@ FLOCKS = [
     ("camille-refined", "Camille Mormal's move, refined", "Camille Mormal 的轉場，精修版"),
     ("camille-true", "Camille Mormal's move, as she does it", "Camille Mormal 的轉場，照她實際的做法"),
     ("camille-measured", "Camille Mormal's move, measured again", "Camille Mormal 的轉場，重新量過"),
+    # from his notes on that round (2026-11-11)
+    ("mosaic-flip", "The cards turn", "照片像卡片翻面"),
+    ("around-barcelona", "Around the name, then Barcelona", "先圍著名字，再露出巴塞隆納"),
+    ("tilted-moving", "The tilted wall, moving", "會動的傾斜照片牆"),
+    ("camille-slow", "Camille, slower into the zoom", "Camille，慢一點進入放大"),
 ]
 
 

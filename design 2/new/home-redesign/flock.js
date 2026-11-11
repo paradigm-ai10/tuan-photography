@@ -1214,6 +1214,155 @@
         });
       },
       leave() { return Promise.resolve(); }
+    },
+
+    /* ---- from his notes on this round (2026-11-11) ---- */
+    // 36 the cards turn (his note on "The photographs become the film": TUAN went out too fast; flips not from the middle
+    //    outward but at random, every photograph a card turned over to show its piece of Barcelona). The name stays a beat
+    //    and leaves slowly; the wall flies in as before; then the cards turn over one by one in no order, each showing on its
+    //    back its own piece of the film's first frame, until the wall is the frame, and it moves.
+    'mosaic-flip': {
+      n: 39, shape: 'wall', mark: 'stay', hold: 700, mosaic: true, still: true,
+      layout() { return wallPlan(); },
+      async enter(api) {
+        await api.wait(600); if (api.isDone()) return;
+        const mark = document.querySelector('.hr-load__mark');
+        if (mark) mark.style.transition = 'opacity 1.8s ease';   // the name goes slowly, while the wall comes
+        html.classList.add('hr-markgone');
+        await flyIn({ from: { x: W * 0.6, y: -H * 0.6 }, rank: diagonalRank(tiles.map((t) => t.slot)), spread: 800, dur: 1600, tilt: 0, scale: 0.94 });
+      },
+      async leave(api) {
+        tiles.forEach((t) => {
+          const s = document.createElement('span');
+          s.className = 'hr-tile__slice';
+          paintFrame(s, FULL(), t.slot.x, t.slot.y);
+          t.el.appendChild(s);
+          t.back = s;
+        });
+        const SPREAD = 2300, HALF = 280;
+        await finished(tiles.map((t) => {
+          const delay = rnd() * SPREAD;
+          setTimeout(() => { if (!api.isDone()) { t.back.style.opacity = '1'; } }, delay + HALF);   // the back shows at the edge-on moment
+          return t.el.animate([
+            { transform: 'perspective(900px) rotateY(0deg)' },
+            { transform: 'perspective(900px) rotateY(90deg)', offset: 0.5, easing: 'cubic-bezier(0.23, 1, 0.32, 1)' },
+            { transform: 'perspective(900px) rotateY(0deg)' }
+          ], { duration: HALF * 2, delay, easing: 'cubic-bezier(0.55, 0, 0.75, 0.25)', fill: 'both' });
+        }));
+        if (api.isDone()) return;
+        await filmTakesOver(api);
+      }
+    },
+    // 37 around the name, then Barcelona (his note on "Around the name": after TUAN fades, Barcelona comes out behind;
+    //    no astrophotography). The photographs rise round the name; the name fades; the film's first frame comes up behind
+    //    the ring where the name was and spreads under it all; the ring's photographs then go, the inner ones first,
+    //    leaving Barcelona, which moves.
+    'around-barcelona': {
+      n: 11, shape: 'wall', mark: 'stay', hold: 500, mosaic: true, still: true,
+      pick: (ps) => ps.filter((p) => !/milky-way|aurora/.test(p.querySelector('img').dataset.src)),
+      layout() {
+        const cols = narrow() ? 2 : 4, rows = narrow() ? 5 : 3;
+        const slots = hairGrid(cols, rows, HAIR(), FULL());
+        const midRow = Math.floor(rows / 2), keep = narrow() ? [0, 1] : [1, 2];
+        slots.forEach((s) => { s.late = s.row === midRow && keep.includes(s.col); });
+        return { slots, film: slots.findIndex((s) => s.late && s.col === keep[1]) };
+      },
+      async enter(api) {
+        const ring = tiles.filter((t) => !t.slot.late);
+        const key = (t) => { const c = centre(t.slot); return (Math.atan2(c.y - H / 2, c.x - W / 2) + Math.PI * 0.75 + Math.PI * 2) % (Math.PI * 2); };
+        ring.sort((a, b) => key(a) - key(b));
+        await rise(ring, { step: 140, dur: 1100 }); if (api.isDone()) return;
+        await api.wait(400); if (api.isDone()) return;
+        const mark = document.querySelector('.hr-load__mark');
+        if (mark) mark.style.transition = 'opacity 1.4s ease';
+        html.classList.add('hr-markgone');
+        await api.wait(900); if (api.isDone()) return;
+        // Barcelona comes up behind, where the name was, then under the whole ring
+        const back = this.back = document.createElement('div');
+        back.className = 'hr-flock__back';
+        paintFrame(back, FULL(), 0, 0);
+        layer.insertBefore(back, layer.firstChild);
+        await back.animate([{ opacity: 0, transform: 'scale(1.03)' }, { opacity: 1, transform: 'none' }], { duration: 1600, easing: 'cubic-bezier(0.23, 1, 0.32, 1)', fill: 'both' }).finished.catch(() => {});
+      },
+      async leave(api) {
+        const ring = tiles.filter((t) => !t.slot.late && !t.film);
+        const d = ring.map((t) => dist(centre(t.slot), { x: W / 2, y: H / 2 })), m = Math.max(...d);
+        await finished(ring.map((t, i) => t.el.animate([{ opacity: 1, transform: 'none' }, { opacity: 0, transform: tf(0, 0, 0, 1.02) }],
+          { duration: 900, delay: (d[i] / m) * 700, easing: 'ease', fill: 'both' })));
+        if (api.isDone()) return;
+        await filmTakesOver(api, 700, 0);
+      }
+    },
+    // 38 the tilted wall, moving (his note on "A tilted wall", which he loves: the photographs should move in the tilted
+    //    plane, not lie still). Every column slides along the plane, alternate ones up and down, at a pace you can see,
+    //    from the moment they rise and on through the swing; the film's column glides too and comes to rest just as the
+    //    wall swings flat, so the camera lands on it.
+    'tilted-moving': {
+      n: 48, shape: 'wall', mark: 'fade', markGone: true, hold: 1800, still: true,
+      layout() { return V.tilted.layout.call(this); },
+      TILT: 'rotateX(46deg) rotateZ(-32deg)',
+      enter() {
+        const p = this.plane, el = this.el = document.createElement('div');
+        el.className = 'hr-flock__plane';
+        el.style.left = p.x + 'px'; el.style.top = p.y + 'px'; el.style.width = p.w + 'px'; el.style.height = p.h + 'px';
+        el.style.transform = `perspective(1600px) translate(0px, 0px) scale(1.08) ${this.TILT}`;
+        tiles.forEach((t) => el.appendChild(t.el));
+        layer.appendChild(el);
+        // the rise first: a later animation that replaces would hide the slides beneath it (why the first tilted wall lay still)
+        const risen = rise(tiles, { step: 150, dur: 1300, order: tiles.map((t) => t.slot.col) });
+        const ch = tiles[0].slot.h, fc = tiles.find((t) => t.film).slot.col;
+        // the others: a steady slide, about a quarter of a photograph a second, on and on
+        this.drift = tiles.map((t) => t.slot.col === fc ? null : t.el.animate([{ transform: 'none' }, { transform: tf(0, (t.slot.col % 2 ? -1 : 1) * ch * 5, 0, 1) }],
+          { duration: 20000, easing: 'linear', fill: 'both', composite: 'add' }));
+        // the film's column: the same pace at first, slowing to rest by the time the wall swings flat
+        this.FD = ch * 0.75; this.FT = 4200;
+        this.fdrift = tiles.filter((t) => t.slot.col === fc).map((t) => t.el.animate([{ transform: 'none' }, { transform: tf(0, -this.FD, 0, 1) }],
+          { duration: this.FT, easing: 'cubic-bezier(0.25, 0.1, 0.25, 1)', fill: 'both', composite: 'add' }));
+        return risen;
+      },
+      leave() {
+        this.fdrift.forEach((a) => a.finish());
+        const f = tiles.find((t) => t.film).slot, k = W / f.w, p = this.plane;
+        const fx = p.x + f.x + f.w / 2 - W / 2, fy = p.y + f.y - this.FD + f.h / 2 - H / 2;
+        setTimeout(() => { if (!html.classList.contains('hr-shown')) html.classList.add('hr-out'); }, 1600);
+        return this.el.animate([
+          { transform: `perspective(1600px) translate(0px, 0px) scale(1.08) ${this.TILT}` },
+          { transform: `perspective(1600px) translate(${(-fx * k).toFixed(1)}px, ${(-fy * k).toFixed(1)}px) scale(${k.toFixed(4)}) rotateX(0deg) rotateZ(0deg)` }
+        ], { duration: 3000, easing: PART, fill: 'both' }).finished.catch(() => {});
+      }
+    },
+    // 39 Camille, slower into the zoom (his note on "measured again": the change from flowing to the middle one is too
+    //    fast). The field flows for longer before the camera starts in, and the camera starts so gently that the flow and
+    //    the zoom cannot be told apart at the seam.
+    'camille-slow': {
+      n: 48, shape: 'wall', mark: 'fade', markGone: true, markWait: 450, hold: 0, still: true,
+      layout() { return V['camille-measured'].layout.call(this); },
+      async enter() {
+        const few = chosen.slice(0, 9).map((p) => p.querySelector('img').src);
+        tiles.forEach((t, i) => { if (!t.film) t.el.querySelector('img').src = few[(i * 4 + t.slot.row) % few.length]; });
+        const { cw, ch, pitch } = this.g, f = tiles.find((t) => t.film), fc = centre(f.slot);
+        const pop = tiles.map((t) => (t.film ? 1000 : 100 + 1400 * Math.pow(rnd(), 0.7)));
+        const T = 4200, Z0 = 1900, Z1 = T, D = H * 0.55, k = Math.max(W / cw, H / ch);
+        const flow = (x) => 1 - Math.pow(1 - x, 2.2);                       // the drift slows over the whole move, never stops short
+        const zoomE = (x) => (x < 0.5 ? 16 * Math.pow(x, 5) : 1 - Math.pow(-2 * x + 2, 5) / 2) * 0.35 + (0.5 - Math.cos(Math.PI * x) / 2) * 0.65;   // a very soft start
+        layer.style.transformOrigin = '0 0';
+        tiles.forEach((t) => { t.el.style.opacity = '0'; });
+        let out = false;
+        await frames(T, (ms) => {
+          const drift = D * (1 - flow(cl01(ms / T)));
+          const lev = EIO(cl01((ms - 800) / 1800));
+          tiles.forEach((t, i) => {
+            t.el.style.transform = `translate(0px, ${(drift + (t.slot.col % 2 ? 0.5 * pitch : 0) * (1 - lev)).toFixed(1)}px)`;
+            t.el.style.opacity = cl01((ms - pop[i]) / 110).toFixed(3);
+          });
+          const u = zoomE(cl01((ms - Z0) / (Z1 - Z0)));
+          const s = Math.pow(k, u), cx = fc.x, cy = fc.y + drift;
+          const px = cx + (W / 2 - cx) * u, py = cy + (H / 2 - cy) * u;
+          layer.style.transform = `translate(${(px - cx * s).toFixed(2)}px, ${(py - cy * s).toFixed(2)}px) scale(${s.toFixed(5)})`;
+          if (!out && u > 0.35) { out = true; html.classList.add('hr-out'); }
+        });
+      },
+      leave() { return Promise.resolve(); }
     }
   });
 
