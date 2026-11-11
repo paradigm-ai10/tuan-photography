@@ -1171,6 +1171,49 @@
         const f = tiles.find((t) => t.film);
         return growLayer(f.slot, 480);
       }
+    },
+    // 35 Camille Mormal, measured on the graphics chip (2026-11-11; the earlier recordings ran her WebGL in software and
+    //    misled). Arrival: a sparse field drifts up slowly, decelerating over the whole move, prints appearing one by one
+    //    in no order across about a second, alternate columns half a row apart and sliding level. The zoom: long (1.5 s),
+    //    begun while the field still drifts, the scale moving in equal ratios (a camera flying in, not a box growing),
+    //    easing in and out, the film carried to the middle as it grows, until it is the window.
+    'camille-measured': {
+      n: 48, shape: 'wall', mark: 'fade', markGone: true, markWait: 450, hold: 0, still: true,
+      layout() {
+        const cw = narrow() ? W * 0.38 : W * 0.2326, ch = cw * H / W, g = narrow() ? 10 : W * 0.018;
+        const cols = narrow() ? 3 : 7, rows = 7, mc = (cols - 1) / 2, mr = 3;   // rows above and below: the field covers the screen as it drifts
+        const x0 = W / 2 - mc * (cw + g) - cw / 2, y0 = H / 2 - mr * (ch + g) - ch / 2;
+        this.g = { cw, ch, g, pitch: ch + g };
+        const slots = grid(cols, rows, cw, ch, g, x0, y0);
+        return { slots, film: slots.findIndex((s) => s.col === mc && s.row === mr) };
+      },
+      async enter() {
+        const few = chosen.slice(0, 9).map((p) => p.querySelector('img').src);
+        tiles.forEach((t, i) => { if (!t.film) t.el.querySelector('img').src = few[(i * 4 + t.slot.row) % few.length]; });
+        const { cw, ch, pitch } = this.g, f = tiles.find((t) => t.film), fc = centre(f.slot);
+        const pop = tiles.map((t) => (t.film ? 900 : 100 + 1250 * Math.pow(rnd(), 0.7)));   // sparse at first, filling as it drifts
+        const T = 2600, Z0 = 1050, Z1 = T, D = H * 0.45, k = Math.max(W / cw, H / ch);
+        const oC = (x) => 1 - Math.pow(1 - x, 3);
+        layer.style.transformOrigin = '0 0';
+        tiles.forEach((t) => { t.el.style.opacity = '0'; });
+        let out = false;
+        await frames(T, (ms) => {
+          const drift = D * (1 - oC(cl01(ms / T)));
+          const lev = EIO(cl01((ms - 700) / 1500));
+          tiles.forEach((t, i) => {
+            const y = drift + (t.slot.col % 2 ? 0.5 * pitch : 0) * (1 - lev);
+            t.el.style.transform = `translate(0px, ${y.toFixed(1)}px)`;
+            t.el.style.opacity = cl01((ms - pop[i]) / 110).toFixed(3);
+          });
+          // the camera: scale in equal ratios, the film's centre carried to the window's
+          const u = EIO(cl01((ms - Z0) / (Z1 - Z0)));
+          const s = Math.pow(k, u), cx = fc.x, cy = fc.y + drift;
+          const px = cx + (W / 2 - cx) * u, py = cy + (H / 2 - cy) * u;
+          layer.style.transform = `translate(${(px - cx * s).toFixed(2)}px, ${(py - cy * s).toFixed(2)}px) scale(${s.toFixed(5)})`;
+          if (!out && u > 0.35) { out = true; html.classList.add('hr-out'); }
+        });
+      },
+      leave() { return Promise.resolve(); }
     }
   });
 

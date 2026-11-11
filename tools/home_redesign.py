@@ -236,6 +236,7 @@ FLOCKS = [
     ("exact-camille", "Camille Mormal's move, exactly", "照 Camille Mormal 的轉場，一模一樣"),
     ("camille-refined", "Camille Mormal's move, refined", "Camille Mormal 的轉場，精修版"),
     ("camille-true", "Camille Mormal's move, as she does it", "Camille Mormal 的轉場，照她實際的做法"),
+    ("camille-measured", "Camille Mormal's move, measured again", "Camille Mormal 的轉場，重新量過"),
 ]
 
 

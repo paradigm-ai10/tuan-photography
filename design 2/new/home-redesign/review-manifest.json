@@ -135,7 +135,7 @@
   },
   {
    "id": "camille-refined",
-   "built": "2026-11-11T16:05",
+   "built": "2026-11-11T16:40",
    "title": {
     "en": "Camille's move, refined",
     "zh": "Camille 的轉場，精修"
@@ -1312,6 +1312,21 @@
    "still": {
     "wait": 1300
    }
+  },
+  {
+   "href": "c-flock-camille-measured.html",
+   "group": "camille-refined",
+   "title": {
+    "en": "Camille Mormal's move, measured again",
+    "zh": "Camille Mormal 的轉場，重新量過"
+   },
+   "desc": {
+    "en": "Her site recorded again on the graphics chip (the earlier recordings ran her WebGL in software and misled me). The arrival: a sparse field of your photographs across the whole screen drifts up slowly, prints appearing one by one for about a second, alternate columns half a row apart sliding level. The zoom: long, about 1.5 s, starting while the field still drifts, the camera flying in at an even pace rather than a box growing, the film carried to the middle until it is your home page.",
+    "zh": "用顯示晶片重新錄她的網站（之前的錄影用軟體跑她的 WebGL，讓我看錯了）。照片進來：你的照片稀疏地散在整個畫面，整片慢慢往上飄，大約一秒內一張張冒出來，相鄰兩欄錯開半排再滑到同一高度。放大：長，大約 1.5 秒，畫面還在飄時就開始，像鏡頭等速飛進去而不是一個框變大，影片一路被帶到正中間，直到變成你的首頁。"
+   },
+   "still": {
+    "wait": 1500
+   }
   }
  ],
  "tags": [
@@ -1389,11 +1404,11 @@
  "words": {},
  "ask": {
   "ids": [
-   "c-flock-camille-true"
+   "c-flock-camille-measured"
   ],
   "question": {
-   "en": "Camille's move as she actually does it (76). Compare it with her site and score it.",
-   "zh": "照 Camille 實際做法的轉場（76）。跟她的網站對照看，再打分數。"
+   "en": "Camille's arrival and zoom, measured again (77). Is this her move?",
+   "zh": "Camille 的照片進場和放大，重新量過（77）。這樣是她的感覺嗎？"
   }
  }
 }
