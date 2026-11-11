@@ -132,6 +132,14 @@
     "en": "The two you kept, their moves exactly, from TUAN to the home page",
     "zh": "你留下的兩個：從 TUAN 到首頁的轉場，一模一樣照做"
    }
+  },
+  {
+   "id": "camille-refined",
+   "built": "2026-11-11T15:40",
+   "title": {
+    "en": "Camille's move, refined",
+    "zh": "Camille 的轉場，精修"
+   }
   }
  ],
  "items": [
@@ -1274,6 +1282,21 @@
    "still": {
     "wait": 3000
    }
+  },
+  {
+   "href": "c-flock-camille-refined.html",
+   "group": "camille-refined",
+   "title": {
+    "en": "Camille Mormal's move, refined",
+    "zh": "Camille Mormal 的轉場，精修版"
+   },
+   "desc": {
+    "en": "From her site recorded every tenth of a second: her wall is one continuous gesture, not pops, a pause and a zoom. Each column streams up into place at its own speed, the outer ones from farther, all slowing into one level grid while the camera eases in; the zoom into the film starts before the last column lands, so nothing stops until the film is your home page. About 1.6 s from TUAN to the film, where 74 takes 3.5.",
+    "zh": "把她的網站每 0.1 秒錄下來看：她的照片牆是一個連續的動作，不是跳出來、停住、再放大。每一欄以自己的速度往上流進位置，外圈從更遠的地方來，一起慢下來排成整齊的牆，鏡頭同時微微推近；最後一欄還沒停穩，鏡頭就開始走進影片，一路不停直到變成你的首頁。從 TUAN 到影片約 1.6 秒，74 要 3.5 秒。"
+   },
+   "still": {
+    "wait": 800
+   }
   }
  ],
  "tags": [
@@ -1351,12 +1374,11 @@
  "words": {},
  "ask": {
   "ids": [
-   "c-flock-exact-mathilde",
-   "c-flock-exact-camille"
+   "c-flock-camille-refined"
   ],
   "question": {
-   "en": "Your TUAN opening unchanged, then each one's move exactly into your home page. Which move do you want?",
-   "zh": "你的 TUAN 開場不變，接著各照她們的轉場一模一樣進到首頁。你要哪一個？"
+   "en": "Camille's move, refined: one continuous gesture from TUAN into your home page. Compare it with 74 (Compare two) and score it.",
+   "zh": "Camille 的轉場精修版：從 TUAN 到首頁一個連續的動作。可以跟 74 並排比較（Compare two），再打分數。"
   }
  }
 }

@@ -234,6 +234,7 @@ FLOCKS = [
     # the two he kept, exactly (2026-11-11): their moves between his opening and his home page
     ("exact-mathilde", "Mathilde De Chiara's move, exactly", "照 Mathilde De Chiara 的轉場，一模一樣"),
     ("exact-camille", "Camille Mormal's move, exactly", "照 Camille Mormal 的轉場，一模一樣"),
+    ("camille-refined", "Camille Mormal's move, refined", "Camille Mormal 的轉場，精修版"),
 ]
 
 

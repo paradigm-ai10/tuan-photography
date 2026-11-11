@@ -1079,6 +1079,52 @@
           { duration: 180, delay: t.film ? T * 0.55 : rnd() * T, easing: 'linear', fill: 'both' })));
       },
       leave() { const f = tiles.find((t) => t.film); return growLayer(f.slot, 1500); }
+    },
+    // 33 Camille Mormal, refined (2026-11-11, his "not sophisticated enough"): from her site recorded every 0.1 s, the
+    //    wall is one continuous gesture, not pops, a pause and a zoom. Each column streams up into place at its own speed,
+    //    the outer ones from farther, all slowing into one level grid; the camera eases in a little as they settle, and the
+    //    zoom into the film begins before the last column has landed, so nothing ever stops until the film is the window.
+    //    No random order, no hold: the motion points at the middle the whole way (apple-design: hint in the direction of
+    //    travel, continuous motion, critically damped landings).
+    'camille-refined': {
+      n: 48, shape: 'wall', mark: 'fade', markGone: true, markWait: 260, hold: 0, still: true,
+      layout() {
+        const cw = narrow() ? W * 0.38 : W * 0.2326, ch = cw * H / W, g = narrow() ? 10 : W * 0.0174;
+        const cols = Math.ceil(W / (cw + g) / 2) * 2 + 1, rows = Math.ceil(H / (ch + g) / 2) * 2 + 1;
+        const mc = (cols - 1) / 2, mr = (rows - 1) / 2;
+        // how far each column travels: the middle least, the outer ones farther, so the eye is led to the middle
+        this.travel = [...Array(cols)].map((_, c) => H * (0.5 + 0.22 * Math.abs(c - mc)) + (c % 2 ? H * 0.06 : 0));
+        const extra = Math.ceil(Math.max(...this.travel) / (ch + g));   // rows above the window, to fill the gap they leave
+        const x0 = W / 2 - mc * (cw + g) - cw / 2, y0 = H / 2 - mr * (ch + g) - ch / 2;
+        const slots = [];
+        for (let r = -extra; r < rows; r++) for (let c = 0; c < cols; c++) slots.push({ x: x0 + c * (cw + g), y: y0 + r * (ch + g), w: cw, h: ch, r: 0, col: c, row: r });
+        return { slots, film: slots.findIndex((s) => s.col === mc && s.row === mr) };
+      },
+      async enter(api) {
+        // the wall in a plane, so the camera can ease in while the layer itself does the zoom
+        const plane = this.plane = document.createElement('div');
+        plane.className = 'hr-flock__plane';
+        Object.assign(plane.style, { left: '0px', top: '0px', width: W + 'px', height: H + 'px' });
+        tiles.forEach((t) => plane.appendChild(t.el));
+        layer.appendChild(plane);
+        const COL = 1250, mc = (Math.max(...tiles.map((t) => t.slot.col))) / 2;
+        const LAND = 'cubic-bezier(0.16, 1, 0.3, 1)';   // a long, soft deceleration: the columns land, they do not stop
+        plane.animate([{ transform: 'scale(0.9)' }, { transform: 'none' }], { duration: COL + 450, easing: LAND, fill: 'both' });
+        const anims = tiles.flatMap((t) => {
+          const c = t.slot.col, d = this.travel[c], delay = Math.abs(c - mc) * 55;
+          return [
+            t.el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 380, delay, easing: 'linear', fill: 'both' }),
+            t.el.animate([{ transform: `translate(0px, ${d.toFixed(1)}px)` }, { transform: 'none' }], { duration: COL, delay, easing: LAND, fill: 'both' })
+          ];
+        });
+        // the zoom starts while the columns are still settling: return early, the leave overlaps them
+        await api.wait(COL * 0.62);
+        this.rest = finished(anims);
+      },
+      leave() {
+        const f = tiles.find((t) => t.film);
+        return Promise.all([growLayer(f.slot, 1350), this.rest]);
+      }
     }
   });
 
@@ -1111,7 +1157,7 @@
     place(plan);
     html.classList.add('hr-arrive');   // the moment the tiles start (stills and films are timed from it)
     if (spec.mark === 'corner') { markToCorner(1000); await api.wait(560); if (api.isDone()) return; }   // the name is on its way before any tile comes
-    else if (spec.mark === 'fade') { html.classList.add('hr-markgone'); await api.wait(700); if (api.isDone()) return; }   // a wall edge to edge would cover it: the name simply goes, and only then do the photographs rise
+    else if (spec.mark === 'fade') { html.classList.add('hr-markgone'); await api.wait(spec.markWait ?? 700); if (api.isDone()) return; }   // a wall edge to edge would cover it: the name simply goes, and only then do the photographs rise
     else if (spec.mark === 'stay') { await api.wait(300); if (api.isDone()) return; }   // a beat with the name alone first
     else if (spec.mark === 'line') {
       const line = document.querySelector('.hr-load__line');
