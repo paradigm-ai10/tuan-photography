@@ -1641,8 +1641,8 @@
    "c-flock-camille-night"
   ],
   "question": {
-   "en": "Four left. 2 has your 5. 1 now has the film running behind the cards as they turn; 3 is the longer Camille with the photographs still moving; 4 is the same on black. Score 1, 3 and 4.",
-   "zh": "剩下四個。2 你給了 5 分。1 現在卡片翻的時候影片已經在後面播；3 是加長、照片持續在動的 Camille；4 是同一個動作的黑底版。請幫 1、3、4 打分數。"
+   "en": "The two glitches are fixed: on 1 the photographs no longer pop onto the screen before they fly, and on 3 and 4 the edge no longer jumps just before Barcelona fills the screen. Score 1, 3 and 4.",
+   "zh": "兩個 glitch 都修好了：1 的照片不會再先突然出現才飛進來；3 和 4 在巴塞隆納鋪滿前，邊緣不會再跳一下。請幫 1、3、4 打分數。"
   }
  },
  "round": {

@@ -1452,7 +1452,20 @@
     'cards-flip': {
       n: 39, shape: 'wall', mark: 'fade', markHold: 300, markFade: 1200, markWait: 1150, hold: 500, mosaic: true, markGone: true, still: true,
       layout() { return wallPlan(); },
-      enter() { return flyIn({ from: { x: W * 0.6, y: -H * 0.6 }, rank: diagonalRank(tiles.map((t) => t.slot)), spread: 800, dur: 1600, tilt: 0, scale: 0.94 }); },
+      // his note (late night): "there's a glitch when the image starts coming in". With the shared flight, the photographs
+      // nearest the corner began ON the screen, so a handful appeared on the spot in one frame before they moved. Here every
+      // one starts beyond the top or the right edge, and is unseen until it is under way.
+      enter() {
+        const rank = diagonalRank(tiles.map((t) => t.slot));
+        return finished(tiles.map((t, i) => {
+          const far = Math.min((W - t.slot.x + 40) / (W * 0.6), (t.slot.y + t.slot.h + 40) / (H * 0.6)) * (1.05 + 0.25 * rnd());
+          return t.el.animate([
+            { opacity: 0, transform: tf(W * 0.6 * far, -H * 0.6 * far, 0, 0.94) },
+            { opacity: 1, offset: 0.1 },
+            { opacity: 1, transform: tf(0, 0, 0, 1) }
+          ], { duration: 1700, delay: rank[i] * 800, easing: OUT, fill: 'both' });
+        }));
+      },
       // his note, 2026-11-11 (night): "while it was flipping the video behind should already start". The film starts as the
       // first card turns and runs, slowly, behind the wall; each card's back is the film itself, drawn live from it, so a
       // card turns over onto a piece of Barcelona that is already moving. When the last has turned the wall IS the film,
@@ -1632,15 +1645,15 @@
         tiles.forEach((t) => { t.el.style.transformOrigin = '0 0'; });
         set(0);
         tiles.forEach((t) => { t.el.style.opacity = '1'; });
-        let seeked = false, out = false;
+        let seeked = false;
         await frames(T, (ms) => {
           const { prog, i } = set(ms);
           if (!seeked && prog >= 0.4) {   // the page's own film waits at the frame the card will have reached
             seeked = true;
             if (tv && api.video) { try { api.video.currentTime = tv.currentTime + (T - ms) / 1000 * (tv.playbackRate || 0.3); } catch (e) { /* not yet seekable */ } }
           }
-          if (!out && i > 0.985) { out = true; html.classList.add('hr-out'); }
         });
+        html.classList.add('hr-out');   // only now: the card covers the window, so the ground can go unseen
       },
       leave() { return Promise.resolve(); }
     }
@@ -1779,15 +1792,15 @@
         tiles.forEach((t) => { t.el.style.transformOrigin = '0 0'; });
         set(0);
         tiles.forEach((t) => { t.el.style.opacity = '1'; });
-        let seeked = false, out = false;
+        let seeked = false;
         await frames(T, (ms) => {
           const i = set(ms);
           if (!seeked && ms >= Z0) {
             seeked = true;
             if (tv && api.video) { try { api.video.currentTime = tv.currentTime + (T - ms) / 1000 * (tv.playbackRate || 0.3); } catch (e) { /* not yet seekable */ } }
           }
-          if (!out && i > 0.985) { out = true; html.classList.add('hr-out'); }
         });
+        html.classList.add('hr-out');   // only now: the card covers the window, so the ground can go unseen
       },
       leave() { return Promise.resolve(); }
     }
@@ -1825,6 +1838,8 @@
     const plan = spec.layout();
     place(plan);
     html.classList.add('hr-arrive');   // the moment the tiles start (stills and films are timed from it)
+    // decode every photograph now, while the name is still up: a photograph decoded on the frame it first shows drops that frame
+    const decoded = Promise.all(tiles.map((t) => { const im = t.el.querySelector('img'); return im && im.decode ? im.decode().catch(() => {}) : null; }));
     if (spec.mark === 'corner') { markToCorner(1000); await api.wait(560); if (api.isDone()) return; }   // the name is on its way before any tile comes
     else if (spec.mark === 'fade') {
       if (spec.markHold) { await api.wait(spec.markHold); if (api.isDone()) return; }   // the whole name, alone, a moment longer (his note: it went too fast)
@@ -1840,6 +1855,7 @@
       html.classList.add('hr-rowopen');
     }
     if (!spec.mosaic && tv) { tv.playbackRate = 0.3; tv.play().catch(() => {}); }   // the live tile: the film, small, in slow motion
+    await Promise.race([decoded, api.wait(600)]); if (api.isDone()) return;
     await spec.enter(api); if (api.isDone()) return;
     if (!spec.still) {   // the hold breathes: the formation drifts up a little, and eases back as the film grows, so the end lands square
       const T = spec.hold + 1900;
