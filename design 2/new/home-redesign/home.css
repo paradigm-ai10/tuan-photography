@@ -575,9 +575,10 @@ html.hr-js .hr-qdoor.hr-in { transition-delay: calc(var(--i, 0) * 70ms); }
 [data-ground="dark"] .hr-load__line { background: var(--on-night); }
 [data-ground="dark"] .hr-tile { background: color-mix(in oklch, var(--on-night) 8%, var(--night)); }
 .hr-flock__plane { position: absolute; transform-origin: 50% 50%; will-change: transform; }   /* tilted: the wall laid back in space */
-.hr-flock__back { position: absolute; inset: 0; background-repeat: no-repeat; opacity: 0; }
+.hr-flock__back { position: absolute; inset: 0; background-repeat: no-repeat; opacity: 0; }   /* band: the whole first frame behind the band, opened out at the end */
 .hr-flock__under { filter: brightness(0.8); }   /* cards-flip: behind a card while it turns, the frame itself in shadow */
-.hr-flock__row { position: absolute; left: 0; top: 0; will-change: transform; }   /* tilted-rows: one row of the wall, sliding along the plane */   /* band: the whole first frame behind the band, opened out at the end */
+.hr-flock__row { position: absolute; left: 0; top: 0; will-change: transform; }   /* tilted-rows: one row of the wall, sliding along the plane */
+.hr-flock__ride { position: absolute; left: 0; top: 0; will-change: transform; }   /* camille-true: one card's column slide, a layer of its own */
 [data-flock] .hr-load__paper { transition: none; }
 /* his note, 2026-11-11: "all of the TUAN comes too fast, slower TUAN". The letters rise more slowly and further apart,
    PHOTOGRAPHY follows later and more slowly; home.js draws the line in 1.4 s and waits for all of it (FLOCK_NAME). */

@@ -172,6 +172,14 @@
     "en": "From your fourth notes: Camille on black",
     "zh": "照你第四次的筆記：黑底的 Camille"
    }
+  },
+  {
+   "id": "notes-1111e",
+   "built": "2026-11-11T17:58",
+   "title": {
+    "en": "From your fifth notes: new versions beside the old, each in white and black",
+    "zh": "照你第五次的筆記：新版本放在舊的旁邊，每個都有白底和黑底"
+   }
   }
  ],
  "items": [
@@ -1424,8 +1432,8 @@
    "href": "c-flock-cards-flip.html",
    "group": "notes-1111b",
    "title": {
-    "en": "The cards turn over",
-    "zh": "卡片翻過去"
+    "en": "The cards turn over (white)",
+    "zh": "卡片翻過去（白底）"
    },
    "desc": {
     "en": "TUAN holds, fades slowly and is gone before any photograph comes. Each photograph then turns right over like a card, in no order. New: the film starts behind the wall as the first card turns, so every card turns over onto a piece of Barcelona that is already moving; when the last has turned, the wall is the film.",
@@ -1439,8 +1447,8 @@
    "href": "c-flock-around-reveal.html",
    "group": "notes-1111b",
    "title": {
-    "en": "Around the name, then Barcelona, at once",
-    "zh": "圍著名字，巴塞隆納馬上出來"
+    "en": "Around the name, then Barcelona, at once (white)",
+    "zh": "圍著名字，巴塞隆納馬上出來（白底）"
    },
    "desc": {
     "en": "The fix of Around the name, then Barcelona. From the first glimpse of Barcelona in the two middle places to the whole picture is now under a second (it was nearly four), and the film is already running from that first glimpse, so there is no pause before it moves.",
@@ -1534,8 +1542,8 @@
    "href": "c-flock-camille-flow.html",
    "group": "notes-1111c",
    "title": {
-    "en": "Camille's move, flowing in, longer",
-    "zh": "Camille 的轉場，流進來，加長版"
+    "en": "Camille's move, flowing in, longer (white)",
+    "zh": "Camille 的轉場，流進來，加長版（白底）"
    },
    "desc": {
     "en": "Camille's layout, brick columns and zoom, on your paper. Every card comes in already at speed and slows into place. New from your note: the part where the photographs grow and Barcelona takes the stage is longer (4.3 s, was 3), and the photographs keep moving all through it, three columns still rising and two still sinking, slower and slower, until the zoom is nearly done.",
@@ -1549,8 +1557,8 @@
    "href": "c-flock-camille-night.html",
    "group": "notes-1111d",
    "title": {
-    "en": "Camille's move, on black",
-    "zh": "Camille 的轉場，黑底"
+    "en": "Camille's move, flowing in, longer (black)",
+    "zh": "Camille 的轉場，流進來，加長版（黑底）"
    },
    "desc": {
     "en": "Your \"try this\": the same move as 3, frame for frame, but on a black ground as Camille's is, with TUAN PHOTOGRAPHY and its line in white. Only the opening is black; the film covers it and the page beneath stays light.",
@@ -1558,6 +1566,81 @@
    },
    "still": {
     "wait": 4400
+   }
+  },
+  {
+   "href": "c-flock-cards-slow.html",
+   "group": "notes-1111e",
+   "title": {
+    "en": "The cards, coming in slower (white)",
+    "zh": "卡片翻面，慢一點進來（白底）"
+   },
+   "desc": {
+    "en": "A new version beside 1, which is left as it was. The only change: the photographs take longer to come in (each flies for 2.5 s instead of 1.7, and they arrive over 1.3 s instead of 0.8). The flips and the film behind them are the same.",
+    "zh": "放在 1 旁邊的新版本，1 維持原樣。唯一的改變：照片進來得比較慢（每張飛 2.5 秒，原本 1.7 秒；全部到齊的時間拉長到 1.3 秒，原本 0.8 秒）。翻面和後面在播的影片都一樣。"
+   },
+   "still": {
+    "wait": 3500
+   }
+  },
+  {
+   "href": "c-flock-cards-slow-night.html",
+   "group": "notes-1111e",
+   "title": {
+    "en": "The cards, coming in slower (black)",
+    "zh": "卡片翻面，慢一點進來（黑底）"
+   },
+   "desc": {
+    "en": "The same as 5, on a black ground with TUAN PHOTOGRAPHY in white.",
+    "zh": "跟 5 一樣，黑色背景，TUAN PHOTOGRAPHY 是白色。"
+   },
+   "still": {
+    "wait": 3500
+   }
+  },
+  {
+   "href": "c-flock-around-night.html",
+   "group": "notes-1111e",
+   "title": {
+    "en": "Around the name, then Barcelona (black)",
+    "zh": "圍著名字，再露出巴塞隆納（黑底）"
+   },
+   "desc": {
+    "en": "Your 5-star version (2), unchanged, on a black ground with TUAN PHOTOGRAPHY in white.",
+    "zh": "你給 5 分的那個（2），動作完全不變，換成黑色背景、白色的 TUAN PHOTOGRAPHY。"
+   },
+   "still": {
+    "wait": 3500
+   }
+  },
+  {
+   "href": "c-flock-camille-true.html",
+   "group": "notes-1111e",
+   "title": {
+    "en": "Camille, closer to hers (white)",
+    "zh": "Camille，更像她的（白底）"
+   },
+   "desc": {
+    "en": "A new one beside 3 and 4, made to feel as smooth as her site. Her own timings and curves again, exactly (one 5-second move). Each card's motion is now run by the browser's graphics layer instead of being recalculated by script on every frame, so it cannot stutter; the cards stay sharp as they grow; and the film never freezes at the end, because the page's film is already showing before the card is taken away.",
+    "zh": "放在 3、4 旁邊的新版本，目標是跟她的網站一樣順。時間和速度曲線完全回到她的（一個 5 秒的連續動作）。每張卡片的動作現在交給瀏覽器的繪圖層去跑，不再由程式每一格重新計算，所以不會頓；卡片放大時維持清晰；結尾影片不會卡一下，因為頁面本身的影片先開始播，才把卡片拿掉。"
+   },
+   "still": {
+    "wait": 3500
+   }
+  },
+  {
+   "href": "c-flock-camille-true-night.html",
+   "group": "notes-1111e",
+   "title": {
+    "en": "Camille, closer to hers (black)",
+    "zh": "Camille，更像她的（黑底）"
+   },
+   "desc": {
+    "en": "The same as 8, on a black ground as hers is, with TUAN PHOTOGRAPHY in white. This is the closest to her site.",
+    "zh": "跟 8 一樣，像她一樣用黑色背景，TUAN PHOTOGRAPHY 是白色。這是最接近她網站的一版。"
+   },
+   "still": {
+    "wait": 3500
    }
   }
  ],
@@ -1636,13 +1719,15 @@
  "words": {},
  "ask": {
   "ids": [
-   "c-flock-cards-flip",
-   "c-flock-camille-flow",
-   "c-flock-camille-night"
+   "c-flock-cards-slow",
+   "c-flock-cards-slow-night",
+   "c-flock-around-night",
+   "c-flock-camille-true",
+   "c-flock-camille-true-night"
   ],
   "question": {
-   "en": "The two glitches are fixed: on 1 the photographs no longer pop onto the screen before they fly, and on 3 and 4 the edge no longer jumps just before Barcelona fills the screen. Score 1, 3 and 4.",
-   "zh": "兩個 glitch 都修好了：1 的照片不會再先突然出現才飛進來；3 和 4 在巴塞隆納鋪滿前，邊緣不會再跳一下。請幫 1、3、4 打分數。"
+   "en": "Five new ones, each beside the version it came from (1 to 4 are untouched): the cards coming in slower in white and black (5, 6), your 5-star one on black (7), and Camille closer to hers in white and black (8, 9). Score these five.",
+   "zh": "五個新版本，都放在原本那版旁邊（1 到 4 沒有動）：卡片慢一點進來的白底和黑底（5、6）、你給 5 分那個的黑底（7）、更像 Camille 的白底和黑底（8、9）。請幫這五個打分數。"
   }
  },
  "round": {
@@ -1650,7 +1735,12 @@
    "c-flock-cards-flip",
    "c-flock-around-reveal",
    "c-flock-camille-flow",
-   "c-flock-camille-night"
+   "c-flock-camille-night",
+   "c-flock-cards-slow",
+   "c-flock-cards-slow-night",
+   "c-flock-around-night",
+   "c-flock-camille-true",
+   "c-flock-camille-true-night"
   ]
  }
 }

@@ -1810,6 +1810,82 @@
   //    page's (data-ground="dark" on <html>, home.css); the move is camille-flow's, to the frame.
   V['camille-night'] = { ...V['camille-flow'] };
 
+  /* ---------------- from his fifth notes (2026-11-11, 17:52) ----------------
+     His rule from here on: every correction is a NEW version beside the old, never an edit of it, so he can trace the
+     progress. And, in Anything else: "everyone should get a black and white version", so each of these has a twin whose
+     loading screen is black (data-ground="dark" on the page, FLOCK_DARK in the generator); the specs are shared.
+     · "comes in a bit slower" (the cards): cards-slow, cards-slow-night
+     · around the name (his 5): around-night is the same move on black
+     · "Camille's is smoother ... generate another one that mimics Camille's more": camille-true, camille-true-night */
+  // 49 / 50 the cards, coming in more slowly: the same as cards-flip but the photographs take their time to arrive
+  V['cards-slow'] = {
+    ...V['cards-flip'],
+    enter() {
+      const rank = diagonalRank(tiles.map((t) => t.slot));
+      return finished(tiles.map((t, i) => {
+        const far = Math.min((W - t.slot.x + 40) / (W * 0.6), (t.slot.y + t.slot.h + 40) / (H * 0.6)) * (1.05 + 0.25 * rnd());
+        return t.el.animate([
+          { opacity: 0, transform: tf(W * 0.6 * far, -H * 0.6 * far, 0, 0.94) },
+          { opacity: 1, offset: 0.1 },
+          { opacity: 1, transform: tf(0, 0, 0, 1) }
+        ], { duration: 2500, delay: rank[i] * 1300, easing: OUT, fill: 'both' });   // was 1.7 s each over 0.8 s: now 2.5 s each over 1.3 s
+      }));
+    }
+  };
+  V['cards-slow-night'] = { ...V['cards-slow'] };
+  // 51 around the name, then Barcelona, on black
+  V['around-night'] = { ...V['around-reveal'] };
+  // 52 / 53 Camille, closer to hers. What made hers smoother than camille-flow and camille-night, and what this does:
+  //    · her timings and curves exactly again (one 5 s move; columns close with cubic-bezier(.8, 0, .1, 1) over 3.25 s,
+  //      the zoom cubic-bezier(.72, 0, .11, 1) from 2 s to 5 s), not my longer, re-timed flow;
+  //    · her site draws on the graphics chip, so it never misses a frame. Here every card's motion is handed to the
+  //      browser's compositor as two plain animations (a column slide on a wrapper, the zoom on the card), instead of
+  //      being recomputed by script on every frame, so script can no longer make it stutter;
+  //    · her cards stay sharp as they grow. The cards are laid out at twice their size from larger files and shown at
+  //      half, so they are still sharp at twice the scale;
+  //    · her picture never freezes at the end. The film in the middle card keeps playing while the page's own film
+  //      starts beneath it, and the card is removed only once that one is showing a frame (handover: 'live').
+  V['camille-true'] = {
+    n: 24, shape: 'wall', mark: 'fade', markGone: true, markHold: 300, markFade: 1000, markWait: 0, hold: 0, still: true, big: true, handover: 'live',
+    S() { return narrow() ? 1.5 : 2; },
+    geo() { return V['camille-code'].geo.call(this); },
+    layout() {
+      const { r, a } = this.geo(), S = this.S(), slots = [];
+      for (let k = 0; k < 25; k++) slots.push({ x: 0, y: 0, w: r * S, h: a * S, r: 0, k });
+      return { slots, film: 12 };
+    },
+    async enter(api) {
+      const { s0, r, a, h, l, o, n, p, d, c } = this.geo(), s1 = s0 * d / r, g = c + s1, u = d + s1, S = this.S(), T = 5000;
+      const Z = 'cubic-bezier(0.72, 0, 0.11, 1)', A = 'cubic-bezier(0.8, 0, 0.1, 1)';
+      const zooms = tiles.map((t) => {
+        const k = t.slot.k, col = Math.floor(k / 5), row = k % 5, v = col - 2, w = row - 2, f = col % 2 === 1, R = Math.abs(v);
+        const y0 = f ? -(n - o + (4 - row) * p + R * a + 20) : n + row * p + R * a + 20;
+        const xs = 0.5 * (W - r) + v * l, ys = 0.5 * (H - a) + w * h - (f ? o : 0), xf = 0.5 * (W - d) + v * u, yf = 0.5 * (H - c) + w * g - (f ? 0.5 * g : 0);
+        const ride = document.createElement('div');   // the column's slide, on its own layer
+        ride.className = 'hr-flock__ride';
+        layer.appendChild(ride);
+        ride.appendChild(t.el);
+        t.el.style.transformOrigin = '0 0';
+        const small = `translate3d(${xs.toFixed(2)}px, ${ys.toFixed(2)}px, 0) scale(${(1 / S).toFixed(5)})`;
+        ride.animate([{ transform: `translate3d(0, ${y0.toFixed(1)}px, 0)` }, { transform: 'translate3d(0, 0, 0)' }], { duration: T * 0.65, easing: A, fill: 'both' });
+        const z = t.el.animate([
+          { transform: small },
+          { transform: small, offset: 0.4, easing: Z },
+          { transform: `translate3d(${xf.toFixed(2)}px, ${yf.toFixed(2)}px, 0) scale(${(d / r / S).toFixed(5)})` }
+        ], { duration: T, fill: 'both' });
+        t.el.style.opacity = '1';
+        return z;
+      });
+      if (tv) tv.animate([{ transform: 'scale(1.5)' }, { transform: 'scale(1.5)', offset: 0.4, easing: Z }, { transform: 'scale(1)' }], { duration: T, fill: 'both' });
+      // the page's own film waits, paused, at the frame the card will have reached when it fills the window
+      setTimeout(() => { if (tv && api.video && !api.isDone()) { try { api.video.currentTime = tv.currentTime + T * 0.6 / 1000 * (tv.playbackRate || 0.3); } catch (e) { /* not yet seekable */ } } }, T * 0.4);
+      await finished(zooms);
+      html.classList.add('hr-out');
+    },
+    leave() { return Promise.resolve(); }
+  };
+  V['camille-true-night'] = { ...V['camille-true'] };
+
   /* ---------------- ready, run ---------------- */
   const spec = V[NAME];
   if (!spec) return;
@@ -1867,7 +1943,20 @@
     await spec.leave(api); if (api.isDone()) return;
     // the film fills the window: the page's own film takes over from the tile's at the same moment of the same frame
     const v = api.video;
-    if (!api.mosaicDone && v && tv) {
+    if (!api.mosaicDone && v && tv && spec.handover === 'live') {
+      // the card's film keeps playing; the page's own starts beneath it, and only when it is showing a frame does the card go.
+      // Nothing is paused and nothing waits on a seek in view, so the picture never holds still at the end.
+      const rate = tv.playbackRate || 0.3;
+      if (Math.abs(v.currentTime - tv.currentTime) > 0.1) {
+        await new Promise((res) => { const on = () => { v.removeEventListener('seeked', on); res(); }; v.addEventListener('seeked', on); v.currentTime = tv.currentTime + 0.05; setTimeout(res, 400); });
+        if (api.isDone()) return;
+      }
+      v.playbackRate = rate;
+      await v.play().catch(() => {});
+      await new Promise((res) => { if (v.requestVideoFrameCallback) v.requestVideoFrameCallback(() => res()); setTimeout(res, 120); });
+      if (api.isDone()) return;
+      api.speed(rate, 1, 1400);
+    } else if (!api.mosaicDone && v && tv) {
       tv.pause();
       const at = tv.currentTime;
       if (Math.abs(v.currentTime - at) > 0.04) await new Promise((res) => { const on = () => { v.removeEventListener('seeked', on); res(); }; v.addEventListener('seeked', on); v.currentTime = at; setTimeout(res, 300); });
