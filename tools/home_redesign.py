@@ -257,10 +257,12 @@ FLOCKS = [
     ("cards-slow", "The cards, coming in slower (white)", "卡片翻面，慢一點進來（白底）"),
     ("cards-slow-night", "The cards, coming in slower (black)", "卡片翻面，慢一點進來（黑底）"),
     ("around-night", "Around the name, then Barcelona (black)", "圍著名字，再露出巴塞隆納（黑底）"),
-    ("camille-true", "Camille, closer to hers (white)", "Camille，更像她的（白底）"),
-    ("camille-true-night", "Camille, closer to hers (black)", "Camille，更像她的（黑底）"),
+    ("camille-smooth", "Camille, closer to hers (white)", "Camille，更像她的（白底）"),
+    ("camille-smooth-night", "Camille, closer to hers (black)", "Camille，更像她的（黑底）"),
 ]
-FLOCK_DARK = {"camille-night", "cards-slow-night", "around-night", "camille-true-night"}   # openings whose loading screen is black, the name white (his "try this", 2026-11-11)
+FLOCK_DARK = {"camille-night", "cards-slow-night", "around-night", "camille-smooth-night"}
+# a name used twice would write one version's page over another's (it happened once, 2026-11-11): stop the build instead
+assert len({m for m, _, _ in FLOCKS}) == len(FLOCKS), "FLOCKS: a version name is used twice"   # openings whose loading screen is black, the name white (his "try this", 2026-11-11)
 
 
 def flock_tiles():

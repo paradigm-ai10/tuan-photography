@@ -1816,7 +1816,8 @@
      loading screen is black (data-ground="dark" on the page, FLOCK_DARK in the generator); the specs are shared.
      · "comes in a bit slower" (the cards): cards-slow, cards-slow-night
      · around the name (his 5): around-night is the same move on black
-     · "Camille's is smoother ... generate another one that mimics Camille's more": camille-true, camille-true-night */
+     · "Camille's is smoother ... generate another one that mimics Camille's more": camille-smooth, camille-smooth-night
+       (not "camille-true": that name belongs to an older version, and reusing it overwrote that page for a few minutes) */
   // 49 / 50 the cards, coming in more slowly: the same as cards-flip but the photographs take their time to arrive
   V['cards-slow'] = {
     ...V['cards-flip'],
@@ -1845,7 +1846,7 @@
   //      half, so they are still sharp at twice the scale;
   //    · her picture never freezes at the end. The film in the middle card keeps playing while the page's own film
   //      starts beneath it, and the card is removed only once that one is showing a frame (handover: 'live').
-  V['camille-true'] = {
+  V['camille-smooth'] = {
     n: 24, shape: 'wall', mark: 'fade', markGone: true, markHold: 300, markFade: 1000, markWait: 0, hold: 0, still: true, big: true, handover: 'live',
     S() { return narrow() ? 1.5 : 2; },
     geo() { return V['camille-code'].geo.call(this); },
@@ -1884,7 +1885,7 @@
     },
     leave() { return Promise.resolve(); }
   };
-  V['camille-true-night'] = { ...V['camille-true'] };
+  V['camille-smooth-night'] = { ...V['camille-smooth'] };
 
   /* ---------------- ready, run ---------------- */
   const spec = V[NAME];

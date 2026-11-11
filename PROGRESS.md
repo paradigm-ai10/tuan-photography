@@ -8,12 +8,12 @@ Home opening: his TUAN PHOTOGRAPHY loader stays; the open question is the move f
 Barcelona film). Specs in `design 2/new/home-redesign/flock.js`, pages `c-flock-<name>.html` from `FLOCKS` in
 `tools/home_redesign.py`. On the list now (http://localhost:8642/journey/new/home-redesign/), nine:
 1 `cards-flip`, 2 `around-reveal` (**5, Love it**), 3 `camille-flow`, 4 `camille-night`, and five new, marked Your pick:
-5 `cards-slow`, 6 `cards-slow-night`, 7 `around-night`, 8 `camille-true`, 9 `camille-true-night`.
+5 `cards-slow`, 6 `cards-slow-night`, 7 `around-night`, 8 `camille-smooth`, 9 `camille-smooth-night`.
 - **His rules from today:** (1) a note on a version is answered with a NEW version beside it, never an edit in place,
   so he can trace the progress; (2) every candidate gets a white and a black twin (`FLOCK_DARK`, `data-ground="dark"`);
   (3) read ALL of his review to the end, "Anything else" and the flags included.
 - He rejected every tilted-wall version and `camille-code`; do not bring the tilted wall back unless he asks.
-- `camille-true` is her site's own timings again, run on the compositor (WAAPI on a wrapper and the card), cards laid
+- `camille-smooth` is her site's own timings again, run on the compositor (WAAPI on a wrapper and the card), cards laid
   out at 2x for sharpness, and `handover: 'live'` in `run()` so the film never freezes at the end.
 - Standing notes: TUAN arrives slowly, holds, fades slowly, gone before any photograph; no pause and no flash between
   "Barcelona whole" and "Barcelona moving"; the film already running while a wall gives way to it.
