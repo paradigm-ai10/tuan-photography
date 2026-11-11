@@ -229,11 +229,19 @@
 
   // the manifest's versions in reading order: by group as the groups are listed, then as written,
   // so the numbers always run straight through each group (a row added at the end still joins its group)
+  // this round: the manifest's "round" ({"groups": [...], "ids": [...]}), else the versions "ask" names.
+  // Every version gets `now`: true for this round's, false for earlier rounds'; all true when there is no
+  // round (or it names nothing on the list). This round comes first and is numbered from 1.
   function ordered(m) {
     const g = new Map(((m && m.groups) || []).map((x, i) => [x.id, i]));
-    return ((m && m.items) || [])
-      .map((it, i) => Object.assign({ id: (it.href || '').replace(/\.html?$/, '') }, it, { _i: i }))
-      .sort((a, b) => (g.has(a.group) ? g.get(a.group) : 1e6) - (g.has(b.group) ? g.get(b.group) : 1e6) || a._i - b._i)
+    const r = (m && m.round) || {}, a = (m && m.ask) || {};
+    const ids = new Set(Array.isArray(r.ids) ? r.ids : []), groups = new Set(Array.isArray(r.groups) ? r.groups : []);
+    if (!ids.size && !groups.size && Array.isArray(a.ids)) a.ids.forEach((id) => ids.add(id));
+    const vs = ((m && m.items) || []).map((it, i) => Object.assign({ id: (it.href || '').replace(/\.html?$/, '') }, it, { _i: i }));
+    vs.forEach((v) => { v.now = ids.has(v.id) || groups.has(v.group); });
+    if (!vs.some((v) => v.now)) vs.forEach((v) => { v.now = true; });
+    return vs
+      .sort((p, q) => (q.now - p.now) || (g.has(p.group) ? g.get(p.group) : 1e6) - (g.has(q.group) ? g.get(q.group) : 1e6) || p._i - q._i)
       .map((it, i) => Object.assign(it, { n: i + 1 }));
   }
 

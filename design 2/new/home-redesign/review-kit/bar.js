@@ -1,12 +1,12 @@
 /* Version Review kit: the bar, the Notes drawer and the marks, on every version page.
 
-   <script src="review-kit/bar.js" data-name="<name>" data-id="…" data-manifest="review-manifest.json"></script>
+   <script src="review-kit/bar.js" data-name="journey" data-id="…" data-manifest="review-manifest.json"></script>
    (needs words.js and store.js first; review.js in a project can load all three).
-   data-name   the review file (set it to the manifest's "name"; default "reviews")
+   data-name   the review file (default: the manifest's name, else "journey")
    data-id     this version's id (default: the file name without .html)
    data-back   "" for a page with no list to go back to
    data-list   the store only, no bar (a list page that draws its own)
-   data-manifest  where the list of versions is (default review-manifest.json beside the page; "" for none)
+   data-manifest  where the list of versions is (default review-manifest.json beside the page)
 
    The tool stays out of the way: a thin bar at the bottom edge that shrinks to a hairline, a
    drawer on the right only when asked (N), and marks dropped on the spot he means (M).
@@ -24,7 +24,7 @@
   let FRAMED = false;
   try { FRAMED = window.top !== window.self; } catch (e) { FRAMED = true; }   // inside Compare's live frame
   const RW = window.ReviewWords;
-  const NAME0 = OPT.name || 'reviews';
+  const NAME0 = OPT.name || 'journey';
   const R = window.ReviewStore.open(NAME0);
   window.Review = window.Review || R;
   if (!LOCAL || FRAMED || 'list' in OPT) return;
@@ -37,7 +37,7 @@
       try {
         arriving = JSON.parse(decodeURIComponent(escape(atob(m[1].replace(/-/g, '+').replace(/_/g, '/')))));
       } catch (e) { arriving = null; }
-      // a page that keeps its own view in the address gets it back before it reads it
+      // a page that keeps its own view in the address (#at=… on the atlas) gets it back before it reads it
       const rest = arriving && arriving.hash ? arriving.hash : '';
       try { history.replaceState(history.state, '', location.pathname + location.search + rest); } catch (e) { /* sandboxed */ }
     }
@@ -67,7 +67,7 @@
   const typing = (el) => el && el.closest && el.closest('input, textarea, select, [contenteditable=""], [contenteditable="true"]');
 
   let M = { items: [], groups: [], tags: [], phrases: [] };   // the manifest
-  let list = [], me = null, idx = -1, groupList = [];
+  let all = [], list = [], me = null, idx = -1, groupList = [];
 
   // ---- the DOM -----------------------------------------------------------------------------------
   const root = document.createElement('div');
@@ -89,7 +89,9 @@
   // ---- the bar -----------------------------------------------------------------------------------
   function drawBar() {
     const it = R.data.items[ID] || {}, s = it.stars || 0;
-    const n = idx + 1, total = list.length;
+    // this round counts on its own; an earlier round's version keeps its place on the whole list
+    const n = me ? me.n : idx + 1, total = me && !me.now ? all.length : list.length;
+    const old = !!(me && !me.now);
     const title = me ? pick(me.title) : (R.data.names || {})[ID] || document.title.split(' · ')[0];
     const back = OPT.back !== '' && list.length;
     // one of the versions Claude asked him to score this round (manifest "ask"), not scored yet
@@ -99,7 +101,7 @@
       <span class="rvk-hair" aria-hidden="true"${n > 0 ? ` data-n="${n}"` : ''}></span>
       <div class="rvk-row">
         ${total > 1 ? `<button type="button" class="rvk-w rvk-prev" data-k="prev">${esc(t('prev'))}</button>` : ''}
-        <span class="rvk-where">${ask ? `<span class="rvk-ask">${esc(t('askTag'))}</span>` : ''}${n > 0 ? `<span class="rvk-n">${esc(t('of', { n, total }))}</span>` : ''}<span class="rvk-title">${esc(title)}</span></span>
+        <span class="rvk-where">${ask ? `<span class="rvk-ask">${esc(t('askTag'))}</span>` : ''}${old ? `<span class="rvk-old">${esc(t('earlierTag'))}</span>` : ''}${n > 0 ? `<span class="rvk-n">${esc(t('of', { n, total }))}</span>` : ''}<span class="rvk-title">${esc(title)}</span></span>
         ${total > 1 ? `<button type="button" class="rvk-w rvk-next" data-k="next">${esc(t('next'))}</button>` : ''}
         <span class="rvk-sep" aria-hidden="true"></span>
         <span class="rvk-sc" role="group" aria-label="${esc(t('score'))}">${[1, 2, 3, 4, 5].map((k) =>
@@ -398,7 +400,7 @@
     const k = e.key, code = e.code;
     let used = true;
     // , and . (with Shift, < and >) for the versions, B for the list: keys the pages themselves
-    // leave free on most pages ([ ] and L are often taken by the page itself)
+    // leave free ([ ] and L belong to the atlas pages: trips and language)
     if (code === 'Comma' || k === ',' || k === '<') { showBar(); step(-1, e.shiftKey || k === '<'); }
     else if (code === 'Period' || k === '.' || k === '>') { showBar(); step(1, e.shiftKey || k === '>'); }
     else if (/^[1-5]$/.test(k) && !e.shiftKey) { R.setStars(ID, +k); redraw(); showBar(); }
@@ -460,11 +462,13 @@
       st.textContent = `:root{${Object.entries(m.theme).filter(([k]) => /^--rv-[a-z0-9-]+$/.test(k)).map(([k, v]) => `${k}:${String(v).replace(/[;{}<]/g, '')}`).join(';')}}`;
       document.head.appendChild(st);
     }
-    list = window.ReviewStore.ordered(m);
-    me = list.find((x) => x.id === ID) || null;
+    all = window.ReviewStore.ordered(m);
+    all.forEach((x) => R.name(x.id, RW.pick('en', x.title)));
+    me = all.find((x) => x.id === ID) || null;
+    // previous and next stay inside this round, or inside the earlier rounds, never mixing the two
+    list = me ? all.filter((x) => x.now === me.now) : all;
     idx = me ? list.indexOf(me) : -1;
     groupList = me && me.group ? list.filter((x) => x.group === me.group) : list;
-    list.forEach((x) => R.name(x.id, RW.pick('en', x.title)));
   }
 
   function start() {
@@ -473,9 +477,8 @@
     drawBar(); drawDrawer();
     showBar(3000);
     seenTick();
-    // the list of versions: data-manifest, else review-manifest.json beside the page (data-manifest="" for none);
-    // a manifest whose "name" differs from data-name is ignored
-    const mf = OPT.manifest != null ? OPT.manifest : 'review-manifest.json';
+    // a page that names its own review file (data-name) has a list only if it says where (data-manifest)
+    const mf = OPT.manifest || (OPT.name ? '' : 'review-manifest.json');
     (mf ? fetch(mf, { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null)).catch(() => null) : Promise.resolve(null)).then((m) => {
       applyManifest(m);
       redraw();

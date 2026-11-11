@@ -1404,11 +1404,22 @@
  "words": {},
  "ask": {
   "ids": [
-   "c-flock-camille-measured"
+   "c-flock-camille-measured",
+   "c-flock-luxe-around",
+   "c-flock-mosaic",
+   "c-flock-tilted"
   ],
   "question": {
-   "en": "Camille's arrival and zoom, measured again (77). Is this her move?",
-   "zh": "Camille 的照片進場和放大，重新量過（77）。這樣是她的感覺嗎？"
+   "en": "Your latest choices: Camille's move measured again (77), Around the name then the wall (65), The photographs become the film (56) and A tilted wall (70). Score them side by side.",
+   "zh": "你最新留下的選擇：重新量過的 Camille 轉場（77）、先圍著名字再成一面牆（65）、照片變成影片（56）、傾斜的照片牆（70）。並排比較後打分數。"
   }
+ },
+ "round": {
+  "ids": [
+   "c-flock-camille-measured",
+   "c-flock-luxe-around",
+   "c-flock-mosaic",
+   "c-flock-tilted"
+  ]
  }
 }

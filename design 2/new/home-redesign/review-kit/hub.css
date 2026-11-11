@@ -9,8 +9,8 @@
   --h-hair: var(--rv-hair, #ddd6cc);
   --h-mark: var(--rv-mark, #b5532f);
   --h-link: var(--rv-link, #7a3f24);
-  --h-label: var(--rv-label, ui-sans-serif, "Noto Sans TC", sans-serif);
-  --h-name: var(--rv-name, Georgia, "Noto Serif TC", serif);
+  --h-label: var(--rv-label, "Geist", "Noto Sans TC", sans-serif);
+  --h-name: var(--rv-name, "Playfair Display", "Noto Serif TC", serif);
   width: min(78rem, 100% - 2 * clamp(1rem, 3.2vw, 2.5rem));
   margin: 0 auto; padding: clamp(2rem, 5vw, 3.5rem) 0 6rem;
   font-family: var(--h-label); color: var(--h-ink);
@@ -31,6 +31,10 @@
 .rvh-w:hover { color: var(--h-link); }
 .rvh-w[aria-pressed="true"], .rvh-w[aria-expanded="true"], .rvh-w.is-on { color: var(--h-ink); text-decoration: underline; text-underline-offset: 0.35em; text-decoration-thickness: 1px; }
 
+.rvh-views { display: flex; flex-wrap: wrap; gap: 0 2rem; margin-top: 1.6rem; }
+.rvh-view { font-family: var(--h-name); font-size: 1.15rem; color: var(--h-ink-3); min-height: 2.4rem; display: inline-flex; align-items: baseline; gap: 0.5rem; }
+.rvh-view:hover { color: var(--h-link); }
+.rvh-view[aria-pressed="true"] { color: var(--h-ink); text-decoration: underline; text-underline-offset: 0.35em; text-decoration-thickness: 1px; }
 .rvh-tools {
   display: flex; flex-wrap: wrap; align-items: center; gap: 0.25rem 2rem; margin-top: 2rem;
   padding: 0.35rem 0; border-top: 1px solid var(--h-ink); border-bottom: 1px solid var(--h-hair);

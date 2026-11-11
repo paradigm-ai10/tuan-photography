@@ -52,6 +52,8 @@
       askTitle: 'Your pick', askTag: 'Your pick', askDoneTag: 'Scored',
       askLeft: '{n} of {total} still to score', askDone: 'All scored, thank you. Claude will read them.',
       askOnly: 'Show only these',
+      viewNow: 'This round', viewEarlier: 'Earlier rounds', earlierTag: 'Earlier round',
+      viewEarlierNote: 'Versions from rounds you have already looked at. Your scores and notes stay with them.',
     },
     zh: {
       prev: '上一版', next: '下一版',
@@ -100,6 +102,8 @@
       askTitle: '請你挑', askTag: '請你挑', askDoneTag: '已打分',
       askLeft: '還有 {n} 版沒打分（共 {total} 版）', askDone: '都打好分了，謝謝。Claude 會去讀。',
       askOnly: '只看這幾版',
+      viewNow: '這一輪', viewEarlier: '之前看過的', earlierTag: '之前的',
+      viewEarlierNote: '之前幾輪看過的版本。你給的分數和筆記都留著。',
     },
   };
 
