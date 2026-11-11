@@ -58,11 +58,11 @@
 .rvh-gc { font-size: 0.8rem; color: var(--h-ink-3); }
 .rvh-gn {
   flex: 1 1 14rem; min-width: 0; font: inherit; font-size: 0.85rem; color: var(--h-ink); background: transparent;
-  border: 0; border-bottom: 1px dotted transparent; border-radius: 0; padding: 0.2rem 0;
+  border: 1px solid var(--h-hair); border-radius: 0; padding: 0.35rem 0.6rem;
 }
 .rvh-gn::placeholder { color: var(--h-ink-3); }
-.rvh-gn:hover { border-bottom-color: var(--h-hair); }
-.rvh-gn:focus { outline: none; border-bottom: 1px solid var(--h-link); }
+.rvh-gn:hover { border-color: var(--h-ink-3); }
+.rvh-gn:focus { outline: none; border-color: var(--h-link); }
 
 /* the contact sheet */
 .rvh-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr)); gap: 2.2rem 1.6rem; }
@@ -192,3 +192,12 @@
 .rvh-x path { fill: none; stroke: var(--rv-out, #c0392b); stroke-width: 7; stroke-linecap: round; vector-effect: non-scaling-stroke; }
 .rvh-out { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.13em; text-transform: uppercase; color: var(--rv-out, #c0392b); margin-top: -0.35rem; }
 :lang(zh-Hant) .rvh-out { text-transform: none; font-size: 0.8rem; }
+
+/* the note on each version, right under its card (his rule: every option has a notes box that feeds back) */
+.rvh-cn {
+  display: block; width: 100%; box-sizing: border-box; margin-top: 0.7rem; font: inherit; font-size: 0.85rem; line-height: 1.45;
+  color: var(--h-ink); background: transparent; border: 1px solid var(--h-hair); border-radius: 0; padding: 0.45rem 0.6rem; resize: vertical;
+}
+.rvh-cn::placeholder { color: var(--h-ink-3); }
+.rvh-cn:hover { border-color: var(--h-ink-3); }
+.rvh-cn:focus { outline: none; border-color: var(--h-link); }

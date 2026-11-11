@@ -147,6 +147,7 @@
           <button type="button" class="rvh-w${picked ? ' is-on' : ''}" data-h="cmp"${ui.picked ? ` aria-pressed="${picked}"` : ''}>${esc(ui.picked ? (picked ? t('chosen') : t('choose')) : t('compare'))}</button>
         </p>
         ${ui.open[v.id] ? `<p class="rvh-desc">${esc(pick(v.desc))}</p>` : ''}
+        <textarea class="rvh-cn" data-id="${esc(v.id)}" rows="2" placeholder="${esc(t('cardNote'))}" aria-label="${esc(t('cardNote'))}: ${esc(title)}">${esc(it.note || '')}</textarea>
       </div>
     </article>`;
   }
@@ -323,6 +324,7 @@
     if (!mount || !mount.contains(e.target)) return;
     if (e.target.id === 'rvh-general') R.setGeneral(e.target.value);
     else if (e.target.classList.contains('rvh-gn')) R.setGroupNote(e.target.dataset.g, e.target.value);
+    else if (e.target.classList.contains('rvh-cn')) R.setNote(e.target.dataset.id, e.target.value);   // the note on one version, the same one its page's Notes drawer shows
   });
   document.addEventListener('keydown', (e) => {
     if (e.metaKey || e.ctrlKey || e.altKey || typing(e.target) || /[?&]compare=/.test(location.search)) return;
