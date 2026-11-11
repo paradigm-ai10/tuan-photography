@@ -1366,6 +1366,211 @@
     }
   });
 
+  /* ---------------- from his second notes (2026-11-11, evening) ----------------
+     "The flipping is odd, and the caption remains when the pics come in"; "two cells of Barcelona to the full display
+     takes too long, and why the pause before it moves"; "horizontally, not vertically, the speed from fast to slow, a
+     ramp"; "it just doesn't look like the Camille I showed you"; and, on three of them, "TUAN photography disappears too
+     fast". The name now holds alone, fades slowly and is gone before any photograph comes (markHold, markFade). */
+  // a cubic-bezier easing as a function, as CSS draws it
+  function bez(x1, y1, x2, y2) {
+    const cx = 3 * x1, bx = 3 * (x2 - x1) - cx, ax = 1 - cx - bx, cy = 3 * y1, by = 3 * (y2 - y1) - cy, ay = 1 - cy - by;
+    const fx = (t) => ((ax * t + bx) * t + cx) * t, fy = (t) => ((ay * t + by) * t + cy) * t;
+    return (x) => {
+      if (x <= 0) return 0;
+      if (x >= 1) return 1;
+      let lo = 0, hi = 1, t = x;
+      for (let i = 0; i < 40; i++) { t = (lo + hi) / 2; if (fx(t) < x) lo = t; else hi = t; }
+      return fy(t);
+    };
+  }
+  // the wall has become the film's first frame: the film starts beneath at once and the wall lifts off it quickly, so
+  // there is no beat of stillness between "Barcelona is whole" and "Barcelona moves"
+  async function filmAtOnce(api, fade = 350, rate = 0.6) {
+    const v = api.video, paper = document.querySelector('.hr-load__paper');
+    if (v) { v.currentTime = 0; v.playbackRate = rate; }
+    if (paper) { paper.style.transition = 'opacity 150ms linear'; paper.style.opacity = '0'; }
+    if (v) v.play().catch(() => {});
+    html.classList.add('hr-out');
+    if (v) api.speed(rate, 1, 1100);
+    await layer.animate([{ opacity: 1 }, { opacity: 0 }], { duration: fade, easing: 'ease', fill: 'both' }).finished.catch(() => {});
+    api.mosaicDone = true;
+  }
+  Object.assign(V, {
+    // 40 the cards turn over (the flip, fixed): the name is gone before the wall flies in. Then each photograph turns over
+    //    like a card, right round (away to edge-on, and on round from the other side, never back the way it came), one
+    //    after another in no order, few at first, many in the middle, few at the end; on each back, its piece of Barcelona.
+    //    A shadow shows behind a card only while it turns. The moment the last one lands, the frame moves.
+    'cards-flip': {
+      n: 39, shape: 'wall', mark: 'fade', markHold: 900, markFade: 1200, markWait: 1150, hold: 500, mosaic: true, markGone: true, still: true,
+      layout() { return wallPlan(); },
+      enter() { return flyIn({ from: { x: W * 0.6, y: -H * 0.6 }, rank: diagonalRank(tiles.map((t) => t.slot)), spread: 800, dur: 1600, tilt: 0, scale: 0.94 }); },
+      async leave(api) {
+        const under = document.createElement('div');   // what is behind a card while it is edge-on
+        under.className = 'hr-flock__back hr-flock__under';
+        paintFrame(under, FULL(), 0, 0);   // the same frame, in shadow: a card edge-on shows what its back is about to
+        layer.insertBefore(under, layer.firstChild);
+        under.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 300, easing: 'ease', fill: 'both' });
+        tiles.forEach((t) => {
+          const s = document.createElement('span');
+          s.className = 'hr-tile__slice';
+          paintFrame(s, FULL(), t.slot.x, t.slot.y);
+          t.el.appendChild(s);
+          t.back = s;
+        });
+        const SPREAD = 2500, DUR = 760, P = narrow() ? 700 : 1100;
+        await finished(tiles.flatMap((t) => {
+          const u = rnd(), delay = 250 + SPREAD * (u + Math.sin(2 * Math.PI * u) / (2 * Math.PI));
+          return [
+            t.el.animate([
+              { transform: `perspective(${P}px) rotateY(0deg)`, easing: 'cubic-bezier(0.5, 0, 0.9, 0.6)' },
+              { transform: `perspective(${P}px) rotateY(90deg)`, offset: 0.5 },
+              { transform: `perspective(${P}px) rotateY(-90deg)`, offset: 0.5, easing: 'cubic-bezier(0.1, 0.4, 0.3, 1)' },
+              { transform: `perspective(${P}px) rotateY(0deg)` }
+            ], { duration: DUR, delay, fill: 'both' }),
+            t.back.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 1, delay: delay + DUR / 2, fill: 'both' })   // the back, from the edge-on instant
+          ];
+        }));
+        if (api.isDone()) return;
+        await filmAtOnce(api);
+      }
+    },
+    // 41 around the name, then Barcelona (the timing, fixed): as before until the name has gone. Barcelona then comes up
+    //    where the name was in under a second, and the photographs round it are already leaving as it does; the film is
+    //    running beneath from that moment, so when Barcelona is whole it is already moving.
+    'around-reveal': {
+      n: 11, shape: 'wall', mark: 'stay', hold: 0, mosaic: true, still: true,
+      pick: (ps) => ps.filter((p) => !/milky-way|aurora/.test(p.querySelector('img').dataset.src)),
+      layout() { return V['around-barcelona'].layout.call(this); },
+      async enter(api) {
+        const ring = tiles.filter((t) => !t.slot.late);
+        const key = (t) => { const c = centre(t.slot); return (Math.atan2(c.y - H / 2, c.x - W / 2) + Math.PI * 0.75 + Math.PI * 2) % (Math.PI * 2); };
+        ring.sort((a, b) => key(a) - key(b));
+        await rise(ring, { step: 140, dur: 1100 }); if (api.isDone()) return;
+        await api.wait(500); if (api.isDone()) return;
+        const mark = document.querySelector('.hr-load__mark');
+        if (mark) mark.style.transition = 'opacity 1.4s ease';
+        html.classList.add('hr-markgone');
+        await api.wait(1050); if (api.isDone()) return;
+        // Barcelona comes up where the name was: the paper goes, and the film, already running slowly beneath, shows
+        // through the two places the name kept. No still stands in for it, so there is nothing to hand over later.
+        const v = api.video, paper = document.querySelector('.hr-load__paper');
+        if (v) { v.currentTime = 0; v.playbackRate = 0.5; v.play().catch(() => {}); api.speed(0.5, 1, 1800); }
+        if (paper) { paper.style.transition = 'opacity 600ms ease'; paper.style.opacity = '0'; }
+        html.classList.add('hr-out');
+        await api.wait(260);   // the photographs round it start to go while it is still coming up
+      },
+      async leave(api) {
+        const ring = tiles.filter((t) => !t.slot.late && !t.film);
+        const d = ring.map((t) => dist(centre(t.slot), { x: W / 2, y: H / 2 })), m = Math.max(...d);
+        await finished(ring.map((t, i) => t.el.animate([{ opacity: 1, transform: 'none' }, { opacity: 0, transform: tf(0, 0, 0, 1.03) }],
+          { duration: 650, delay: (d[i] / m) * 300, easing: 'ease', fill: 'both' })));
+        api.mosaicDone = true;
+      }
+    },
+    // 42 the tilted wall, rows moving (his notes: horizontally, a ramp from fast to slow, the name slower to go). Each row
+    //    slides along the tilted plane, alternate rows opposite ways: fast as the photographs come up, slowing all the
+    //    while, and at rest exactly as the wall finishes swinging flat, so the camera lands on the film.
+    'tilted-rows': {
+      n: 48, shape: 'wall', mark: 'fade', markGone: true, markHold: 900, markFade: 1200, markWait: 1150, hold: 1700, still: true,
+      layout() { return V.tilted.layout.call(this); },
+      TILT: 'rotateX(46deg) rotateZ(-32deg)',
+      dir: (row) => (row % 2 ? 1 : -1),
+      enter() {
+        const p = this.plane, el = this.el = document.createElement('div');
+        el.className = 'hr-flock__plane';
+        el.style.left = p.x + 'px'; el.style.top = p.y + 'px'; el.style.width = p.w + 'px'; el.style.height = p.h + 'px';
+        el.style.transform = `perspective(1600px) translate(0px, 0px) scale(1.08) ${this.TILT}`;
+        layer.appendChild(el);
+        const cols = Math.max(...tiles.map((t) => t.slot.col)) + 1, nRows = Math.max(...tiles.map((t) => t.slot.row)) + 1;
+        const pitch = tiles[1].slot.x - tiles[0].slot.x;
+        const rowEls = [...Array(nRows)].map(() => { const r = document.createElement('div'); r.className = 'hr-flock__row'; el.appendChild(r); return r; });
+        const list = [];
+        tiles.forEach((t) => {
+          rowEls[t.slot.row].appendChild(t.el);
+          list.push({ el: t.el, col: t.slot.col });
+          // two more photographs on the side each row comes from, so no row runs out (copies of its far end, never seen with them)
+          const dir = this.dir(t.slot.row), far = dir > 0 ? t.slot.col >= cols - 2 : t.slot.col <= 1;
+          if (!far || t.film) return;
+          const c = t.el.cloneNode(true);
+          c.style.left = (t.slot.x - dir * cols * pitch) + 'px';
+          rowEls[t.slot.row].appendChild(c);
+          list.push({ el: c, col: dir > 0 ? 0 : cols - 1 });
+        });
+        const risen = rise(list, { step: 150, dur: 1300, order: list.map((q) => q.col) });
+        // the ramp: one long ease-out per row, about five times its average speed at first, at rest at the end
+        this.D = (row) => pitch * (1.3 + 0.18 * ((row * 3) % 4));
+        const T = (cols - 1) * 150 + 1300 + this.hold + 3000;
+        rowEls.forEach((r, row) => r.animate([{ transform: 'translateX(0px)' }, { transform: `translateX(${(this.dir(row) * this.D(row)).toFixed(1)}px)` }],
+          { duration: T, easing: 'cubic-bezier(0.12, 0.62, 0.2, 1)', fill: 'both' }));
+        return risen;
+      },
+      leave() {
+        const f = tiles.find((t) => t.film).slot, k = W / f.w, p = this.plane, off = this.dir(f.row) * this.D(f.row);
+        const fx = p.x + f.x + off + f.w / 2 - W / 2, fy = p.y + f.y + f.h / 2 - H / 2;   // where the film will be when its row has come to rest
+        setTimeout(() => { if (!html.classList.contains('hr-shown')) html.classList.add('hr-out'); }, 1600);
+        return this.el.animate([
+          { transform: `perspective(1600px) translate(0px, 0px) scale(1.08) ${this.TILT}` },
+          { transform: `perspective(1600px) translate(${(-fx * k).toFixed(1)}px, ${(-fy * k).toFixed(1)}px) scale(${k.toFixed(4)}) rotateX(0deg) rotateZ(0deg)` }
+        ], { duration: 3000, easing: PART, fill: 'both' }).finished.catch(() => {});
+      }
+    },
+    // 43 Camille Mormal, from her own code (her site's script read line by line, 2026-11-11; the recordings had misled).
+    //    Her opening is ONE five-second move of 25 cards in five columns, the two outer columns half off the screen:
+    //    · columns 1, 3 and 5 come up from below and columns 2 and 4 come down from above, and they stay half a row out of
+    //      step with each other (a brick wall, never levelled);
+    //    · within a column the cards start twelve card-heights apart and close up to a 30 px gap, so they streak past
+    //      singly at first and gather: cubic-bezier(.8, 0, .1, 1) over the first 3.25 s;
+    //    · from 2 s to 5 s, while the columns are still closing, every card grows and moves out from the middle until the
+    //      middle one is the window: cubic-bezier(.72, 0, .11, 1), sizes changing evenly;
+    //    · the picture inside the middle card starts one and a half times too large for its card and eases back to fit,
+    //      so the card opens on the picture as it grows.
+    //    Here the middle card is the film, the ground is his paper, and the name has gone before the first card shows.
+    'camille-code': {
+      n: 24, shape: 'wall', mark: 'fade', markGone: true, markHold: 900, markFade: 1000, markWait: 0, hold: 0, still: true,
+      geo() {
+        const s0 = 30 * W / 1440, r = (W - 4 * s0) / 4, a = r * H / W;
+        return { s0, r, a, h: a + s0, l: r + s0, o: 0.5 * (a + s0), n: H + 0.5 * (5 * a + 4 * s0 - H), p: 12 * a, d: W + 2, c: H + 2 };
+      },
+      layout() {
+        const { r, a } = this.geo(), slots = [];
+        for (let k = 0; k < 25; k++) slots.push({ x: 0, y: 0, w: r, h: a, r: 0, k });
+        return { slots, film: 12 };
+      },
+      async enter(api) {
+        const { s0, r, a, h, l, o, n, p, d, c } = this.geo(), s1 = s0 * d / r, g = c + s1, u = d + s1;
+        const eY = bez(0.8, 0, 0.1, 1), eZ = bez(0.72, 0, 0.11, 1), T = 5000;
+        const P = tiles.map((t) => {
+          const k = t.slot.k, col = Math.floor(k / 5), row = k % 5, v = col - 2, w = row - 2, f = col % 2 === 1, R = Math.abs(v);
+          return {
+            el: t.el,
+            y0: f ? -(n - o + (4 - row) * p + R * a + 20) : n + row * p + R * a + 20,
+            xs: 0.5 * (W - r) + v * l, ys: 0.5 * (H - a) + w * h - (f ? o : 0),
+            xf: 0.5 * (W - d) + v * u, yf: 0.5 * (H - c) + w * g - (f ? 0.5 * g : 0)
+          };
+        });
+        const set = (ms) => {
+          const prog = cl01(ms / T), e = eY(cl01(prog / 0.65)), i = eZ(cl01((prog - 0.4) / 0.6)), k = (r + (d - r) * i) / r;
+          for (const q of P) q.el.style.transform = `translate3d(${(q.xs + (q.xf - q.xs) * i).toFixed(2)}px, ${(q.ys + (q.yf - q.ys) * i + q.y0 * (1 - e)).toFixed(2)}px, 0) scale(${k.toFixed(5)})`;
+          if (tv) tv.style.transform = `scale(${(1.5 - 0.5 * i).toFixed(4)})`;
+          return { prog, i };
+        };
+        tiles.forEach((t) => { t.el.style.transformOrigin = '0 0'; });
+        set(0);
+        tiles.forEach((t) => { t.el.style.opacity = '1'; });
+        let seeked = false, out = false;
+        await frames(T, (ms) => {
+          const { prog, i } = set(ms);
+          if (!seeked && prog >= 0.4) {   // the page's own film waits at the frame the card will have reached
+            seeked = true;
+            if (tv && api.video) { try { api.video.currentTime = tv.currentTime + (T - ms) / 1000 * (tv.playbackRate || 0.3); } catch (e) { /* not yet seekable */ } }
+          }
+          if (!out && i > 0.985) { out = true; html.classList.add('hr-out'); }
+        });
+      },
+      leave() { return Promise.resolve(); }
+    }
+  });
+
   /* ---------------- ready, run ---------------- */
   const spec = V[NAME];
   if (!spec) return;
@@ -1395,7 +1600,11 @@
     place(plan);
     html.classList.add('hr-arrive');   // the moment the tiles start (stills and films are timed from it)
     if (spec.mark === 'corner') { markToCorner(1000); await api.wait(560); if (api.isDone()) return; }   // the name is on its way before any tile comes
-    else if (spec.mark === 'fade') { html.classList.add('hr-markgone'); await api.wait(spec.markWait ?? 700); if (api.isDone()) return; }   // a wall edge to edge would cover it: the name simply goes, and only then do the photographs rise
+    else if (spec.mark === 'fade') {
+      if (spec.markHold) { await api.wait(spec.markHold); if (api.isDone()) return; }   // the whole name, alone, a moment longer (his note: it went too fast)
+      if (spec.markFade) { const mk = document.querySelector('.hr-load__mark'); if (mk) mk.style.transition = `opacity ${spec.markFade}ms ease`; }
+      html.classList.add('hr-markgone'); await api.wait(spec.markWait ?? 700); if (api.isDone()) return;
+    }   // a wall edge to edge would cover it: the name simply goes, and only then do the photographs rise
     else if (spec.mark === 'stay') { await api.wait(300); if (api.isDone()) return; }   // a beat with the name alone first
     else if (spec.mark === 'line') {
       const line = document.querySelector('.hr-load__line');

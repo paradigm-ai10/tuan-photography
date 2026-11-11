@@ -148,6 +148,14 @@
     "en": "From your notes on the four",
     "zh": "照你在這四個上寫的筆記做"
    }
+  },
+  {
+   "id": "notes-1111b",
+   "built": "2026-11-11T16:50",
+   "title": {
+    "en": "Fixed from your second notes",
+    "zh": "照你第二次的筆記修好的"
+   }
   }
  ],
  "items": [
@@ -1395,6 +1403,66 @@
    "still": {
     "wait": 3000
    }
+  },
+  {
+   "href": "c-flock-cards-flip.html",
+   "group": "notes-1111b",
+   "title": {
+    "en": "The cards turn over",
+    "zh": "卡片翻過去"
+   },
+   "desc": {
+    "en": "The fix of The cards turn. TUAN PHOTOGRAPHY now holds a moment, fades slowly and is gone before any photograph comes in. Each photograph then turns right over like a card (it used to swing back the way it came, which is what looked odd), one after another in no order, few at first, many in the middle, few at the end. Barcelona moves the moment the last card lands.",
+    "zh": "「照片像卡片翻面」的修正版。TUAN PHOTOGRAPHY 先停一下、慢慢淡出，完全消失後照片才進來。接著每張照片像卡片一樣整個翻過去（原本是轉到一半又轉回來，所以看起來怪），不按順序一張接一張，開頭少、中間多、結尾少。最後一張翻好的那一刻，巴塞隆納就開始動。"
+   },
+   "still": {
+    "wait": 3500
+   }
+  },
+  {
+   "href": "c-flock-around-reveal.html",
+   "group": "notes-1111b",
+   "title": {
+    "en": "Around the name, then Barcelona, at once",
+    "zh": "圍著名字，巴塞隆納馬上出來"
+   },
+   "desc": {
+    "en": "The fix of Around the name, then Barcelona. From the first glimpse of Barcelona in the two middle places to the whole picture is now under a second (it was nearly four), and the film is already running from that first glimpse, so there is no pause before it moves.",
+    "zh": "「先圍著名字，再露出巴塞隆納」的修正版。從中間兩格露出巴塞隆納到整個畫面，現在不到一秒（原本將近四秒）；而且從露出的那一刻影片就已經在播，所以不會再有停一下才動的頓點。"
+   },
+   "still": {
+    "wait": 3500
+   }
+  },
+  {
+   "href": "c-flock-tilted-rows.html",
+   "group": "notes-1111b",
+   "title": {
+    "en": "The tilted wall, rows sliding",
+    "zh": "傾斜照片牆，一排排橫向滑動"
+   },
+   "desc": {
+    "en": "The fix of The tilted wall, moving. The rows now slide sideways along the tilted wall, alternate rows opposite ways. They start fast as the photographs come up and slow down all the way, coming to rest just as the wall swings flat and the camera goes into the film. TUAN PHOTOGRAPHY holds longer and fades slowly first.",
+    "zh": "「會動的傾斜照片牆」的修正版。現在是一排排沿著傾斜的牆橫向滑動，相鄰兩排方向相反。照片出現時滑得快，一路慢下來，牆轉平、鏡頭走進影片時剛好停住。TUAN PHOTOGRAPHY 先多停一下、慢慢淡出。"
+   },
+   "still": {
+    "wait": 3500
+   }
+  },
+  {
+   "href": "c-flock-camille-code.html",
+   "group": "notes-1111b",
+   "title": {
+    "en": "Camille Mormal, from her own code",
+    "zh": "Camille Mormal，照她網站的程式"
+   },
+   "desc": {
+    "en": "Rebuilt from her site's own script, not from recordings. Her opening is one five-second move: five columns of cards, three coming up from below and two coming down from above, half a row out of step like bricks; in each column the cards start far apart and close up; from two seconds in, while they are still closing, everything grows out from the middle until the middle card is the screen, and the picture inside that card eases back from too large to fit. Same sizes, gaps, timings and curves as hers. Yours: paper instead of her dark ground, the film in the middle, TUAN first.",
+    "zh": "照她網站自己的程式重做，不是照錄影。她的開場是一個五秒的連續動作：五欄卡片，三欄從下面上來、兩欄從上面下來，像磚牆一樣錯開半排；每一欄的卡片一開始離很遠、再慢慢靠攏；從第兩秒起，卡片還在靠攏時，整面就從中間往外放大，直到中間那張變成整個畫面，而中間那張裡面的影像會從放大的狀態慢慢退回剛好。尺寸、間距、時間和速度曲線都跟她的一樣。你的版本：紙色背景而不是她的深色，中間是影片，前面是 TUAN。"
+   },
+   "still": {
+    "wait": 3500
+   }
   }
  ],
  "tags": [
@@ -1472,26 +1540,26 @@
  "words": {},
  "ask": {
   "ids": [
-   "c-flock-mosaic-flip",
-   "c-flock-around-barcelona",
-   "c-flock-tilted-moving",
-   "c-flock-camille-slow"
+   "c-flock-cards-flip",
+   "c-flock-around-reveal",
+   "c-flock-tilted-rows",
+   "c-flock-camille-code"
   ],
   "question": {
-   "en": "Four new ones from your notes, each beside the one it came from. Score them.",
-   "zh": "照你的筆記做的四個新版本，都放在原本那版旁邊。請打分數。"
+   "en": "The four fixed from your second notes (5 to 8). The four they replace are under Earlier rounds with your notes. Score these.",
+   "zh": "照你第二次筆記修好的四個（5 到 8）。被取代的那四個收在 Earlier rounds，筆記都還在。請幫這四個打分數。"
   }
  },
  "round": {
   "ids": [
-   "c-flock-camille-measured",
-   "c-flock-luxe-around",
    "c-flock-mosaic",
+   "c-flock-luxe-around",
    "c-flock-tilted",
-   "c-flock-mosaic-flip",
-   "c-flock-around-barcelona",
-   "c-flock-tilted-moving",
-   "c-flock-camille-slow"
+   "c-flock-camille-measured",
+   "c-flock-cards-flip",
+   "c-flock-around-reveal",
+   "c-flock-tilted-rows",
+   "c-flock-camille-code"
   ]
  }
 }

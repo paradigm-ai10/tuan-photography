@@ -2,14 +2,21 @@
 
 *Last updated: 2026-11-11, afternoon, handoff note. Read this first, then check the files to confirm.*
 
-## 接下來 Next up (2026-11-11)
+## 接下來 Next up (2026-11-11, evening)
 
-He corrected the brief: his opening (the line, TUAN, PHOTOGRAPHY) stays exactly as decided; what he is stuck on is the
-move from that opening into his home page (the Barcelona film). So the two references he kept are copied as that move:
-`exact-mathilde` and `exact-camille` in `flock.js` (pages `c-flock-exact-*.html`, from `FLOCKS` in `tools/home_redesign.py`),
-on the review list as 73 and 74, marked Your pick. The standalone whole-site copies (`copy-mathilde.html`,
-`copy-camille.html`, `tools/home_copies.py`) were the wrong reading; kept on disk, off the list.
-First move next time: read his scores on 73 and 74.
+Home opening: his TUAN PHOTOGRAPHY loader stays as decided; the open question is the move from it into the home page
+(the Barcelona film). All versions are specs in `design 2/new/home-redesign/flock.js`, pages `c-flock-<name>.html`
+from `FLOCKS` in `tools/home_redesign.py`. This round on the review list (http://localhost:8642/journey/new/home-redesign/):
+1 mosaic (4), 2 luxe-around (3), 3 tilted (5), 4 camille-measured, and the four fixed from his second notes, marked
+Your pick: 5 `cards-flip`, 6 `around-reveal`, 7 `tilted-rows`, 8 `camille-code`. The intermediate four
+(mosaic-flip, around-barcelona, tilted-moving, camille-slow) are under Earlier rounds with his notes.
+- `camille-code` is built from camillemormal.com's own script (`Load.resizeA` and `Load.fx` in her `static/js/d.js`):
+  one 5 s move, columns converging with cubic-bezier(.8,0,.1,1) over 0 to 3.25 s, the zoom cubic-bezier(.72,0,.11,1)
+  over 2 to 5 s, a brick layout, the middle picture 1.5x easing to 1. Headless recordings of her WebGL misled three
+  times; read the source when he asks for "exactly like X".
+- His standing notes: TUAN must hold and fade slowly, and be gone before photographs arrive (`markHold`, `markFade`
+  on a spec); no pause between "Barcelona whole" and "Barcelona moving" (`filmAtOnce`, or let the live film show).
+First move next time: `python3 tools/read_reviews.py ideas/reviews/home-redesign.json --manifest "design 2/new/home-redesign/review-manifest.json" --since 2026-11-11` and act on 5 to 8.
 
 ## 現在狀態 Where things stand
 
