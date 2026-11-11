@@ -135,7 +135,7 @@
   },
   {
    "id": "camille-refined",
-   "built": "2026-11-11T15:40",
+   "built": "2026-11-11T16:05",
    "title": {
     "en": "Camille's move, refined",
     "zh": "Camille 的轉場，精修"
@@ -1297,6 +1297,21 @@
    "still": {
     "wait": 800
    }
+  },
+  {
+   "href": "c-flock-camille-true.html",
+   "group": "camille-refined",
+   "title": {
+    "en": "Camille Mormal's move, as she does it",
+    "zh": "Camille Mormal 的轉場，照她實際的做法"
+   },
+   "desc": {
+    "en": "Measured from her site frame by frame. The screen starts almost empty; a loose field of a few of your photographs, repeated, rises fast from the bottom and slows, prints appearing one by one as it travels, alternate columns half a row apart. As it comes to rest the columns slide level and the rows close into one tight wall, then a quick half-second zoom into the middle print, the film, which becomes your home page.",
+    "zh": "照她的網站一格一格量出來。畫面一開始幾乎是空的；幾張你的照片重複排成鬆散的一片，從畫面下方快速往上升、慢慢停下，一路上照片一張張冒出來，相鄰兩欄錯開半排。停下來時各欄滑到同一高度、排距收緊成一面整齊的牆，接著半秒鐘快速放大進中間那張，也就是影片，變成你的首頁。"
+   },
+   "still": {
+    "wait": 1300
+   }
   }
  ],
  "tags": [
@@ -1374,11 +1389,11 @@
  "words": {},
  "ask": {
   "ids": [
-   "c-flock-camille-refined"
+   "c-flock-camille-true"
   ],
   "question": {
-   "en": "Camille's move, refined: one continuous gesture from TUAN into your home page. Compare it with 74 (Compare two) and score it.",
-   "zh": "Camille 的轉場精修版：從 TUAN 到首頁一個連續的動作。可以跟 74 並排比較（Compare two），再打分數。"
+   "en": "Camille's move as she actually does it (76). Compare it with her site and score it.",
+   "zh": "照 Camille 實際做法的轉場（76）。跟她的網站對照看，再打分數。"
   }
  }
 }

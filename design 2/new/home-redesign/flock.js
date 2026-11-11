@@ -1125,6 +1125,52 @@
         const f = tiles.find((t) => t.film);
         return Promise.all([growLayer(f.slot, 1350), this.rest]);
       }
+    },
+    // 34 Camille Mormal, as she does it (2026-11-11, after "完全不一樣"): measured from her site frame by frame at 0.1 s.
+    //    The screen starts almost empty. A sparse, staggered field of a few photographs, repeated, rises fast from the
+    //    bottom of the screen and slows; prints pop in one by one while it travels, so it fills as it rises. Alternate
+    //    columns sit half a row apart and the rows are loose; as the field comes to rest the columns slide level and the
+    //    rows close up into one tight wall. Then a quick zoom (about 0.5 s) into the middle print: the film.
+    'camille-true': {
+      n: 34, shape: 'wall', mark: 'fade', markGone: true, markWait: 450, hold: 0, still: true,
+      layout() {
+        const cw = narrow() ? W * 0.38 : W * 0.2326, ch = cw * H / W, g = narrow() ? 10 : W * 0.018;
+        const cols = narrow() ? 3 : 7, rows = narrow() ? 5 : 5;
+        const mc = (cols - 1) / 2, mr = (rows - 1) / 2;
+        const x0 = W / 2 - mc * (cw + g) - cw / 2, y0 = H / 2 - mr * (ch + g) - ch / 2;
+        const slots = grid(cols, rows, cw, ch, g, x0, y0);
+        this.g = { cw, ch, g, mc, mr };
+        return { slots, film: slots.findIndex((s) => s.col === mc && s.row === mr) };
+      },
+      async enter(api) {
+        // a few photographs, repeated, as hers repeats her eight projects
+        const few = chosen.slice(0, 9).map((p) => p.querySelector('img').src);
+        tiles.forEach((t, i) => { if (!t.film) t.el.querySelector('img').src = few[(i * 4 + t.slot.row) % few.length]; });
+        const { ch, g, mc, mr } = this.g, pitch = ch + g;
+        const pop = tiles.map((t) => (t.film ? 640 : 80 + Math.sqrt(rnd()) * 900));   // when each print appears: few at first, most late, as hers
+        tiles.forEach((t) => { t.el.style.opacity = '0'; });
+        const RISE = 1000, LEVEL = 650, LV0 = 620;
+        const outQ = (x) => 1 - Math.pow(1 - x, 4);
+        await frames(LV0 + LEVEL, (ms) => {
+          const a = outQ(cl01(ms / RISE));                       // the field rises from below and slows
+          const b = EIO(cl01((ms - LV0) / LEVEL));               // columns level, rows close up
+          const field = H * 0.95 * (1 - a);
+          tiles.forEach((t, i) => {
+            const stagger = (t.slot.col % 2 ? 0.5 : 0) * pitch * (1 - b);
+            const loose = (t.slot.row - mr) * pitch * 0.45 * (1 - b);   // the rows start looser, then close
+            const y = field + stagger + loose;
+            t.el.style.transform = `translate(0px, ${y.toFixed(1)}px)`;
+            const o = cl01((ms - pop[i]) / 90);
+            t.el.style.opacity = o.toFixed(3);
+          });
+        });
+      },
+      leave() {
+        // her zoom: quick and decisive, into the middle print
+        tiles.forEach((t) => { t.el.style.opacity = '1'; t.el.style.transform = 'none'; });
+        const f = tiles.find((t) => t.film);
+        return growLayer(f.slot, 480);
+      }
     }
   });
 
