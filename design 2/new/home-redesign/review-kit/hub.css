@@ -9,8 +9,8 @@
   --h-hair: var(--rv-hair, #ddd6cc);
   --h-mark: var(--rv-mark, #b5532f);
   --h-link: var(--rv-link, #7a3f24);
-  --h-label: var(--rv-label, "Geist", "Noto Sans TC", sans-serif);
-  --h-name: var(--rv-name, "Playfair Display", "Noto Serif TC", serif);
+  --h-label: var(--rv-label, ui-sans-serif, "Noto Sans TC", sans-serif);
+  --h-name: var(--rv-name, Georgia, "Noto Serif TC", serif);
   width: min(78rem, 100% - 2 * clamp(1rem, 3.2vw, 2.5rem));
   margin: 0 auto; padding: clamp(2rem, 5vw, 3.5rem) 0 6rem;
   font-family: var(--h-label); color: var(--h-ink);
@@ -58,7 +58,7 @@
 .rvh-gc { font-size: 0.8rem; color: var(--h-ink-3); }
 .rvh-gn {
   flex: 1 1 14rem; min-width: 0; font: inherit; font-size: 0.85rem; color: var(--h-ink); background: transparent;
-  border: 1px solid var(--h-hair); border-radius: 0; padding: 0.35rem 0.6rem;
+  border: 1px solid var(--h-hair); border-radius: 0; padding: 0.35rem 0.6rem;   /* a box he can see is a box (his word, 2026-11-11) */
 }
 .rvh-gn::placeholder { color: var(--h-ink-3); }
 .rvh-gn:hover { border-color: var(--h-ink-3); }
@@ -92,6 +92,46 @@
   width: 6px; height: 6px; border-radius: 50%; background: var(--h-ink); box-shadow: 0 0 0 1.5px var(--h-paper);
 }
 .rvh-pin.is-like { background: var(--h-mark); }
+/* a boxed mark: its outline on the still */
+.rvh-pin.is-box {
+  left: calc((var(--x) - var(--w) / 2) * 100%); top: calc((var(--y) - var(--h) / 2) * 100%); translate: 0 0;
+  width: calc(var(--w) * 100%); height: calc(var(--h) * 100%); border-radius: 0; background: transparent;
+  border: 1.5px solid var(--h-ink); box-shadow: 0 0 0 1px var(--h-paper); min-width: 4px; min-height: 4px;
+}
+.rvh-pin.is-box.is-like { border-color: var(--h-mark); }
+/* Lightroom's flags: on the picture, in the card's line, and in the filter bar */
+.rvh-flag { position: absolute; right: 0; top: 0; padding: 0.4rem 0.7rem; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.08em; line-height: 1; display: inline-flex; align-items: center; gap: 0.35rem; }
+.rvh-flag.is-pick { background: var(--h-mark); color: var(--h-paper); }
+.rvh-flag.is-reject { background: var(--h-ink); color: var(--h-paper); text-decoration: line-through; }
+.rvh-flag.is-pick::before, .rvh-fb.is-pick::before { content: ""; width: 0.45em; height: 0.6em; background: currentColor; clip-path: polygon(0 0, 100% 0, 70% 50%, 100% 100%, 0 100%); }
+.rvh-fb.is-reject::before { content: "\2715"; font-size: 0.8em; line-height: 1; }
+.rvh-card.is-pick { border-top-color: var(--h-mark); }
+.rvh-card.is-pick .rvh-name a { color: var(--h-mark); }
+.rvh-card.is-reject .rvh-still img { filter: grayscale(0.7); }
+.rvh-fl { display: inline-flex; border: 1px solid var(--h-hair); }
+.rvh-fb { min-height: 1.5rem; padding: 0 0.5rem; font-size: 0.72rem; font-weight: 500; letter-spacing: 0.06em; color: var(--h-ink-3); white-space: nowrap; display: inline-flex; align-items: center; gap: 0.35rem; }
+:lang(zh-Hant) .rvh-fb { font-size: 0.78rem; letter-spacing: 0.04em; }
+.rvh-fb + .rvh-fb { border-left: 1px solid var(--h-hair); }
+.rvh-fb:hover { color: var(--h-ink); background: var(--h-paper-2); }
+.rvh-fb.is-pick[aria-pressed="true"] { background: var(--h-mark); color: var(--h-paper); }
+.rvh-fb.is-reject[aria-pressed="true"] { background: var(--h-ink); color: var(--h-paper); }
+.rvh-fb.is-none[aria-pressed="true"] { background: var(--h-ink-2); color: var(--h-paper); }
+.rvh-fn { font-size: 0.68rem; color: inherit; opacity: 0.7; font-variant-numeric: tabular-nums; }
+/* the filter bar: a label, the flag buttons, the comparator, five score squares, the word for the choice */
+.rvh-flt { align-items: center; gap: 0 0.5rem; }
+.rvh-flt .rvh-fb { min-height: 1.7rem; }
+.rvh-flt .rvh-fb + .rvh-fb { border-left: 0; }
+.rvh-flt .rvh-fb { border: 1px solid var(--h-hair); margin-left: -1px; }
+.rvh-tl { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.13em; text-transform: uppercase; color: var(--h-ink-3); margin-right: 0.25rem; }
+:lang(zh-Hant) .rvh-tl { text-transform: none; letter-spacing: 0.08em; font-size: 0.78rem; }
+.rvh-cmp { width: 1.7rem; height: 1.7rem; border: 1px solid var(--h-hair); font-size: 0.85rem; color: var(--h-ink-2); display: inline-grid; place-items: center; }
+.rvh-cmp:hover { color: var(--h-ink); border-color: var(--h-ink-3); }
+.rvh-stars { display: inline-flex; gap: 3px; }
+.rvh-st { width: 1.15rem; height: 1.15rem; border: 1px solid var(--h-ink-3); }
+.rvh-st:hover { border-color: var(--h-ink); }
+.rvh-st[data-lit="true"] { background: var(--h-ink); border-color: var(--h-ink); }
+.rvh-st[aria-pressed="true"] { outline: 1px solid var(--h-mark); outline-offset: 1px; }
+.rvh-stw { font-size: 0.78rem; color: var(--h-ink-2); min-width: 4.5em; }
 .rvh-name { font-family: var(--h-name); font-weight: 400; font-size: 1.2rem; line-height: 1.25; }
 .rvh-name a { color: inherit; text-decoration: none; }
 .rvh-name a:hover { color: var(--h-link); }
@@ -193,11 +233,8 @@
 .rvh-out { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.13em; text-transform: uppercase; color: var(--rv-out, #c0392b); margin-top: -0.35rem; }
 :lang(zh-Hant) .rvh-out { text-transform: none; font-size: 0.8rem; }
 
-/* the note on each version, right under its card (his rule: every option has a notes box that feeds back) */
-.rvh-cn {
-  display: block; width: 100%; box-sizing: border-box; margin-top: 0.7rem; font: inherit; font-size: 0.85rem; line-height: 1.45;
-  color: var(--h-ink); background: transparent; border: 1px solid var(--h-hair); border-radius: 0; padding: 0.45rem 0.6rem; resize: vertical;
-}
-.rvh-cn::placeholder { color: var(--h-ink-3); }
+/* 列表上直接寫筆記：跟版本頁 N 打開的是同一份 */
+.rvh-cn { display: block; width: 100%; box-sizing: border-box; margin: 0.5rem 0 0.2rem; font: inherit; font-size: 0.9rem; line-height: 1.5; color: var(--h-ink); background: transparent; border: 1px solid var(--h-hair); padding: 0.45rem 0.6rem; resize: vertical; min-height: 3.2rem; }
 .rvh-cn:hover { border-color: var(--h-ink-3); }
+.rvh-cn::placeholder { color: var(--h-ink-3); }
 .rvh-cn:focus { outline: none; border-color: var(--h-link); }

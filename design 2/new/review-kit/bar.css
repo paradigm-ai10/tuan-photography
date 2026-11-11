@@ -10,8 +10,8 @@
   --rvk-hair: var(--rv-hair, #ddd6cc);
   --rvk-mark: var(--rv-mark, #b5532f);
   --rvk-link: var(--rv-link, #7a3f24);
-  --rvk-label: var(--rv-label, "Geist", "Noto Sans TC", sans-serif);
-  --rvk-name: var(--rv-name, "Playfair Display", "Noto Serif TC", serif);
+  --rvk-label: var(--rv-label, ui-sans-serif, "Noto Sans TC", sans-serif);
+  --rvk-name: var(--rv-name, Georgia, "Noto Serif TC", serif);
   --rvk-w: 300px;
   --rvk-t: 150ms;
   font-family: var(--rvk-label);
@@ -71,7 +71,51 @@ html.rvk-drawer-open .rvk-bar { translate: calc(-50% - var(--rvk-w) / 2) 0; }
 .rvk-sq:hover { color: var(--rvk-ink); background: var(--rvk-paper-2); }
 .rvk-sq[aria-pressed="true"] { background: var(--rvk-ink); color: var(--rvk-paper); }
 .rvk-count { display: inline-block; min-width: 1.4em; margin-left: 4px; color: var(--rvk-mark); letter-spacing: 0; }
+/* Lightroom's flags: Pick fills in the mark colour, Reject in ink with a line through */
+.rvk-fl { display: inline-flex; flex: none; border: 1px solid var(--rvk-hair); }
+.rvk-fb { min-height: 22px; padding: 0 8px; font-size: 11px; font-weight: 500; letter-spacing: 0.06em; color: var(--rvk-ink-3); white-space: nowrap; display: inline-flex; align-items: center; gap: 5px; }
+:lang(zh-Hant) .rvk-fb, :lang(zh) .rvk-fb { font-size: 12px; letter-spacing: 0.04em; }
+.rvk-fb + .rvk-fb { border-left: 1px solid var(--rvk-hair); }
+.rvk-fb.is-pick::before { content: ""; width: 7px; height: 9px; background: currentColor; clip-path: polygon(0 0, 100% 0, 70% 50%, 100% 100%, 0 100%); }
+.rvk-fb.is-reject::before { content: "\2715"; font-size: 10px; line-height: 1; }
+.rvk-fb:hover { color: var(--rvk-ink); background: var(--rvk-paper-2); }
+.rvk-fb.is-pick[aria-pressed="true"] { background: var(--rvk-mark); color: var(--rvk-paper); }
+.rvk-fb.is-reject[aria-pressed="true"] { background: var(--rvk-ink); color: var(--rvk-paper); text-decoration: line-through; }
+.rvk-flags { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--rvk-hair); margin-top: -6px; }
+.rvk-flags .rvk-fb { min-height: 34px; justify-content: space-between; padding: 0 10px; font-size: 12.5px; }
+.rvk-flags .rvk-fb::before { margin-right: auto; }
+.rvk-flags .rvk-fb .rvk-key { margin-left: 8px; }
 .rvk-notes[aria-expanded="true"] { color: var(--rvk-ink); }
+
+/* ---- the corner shortcut and the edge arrows -------------------------------------------------- */
+/* top-left: the way back to the list, always there */
+.rvk-home {
+  position: fixed; z-index: 2147482000; top: 10px; left: 10px; padding: 0 10px; min-height: 26px;
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--rvk-paper); border: 1px solid var(--rvk-hair); color: var(--rvk-ink-2); text-decoration: none;
+  font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; white-space: nowrap;
+  opacity: 0.72; transition: opacity var(--rvk-t) ease-out, color var(--rvk-t) ease-out;
+}
+:lang(zh-Hant) .rvk-home, :lang(zh) .rvk-home { text-transform: none; letter-spacing: 0.08em; font-size: 12.5px; }
+.rvk-home::before { content: "\2190"; font-size: 12px; letter-spacing: 0; }
+.rvk-home:hover, .rvk-home:focus-visible { opacity: 1; color: var(--rvk-link); }
+.rvk-home[hidden] { display: none; }
+/* each side edge: one arrow, mid-height, faint until the pointer comes near */
+.rvk-edge {
+  position: fixed; z-index: 2147482000; top: 50%; translate: 0 -50%;
+  width: 40px; height: 88px; display: grid; place-items: center;
+  background: var(--rvk-paper); border: 1px solid var(--rvk-hair); color: var(--rvk-ink-2);
+  opacity: 0.8; transition: opacity var(--rvk-t) ease-out, color var(--rvk-t) ease-out, translate var(--rvk-t) ease-out;
+}
+.rvk-edge-prev { left: 0; border-left: 0; }
+.rvk-edge-next { right: 0; border-right: 0; }
+html.rvk-drawer-open .rvk-edge-next { right: var(--rvk-w); border-right: 1px solid var(--rvk-hair); }
+.rvk-edge svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: square; }
+.rvk-edge:hover, .rvk-edge:focus-visible { opacity: 1; color: var(--rvk-link); }
+.rvk-edge[hidden] { display: none; }
+.rvk-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+/* the pointer coming near either edge wakes that arrow (bar.js sets the class; the arrow itself stays 40px wide so the page's own edges stay clickable) */
+.rvk.is-near-prev .rvk-edge-prev, .rvk.is-near-next .rvk-edge-next { opacity: 1; }
 
 /* ---- the drawer ----------------------------------------------------------------------------- */
 .rvk-drawer {
@@ -135,7 +179,9 @@ html.rvk-drawer-open .rvk-bar { translate: calc(-50% - var(--rvk-w) / 2) 0; }
   position: absolute; top: 14px; left: 50%; translate: -50% 0; padding: 6px 12px;
   background: var(--rvk-paper); border: 1px solid var(--rvk-hair); font-size: 12px; color: var(--rvk-ink-2); white-space: nowrap; pointer-events: none;
 }
-.rvk.is-looking .rvk-layer, .rvk.is-looking .rvk-zone, .rvk.is-looking .rvk-bar, .rvk.is-looking .rvk-drawer { visibility: hidden; }
+.rvk-lasso { position: absolute; border: 1.5px solid var(--rvk-mark); background: color-mix(in srgb, var(--rvk-mark) 8%, transparent); pointer-events: none; }
+.rvk-lasso[hidden] { display: none; }
+.rvk.is-looking .rvk-layer, .rvk.is-looking .rvk-zone, .rvk.is-looking .rvk-bar, .rvk.is-looking .rvk-drawer, .rvk.is-looking .rvk-home, .rvk.is-looking .rvk-edge { visibility: hidden; }
 
 /* the dots and the card ride a still layer over the viewport, positioned by --x and --y (0 to 1) */
 .rvk-zone { position: fixed; inset: 0; z-index: 2147482003; pointer-events: none; }
@@ -153,6 +199,22 @@ html.rvk-drawer-open .rvk-bar { translate: calc(-50% - var(--rvk-w) / 2) 0; }
   background: var(--rvk-paper); padding: 0 3px; line-height: 14px; font-variant-numeric: tabular-nums;
 }
 .rvk-dot.is-flash::before { animation: rvk-flash 300ms ease-in-out 2 alternate both; animation-iteration-count: 4; }
+.rvk-dot.is-box {
+  left: calc((var(--x) - var(--w) / 2) * 100%); top: calc((var(--y) - var(--h) / 2) * 100%); translate: 0 0;
+  width: calc(var(--w) * 100%); height: calc(var(--h) * 100%); place-items: start; min-width: 12px; min-height: 12px;
+}
+.rvk-dot.is-box::before { width: 100%; height: 100%; border-radius: 0; border-width: 1.5px; background: transparent; box-shadow: 0 0 0 1px var(--rvk-paper), inset 0 0 0 1px var(--rvk-paper); }
+.rvk-dot.is-box span { left: -1px; top: -16px; }
+.rvk-zone.is-box .rvk-pend { left: calc((var(--x) - var(--w) / 2) * 100%); top: calc((var(--y) - var(--h) / 2) * 100%); translate: 0 0; width: calc(var(--w) * 100%); height: calc(var(--h) * 100%); border-radius: 0; background: transparent; }
+/* the page dims round a boxed mark for a moment ("Look at it") */
+.rvk-spot {
+  position: absolute; left: calc((var(--x) - var(--w) / 2) * 100%); top: calc((var(--y) - var(--h) / 2) * 100%);
+  width: calc(var(--w) * 100%); height: calc(var(--h) * 100%); pointer-events: auto; cursor: pointer;
+  outline: 2px solid var(--rvk-mark); box-shadow: 0 0 0 200vmax rgba(42, 38, 34, 0.42);
+}
+.rvk-spot[hidden] { display: none; }
+.rvk-spot.is-in { animation: rvk-spot-in 220ms ease-out; }
+@keyframes rvk-spot-in { from { box-shadow: 0 0 0 200vmax rgba(42, 38, 34, 0); outline-color: transparent; } }
 @keyframes rvk-flash { to { opacity: 0.15; } }
 
 .rvk-card {
@@ -201,7 +263,11 @@ html.rvk-drawer-open .rvk-bar { translate: calc(-50% - var(--rvk-w) / 2) 0; }
   .rvk { --rvk-w: 0px; }
   .rvk-bar { width: 100vw; }
   .rvk-row { padding: 0 10px; gap: 10px; border-inline: 0; }
-  .rvk-sep, .rvk-sc, .rvk-all, .rvk-title { display: none; }
+  .rvk-sep, .rvk-sc, .rvk-all, .rvk-title, .rvk-bar .rvk-fl { display: none; }
+  .rvk-edge { width: 30px; height: 64px; opacity: 0.5; }
+  /* a page's own logo usually sits in this corner on a phone, so the link shrinks to its arrow, hugging the edge */
+  .rvk .rvk-home { top: 0; left: 0; padding: 0 9px; min-height: 28px; border-top: 0; border-left: 0; font-size: 0; }
+  .rvk .rvk-home::before { font-size: 14px; }
   .rvk-where { justify-content: center; }
   /* the sheet sits on top of the bar, so Previous and Next stay in reach while notes are open */
   .rvk-drawer {

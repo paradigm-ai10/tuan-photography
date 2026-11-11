@@ -5,7 +5,9 @@
 
    Each version is a card: its still (made by review_thumbs.py; a numbered paper block until then),
    his marks as dots on it, the score as five squares he can press here, the count of marks, the
-   last thing he wrote. Filters, sort, "Keeps saying" (what he says most, counted), group notes,
+   last thing he wrote, his flag (Lightroom's Pick / Reject, P X U on the version under the pointer).
+   A filter bar like Lightroom's: flag states and a score with at least / exactly / at most, the
+   older Not seen / Your pick, sort, "Keeps saying" (what he says most, counted), group notes,
    and the versions no longer on the list, folded and read-only. The versions Claude asks him to
    score this round (manifest "ask") are listed at the top and framed on the sheet until scored.
    With a round (manifest "round", else "ask"), the sheet shows this round only; earlier rounds wait
@@ -36,15 +38,17 @@
   const typing = (el) => el && el.closest && el.closest('input, textarea, select, [contenteditable=""], [contenteditable="true"]');
 
   let M = null, R = null, list = [], stills = {}, mount = null;
-  const ui = { filter: 0, sort: 0, scroll: 0, earlier: false, keeps: false, by: null, picked: null, open: {}, view: 'now' };
+  // flags: which of Lightroom's three flag states to show (none chosen = all); stars: the score filter
+  const ui = { filter: 0, sort: 0, scroll: 0, earlier: false, keeps: false, by: null, picked: null, open: {}, view: 'now', flags: [], stars: 0, cmp: '>=', unscored: false, hover: '' };
   const MAXPICK = () => (window.ReviewCompare && window.ReviewCompare.MAX) || 6;
   const KEY = () => `rv-hub-${M.name}`;
   function remember() {
-    try { localStorage.setItem(KEY(), JSON.stringify({ filter: ui.filter, sort: ui.sort, scroll: Math.round(scrollY), earlier: ui.earlier })); } catch (e) { /* storage blocked */ }
+    try { localStorage.setItem(KEY(), JSON.stringify({ filter: ui.filter, sort: ui.sort, scroll: Math.round(scrollY), earlier: ui.earlier, flags: ui.flags, stars: ui.stars, cmp: ui.cmp, unscored: ui.unscored })); } catch (e) { /* storage blocked */ }
   }
 
   const itemOf = (id) => (R.data.items || {})[id] || {};
   const starsOf = (id) => itemOf(id).stars || 0;
+  const flagOf = (id) => itemOf(id).flag || '';
   const liked = (id) => { const it = itemOf(id); return it.stars ? it.stars >= 4 : it.verdict === 'good'; };
   const away = (id) => { const it = itemOf(id); return it.stars ? it.stars <= 2 : it.verdict === 'bad'; };
   // a version he scored or wrote about has been seen, even from before the kit kept "seen"
@@ -98,14 +102,26 @@
     return [...out.values()].sort((a, b) => b.n - a.n);
   }
 
+  // the flag and star filters, as Lightroom's filter bar: each narrows the sheet, together with "Not seen" / "Your pick"
+  function flagOk(id) { return !ui.flags.length || ui.flags.includes(flagOf(id) || 'none'); }
+  function starsOk(id) {
+    const s = starsOf(id);
+    if (ui.unscored) return !s;
+    if (!ui.stars) return true;
+    return ui.cmp === '=' ? s === ui.stars : ui.cmp === '<=' ? s > 0 && s <= ui.stars : s >= ui.stars;
+  }
   function matches(v) {
     if (ui.by) return ui.by.has(v.id);
+    if (!flagOk(v.id) || !starsOk(v.id)) return false;
     if (ui.filter === 1) return !seen(v.id);
     if (ui.filter === 2) return liked(v.id);
     if (ui.filter === 3) return away(v.id);
     if (ui.filter === 4) return asked(v.id);
     return true;
   }
+  const flagButtons = (id, it) => `<span class="rvh-fl" role="group" aria-label="${esc(t('flagLabel'))}">
+    <button type="button" class="rvh-fb is-pick" data-h="flag" data-v="pick" aria-pressed="${it.flag === 'pick'}" title="P">${esc(t('pick'))}</button>
+    <button type="button" class="rvh-fb is-reject" data-h="flag" data-v="reject" aria-pressed="${it.flag === 'reject'}" title="X">${esc(t('reject'))}</button></span>`;
   function sorted(vs) {
     const out = vs.slice();
     if (ui.sort === 1) out.sort((a, b) => (starsOf(b.id) || (liked(b.id) ? 3.5 : 0)) - (starsOf(a.id) || (liked(a.id) ? 3.5 : 0)) || a.n - b.n);
@@ -116,7 +132,9 @@
   // ---- one card --------------------------------------------------------------------------------
   function card(v) {
     const it = itemOf(v.id), s = it.stars || 0, ms = R.marksOf(v.id), title = pick(v.title), src = stillUrl(v.id);
-    const dots = ms.filter((m) => m.where).map((m) => `<span class="rvh-pin${m.kind ? ` is-${m.kind}` : ''}" style="--x: ${(+m.where.x).toFixed(4)}; --y: ${(+m.where.y).toFixed(4)}"></span>`).join('');
+    const dots = ms.filter((m) => m.where).map((m) => (m.where.w > 0 && m.where.h > 0
+      ? `<span class="rvh-pin is-box${m.kind ? ` is-${m.kind}` : ''}" style="--x: ${(+m.where.x).toFixed(4)}; --y: ${(+m.where.y).toFixed(4)}; --w: ${(+m.where.w).toFixed(4)}; --h: ${(+m.where.h).toFixed(4)}"></span>`
+      : `<span class="rvh-pin${m.kind ? ` is-${m.kind}` : ''}" style="--x: ${(+m.where.x).toFixed(4)}; --y: ${(+m.where.y).toFixed(4)}"></span>`)).join('');
     const last = lastWords(v.id);
     const picked = !!ui.picked && ui.picked.includes(v.id);
     // while choosing, the picture itself says it is chosen, and in what order
@@ -124,10 +142,11 @@
     const ask = !ui.picked && asked(v.id), done = ask && scored(v.id);
     const tag = ui.picked ? (picked ? `<span class="rvh-chosen">${esc(t('chosenN', { n: ui.picked.indexOf(v.id) + 1 }))}</span>` : `<span class="rvh-choose">${esc(t('choose'))}</span>`)
       : ask ? `<span class="rvh-asktag${done ? ' is-done' : ''}">${esc(t(done ? 'askDoneTag' : 'askTag'))}</span>` : '';
-    return `<article class="rvh-card${liked(v.id) ? ' is-liked' : ''}${away(v.id) ? ' is-low' : ''}${ui.picked ? ' is-choosing' : ''}${picked ? ' is-picked' : ''}${ask && !done ? ' is-ask' : ''}${v.out ? ' is-out' : ''}" id="v-${esc(v.id)}" data-id="${esc(v.id)}">
+    const flag = it.flag === 'pick' ? `<span class="rvh-flag is-pick">${esc(t('flagged'))}</span>` : it.flag === 'reject' ? `<span class="rvh-flag is-reject">${esc(t('rejected'))}</span>` : '';
+    return `<article class="rvh-card${liked(v.id) ? ' is-liked' : ''}${away(v.id) || it.flag === 'reject' ? ' is-low' : ''}${it.flag === 'pick' ? ' is-pick' : ''}${it.flag === 'reject' ? ' is-reject' : ''}${ui.picked ? ' is-choosing' : ''}${picked ? ' is-picked' : ''}${ask && !done ? ' is-ask' : ''}${v.out ? ' is-out' : ''}" id="v-${esc(v.id)}" data-id="${esc(v.id)}">
       <a class="rvh-still" href="${esc(v.href)}" tabindex="-1" aria-hidden="true">
         ${src ? `<img src="${esc(src)}" alt="" loading="lazy" decoding="async" width="960" height="600">` : `<span class="rvh-blank"><span>${v.n}</span><small>${esc(t('noStill'))}</small></span>`}
-        ${dots}${tag}${v.out ? `<svg class="rvh-x" viewBox="0 0 100 62" preserveAspectRatio="none" aria-hidden="true"><path d="M7 6 C 30 20, 62 40, 94 57"/><path d="M92 5 C 66 22, 38 40, 6 58"/></svg>` : ''}
+        ${dots}${tag}${flag}${v.out ? `<svg class="rvh-x" viewBox="0 0 100 62" preserveAspectRatio="none" aria-hidden="true"><path d="M7 6 C 30 20, 62 40, 94 57"/><path d="M92 5 C 66 22, 38 40, 6 58"/></svg>` : ''}
       </a>
       <div class="rvh-meta">
         <h3 class="rvh-name"><a href="${esc(v.href)}"><span class="rvh-num">${v.n}</span>${esc(title)}</a></h3>
@@ -137,17 +156,18 @@
           <span class="rvh-sc" role="group" aria-label="${esc(t('score'))}: ${esc(title)}">${[1, 2, 3, 4, 5].map((k) =>
             `<button type="button" class="rvh-sq" data-h="score" data-n="${k}" aria-pressed="${s === k}" title="${esc(t('scores')[k])}" aria-label="${k}, ${esc(t('scores')[k])}"></button>`).join('')}</span>
           <span class="rvh-sw">${esc(scoreWord(v.id))}</span>
+          ${flagButtons(v.id, it)}
           ${ms.length ? `<span class="rvh-mc">${esc(marksCount(ms.length))}</span>` : ''}
           ${seen(v.id) ? '' : `<span class="rvh-ns">${esc(t('notSeen'))}</span>`}
         </div>
-        ${last ? `<p class="rvh-last">${esc(last)}</p>` : ''}
+        <textarea class="rvh-cn" data-id="${esc(v.id)}" rows="2" placeholder="${esc(t('cardNote'))}" aria-label="${esc(t('cardNote'))}: ${esc(title)}">${esc(it.note || '')}</textarea>
+        ${last && last !== it.note ? `<p class="rvh-last">${esc(last)}</p>` : ''}
         <p class="rvh-acts">
           <a class="rvh-w" href="${esc(v.href)}">${esc(t('open'))}</a>
           <button type="button" class="rvh-w" data-h="what" aria-expanded="${!!ui.open[v.id]}">${esc(ui.open[v.id] ? t('less') : t('what'))}</button>
           <button type="button" class="rvh-w${picked ? ' is-on' : ''}" data-h="cmp"${ui.picked ? ` aria-pressed="${picked}"` : ''}>${esc(ui.picked ? (picked ? t('chosen') : t('choose')) : t('compare'))}</button>
         </p>
         ${ui.open[v.id] ? `<p class="rvh-desc">${esc(pick(v.desc))}</p>` : ''}
-        <textarea class="rvh-cn" data-id="${esc(v.id)}" rows="2" placeholder="${esc(t('cardNote'))}" aria-label="${esc(t('cardNote'))}: ${esc(title)}">${esc(it.note || '')}</textarea>
       </div>
     </article>`;
   }
@@ -204,7 +224,8 @@
         }).join('')}</nav>` : ''}
       ${past ? `<p class="rvh-intro">${esc(t('viewEarlierNote'))}</p>` : askBox()}
       <div class="rvh-tools">
-        <span class="rvh-tg" role="group" aria-label="${esc(t('filterLabel'))}">${filters.map((f, i) => `<button type="button" class="rvh-w" data-h="filter" data-i="${i}" aria-pressed="${!ui.by && ui.filter === i}">${esc(f)}</button>`).join('')}${askIds().length ? `<button type="button" class="rvh-w" data-h="filter" data-i="4" aria-pressed="${!ui.by && ui.filter === 4}">${esc(t('askTag'))}</button>` : ''}</span>
+        <span class="rvh-tg" role="group" aria-label="${esc(t('filterLabel'))}">${filters.slice(0, 2).map((f, i) => `<button type="button" class="rvh-w" data-h="filter" data-i="${i}" aria-pressed="${!ui.by && ui.filter === i}">${esc(f)}</button>`).join('')}${askIds().length ? `<button type="button" class="rvh-w" data-h="filter" data-i="4" aria-pressed="${!ui.by && ui.filter === 4}">${esc(t('askTag'))}</button>` : ''}</span>
+        ${filterBar(vsAll)}
         <span class="rvh-tg" role="group" aria-label="${esc(t('sortLabel'))}">${sorts.map((f, i) => `<button type="button" class="rvh-w" data-h="sort" data-i="${i}" aria-pressed="${ui.sort === i}">${esc(f)}</button>`).join('')}</span>
         <span class="rvh-tg">
           <button type="button" class="rvh-w" data-h="pick" aria-pressed="${!!ui.picked}">${esc(t('compareSome'))}</button>
@@ -239,6 +260,27 @@
     const g = mount.querySelector('#rvh-general');
     if (g) g.value = R.data.general || '';
     ui._say = say;
+  }
+
+  // Lightroom's filter bar: the three flag states (several at once) and a score with at least / exactly / at most
+  function filterBar(vs) {
+    const n = (f) => vs.filter((v) => (flagOf(v.id) || 'none') === f).length;
+    const unscoredN = vs.filter((v) => !starsOf(v.id)).length;
+    const cmpWord = { '>=': t('starsAtLeast'), '=': t('starsExactly'), '<=': t('starsAtMost') }[ui.cmp];
+    const cmpSign = { '>=': '\u2265', '=': '=', '<=': '\u2264' }[ui.cmp];
+    const lit = (k) => (ui.stars && !ui.unscored) && (ui.cmp === '=' ? k === ui.stars : ui.cmp === '<=' ? k <= ui.stars : k >= ui.stars);
+    return `<span class="rvh-tg rvh-flt" role="group" aria-label="${esc(t('flagLabel'))}">
+        <span class="rvh-tl">${esc(t('flagLabel'))}</span>
+        ${[['pick', t('pick')], ['none', t('unflag')], ['reject', t('reject')]].map(([f, w]) =>
+          `<button type="button" class="rvh-fb is-${f}" data-h="flags" data-v="${f}" aria-pressed="${ui.flags.includes(f)}">${esc(w)}<span class="rvh-fn">${n(f)}</span></button>`).join('')}
+      </span>
+      <span class="rvh-tg rvh-flt" role="group" aria-label="${esc(t('starsLabel'))}">
+        <span class="rvh-tl">${esc(t('starsLabel'))}</span>
+        <button type="button" class="rvh-cmp" data-h="cmp" title="${esc(cmpWord)}" aria-label="${esc(cmpWord)}">${cmpSign}</button>
+        <span class="rvh-stars">${[1, 2, 3, 4, 5].map((k) => `<button type="button" class="rvh-st" data-h="stars" data-n="${k}" aria-pressed="${ui.stars === k && !ui.unscored}" data-lit="${lit(k)}" title="${esc(t('scores')[k])}" aria-label="${k}, ${esc(t('scores')[k])}"></button>`).join('')}</span>
+        <span class="rvh-stw">${ui.unscored ? esc(t('starsNone')) : ui.stars ? `${esc(cmpWord)} ${ui.stars}` : esc(t('starsAny'))}</span>
+        <button type="button" class="rvh-fb is-none" data-h="unscored" aria-pressed="${ui.unscored}">${esc(t('starsNone'))}<span class="rvh-fn">${unscoredN}</span></button>
+      </span>`;
   }
 
   // the top of the list: what Claude asks this round, and which of those versions still wait for a score
@@ -299,6 +341,11 @@
     if (!b) return;
     const k = b.dataset.h, c = b.closest('.rvh-card'), id = c && c.dataset.id;
     if (k === 'score') { R.setStars(id, +b.dataset.n); redraw(); }
+    else if (k === 'flag') { R.setFlag(id, b.dataset.v); redraw(); }
+    else if (k === 'flags') { const f = b.dataset.v, i = ui.flags.indexOf(f); if (i >= 0) ui.flags.splice(i, 1); else ui.flags.push(f); ui.by = null; remember(); redraw(); }
+    else if (k === 'stars') { const n = +b.dataset.n; ui.unscored = false; ui.stars = ui.stars === n ? 0 : n; ui.by = null; remember(); redraw(); }
+    else if (k === 'cmp') { ui.cmp = ui.cmp === '>=' ? '=' : ui.cmp === '=' ? '<=' : '>='; remember(); redraw(); }
+    else if (k === 'unscored') { ui.unscored = !ui.unscored; if (ui.unscored) ui.stars = 0; ui.by = null; remember(); redraw(); }
     else if (k === 'filter') { ui.filter = +b.dataset.i; ui.by = null; remember(); redraw(); }
     else if (k === 'sort') { ui.sort = +b.dataset.i; remember(); redraw(); }
     else if (k === 'what') { ui.open[id] = !ui.open[id]; redraw(); }
@@ -324,11 +371,20 @@
     if (!mount || !mount.contains(e.target)) return;
     if (e.target.id === 'rvh-general') R.setGeneral(e.target.value);
     else if (e.target.classList.contains('rvh-gn')) R.setGroupNote(e.target.dataset.g, e.target.value);
-    else if (e.target.classList.contains('rvh-cn')) R.setNote(e.target.dataset.id, e.target.value);   // the note on one version, the same one its page's Notes drawer shows
+    else if (e.target.classList.contains('rvh-cn')) R.setNote(e.target.dataset.id, e.target.value);
   });
+  document.addEventListener('pointerover', (e) => { const c = e.target.closest && e.target.closest('.rvh-card'); if (c) ui.hover = c.dataset.id; });
   document.addEventListener('keydown', (e) => {
     if (e.metaKey || e.ctrlKey || e.altKey || typing(e.target) || /[?&]compare=/.test(location.search)) return;
-    if (e.key === 'Escape' && (ui.by || ui.filter || ui.picked)) { ui.by = null; ui.filter = 0; ui.picked = null; remember(); redraw(); }
+    if (e.key === 'Escape' && (ui.by || ui.filter || ui.picked || ui.flags.length || ui.stars || ui.unscored)) { ui.by = null; ui.filter = 0; ui.picked = null; ui.flags = []; ui.stars = 0; ui.unscored = false; remember(); redraw(); }
+    const k = e.key, over = ui.hover && (document.querySelector(`.rvh-card[data-id="${CSS.escape(ui.hover)}"]:hover`) ? ui.hover : '');
+    const focused = document.activeElement && document.activeElement.closest && document.activeElement.closest('.rvh-card');
+    const id = over || (focused && focused.dataset.id);
+    if (!id || e.shiftKey) return;
+    if (k === 'p' || k === 'P') { R.setFlag(id, 'pick'); redraw(); }
+    else if (k === 'x' || k === 'X') { R.setFlag(id, 'reject'); redraw(); }
+    else if (k === 'u' || k === 'U') { R.setFlag(id, ''); redraw(); }
+    else if (/^[0-5]$/.test(k)) { R.setStars(id, +k); redraw(); }
     if (e.key === '?') { const q = document.createElement('p'); q.className = 'rvh-keys'; q.textContent = t('keysHub'); document.body.appendChild(q); setTimeout(() => q.remove(), 4000); }
   });
   let scrollT = 0;
@@ -353,7 +409,13 @@
       // ?pick=a,b: back from side by side to choose one more, with those already chosen
       const pk = new URLSearchParams(location.search).get('pick');
       if (pk != null) ui.picked = pk.split(',').filter((id) => list.some((v) => v.id === id)).slice(0, MAXPICK());
-      try { const k = JSON.parse(localStorage.getItem(KEY())) || {}; ui.filter = k.filter | 0; ui.sort = k.sort | 0; ui.scroll = k.scroll | 0; ui.earlier = !!k.earlier; } catch (e) { /* storage blocked */ }
+      try {
+        const k = JSON.parse(localStorage.getItem(KEY())) || {};
+        ui.filter = k.filter | 0; ui.sort = k.sort | 0; ui.scroll = k.scroll | 0; ui.earlier = !!k.earlier;
+        ui.flags = Array.isArray(k.flags) ? k.flags.filter((f) => ['pick', 'none', 'reject'].includes(f)) : [];
+        ui.stars = [1, 2, 3, 4, 5].includes(k.stars) ? k.stars : 0; ui.cmp = ['>=', '=', '<='].includes(k.cmp) ? k.cmp : '>='; ui.unscored = !!k.unscored;
+      } catch (e) { /* storage blocked */ }
+      if (ui.filter === 2 || ui.filter === 3) ui.filter = 0;   // the old Liked / Put away: the star filter does that now
       if (ui.filter === 4 && !askIds().length) ui.filter = 0;
       const thumbs = m.stills ? fetch(`${m.stills}thumbs.json`, { cache: 'no-store' }).then((r) => (r.ok ? r.json() : {})).catch(() => ({})) : Promise.resolve({});
       return Promise.all([thumbs, R.pull()]);

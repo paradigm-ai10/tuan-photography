@@ -1,15 +1,19 @@
 /* Version Review kit: the bar, the Notes drawer and the marks, on every version page.
 
-   <script src="review-kit/bar.js" data-name="journey" data-id="…" data-manifest="review-manifest.json"></script>
+   <script src="review-kit/bar.js" data-name="<name>" data-id="…" data-manifest="review-manifest.json"></script>
    (needs words.js and store.js first; review.js in a project can load all three).
-   data-name   the review file (default: the manifest's name, else "journey")
+   data-name   the review file (set it to the manifest's "name"; default "reviews")
    data-id     this version's id (default: the file name without .html)
    data-back   "" for a page with no list to go back to
    data-list   the store only, no bar (a list page that draws its own)
-   data-manifest  where the list of versions is (default review-manifest.json beside the page)
+   data-manifest  where the list of versions is (default review-manifest.json beside the page; "" for none)
 
    The tool stays out of the way: a thin bar at the bottom edge that shrinks to a hairline, a
-   drawer on the right only when asked (N), and marks dropped on the spot he means (M).
+   drawer on the right only when asked (N), and marks dropped on the spot he means (M): a click marks
+   a point, a drag draws a box round the thing (where.w / where.h), and "Look at it" dims the page round
+   that box. P / X / U are Lightroom's flags (pick, reject, unflagged), kept as item.flag. Two things stay
+   in reach: the list's name in the top-left corner (back to the list) and an arrow at each side edge
+   (previous and next version), faint until the pointer comes near.
    Keys: , . previous and next version (Shift: the whole list), B the list, 1 to 5 score, N notes,
    M mark, H hide marks, ? the keys. They are stopped at the kit, so the page never acts on them too. Shown only
    on the owner's own computer (localhost), never in stills (?still or headless Chrome).
@@ -24,7 +28,7 @@
   let FRAMED = false;
   try { FRAMED = window.top !== window.self; } catch (e) { FRAMED = true; }   // inside Compare's live frame
   const RW = window.ReviewWords;
-  const NAME0 = OPT.name || 'journey';
+  const NAME0 = OPT.name || 'reviews';
   const R = window.ReviewStore.open(NAME0);
   window.Review = window.Review || R;
   if (!LOCAL || FRAMED || 'list' in OPT) return;
@@ -37,7 +41,7 @@
       try {
         arriving = JSON.parse(decodeURIComponent(escape(atob(m[1].replace(/-/g, '+').replace(/_/g, '/')))));
       } catch (e) { arriving = null; }
-      // a page that keeps its own view in the address (#at=… on the atlas) gets it back before it reads it
+      // a page that keeps its own view in the address gets it back before it reads it
       const rest = arriving && arriving.hash ? arriving.hash : '';
       try { history.replaceState(history.state, '', location.pathname + location.search + rest); } catch (e) { /* sandboxed */ }
     }
@@ -73,14 +77,20 @@
   const root = document.createElement('div');
   root.className = 'rvk';
   root.innerHTML = `
-    <div class="rvk-zone"><div class="rvk-dots"></div><span class="rvk-pend" aria-hidden="true" hidden></span><div class="rvk-card" hidden></div></div>
-    <div class="rvk-layer" hidden><p class="rvk-hint"></p></div>
+    <div class="rvk-zone"><div class="rvk-spot" hidden></div><div class="rvk-dots"></div><span class="rvk-pend" aria-hidden="true" hidden></span><div class="rvk-card" hidden></div></div>
+    <div class="rvk-layer" hidden><p class="rvk-hint"></p><div class="rvk-lasso" hidden></div></div>
+    <a class="rvk-home" hidden></a>
+    <button type="button" class="rvk-edge rvk-edge-prev" data-k="prev" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span class="rvk-sr"></span></button>
+    <button type="button" class="rvk-edge rvk-edge-next" data-k="next" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg><span class="rvk-sr"></span></button>
     <nav class="rvk-bar" aria-label="Review"></nav>
     <aside class="rvk-drawer" id="rvk-drawer" hidden></aside>
     <p class="rvk-keys" hidden></p>`;
   const $ = (s) => root.querySelector(s);
   const zone = $('.rvk-zone'), dotsEl = $('.rvk-dots'), card = $('.rvk-card'), layer = $('.rvk-layer');
   const bar = $('.rvk-bar'), drawer = $('#rvk-drawer'), keysEl = $('.rvk-keys');
+  const homeEl = $('.rvk-home'), edgePrev = $('.rvk-edge-prev'), edgeNext = $('.rvk-edge-next');
+  const lasso = $('.rvk-lasso'), spot = $('.rvk-spot');
+  const isBox = (m) => !!(m && m.where && m.where.w > 0 && m.where.h > 0);
 
   let drawerOpen = false, hideDots = false, marking = false, pending = null, peek = null;
   // every version arrives with the drawer closed: he judges each one whole (principle 2)
@@ -106,12 +116,27 @@
         <span class="rvk-sep" aria-hidden="true"></span>
         <span class="rvk-sc" role="group" aria-label="${esc(t('score'))}">${[1, 2, 3, 4, 5].map((k) =>
           `<button type="button" class="rvk-sq" data-k="score" data-n="${k}" aria-pressed="${s === k}" title="${esc(t('scores')[k])}" aria-label="${k}, ${esc(t('scores')[k])}">${k}</button>`).join('')}</span>
+        <span class="rvk-fl" role="group" aria-label="${esc(t('flagLabel'))}">
+          <button type="button" class="rvk-fb is-pick" data-k="flag" data-v="pick" aria-pressed="${it.flag === 'pick'}" title="P">${esc(t('pick'))}</button>
+          <button type="button" class="rvk-fb is-reject" data-k="flag" data-v="reject" aria-pressed="${it.flag === 'reject'}" title="X">${esc(t('reject'))}</button>
+        </span>
         <button type="button" class="rvk-w rvk-notes" data-k="notes" aria-expanded="${drawerOpen}" aria-controls="rvk-drawer">${esc(t('notes'))}${marksOf().length ? ` <span class="rvk-count">${marksOf().length}</span>` : ''}</button>
         ${back ? `<a class="rvk-w rvk-all" href="${esc(hubHref())}">${esc(t('all'))}</a>` : ''}
       </div>`;
+    // the shortcut in the top-left corner and the arrows at both edges: always there, quiet until pointed at
+    homeEl.hidden = !back;
+    if (back) { homeEl.href = hubHref(); homeEl.textContent = t('all'); }
+    edgePrev.hidden = edgeNext.hidden = !(total > 1);
+    edgePrev.querySelector('.rvk-sr').textContent = t('prev');
+    edgeNext.querySelector('.rvk-sr').textContent = t('next');
   }
 
-  function hubHref() { return `${M.hub || 'index.html'}#v-${ID}`; }
+  let manifestURL = location.href;   // the manifest's own address: "hub" is relative to it, not to this page
+  function hubHref() {
+    let h = M.hub || 'index.html';
+    try { h = new URL(h, manifestURL).href; } catch (e) { /* keep it as written */ }
+    return `${h}#v-${ID}`;
+  }
 
   // shown for 3 s on arrival, then a hairline; back when the pointer nears the bottom edge or a key is used
   let shrinkT = 0;
@@ -125,6 +150,9 @@
     const near = innerHeight - e.clientY < 48;
     if (near && !overBar) { overBar = true; showBar(Infinity); }
     else if (!near && overBar) { overBar = false; showBar(1200); }
+    // near a side edge: that edge's arrow comes forward
+    root.classList.toggle('is-near-prev', e.clientX < 72);
+    root.classList.toggle('is-near-next', innerWidth - e.clientX < 72 + (drawerOpen && innerWidth > 767 ? 300 : 0));
   }, { passive: true });
   bar.addEventListener('focusin', () => showBar(Infinity));
   bar.addEventListener('focusout', () => showBar(1500));
@@ -143,14 +171,14 @@
   function markLine(m, i) {
     const kind = m.kind === 'like' ? t('likeShort') : m.kind === 'change' ? t('changeShort') : m.legacy ? t('earlierPin') : t('bare');
     const chips = [...(m.tags || []).map(tagWord), ...(m.phrases || []).map(phraseWord)];
-    const where = m.where ? '' : m.view && typeof m.view.scroll === 'number' ? t('atPct', { p: Math.round(m.view.scroll * 100) }) : '';
+    const where = isBox(m) ? t('boxed') : m.where ? '' : m.view && typeof m.view.scroll === 'number' ? t('atPct', { p: Math.round(m.view.scroll * 100) }) : '';
     return `<li class="rvk-m${m.kind ? ` is-${m.kind}` : ''}" data-m="${esc(m.id)}">
       <span class="rvk-dotn" aria-hidden="true">${i + 1}</span>
       <div class="rvk-mb">
         <p class="rvk-mk">${esc(kind)}${chips.length ? `<span class="rvk-chips">${chips.map((c) => `<span class="rvk-chip">${esc(c)}</span>`).join('')}</span>` : ''}</p>
         ${m.text ? `<p class="rvk-mt">${esc(m.text)}</p>` : ''}
         ${where || m.near ? `<p class="rvk-mn">${esc([where, m.near].filter(Boolean).join(', '))}</p>` : ''}
-        <p class="rvk-ma"><button type="button" class="rvk-w" data-k="go" data-m="${esc(m.id)}">${esc(t('go'))}</button>${m.legacy ? '' : `<button type="button" class="rvk-w" data-k="del" data-m="${esc(m.id)}">${esc(t('remove'))}</button>`}</p>
+        <p class="rvk-ma"><button type="button" class="rvk-w" data-k="go" data-m="${esc(m.id)}">${esc(isBox(m) ? t('look') : t('go'))}</button>${m.legacy ? '' : `<button type="button" class="rvk-w" data-k="del" data-m="${esc(m.id)}">${esc(t('remove'))}</button>`}</p>
       </div></li>`;
   }
 
@@ -162,9 +190,13 @@
     const noteFocused = document.activeElement && document.activeElement.id === 'rvk-overall';
     const scoreHtml = `<div class="rvk-score" role="group" aria-label="${esc(t('score'))}">${[1, 2, 3, 4, 5].map((k) =>
       `<button type="button" class="rvk-sb" data-k="score" data-n="${k}" aria-pressed="${s === k}"><span class="rvk-sbn">${k}</span><span class="rvk-sbw">${esc(t('scores')[k])}</span></button>`).join('')}</div>`;
+    const flagHtml = `<div class="rvk-flags" role="group" aria-label="${esc(t('flagLabel'))}">
+      <button type="button" class="rvk-fb is-pick" data-k="flag" data-v="pick" aria-pressed="${it.flag === 'pick'}">${esc(t('pick'))}<span class="rvk-key" aria-hidden="true">P</span></button>
+      <button type="button" class="rvk-fb is-reject" data-k="flag" data-v="reject" aria-pressed="${it.flag === 'reject'}">${esc(t('reject'))}<span class="rvk-key" aria-hidden="true">X</span></button></div>`;
     const body = `
       <header class="rvk-dh"><p class="rvk-dt">${esc(me ? pick(me.title) : t('notes'))}</p><button type="button" class="rvk-w" data-k="notes">${esc(t('close'))}</button></header>
       ${scoreHtml}
+      ${flagHtml}
       <button type="button" class="rvk-markbtn" data-k="mark">${esc(t('mark'))}<span class="rvk-key" aria-hidden="true">M</span></button>
       <ol class="rvk-ms">${ms.length ? ms.map(markLine).join('') : `<li class="rvk-none">${esc(t('noMarks'))}</li>`}</ol>
       ${ms.some((m) => m.where) ? `<button type="button" class="rvk-w rvk-hide" data-k="hide">${esc(hideDots ? t('showMarks') : t('hideMarks'))}</button>` : ''}
@@ -202,7 +234,9 @@
   function drawDots() {
     const ms = marksOf();
     const show = drawerOpen && !hideDots;
-    dotsEl.innerHTML = show ? ms.map((m, i) => (m.where ? `<button type="button" class="rvk-dot${m.kind ? ` is-${m.kind}` : ''}" data-m="${esc(m.id)}" style="--x: ${(+m.where.x).toFixed(4)}; --y: ${(+m.where.y).toFixed(4)}" aria-label="${i + 1}"><span>${i + 1}</span></button>` : '')).join('') : '';
+    dotsEl.innerHTML = show ? ms.map((m, i) => (isBox(m)
+      ? `<button type="button" class="rvk-dot is-box${m.kind ? ` is-${m.kind}` : ''}" data-m="${esc(m.id)}" style="--x: ${(+m.where.x).toFixed(4)}; --y: ${(+m.where.y).toFixed(4)}; --w: ${(+m.where.w).toFixed(4)}; --h: ${(+m.where.h).toFixed(4)}" aria-label="${i + 1}"><span>${i + 1}</span></button>`
+      : m.where ? `<button type="button" class="rvk-dot${m.kind ? ` is-${m.kind}` : ''}" data-m="${esc(m.id)}" style="--x: ${(+m.where.x).toFixed(4)}; --y: ${(+m.where.y).toFixed(4)}" aria-label="${i + 1}"><span>${i + 1}</span></button>` : '')).join('') : '';
   }
 
   function flash(id) {
@@ -220,7 +254,19 @@
     layer.querySelector('.rvk-hint').textContent = t('markHint');
     root.classList.add('is-marking');
   }
-  function stopMarking() { marking = false; layer.hidden = true; root.classList.remove('is-marking'); }
+  function stopMarking() { marking = false; layer.hidden = true; lasso.hidden = true; root.classList.remove('is-marking'); }
+
+  // ---- looking at a boxed mark: the page dims round the box for a moment -----------------------
+  let spotT = 0;
+  function spotlight(m) {
+    if (!isBox(m)) return;
+    spot.style.setProperty('--x', (+m.where.x).toFixed(4)); spot.style.setProperty('--y', (+m.where.y).toFixed(4));
+    spot.style.setProperty('--w', (+m.where.w).toFixed(4)); spot.style.setProperty('--h', (+m.where.h).toFixed(4));
+    spot.hidden = false;
+    spot.classList.remove('is-in'); void spot.offsetWidth; spot.classList.add('is-in');
+    clearTimeout(spotT); spotT = setTimeout(() => { spot.hidden = true; }, 2600);
+  }
+  spot.addEventListener('click', () => { spot.hidden = true; });
 
   function cssPath(el) {
     const parts = [];
@@ -248,33 +294,79 @@
 
   function currentView() {
     const h = document.documentElement.scrollHeight - innerHeight;
-    const v = { scroll: h > 0 ? +(scrollY / h).toFixed(4) : 0, y: Math.round(scrollY), vh: innerHeight };
+    const v = { scroll: h > 0 ? +(scrollY / h).toFixed(4) : 0, y: Math.round(scrollY), vh: innerHeight, vw: innerWidth };
     if (location.hash && !/rv=/.test(location.hash)) v.hash = location.hash;
     const V = window.ReviewView;
     if (V && typeof V.get === 'function') { try { const s = V.get(); if (s != null) v.state = s; } catch (e) { /* the page's own */ } }
     return v;
   }
 
-  layer.addEventListener('click', (e) => {
-    const x = e.clientX / innerWidth, y = e.clientY / innerHeight;
-    // what is under the click: look through the layer and the kit
+  // what is under a point, looking through the layer and the kit
+  function underPoint(cx, cy) {
     root.classList.add('is-looking');
-    const under = document.elementFromPoint(e.clientX, e.clientY);
+    const under = document.elementFromPoint(cx, cy);
     root.classList.remove('is-looking');
-    const el = under && !root.contains(under) ? under : null;
-    pending = {
-      kind: null, tags: [], phrases: [], text: '',
-      where: { x: +x.toFixed(4), y: +y.toFixed(4), sel: el ? cssPath(el) : '', near: nearOf(el, e.clientX, e.clientY) },
-      view: currentView(),
-    };
+    return under && !root.contains(under) ? under : null;
+  }
+  // the words inside a box: what sits at its middle and at the middle of each quarter
+  function nearInBox(l, tp, w, h) {
+    const pts = [[0.5, 0.5], [0.25, 0.25], [0.75, 0.25], [0.25, 0.75], [0.75, 0.75]];
+    const seen = new Set(), out = [];
+    pts.forEach(([fx, fy]) => {
+      const el = underPoint(l + w * fx, tp + h * fy);
+      const n = nearOf(el, l + w * fx, tp + h * fy);
+      if (n && !seen.has(n)) { seen.add(n); out.push(n); }
+    });
+    return cut(out.join(' / '), 120);
+  }
+  let down = null;
+  const lassoBox = (e) => {
+    const l = Math.min(down.x, e.clientX), tp = Math.min(down.y, e.clientY);
+    return { l, tp, w: Math.abs(e.clientX - down.x), h: Math.abs(e.clientY - down.y) };
+  };
+  layer.addEventListener('pointerdown', (e) => {
+    if (e.button !== 0) return;
+    down = { x: e.clientX, y: e.clientY, id: e.pointerId };
+    try { layer.setPointerCapture(e.pointerId); } catch (er) { /* fine */ }
+    e.preventDefault();
+  });
+  layer.addEventListener('pointermove', (e) => {
+    if (!down) return;
+    const b = lassoBox(e);
+    const drag = b.w > 6 || b.h > 6;
+    lasso.hidden = !drag;
+    if (drag) { lasso.style.left = `${b.l}px`; lasso.style.top = `${b.tp}px`; lasso.style.width = `${b.w}px`; lasso.style.height = `${b.h}px`; }
+  });
+  layer.addEventListener('pointerup', (e) => {
+    if (!down) return;
+    const b = lassoBox(e);
+    const drag = b.w > 6 || b.h > 6;
+    down = null; lasso.hidden = true;
+    let where;
+    if (drag) {
+      const cx = b.l + b.w / 2, cy = b.tp + b.h / 2, el = underPoint(cx, cy);
+      where = {
+        x: +(cx / innerWidth).toFixed(4), y: +(cy / innerHeight).toFixed(4),
+        w: +(b.w / innerWidth).toFixed(4), h: +(b.h / innerHeight).toFixed(4),
+        sel: el ? cssPath(el) : '', near: nearInBox(b.l, b.tp, b.w, b.h),
+      };
+    } else {
+      const el = underPoint(e.clientX, e.clientY);
+      where = { x: +(e.clientX / innerWidth).toFixed(4), y: +(e.clientY / innerHeight).toFixed(4), sel: el ? cssPath(el) : '', near: nearOf(el, e.clientX, e.clientY) };
+    }
+    pending = { kind: null, tags: [], phrases: [], text: '', where, view: currentView() };
     stopMarking();
     openCard(pending, false);
   });
+  layer.addEventListener('pointercancel', () => { down = null; lasso.hidden = true; });
 
   // ---- the card beside a dot ----------------------------------------------------------------
   function placeCard(where) {
     zone.style.setProperty('--x', (+where.x).toFixed(4));
     zone.style.setProperty('--y', (+where.y).toFixed(4));
+    const boxed = where.w > 0 && where.h > 0;
+    zone.classList.toggle('is-box', boxed);
+    if (boxed) { zone.style.setProperty('--w', (+where.w).toFixed(4)); zone.style.setProperty('--h', (+where.h).toFixed(4)); }
     card.classList.toggle('is-left', where.x > 0.62);
     card.classList.toggle('is-up', where.y > 0.5);
   }
@@ -346,7 +438,7 @@
     const m = marksOf().find((x) => x.id === id);
     if (!m) return;
     if (hideDots) { hideDots = false; drawDrawer(); }
-    restore(m.view).then(() => setTimeout(() => flash(id), 60));
+    restore(m.view).then(() => setTimeout(() => { flash(id); spotlight(m); }, 60));
   }
 
   // ---- moving between versions -------------------------------------------------------------------
@@ -360,7 +452,10 @@
     const v = currentView();
     // a view kept in the address only means something on a page of the same kind
     if (!(me && target.group && target.group === me.group)) delete v.hash;
-    location.href = `${target.href}#rv=${b64(v)}`;
+    // the manifest's hrefs are relative to the manifest (the list page), not to this page
+    let to = target.href;
+    try { to = new URL(to, manifestURL).href; } catch (e) { /* keep it as written */ }
+    location.href = `${to}#rv=${b64(v)}`;
   }
 
   // ---- seen --------------------------------------------------------------------------------------
@@ -400,10 +495,13 @@
     const k = e.key, code = e.code;
     let used = true;
     // , and . (with Shift, < and >) for the versions, B for the list: keys the pages themselves
-    // leave free ([ ] and L belong to the atlas pages: trips and language)
+    // leave free on most pages ([ ] and L are often taken by the page itself)
     if (code === 'Comma' || k === ',' || k === '<') { showBar(); step(-1, e.shiftKey || k === '<'); }
     else if (code === 'Period' || k === '.' || k === '>') { showBar(); step(1, e.shiftKey || k === '>'); }
-    else if (/^[1-5]$/.test(k) && !e.shiftKey) { R.setStars(ID, +k); redraw(); showBar(); }
+    else if (/^[0-5]$/.test(k) && !e.shiftKey) { R.setStars(ID, +k); redraw(); showBar(); }
+    else if (k === 'p' || k === 'P') { R.setFlag(ID, 'pick'); redraw(); showBar(); }
+    else if (k === 'x' || k === 'X') { R.setFlag(ID, 'reject'); redraw(); showBar(); }
+    else if (k === 'u' || k === 'U') { R.setFlag(ID, ''); redraw(); showBar(); }
     else if (k === 'n' || k === 'N') setDrawer(!drawerOpen);
     else if (k === 'm' || k === 'M') { if (marking) stopMarking(); else startMarking(); }
     else if (k === 'h' || k === 'H') { hideDots = !hideDots; try { sessionStorage.setItem('rvk-hide', hideDots ? '1' : '0'); } catch (er) { /* storage blocked */ } drawDrawer(); }
@@ -423,6 +521,7 @@
     else if (k === 'next') step(1, e.shiftKey);
     else if (k === 'score') { R.setStars(ID, +b.dataset.n); redraw(); const again = root.querySelector(`.${b.classList[0]}[data-n="${b.dataset.n}"]`); if (again) again.focus({ preventScroll: true }); }
     else if (k === 'notes') setDrawer(!drawerOpen);
+    else if (k === 'flag') { R.setFlag(ID, b.dataset.v); redraw(); }
     else if (k === 'mark') startMarking();
     else if (k === 'hide') { hideDots = !hideDots; drawDrawer(); }
     else if (k === 'go') goMark(b.dataset.m);
@@ -440,6 +539,7 @@
   dotsEl.addEventListener('pointerover', (e) => { const d = e.target.closest('.rvk-dot'); if (d && !pending) { const m = marksOf().find((x) => x.id === d.dataset.m); if (m) openCard(m, true); } });
   dotsEl.addEventListener('focusin', (e) => { const d = e.target.closest('.rvk-dot'); if (d && !pending) { const m = marksOf().find((x) => x.id === d.dataset.m); if (m) openCard(m, true); } });
   dotsEl.addEventListener('pointerout', (e) => { if (peek && !card.contains(e.relatedTarget)) closeCard(); });
+  drawer.addEventListener('pointerover', (e) => { const li = e.target.closest('.rvk-m'); if (li && !hideDots) flash(li.dataset.m); });
   card.addEventListener('pointerleave', () => { if (peek) closeCard(); });
   drawer.addEventListener('input', (e) => {
     if (e.target.id === 'rvk-overall') { R.item(ID).note = e.target.value; R.item(ID).noted = R.now(); R.save(ID); }
@@ -477,8 +577,10 @@
     drawBar(); drawDrawer();
     showBar(3000);
     seenTick();
-    // a page that names its own review file (data-name) has a list only if it says where (data-manifest)
-    const mf = OPT.manifest || (OPT.name ? '' : 'review-manifest.json');
+    // the list of versions: data-manifest, else review-manifest.json beside the page (data-manifest="" for none);
+    // a manifest whose "name" differs from data-name is ignored
+    const mf = OPT.manifest != null ? OPT.manifest : 'review-manifest.json';
+    if (mf) { try { manifestURL = new URL(mf, location.href).href; } catch (e) { /* keep the page's */ } }
     (mf ? fetch(mf, { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null)).catch(() => null) : Promise.resolve(null)).then((m) => {
       applyManifest(m);
       redraw();

@@ -3,7 +3,7 @@
    The file lives on the owner's computer (GET / POST <endpoint>, by default /__reviews/<name>).
    Every save reads the file first and changes only what this tab changed, field by field, against
    the copy it last read (a three-way merge), so two open tabs never undo each other:
-     stars, note, seen, verdict: the last write wins
+     stars, note, seen, verdict, flag: the last write wins
      marks: joined by id; a mark removed anywhere stays removed ("gone")
      beats: joined as a set
    Nothing he wrote is deleted: old "pins" are kept as they are and shown as marks.
@@ -192,6 +192,9 @@
       setScore(id, s) { const it = item(id); it.stars = it.stars === s ? 0 : s; it.verdict = verdictOf(it.stars); it.noted = now(); save(id); },
       setStars(id, s) { const it = item(id); it.stars = s; it.verdict = verdictOf(s); it.noted = now(); save(id); },
       setNote(id, text) { const it = item(id); it.note = text; it.noted = now(); save(id); },
+      // Lightroom's flags: 'pick' | 'reject' | '' (the same flag twice takes it off)
+      setFlag(id, f) { const it = item(id); it.flag = it.flag === f ? '' : (f || ''); it.noted = now(); save(id); },
+      flagOf(id) { return (mine.items[id] || {}).flag || ''; },
       setSeen(id) { item(id).seen = now(); save(id); },
       addMark(id, m) {
         const it = item(id);
