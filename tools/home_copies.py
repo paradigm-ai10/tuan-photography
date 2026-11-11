@@ -65,7 +65,7 @@ def projects():
 
 
 data = {
-    "photos": [photo(s) for s in spread(30)],
+    "photos": [photo(s) for s in spread(36)],
     "wall": [photo(s) for s in spread(48)],
     "projects": projects(),
     "continents": [{"id": c["id"], "en": c["en"], "zh": c["zh"]} for c in SITE["continents"]],
@@ -115,7 +115,7 @@ MATHILDE = f"""<main class="md" id="md" aria-label="Thomas Chen, landscape photo
   <div class="md-stage" id="stage" aria-hidden="true"></div>
   <span class="md-mark" aria-hidden="true"></span>
   <div class="md-ui">
-    <p class="md-count"><span id="count">01</span> /<span id="total">30</span></p>
+    <p class="md-count"><span id="count">01</span> /<span id="total">36</span></p>
     <span class="md-rule md-rule-l"></span><span class="md-rule md-rule-r"></span>
     <a class="md-about" href="{data['about']}">{both("About", "關於我")}</a>
     <nav class="md-cat" aria-label="Continent"><h2>{both("Continent", "洲")}</h2><ul id="cats"></ul></nav>

@@ -510,6 +510,108 @@ window.COPY = {
    "country": "spain",
    "continent": "europe",
    "alt": "Afternoon light through the stained glass inside the Sagrada Família"
+  },
+  {
+   "id": "tekapo-stars",
+   "file": "new-zealand-tekapo-milky-way.jpg",
+   "w": 1600,
+   "h": 2400,
+   "place": {
+    "en": "Milky Way over Tekapo",
+    "zh": "蒂卡波的銀河"
+   },
+   "where": {
+    "en": "Lake Tekapo, New Zealand",
+    "zh": "紐西蘭 蒂卡波湖"
+   },
+   "country": "new-zealand",
+   "continent": "oceania",
+   "alt": "The Milky Way over Lake Tekapo"
+  },
+  {
+   "id": "zermatt-dusk",
+   "file": "switzerland-zermatt-dusk.jpg",
+   "w": 1655,
+   "h": 2400,
+   "place": {
+    "en": "Zermatt",
+    "zh": "策馬特"
+   },
+   "where": {
+    "en": "Zermatt, Switzerland",
+    "zh": "瑞士 策馬特"
+   },
+   "country": "switzerland",
+   "continent": "europe",
+   "alt": "Zermatt lit up at dusk below the Matterhorn"
+  },
+  {
+   "id": "taipei-101-framed",
+   "file": "taiwan-taipei-101-framed.jpg",
+   "w": 1597,
+   "h": 2400,
+   "place": {
+    "en": "Taipei 101, framed",
+    "zh": "被框住的台北101"
+   },
+   "where": {
+    "en": "Taipei, Taiwan",
+    "zh": "台灣 台北"
+   },
+   "country": "taiwan",
+   "continent": "asia",
+   "alt": "Taipei 101 at night, framed by the twisting balconies of a tower"
+  },
+  {
+   "id": "westminster-abbey",
+   "file": "uk-westminster-abbey.jpg",
+   "w": 2400,
+   "h": 1600,
+   "place": {
+    "en": "Westminster Abbey",
+    "zh": "西敏寺"
+   },
+   "where": {
+    "en": "London, UK",
+    "zh": "英國 倫敦"
+   },
+   "country": "uk",
+   "continent": "europe",
+   "alt": "The nave of Westminster Abbey looking toward the gilded screen"
+  },
+  {
+   "id": "peak-night",
+   "file": "hong-kong-peak-night.jpg",
+   "w": 2400,
+   "h": 1619,
+   "place": {
+    "en": "Victoria Harbour at night",
+    "zh": "維多利亞港夜景"
+   },
+   "where": {
+    "en": "Hong Kong",
+    "zh": "香港"
+   },
+   "country": "hong-kong",
+   "continent": "asia",
+   "alt": "The lit skyline of Hong Kong across Victoria Harbour at night"
+  },
+  {
+   "id": "kifune",
+   "file": "japan-kifune-shrine.jpg",
+   "w": 2400,
+   "h": 1600,
+   "place": {
+    "en": "Kifune Shrine",
+    "zh": "貴船神社"
+   },
+   "where": {
+    "en": "Kyoto, Japan",
+    "zh": "日本 京都"
+   },
+   "country": "japan",
+   "continent": "asia",
+   "alt": "The lantern-lined steps of Kifune Shrine"
   }
  ],
  "wall": [

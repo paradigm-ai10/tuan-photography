@@ -124,6 +124,14 @@
     "en": "The opening: photographs across the whole screen, from the five you liked",
     "zh": "開場：照片佔滿畫面，從你選的五個做起"
    }
+  },
+  {
+   "id": "copies",
+   "built": "2026-11-11T15:07",
+   "title": {
+    "en": "Exact copies of the two you kept",
+    "zh": "照你留下的兩個，一模一樣做"
+   }
   }
  ],
  "items": [
@@ -1236,6 +1244,36 @@
    "still": {
     "wait": 4000
    }
+  },
+  {
+   "href": "copy-mathilde.html",
+   "group": "copies",
+   "title": {
+    "en": "After Mathilde De Chiara, exactly",
+    "zh": "照 Mathilde De Chiara 一模一樣"
+   },
+   "desc": {
+    "en": "Her home page move for move, with your photographs. Your name rises at the left, the photographs stream in along the diagonal and lock into her diamond, pull apart into one column down the middle, then her four corners: 01 / 36 with the line across, About, the continents, the place, Slider / Grid. The wheel moves the column; Grid shows them all.",
+    "zh": "她的首頁一步一步照做，換成你的照片。名字從左邊升起，照片沿斜線飛進來鎖成她的菱形，再拉開成中間一直列，然後四個角落出現：01 / 36 和橫線、About、各洲、地點、Slider / Grid。滾輪移動那一列；Grid 一次看全部。"
+   },
+   "still": {
+    "wait": 5000
+   }
+  },
+  {
+   "href": "copy-camille.html",
+   "group": "copies",
+   "title": {
+    "en": "After Camille Mormal, exactly",
+    "zh": "照 Camille Mormal 一模一樣"
+   },
+   "desc": {
+    "en": "Her home page move for move, with your photographs. A small percentage counts up, cards pop in across a dark wall, the wall zooms into the middle one until it fills the screen, then Work / About, the country's name, a + at each side, 1 to 8 and eight thumbnails. The wheel shrinks it into a row of tall cards. As hers it is dark and has a name on the photograph; both break your site's rules.",
+    "zh": "她的首頁一步一步照做，換成你的照片。中間小小的百分比數上去，照片一張張跳出來鋪滿深色的牆，牆往中間那張放大直到佔滿畫面，然後 Work / About、國名、兩邊的 +、1 到 8 和八張小圖。滾輪把它縮成一列直的照片。跟她一樣是深色、照片上有字，這兩點違反你網站的規則。"
+   },
+   "still": {
+    "wait": 6000
+   }
   }
  ],
  "tags": [
@@ -1313,16 +1351,12 @@
  "words": {},
  "ask": {
   "ids": [
-   "c-flock-deep-zoom",
-   "c-flock-wall-zoom",
-   "c-flock-open-out",
-   "c-flock-tilted",
-   "c-flock-flicker-row",
-   "c-flock-diamond-calm"
+   "copy-mathilde",
+   "copy-camille"
   ],
   "question": {
-   "en": "Six openings from the five you marked Good: Mathilde, Camille Mormal, Animated Scroll Gallery, Zoom Parallax and 3D Marquee. Each fills the screen with your photographs and ends on the film. Score each; mark the spot you mean.",
-   "zh": "從你標 Good 的五個（Mathilde、Camille Mormal、Animated Scroll Gallery、Zoom Parallax、3D Marquee）做出的六個開場。每個都用你的照片佔滿畫面，最後落在影片上。每個打個分數；想說哪裡就點那裡。"
+   "en": "The two you kept, copied exactly with your photographs. How close are they, and which one would you take further?",
+   "zh": "你留下的兩個，用你的照片一模一樣做出來了。像不像？你想拿哪一個繼續做？"
   }
  }
 }

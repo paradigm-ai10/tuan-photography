@@ -40,7 +40,7 @@
   // which diamond cell each photograph takes: 36 cells, the six left empty spread about
   const rnd = seed(11);
   const cells = [...Array(36).keys()];
-  const empty = new Set([3, 8, 17, 22, 27, 33]);
+  const empty = new Set();   // every cell filled, as hers
   const free = cells.filter((c) => !empty.has(c)).sort(() => rnd() - 0.5);
   all.forEach((t, k) => { t.cell = free[k]; t.delay = rnd(); });
 
