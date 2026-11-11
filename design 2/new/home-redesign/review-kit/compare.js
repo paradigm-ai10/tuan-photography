@@ -3,12 +3,14 @@
    so every page shows as it does on a desk screen; number, title, score, marks.
    Two: Keep left, Keep right, Can't choose between them, and , . change the right-hand one.
    Three or more: each has Keep this one (it is kept over all the others shown) and Take out.
+   ?compare=a,b&live=1 opens with every page playing.
    All live plays every page at once; Play all again restarts them together. Esc goes back. */
 (() => {
   'use strict';
   const MAX = 6, W = 1440, H = 900;
   let ctx = null, said = '';
   const live = new Set();
+  let primed = false;   // ?compare=a,b&live=1 opens with every page playing (a link Claude sets up)
 
   function ids() {
     const q = new URLSearchParams(location.search).get('compare') || '';
@@ -71,11 +73,24 @@
     ctx.mount.querySelectorAll('.rvc-view').forEach((el) => ro.observe(el));
   }
 
+  // live pages that finish loading apart are started again in the same moment, so two sides play in step
+  function together() {
+    const fs = [...ctx.mount.querySelectorAll('.rvc-frame')], at = [];
+    if (fs.length < 2) return;
+    fs.forEach((f) => f.addEventListener('load', () => {
+      at.push(performance.now());
+      if (at.length === fs.length && Math.max(...at) - Math.min(...at) > 250) {
+        fs.forEach((x) => { try { x.contentWindow.location.reload(); } catch (err) { x.src = x.src; } });
+      }
+    }, { once: true }));
+  }
+
   function render(c) {
     ctx = c;
     const { t, esc, list, mount } = ctx;
     const vs = ids().map((id) => list.find((v) => v.id === id)).filter(Boolean);
     if (vs.length < 2) { ctx.back(vs[0] ? vs[0].id : ''); return; }
+    if (!primed) { primed = true; if (new URLSearchParams(location.search).has('live')) vs.forEach((v) => live.add(v.id)); }
     [...live].forEach((id) => { if (!vs.some((v) => v.id === id)) live.delete(id); });
     const many = vs.length > 2, allLive = vs.every((v) => live.has(v.id));
     document.title = many ? t('compareTitleN', { list: vs.map((v) => v.n).join(' / ') }) : t('compareTitle', { a: vs[0].n, b: vs[1].n });
@@ -102,6 +117,7 @@
       </div>`}
     </div>`;
     fit();
+    together();
   }
 
   function swapRight(dir) {

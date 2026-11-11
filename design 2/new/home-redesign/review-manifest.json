@@ -1742,5 +1742,47 @@
    "c-flock-camille-smooth",
    "c-flock-camille-smooth-night"
   ]
- }
+ },
+ "pairs": [
+  {
+   "ids": [
+    "c-flock-cards-slow",
+    "c-flock-cards-slow-night"
+   ],
+   "label": {
+    "en": "Cards, slower",
+    "zh": "卡片，慢一點"
+   }
+  },
+  {
+   "ids": [
+    "c-flock-around-reveal",
+    "c-flock-around-night"
+   ],
+   "label": {
+    "en": "Around the name",
+    "zh": "圍著名字"
+   }
+  },
+  {
+   "ids": [
+    "c-flock-camille-smooth",
+    "c-flock-camille-smooth-night"
+   ],
+   "label": {
+    "en": "Camille, closer to hers",
+    "zh": "更像 Camille"
+   }
+  },
+  {
+   "ids": [
+    "c-flock-camille-flow",
+    "c-flock-camille-night"
+   ],
+   "label": {
+    "en": "Camille, flowing in",
+    "zh": "Camille，流進來"
+   }
+  }
+ ]
 }

@@ -283,15 +283,26 @@
       </span>`;
   }
 
+  // versions set up to watch side by side, already playing (manifest "pairs": [{"ids": [a, b], "label": {en, zh}}])
+  function pairsRow() {
+    const ps = (M && Array.isArray(M.pairs) ? M.pairs : [])
+      .map((p) => ({ label: p.label, vs: (p.ids || []).map((id) => list.find((v) => v.id === id)).filter(Boolean) }))
+      .filter((p) => p.vs.length > 1);
+    if (!ps.length) return '';
+    return `<p class="rvh-pairs"><span class="rvh-pairsh">${esc(t('pairsTitle'))}</span>${ps.map((p) =>
+      `<a class="rvh-w" href="${esc(location.pathname)}?compare=${p.vs.map((v) => encodeURIComponent(v.id)).join(',')}&live=1">${esc(p.vs.map((v) => v.n).join(' + '))}${p.label ? ` ${esc(pick(p.label))}` : ''}</a>`).join('')}</p>`;
+  }
+
   // the top of the list: what Claude asks this round, and which of those versions still wait for a score
   function askBox() {
     const ids = askIds();
-    if (!ids.length) return '';
+    if (!ids.length) { const pr = pairsRow(); return pr ? `<section class="rvh-ask is-done">${pr}</section>` : ''; }
     const vs = list.filter((v) => ids.includes(v.id)), left = vs.filter((v) => !scored(v.id)).length;
     return `<section class="rvh-ask${left ? '' : ' is-done'}" aria-label="${esc(t('askTitle'))}">
       <p class="rvh-askh">${esc(t('askTitle'))}</p>
       ${M.ask.question ? `<p class="rvh-askq">${esc(pick(M.ask.question))}</p>` : ''}
       <ol class="rvh-askl">${vs.map((v) => `<li><a class="rvh-aska${scored(v.id) ? ' is-done' : ''}" href="${esc(v.href)}"><span class="rvh-num">${v.n}</span><span class="rvh-askn">${esc(pick(v.title))}</span><span class="rvh-asks">${esc(scoreWord(v.id))}</span></a></li>`).join('')}</ol>
+      ${pairsRow()}
       <p class="rvh-askf"><span>${esc(left ? t('askLeft', { n: left, total: vs.length }) : t('askDone'))}</span>
         <button type="button" class="rvh-w" data-h="filter" data-i="4" aria-pressed="${!ui.by && ui.filter === 4}">${esc(t('askOnly'))}</button></p>
     </section>`;
