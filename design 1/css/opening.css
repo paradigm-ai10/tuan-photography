@@ -11,7 +11,9 @@
    The black ground is the opening's alone (his choice, 2026-11-12; the one exception to light only besides the
    Gallery's Dark word): the page beneath stays light, and the film covers the black before this screen goes. */
 .hr-load { --night: oklch(18.5% 0.003 60); --on-night: oklch(96% 0.008 82); --mark: "Cormorant Garamond", Georgia, serif; display: none; }
-html.hr-loading { overflow: hidden; }
+/* where the scrollbar has a width of its own (Windows, or a Mac set to always show it) its place is kept, in the
+   opening's black, so the page is the same width before and after and the film does not shift as the card becomes it */
+html.hr-loading { overflow: hidden; scrollbar-gutter: stable; background: oklch(18.5% 0.003 60); }
 html.hr-loading .hr-load { position: fixed; inset: 0; z-index: 20; display: block; cursor: pointer; }
 html.hr-out .hr-load { pointer-events: none; }
 .hr-load__paper { position: absolute; inset: 0; background: var(--night); }

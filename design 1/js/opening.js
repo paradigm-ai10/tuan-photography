@@ -64,9 +64,10 @@
   // the film rests while the page covers it, and plays again when the visitor comes back up to it
   if (video) {
     const film = video.closest('.hr-open');
-    let covered = false;
+    let covered = false, tall = film.offsetHeight;   // measured once and on a resize, never while scrolling
+    addEventListener('resize', () => { tall = film.offsetHeight; });
     addEventListener('scroll', () => {
-      const now = scrollY >= film.offsetHeight;
+      const now = scrollY >= tall;
       if (now === covered || !done) return;
       covered = now;
       if (covered) video.pause(); else video.play().catch(() => {});
@@ -83,7 +84,7 @@
   const photos = [...layer.querySelectorAll('.hr-tile:not(.hr-tile--film)')];
   const filmEl = layer.querySelector('.hr-tile--film');
   const tv = filmEl.querySelector('video');
-  let W = innerWidth, H = innerHeight;
+  let W = screen.clientWidth, H = innerHeight;   // the loading screen's width: the page's, without the scrollbar's place
   const narrow = () => W < 700;
   const T = 5000;                                   // the whole move
   const SLIDE = 'cubic-bezier(0.8, 0, 0.1, 1)';     // the columns closing up
@@ -95,7 +96,7 @@
   const ready = () => photos.every((p) => loaded(p.querySelector('img'))) && tv.readyState >= 2 && (!video || video.readyState >= 2);
 
   async function wall() {
-    W = innerWidth; H = innerHeight;
+    W = screen.clientWidth; H = innerHeight;
     // her measures: a gap of 30 px on a 1440 px window, four cards and four gaps across, cards the window's shape
     const s0 = 30 * W / 1440, r = (W - 4 * s0) / 4, a = r * H / W;
     const h = a + s0, l = r + s0, o = 0.5 * h, n = H + 0.5 * (5 * a + 4 * s0 - H), p = 12 * a, d = W + 2, c = H + 2;
