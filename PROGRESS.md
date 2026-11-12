@@ -1,29 +1,34 @@
 # tuan photography 陳亮元 — Project Memo 專案備忘錄
 
-*Last updated: 2026-11-11, afternoon, handoff note. Read this first, then check the files to confirm.*
+*Last updated: 2026-11-12, handoff note. Read this first, then check the files to confirm.*
 
-## 接下來 Next up (2026-11-11, 18:10)
+## 接下來 Next up (2026-11-12)
 
-Home opening: his TUAN PHOTOGRAPHY loader stays; the open question is the move from it into the home page (the
-Barcelona film). Specs in `design 2/new/home-redesign/flock.js`, pages `c-flock-<name>.html` from `FLOCKS` in
-`tools/home_redesign.py`. On the list now (http://localhost:8642/journey/new/home-redesign/), nine:
-1 `cards-flip`, 2 `around-reveal` (**5, Love it**), 3 `camille-flow`, 4 `camille-night`, and five new, marked Your pick:
-5 `cards-slow`, 6 `cards-slow-night`, 7 `around-night`, 8 `camille-smooth`, 9 `camille-smooth-night`.
-- **His rules from today:** (1) a note on a version is answered with a NEW version beside it, never an edit in place,
-  so he can trace the progress; (2) every candidate gets a white and a black twin (`FLOCK_DARK`, `data-ground="dark"`);
-  (3) read ALL of his review to the end, "Anything else" and the flags included.
-- He rejected every tilted-wall version and `camille-code`; do not bring the tilted wall back unless he asks.
-- `camille-smooth` is her site's own timings again, run on the compositor (WAAPI on a wrapper and the card), cards laid
-  out at 2x for sharpness, and `handover: 'live'` in `run()` so the film never freezes at the end.
-- Standing notes: TUAN arrives slowly, holds, fades slowly, gone before any photograph; no pause and no flash between
-  "Barcelona whole" and "Barcelona moving"; the film already running while a wall gives way to it.
-First move next time: `python3 tools/read_reviews.py ideas/reviews/home-redesign.json --manifest "design 2/new/home-redesign/review-manifest.json" --since 2026-11-11`, read to the end; if he settles on one, ask before making it the live home page.
+**The home page is the redesigned one, live since 2026-11-12** (his words: "i think im taking 9", then "yeah sure,
+change it to this 9 and commit push"). Opening 9 of the last round (`camille-smooth-night`: the wall in one move, on
+black) plays once per visit and lands on the Barcelona film; under it the two colour blocks, the photographs and the
+three ways in. Before it: tag `before-home-redesign-live-2026-11-12`.
+- Live files: `build_home()` in `tools/build.py` (markup, `HOME_WALL`, `HOME_SCENES`), `design 1/css/home.css`,
+  `design 1/js/home.js` (the opening, cut down to that one version), `design 1/media/` (the film). The live files are
+  their own now: the trial copies in `design 2/new/home-redesign/` (`flock.js`, `home.js`, `home.css`) no longer feed
+  the site, so a note on the live opening is fixed in `design 1/`, and a new trial version is still built beside the
+  old ones on the review list.
+- `?opening` in the address plays the opening again (http://localhost:8642/?opening).
+- No longer on the home page: the line "Travel like a photographer." and its buttons, the photograph windows, the wall
+  of rows, the timed Guides cards. `shelf()`, `timed_cards()`, `cover()`, `window()` in `tools/build.py` and their
+  styles are kept, unused, in case he wants one back.
+- A page for friends (five versions, 5 to 9): https://claude.ai/artifact/Dek81J9SRPEQsve9wGgzRC , rebuilt by
+  `tools/share_openings.py`. The review list keeps all versions; 9 is marked Main.
+- His standing rules for this work: a note on a version gets a NEW version beside it; every candidate in white and
+  black (the list's "Side by side, playing" row, manifest `pairs`); read his whole review, "Anything else" included.
+First move next time: ask how the live opening feels on his own screen and phone, and whether anything from the old
+home page (the Guides cards most of all) should come back under the film.
 
 ## 現在狀態 Where things stand
 
 - **Design 1 on localhost:8642 is the site.** Its Journey tab is `design 2/new/journey.html` (`/journey/`
-  forwards there). The live home page still opens with the logo loading screen (1C, motion 21); nothing
-  from the home redesign is on the live page yet.
+  forwards there). Since 2026-11-12 the live home page is the redesigned one: his logo on black, the wall of
+  photographs in one move (opening 9), the Barcelona film, the blocks, the three ways in.
 - **Home opening, where it stands (2026-11-09).** Everything drawn or brushed is over (40 to 49 crossed out).
   He wants photographs arriving and the home page landing on the Barcelona film. From the fifteen "photographs
   arrive" versions (after Mathilde de Chiara) he scored **mosaic 4** (the wall of photographs that becomes the

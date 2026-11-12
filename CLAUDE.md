@@ -20,6 +20,17 @@ whole new site, three directions on `/next/`: Relief, Glass block, Orrery) were 
 `design5-dropped-2026-11-05` (earlier: `before-design4-2026-11-02`, `before-design5-2026-11-02`,
 `glass-block-dropped-2026-11-04`). Do not propose them again.
 
+## The home page is the redesigned one (his call, 2026-11-12)
+
+After the home redesign rounds (2026-11-05 to 2026-11-12) he chose opening 9 of the last round ("i think im taking 9",
+then "change it to this 9"): his logo on black, a wall of his photographs sliding in while the view closes on the
+middle one, which is the short film of Barcelona the page lands on; under the film two colour blocks with photographs,
+and Gallery, Journey, Guides as three large words. It is `build_home()` in `tools/build.py`, `design 1/css/home.css`,
+`design 1/js/home.js` and `design 1/media/`; once per visit, `?opening` plays it again. The page before it is at the
+tag `before-home-redesign-live-2026-11-12`. The trial versions and his review list stay in
+`design 2/new/home-redesign/` and no longer feed the site: fix the live page in `design 1/`, build new trials beside
+the old ones. The black ground is the opening's alone. `DESIGN.md` → Home page has the details.
+
 ## The brief (owner-decided — these win over any generic guidance)
 
 - **Who he is:** a landscape photographer (旅途中的風景 — nature and cities). Not a travel
@@ -55,7 +66,7 @@ updating in the same commit. The short version:
 
 | Thing | Rule |
 |---|---|
-| Ground | warm paper and a stone band alternate by section. **Light only**, no dark theme, except the Gallery page's own Dark word (his call, 2026-10-07) |
+| Ground | warm paper and a stone band alternate by section. **Light only**, no dark theme, except the Gallery page's own Dark word (his call, 2026-10-07) and the home page's opening, which plays on black (his call, 2026-11-12) |
 | Colour | eleven tokens in `design 1/css/style.css` `:root`. Never hard-code a colour |
 | Earth colours | clay, olive, slate: whole flat blocks only (the three doors, the footer) |
 | Links | deep clay is the only colour that means "this can be followed" |

@@ -1,0 +1,168 @@
+/* The home page (live since 2026-11-12; before it: the tag before-home-redesign-live-2026-11-12).
+   It is the page from the home redesign rounds (design 2/new/home-redesign, where the trial versions stay): the
+   loading screen with his logo, the opening he chose there (the wall of photographs, in one move, on black), the
+   film of Barcelona the page lands on, two thoughts on flat blocks of the earth colours, the three ways in.
+   Built on the site's tokens, fonts and base (style.css); only this page loads this file. js/home.js moves it.
+   <html> carries the state: hr-loading while the opening plays, hr-full when the line under the name is full,
+   hr-arrive as the wall starts, hr-markgone as the name goes, hr-out as the film fills the window, hr-shown when
+   the page's own film is playing. */
+:root {
+  --part: cubic-bezier(0.7, 0, 0.2, 1);
+  --mark: "Cormorant Garamond", Georgia, serif;
+}
+html[lang="en"] [lang="zh-Hant"], html[lang="zh-Hant"] [lang="en"] { display: none; }
+html.hr-loading { overflow: hidden; }
+body { display: block; }
+
+/* ---------------- the loading screen: his logo (1C), the line under the name filling as the page loads ---------------- */
+.hr-load { display: none; }
+html.hr-loading .hr-load { position: fixed; inset: 0; z-index: 20; display: block; cursor: pointer; }
+.hr-load__paper { position: absolute; inset: 0; background: var(--bg); transition: opacity 0.9s ease-in-out 0.4s; }
+.hr-load__mark { position: absolute; inset: 0; z-index: 2; display: grid; grid-template-columns: max-content; grid-template-rows: 1fr auto 1fr;
+  justify-content: center; color: var(--text); transition: opacity 0.6s ease; }
+.hr-load__name, .hr-load__sub { display: flex; line-height: 1; }
+.hr-load__name span, .hr-load__sub span { display: inline-block; }
+.hr-load__name { align-self: end; margin-bottom: clamp(0.6rem, 0.4rem + 0.6vw, 0.95rem);
+  font: 300 clamp(2.4rem, 0.9rem + 5.5vw, 5.5rem)/1 var(--mark); letter-spacing: 0.28em; }
+.hr-load__name span { opacity: 0; }
+.hr-load__name span:last-child { margin-right: -0.28em; }
+.hr-load__line { height: 1px; background: var(--text); transform-origin: left center; transform: scaleX(var(--p, 0)); }
+.hr-load__sub { align-self: start; justify-content: space-between; margin-top: clamp(0.55rem, 0.35rem + 0.5vw, 0.85rem);
+  font: 500 clamp(0.75rem, 0.6rem + 0.5vw, 1.05rem)/1 var(--mark); text-transform: uppercase; color: var(--text-2); }
+.hr-load__sub span { opacity: 0; }   /* the letters carry the fade-in, not the word */
+html.hr-full .hr-load__name span { animation: hr-rise 0.9s var(--out) both; animation-delay: calc(var(--i, 0) * 110ms); }
+html.hr-full .hr-load__sub span { animation: hr-fade 0.9s ease both 0.55s; }
+html.hr-out .hr-load { pointer-events: none; }
+html.hr-out .hr-load__mark, html.hr-out .hr-load__paper { opacity: 0; }
+@keyframes hr-rise { from { opacity: 0; transform: translateY(0.12em); } to { opacity: 1; transform: none; } }
+@keyframes hr-fade { from { opacity: 0; } to { opacity: 1; } }
+
+
+/* ---------------- the top: the logo small, the menu, the two languages ---------------- */
+.hr-top { position: absolute; z-index: 3; top: 0; left: 0; right: 0; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
+  gap: 1rem 2rem; padding: clamp(1.1rem, 2.4vw, 1.8rem) var(--edge); color: var(--paper); transition: opacity 0.9s ease 0.5s; }
+html.hr-loading:not(.hr-out) .hr-top { opacity: 0; }
+.hr-mark { display: inline-grid; color: inherit; text-decoration: none; }
+.hr-mark:hover { color: inherit; }
+.hr-mark__name { font: 300 1.4rem/1 var(--mark); letter-spacing: 0.28em; margin-right: -0.28em; }
+.hr-mark__line { height: 1px; margin: 0.4rem 0 0.35rem; background: currentColor; }
+.hr-mark__sub { display: flex; justify-content: space-between; font: 500 0.5rem/1 var(--mark); text-transform: uppercase; }
+.hr-menu { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem clamp(1rem, 2.4vw, 2.2rem); }
+.hr-menu a { color: inherit; text-decoration: none; }
+.hr-menu a:hover { color: inherit; text-decoration: underline; text-decoration-color: currentColor; }
+.hr-lang { display: flex; gap: 0.6rem; }
+.hr-lang button { padding: 0.3rem 0; border: 0; background: none; color: inherit; cursor: pointer; opacity: 0.6; }
+.hr-lang button[aria-pressed="true"] { opacity: 1; }
+
+/* ---------------- the film, held while the page is drawn up over it ---------------- */
+.hr-open { position: sticky; top: 0; z-index: 0; height: 100svh; min-height: 30rem; overflow: hidden; background: var(--slate); }
+.hr-open video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.hr-open::before { content: ""; position: absolute; z-index: 1; top: 0; left: 0; right: 0; height: 12rem; pointer-events: none;
+  background: linear-gradient(to bottom, oklch(20% 0.02 60 / 0.42), oklch(20% 0.02 60 / 0)); }
+.hr-leaf { position: relative; z-index: 1; background: var(--bg); }
+
+/* ---------------- photographs: bare, the name beneath ---------------- */
+.hr-fig { margin: 0; }
+.hr-fig a { display: block; text-decoration: none; }
+.hr-fig a:hover { color: inherit; }
+.hr-fig img { width: 100%; height: auto; }
+.hr-fig figcaption { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.15rem 0.9rem; margin-top: 0.9rem; }
+.hr-fig figcaption b { font-family: var(--serif); font-weight: 400; font-size: 1.05rem; line-height: 1.3; }
+:lang(zh-Hant) .hr-fig figcaption b { font-weight: 500; letter-spacing: 0.05em; }
+.hr-fig figcaption span { font-size: var(--t-xs); color: var(--text-2); }
+.hr-wide { justify-self: center; width: min(100%, 76rem); }
+.hr-pair { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); align-items: end; }
+.hr-pair > :first-child { grid-column: 2 / span 3; }
+.hr-pair > :last-child { grid-column: 6 / span 7; margin-bottom: clamp(4rem, 10vw, 9rem); }
+
+/* whole blocks of the earth colours, one thought on each, the photographs set into them */
+.hr-block { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); row-gap: var(--s-4); align-items: center;
+  padding: var(--s-6) var(--edge); background: var(--olive); color: var(--paper); }
+.hr-block--slate { background: var(--slate); }
+.hr-block p { grid-column: 1 / span 5; font-family: var(--serif); font-weight: 400; font-size: clamp(1.8rem, 1.1rem + 2.4vw, 3.2rem); line-height: 1.22; text-wrap: balance; }
+:lang(zh-Hant) .hr-block p { font-weight: 500; font-size: clamp(1.5rem, 1rem + 1.9vw, 2.6rem); line-height: 1.6; letter-spacing: 0.06em; }
+.hr-block .hr-fig figcaption span { color: color-mix(in oklch, var(--paper) 72%, transparent); }
+.hr-block .hr-fig:nth-child(2) { grid-column: 7 / span 3; align-self: start; }
+.hr-block .hr-fig:nth-child(3) { grid-column: 10 / span 3; align-self: end; margin-top: clamp(4rem, 12vw, 10rem); }
+.hr-block--slate .hr-fig:nth-child(2) { grid-column: 7 / span 6; align-self: center; margin-top: 0; }
+.hr-block ::selection { background: var(--paper); color: var(--text); }
+.hr-paper { display: grid; gap: clamp(5rem, 12vw, 11rem); padding: var(--s-6) var(--edge); }
+
+/* ---------------- the way in: three doors, words only ---------------- */
+.hr-doors { width: min(100%, 72rem); margin-inline: auto; padding: var(--s-5) var(--edge) var(--s-6); }
+.hr-door { position: relative; display: grid; grid-template-columns: 1fr auto; align-items: baseline; gap: 0.5rem 2rem;
+  padding: clamp(1.6rem, 3vw, 2.4rem) 0; border-top: 1px solid var(--line); color: var(--text); text-decoration: none; }
+.hr-doors li:last-child .hr-door { border-bottom: 1px solid var(--line); }
+.hr-door::after { content: ""; position: absolute; left: 0; right: 0; top: -1px; height: 1px; background: var(--text);
+  transform: scaleX(0); transform-origin: left center; transition: transform 0.9s var(--out); }
+.hr-door:hover::after, .hr-door:focus-visible::after { transform: scaleX(1); }
+.hr-door b { font-family: var(--serif); font-weight: 400; font-size: clamp(2rem, 1.2rem + 3vw, 4rem); line-height: 1.05; transition: color 300ms var(--out); }
+:lang(zh-Hant) .hr-door b { font-weight: 500; letter-spacing: 0.08em; }
+.hr-door:hover b, .hr-door:focus-visible b { color: var(--accent); }
+.hr-door span { max-width: 22rem; font-size: var(--t-s); color: var(--text-2); text-align: right; }
+
+/* ---------------- the foot: the logo small, Instagram ---------------- */
+.hr-foot { display: grid; justify-items: center; gap: 1.6rem; padding: var(--s-5) var(--edge) var(--s-3); border-top: 1px solid var(--line); color: var(--text); }
+.hr-foot small { font-size: var(--t-xs); color: var(--text-2); }
+
+/* things rise into place as they come into view */
+html.hr-js .hr-in { opacity: 0; transform: translateY(2rem); transition: opacity 1.2s var(--out), transform 1.4s var(--out); }
+html.hr-js .hr-in.is-in { opacity: 1; transform: none; }
+
+@media (max-width: 48rem) {
+  .hr-pair, .hr-block { grid-template-columns: minmax(0, 1fr); row-gap: var(--s-5); }
+  .hr-pair > :nth-child(n), .hr-block p, .hr-block .hr-fig:nth-child(n), .hr-block--slate .hr-fig:nth-child(2) { grid-column: 1; margin: 0; }
+  .hr-pair > :first-child { width: 72%; }
+  .hr-door { grid-template-columns: 1fr; }
+  .hr-door span { text-align: left; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html.hr-js .hr-in { opacity: 1; transform: none; }
+}
+/* ---------------- a caption for each scene of the film, shown while its scene plays ---------------- */
+.hr-cap { position: absolute; z-index: 2; left: 16px; right: 16px; bottom: clamp(2rem, 1.2rem + 3vw, 3.75rem); margin: 0;
+  display: grid; justify-items: center; pointer-events: none; color: var(--paper); }
+.hr-cap__one { grid-area: 1 / 1; display: grid; justify-items: center; gap: 0.5rem; text-align: center; opacity: 0; transform: translateY(0.4rem);
+  transition: opacity 0.9s ease, transform 1.2s var(--out); text-shadow: 0 1px 16px color-mix(in oklch, var(--text) 55%, transparent); }
+.hr-cap__one.is-on { opacity: 1; transform: none; }
+.hr-cap__one b { font: 300 clamp(1.5rem, 1.1rem + 1.3vw, 2.3rem)/1.15 "Cormorant Garamond", "Noto Serif TC", Georgia, serif; }
+html[lang="zh-Hant"] .hr-cap__one b { font-weight: 500; }
+.hr-cap__one small { font-size: var(--t-xs); }
+/* a soft shade along the foot of the film, as the top one, so the captions read over a bright scene */
+[data-counts] .hr-open::after { content: ""; position: absolute; z-index: 1; left: 0; right: 0; bottom: 0; height: 15rem; pointer-events: none;
+  background: linear-gradient(to top, color-mix(in oklch, var(--text) 50%, transparent), transparent); }
+
+/* ---------------- the opening: a wall of his photographs; js/home.js lays the cards out and moves them. The middle
+   card is the film, small and alive, and it grows to the whole window, where the page lands ---------------- */
+.hr-flock { display: none; }
+[data-flock] .hr-flock { position: absolute; inset: 0; z-index: 1; display: block; overflow: hidden; will-change: transform; }
+.hr-tile { position: absolute; overflow: hidden; background: var(--band); opacity: 0; transform-origin: center; will-change: transform; }
+.hr-tile img, .hr-tile video { display: block; width: 100%; height: 100%; object-fit: cover; }
+/* a black ground for the opening (his choice, 2026-11-12; the one exception to light only): the loading screen
+   only. The page beneath stays light; the film covers the black before the loading screen goes. */
+[data-ground="dark"] { --night: oklch(18.5% 0.003 60); --on-night: oklch(96% 0.008 82); }
+[data-ground="dark"] .hr-load__paper { background: var(--night); }
+[data-ground="dark"] .hr-load__mark { color: var(--on-night); }
+[data-ground="dark"] .hr-load__sub { color: color-mix(in oklch, var(--on-night) 70%, transparent); }
+[data-ground="dark"] .hr-load__line { background: var(--on-night); }
+[data-ground="dark"] .hr-tile { background: color-mix(in oklch, var(--on-night) 8%, var(--night)); }
+.hr-flock__ride { position: absolute; left: 0; top: 0; will-change: transform; }   /* one card's column slide, a layer of its own */
+[data-flock] .hr-load__paper { transition: none; }
+/* his note, 2026-11-11: "all of the TUAN comes too fast, slower TUAN". The letters rise more slowly and further apart,
+   PHOTOGRAPHY follows later and more slowly; js/home.js draws the line in 1.4 s and waits for all of it. */
+[data-flock].hr-full .hr-load__name span { animation-duration: 1.4s; animation-delay: calc(var(--i, 0) * 170ms); }
+[data-flock].hr-full .hr-load__sub span { animation-duration: 1.4s; animation-delay: 0.9s; }
+/* hr-out comes when the film fills the window: the page's own mark and menu come in over the film; the ground stays
+   under the cards until the end */
+[data-flock].hr-out .hr-load__paper { opacity: 1; }
+[data-flock].hr-out .hr-load__mark { transition: opacity 1s ease 0.3s; }
+[data-flock].hr-out .hr-top { transition: opacity 1s ease 0.5s; }
+[data-flock] .hr-load__mark { will-change: transform; }
+[data-flock].hr-markgone .hr-load__mark { opacity: 0; transition: opacity 0.9s ease; }   /* the name goes before the first card shows */
+[data-flock] .hr-cap { opacity: 0; transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.6s; }
+[data-flock].hr-shown .hr-cap { opacity: 1; }
+[data-flock] .hr-open::before { opacity: 0; transition: opacity 1s ease 0.5s; }
+[data-flock].hr-shown .hr-open::before { opacity: 1; }
+[data-flock][data-counts] .hr-open::after { opacity: 0; transition: opacity 1s ease 0.5s; }
+[data-flock][data-counts].hr-shown .hr-open::after { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { [data-flock] .hr-flock { display: none; } }

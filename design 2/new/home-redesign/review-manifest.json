@@ -1641,7 +1641,8 @@
    },
    "still": {
     "wait": 3500
-   }
+   },
+   "main": true
   }
  ],
  "tags": [
@@ -1718,17 +1719,7 @@
  },
  "words": {},
  "ask": {
-  "ids": [
-   "c-flock-cards-slow",
-   "c-flock-cards-slow-night",
-   "c-flock-around-night",
-   "c-flock-camille-smooth",
-   "c-flock-camille-smooth-night"
-  ],
-  "question": {
-   "en": "Five new ones, each beside the version it came from (1 to 4 are untouched): the cards coming in slower in white and black (5, 6), your 5-star one on black (7), and Camille closer to hers in white and black (8, 9). Score these five.",
-   "zh": "五個新版本，都放在原本那版旁邊（1 到 4 沒有動）：卡片慢一點進來的白底和黑底（5、6）、你給 5 分那個的黑底（7）、更像 Camille 的白底和黑底（8、9）。請幫這五個打分數。"
-  }
+  "ids": []
  },
  "round": {
   "ids": [
