@@ -9,7 +9,7 @@
   // before the part worth picturing, so the content is at the top instead of the film every version starts with
   if (/[?&]still\b/.test(location.search)) {
     const first = { 'v-stays': '.hc-hold', 'v-index': '.hc-index', 'v-pairs': '.hc-pair--rails', 'v-index-stage': '.hx-run', 'v-index-window': '.hx-run', 'v-index-line': '.hx-run', 'v-index-fine': '.hc-index', 'v-across-list': '.hy-run', 'v-across-strip': '.hy-run', 'v-across-lines': '.hy-run' }[document.documentElement.dataset.hc];
-    const el = first && document.querySelector(first);
+    const el = first ? document.querySelector(first) : (/^w[a-d]\d$/.test(document.documentElement.dataset.hc) && document.querySelector('.hr-open ~ .cover ~ *'));
     if (el) {
       document.querySelectorAll('img[loading="lazy"]').forEach((i) => { i.loading = 'eager'; });
       document.querySelectorAll('.hr-open, .cover, .top').forEach((x) => x.remove());

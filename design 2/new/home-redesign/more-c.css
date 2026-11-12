@@ -1,0 +1,197 @@
+/* Home content, batch C (tools/home_more_c.py, 2026-11-12): print and object. Five versions, wc1 to wc5, each a
+   held stage the scroll conducts (more-c.js). Built only from design 1's tokens; every class is mc-…, every rule
+   scoped under .mc. Square corners, no shadows, nothing written across a photograph. */
+
+.mc .mc-open { min-height: 44svh; }
+.mc .mc-run { position: relative; height: calc(100svh + var(--len, 300svh)); }
+.mc .mc-stage { position: sticky; top: 0; height: 100svh; overflow: hidden; }
+.mc .mc-steps { display: flex; justify-content: center; gap: 2.5rem; margin: 0; }
+.mc .mc-steps button { padding: 0.6rem 0; border: 0; background: none; color: var(--accent); cursor: pointer; text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 0.3em; transition: text-decoration-color 300ms var(--out); }
+.mc .mc-steps button:hover { text-decoration-color: currentColor; }
+.mc .mc-face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.mc img { display: block; }
+.mc a:focus-visible { outline-offset: 3px; }
+
+/* ------------------------------------------------ wc1: the photobook */
+.mc-book .mc-run { --len: 300svh; }
+.mc-book .mc-stage { display: grid; place-items: center; align-content: center; gap: clamp(1.25rem, 3svh, 2.25rem); background: var(--band); }
+.mc-book .mc-bk { --pw: min(44vw, 70svh); position: relative; width: calc(var(--pw) * 2); height: var(--pw); perspective: 2800px; }
+/* the block of pages under the open spread, three hairlines deep */
+.mc-book .mc-bk::before, .mc-book .mc-bk::after { content: ""; position: absolute; z-index: -1; border: 1px solid var(--line); border-top: 0; background: var(--paper); }
+.mc-book .mc-bk::before { inset: 0 -4px -4px; }
+.mc-book .mc-bk::after { inset: 0 -8px -8px; z-index: -2; }
+.mc-book .mc-pg, .mc-book .mc-lf { position: absolute; top: 0; width: 50%; height: 100%; }
+.mc-book .mc-pg { background: var(--paper); }
+.mc-book .mc-pg--a { left: 0; border-right: 1px solid var(--line); }
+.mc-book .mc-pg--b { left: 50%; border-left: 1px solid var(--line); }
+.mc-book .mc-lf { left: 50%; transform-origin: 0 50%; transform-style: preserve-3d; z-index: calc(40 - var(--i)); will-change: transform; }
+.mc-book .mc-face { background: var(--paper); }
+.mc-book .mc-front { border-left: 1px solid var(--line); }
+.mc-book .mc-back { transform: rotateY(180deg); border-right: 1px solid var(--line); }
+/* the light on a page as it lifts: a flat veil of ink, strongest half way over */
+.mc-book .mc-face::after { content: ""; position: absolute; inset: 0; background: var(--text); opacity: calc(var(--sh, 0) * 0.12); pointer-events: none; }
+.mc-book .mc-bk-photo { position: absolute; inset: 9%; }
+.mc-book .mc-bk-photo a { display: block; width: 100%; height: 100%; }
+.mc-book .mc-bk-photo img { width: 100%; height: 100%; object-fit: contain; }
+.mc-book .mc-bk-words { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 12% 13%; }
+.mc-book .mc-bk-head { position: absolute; top: 9%; left: 13%; margin: 0; color: var(--text-2); font-size: 0.6875rem; letter-spacing: 0.18em; }
+.mc-book .mc-bk-words h3 { margin: 0; font-family: var(--serif); font-weight: 400; font-size: clamp(1.7rem, 2.9vw, 3.1rem); line-height: 1.08; letter-spacing: -0.005em; }
+.mc-book .mc-bk-where { display: flex; flex-wrap: wrap; gap: 0.2rem 1rem; align-items: baseline; margin: 1.1rem 0 0; color: var(--text-2); font-size: var(--t-s); }
+.mc-book .mc-bk-date { font-size: 0.6875rem; letter-spacing: 0.16em; text-transform: uppercase; }
+.mc-book .mc-bk-line { margin: 2rem 0 0; padding-top: 1.1rem; max-width: 30ch; border-top: 1px solid var(--line); color: var(--text-2); font-size: var(--t-s); line-height: 1.6; }
+:root:lang(zh-Hant) .mc-book .mc-bk-words h3 { font-weight: 500; letter-spacing: 0.04em; }
+
+@media (max-width: 48rem) {
+  .mc-book .mc-run { --len: 280svh; }
+  .mc-book .mc-bk { --ph: min(70vw, 38svh); width: 90vw; height: calc(var(--ph) * 2); perspective: 2000px; }
+  .mc-book .mc-pg, .mc-book .mc-lf { width: 100%; height: 50%; left: 0; }
+  .mc-book .mc-pg--a { top: 0; border-right: 0; border-bottom: 1px solid var(--line); }
+  .mc-book .mc-pg--b { top: 50%; border-left: 0; border-top: 1px solid var(--line); }
+  .mc-book .mc-lf { top: 50%; transform-origin: 50% 0; }
+  .mc-book .mc-front { border-left: 0; border-top: 1px solid var(--line); }
+  .mc-book .mc-back { transform: rotateX(180deg); border-right: 0; border-bottom: 1px solid var(--line); }
+  .mc-book .mc-bk-photo { inset: 7%; }
+  .mc-book .mc-bk-words { padding: 9% 9% 7%; justify-content: flex-end; }
+  .mc-book .mc-bk-head { top: 9%; left: 9%; }
+  .mc-book .mc-bk-words h3 { font-size: clamp(1.5rem, 7vw, 2.2rem); }
+  .mc-book .mc-bk-where { margin-top: 0.5rem; font-size: var(--t-xs); }
+  .mc-book .mc-bk-line { margin-top: 0.8rem; padding-top: 0.6rem; font-size: var(--t-xs); line-height: 1.5; }
+}
+
+/* ------------------------------------------------ wc2: postcards */
+.mc-post .mc-run { --len: 330svh; }
+.mc-post .mc-stage { display: flex; align-items: center; }
+.mc-post .mc-track { position: relative; display: flex; align-items: flex-end; gap: clamp(2rem, 5vw, 5rem); width: max-content; will-change: transform; }
+.mc-post .mc-track::after { content: ""; position: absolute; left: -100vw; right: -100vw; bottom: 3.25rem; border-top: 1px solid color-mix(in oklch, var(--text) 55%, var(--bg)); pointer-events: none; }
+.mc-post .mc-pc { flex: none; display: flex; flex-direction: column; align-items: center; perspective: 1800px; }
+.mc-post .mc-pc-card { position: relative; width: min(calc(46svh * var(--ar)), 80vw, 44rem); aspect-ratio: var(--ar); transform-style: preserve-3d; transform-origin: 50% 100%; container-type: inline-size; will-change: transform; }
+.mc-post .mc-pc--tall .mc-pc-card { width: min(calc(56svh * var(--ar)), 72vw); }
+.mc-post .mc-pc-card > .mc-flip { position: absolute; inset: 0; transform-style: preserve-3d; transition: transform 900ms var(--out); }
+.mc-post .mc-pc.is-turned .mc-flip { transform: rotateY(180deg); }
+.mc-post .mc-front { padding: clamp(0.45rem, 2.2cqw, 1rem); background: var(--paper); outline: 1px solid var(--line); }
+.mc-post .mc-front a { display: block; width: 100%; height: 100%; }
+.mc-post .mc-front img { width: 100%; height: 100%; object-fit: contain; }
+.mc-post .mc-back { transform: rotateY(180deg); background: var(--paper); outline: 1px solid var(--line); color: var(--text); }
+.mc-post .mc-pc-caption { position: absolute; top: 9%; left: 6%; width: 42%; display: grid; gap: 0.5cqw; }
+.mc-post .mc-pc-caption b { font-family: var(--serif); font-weight: 400; font-size: 3.6cqw; line-height: 1.15; }
+.mc-post .mc-pc-caption span { font-size: max(0.6rem, 1.55cqw); color: var(--text-2); letter-spacing: 0.14em; }
+.mc-post .mc-pc-rule { position: absolute; left: 52%; top: 10%; bottom: 10%; border-left: 1px solid var(--line); }
+.mc-post .mc-pc-stamp { position: absolute; top: 8%; right: 6%; width: 17%; aspect-ratio: 4 / 5; display: grid; place-content: center; justify-items: center; gap: 1cqw; padding: 1cqw; border: 1px solid var(--text-2); outline: 1px solid var(--text-2); outline-offset: 0.5cqw; text-align: center; }
+.mc-post .mc-pc-stamp .caps { font-size: max(0.55rem, 1.35cqw); letter-spacing: 0.12em; line-height: 1.3; }
+.mc-post .mc-pc-date { font-family: var(--serif); font-size: 2.2cqw; line-height: 1.1; }
+/* the postmark: a ring with the trip's date, set across the stamp's corner */
+.mc-post .mc-pc-mark { position: absolute; top: 12%; right: 19%; width: 13%; aspect-ratio: 1; display: grid; place-items: center; border: 1px solid color-mix(in oklch, var(--text-2) 70%, var(--bg)); border-radius: 50%; rotate: -14deg; color: color-mix(in oklch, var(--text-2) 80%, var(--bg)); font-size: max(0.5rem, 1.2cqw); letter-spacing: 0.08em; text-align: center; line-height: 1.1; padding: 1cqw; }
+.mc-post .mc-pc-rules { position: absolute; left: 57%; right: 6%; bottom: 14%; display: grid; gap: 7cqw; }
+.mc-post .mc-pc-rules i { display: block; border-top: 1px solid var(--line); }
+.mc-post .mc-pc-word { position: absolute; left: 6%; bottom: 8%; font-size: max(0.55rem, 1.3cqw); letter-spacing: 0.3em; color: color-mix(in oklch, var(--text-2) 70%, var(--bg)); }
+.mc-post .mc-pc--tall .mc-pc-caption { width: 50%; }
+.mc-post .mc-pc--tall .mc-pc-caption b { font-size: 6cqw; }
+.mc-post .mc-pc--tall .mc-pc-caption span { font-size: max(0.6rem, 2.6cqw); }
+.mc-post .mc-pc--tall .mc-pc-rule { display: none; }
+.mc-post .mc-pc--tall .mc-pc-stamp { width: 26%; }
+.mc-post .mc-pc--tall .mc-pc-stamp .caps { font-size: max(0.55rem, 2.2cqw); }
+.mc-post .mc-pc--tall .mc-pc-date { font-size: 3.6cqw; }
+.mc-post .mc-pc--tall .mc-pc-mark { right: 28%; top: 14%; width: 20%; font-size: max(0.5rem, 2cqw); }
+.mc-post .mc-pc--tall .mc-pc-rules { left: 8%; right: 8%; bottom: 16%; gap: 11cqw; }
+.mc-post .mc-pc-turn { height: 3.25rem; padding: 0.9rem 0 0; border: 0; background: none; color: var(--accent); cursor: pointer; opacity: 0.35; transition: opacity 500ms var(--out); }
+.mc-post .mc-pc.is-on .mc-pc-turn, .mc-post .mc-pc-turn:hover, .mc-post .mc-pc-turn:focus-visible { opacity: 1; }
+:root:lang(zh-Hant) .mc-post .mc-pc-caption b { font-weight: 500; }
+@media (max-width: 48rem) {
+  .mc-post .mc-run { --len: 300svh; }
+  .mc-post .mc-pc-card { width: min(calc(40svh * var(--ar)), 84vw); }
+  .mc-post .mc-pc--tall .mc-pc-card { width: min(calc(50svh * var(--ar)), 70vw); }
+  .mc-post .mc-pc-caption b { font-size: 4.4cqw; }
+  .mc-post .mc-pc--tall .mc-pc-caption b { font-size: 7cqw; }
+}
+
+/* ------------------------------------------------ wc3: one horizon */
+.mc-hz .mc-run { --len: 320svh; }
+.mc-hz .mc-stage { --Y: 48svh; --k: 1.12; }
+.mc-hz .mc-track { position: absolute; top: 0; left: 0; height: 100%; display: flex; align-items: flex-start; gap: clamp(1.5rem, 3.4vw, 3.5rem); width: max-content; will-change: transform; }
+/* the horizon itself, drawn on the paper between the photographs and running on past both ends */
+.mc-hz .mc-track::before { content: ""; position: absolute; left: -100vw; right: -100vw; top: var(--Y); border-top: 1px solid color-mix(in oklch, var(--text) 50%, var(--bg)); }
+.mc-hz .mc-hz-photo { position: relative; flex: none; margin: calc(var(--Y) - var(--h) * var(--f) * var(--k) * 1svh) 0 0; }
+.mc-hz .mc-hz-photo a { display: block; }
+.mc-hz .mc-hz-photo img { height: calc(var(--h) * var(--k) * 1svh); width: calc(var(--h) * var(--k) * var(--ar) * 1svh); }
+.mc-hz .mc-hz-photo figcaption { display: grid; gap: 0.2rem; margin-top: 0.9rem; opacity: 0.4; transition: opacity 600ms var(--out); }
+.mc-hz .mc-hz-photo.is-on figcaption { opacity: 1; }
+.mc-hz .mc-hz-photo b { font-family: var(--serif); font-weight: 400; font-size: 1.05rem; line-height: 1.25; }
+.mc-hz .mc-hz-photo span { color: var(--text-2); font-size: 0.6875rem; letter-spacing: 0.14em; text-transform: uppercase; }
+:root:lang(zh-Hant) .mc-hz .mc-hz-photo b { font-weight: 500; }
+@media (max-width: 48rem) {
+  .mc-hz .mc-run { --len: 300svh; }
+  .mc-hz .mc-stage { --Y: 42svh; --k: 0.62; }
+}
+
+/* ------------------------------------------------ wc4: the exhibition room */
+.mc-room .mc-run { --len: 310svh; }
+.mc-room .mc-stage { background: var(--bg); }
+.mc-room .mc-ceiling { position: absolute; left: 0; right: 0; top: 7svh; border-top: 1px solid var(--line); }
+.mc-room .mc-floor { position: absolute; left: 0; right: 0; bottom: 0; height: 15svh; background: var(--band); border-top: 1px solid color-mix(in oklch, var(--text) 50%, var(--bg)); }
+.mc-room .mc-floor::before { content: ""; position: absolute; left: 0; right: 0; top: -0.85rem; border-top: 1px solid var(--line); }   /* the skirting */
+.mc-room .mc-track { position: absolute; top: 7svh; bottom: 15svh; left: 0; display: flex; align-items: center; gap: clamp(3rem, 7vw, 8rem); width: max-content; will-change: transform; }
+.mc-room .mc-hang { flex: none; display: flex; align-items: center; gap: clamp(1.25rem, 2vw, 2rem); margin: 0; }
+.mc-room .mc-frame { padding: clamp(1rem, 2.6svh, 1.75rem); border: 0.45rem solid var(--text); background: var(--paper); }
+.mc-room .mc-frame a { display: block; }
+.mc-room .mc-frame img { height: min(44svh, calc(54svh / var(--ar))); width: auto; outline: 1px solid var(--line); }
+.mc-room .mc-label { align-self: center; margin-top: 18svh; width: 11.5rem; display: grid; gap: 0.3rem; padding: 0.85rem 0.95rem; background: var(--paper); border: 1px solid var(--line); opacity: 0.55; transition: opacity 600ms var(--out); }
+.mc-room .mc-hang.is-on .mc-label { opacity: 1; }
+.mc-room .mc-label b { font-family: var(--serif); font-weight: 400; font-size: 1rem; line-height: 1.25; }
+.mc-room .mc-label span { color: var(--text-2); font-size: var(--t-xs); line-height: 1.4; }
+.mc-room .mc-label .mc-label-date { font-size: 0.6875rem; letter-spacing: 0.14em; text-transform: uppercase; }
+.mc-room .mc-wall-text { flex: none; width: clamp(12rem, 18vw, 17rem); margin-top: -18svh; }
+.mc-room .mc-wall-text h3 { margin: 0; font-family: var(--serif); font-weight: 400; font-size: var(--t-2xl); line-height: 1.05; }
+.mc-room .mc-wall-text p { margin: 0.9rem 0 0; color: var(--text-2); }
+/* a doorway into the next room: the floor seen through it */
+.mc-room .mc-door { flex: none; align-self: flex-end; width: clamp(6rem, 9vw, 9rem); height: 60svh; background: var(--band); border: 1px solid var(--line); border-bottom: 0; outline: 1px solid var(--line); outline-offset: 0.5rem; clip-path: inset(-0.6rem -0.6rem 0 -0.6rem); }
+:root:lang(zh-Hant) .mc-room :is(.mc-label b, .mc-wall-text h3) { font-weight: 500; }
+@media (max-width: 48rem) {
+  .mc-room .mc-run { --len: 300svh; }
+  .mc-room .mc-hang { flex-direction: column; align-items: flex-start; gap: 0.9rem; }
+  .mc-room .mc-frame { padding: 0.8rem; border-width: 0.3rem; }
+  .mc-room .mc-frame img { height: min(36svh, calc(64vw / var(--ar))); }
+  .mc-room .mc-label { margin-top: 0; align-self: flex-start; width: auto; max-width: 70vw; padding: 0.6rem 0.75rem; }
+  .mc-room .mc-wall-text { margin-top: -10svh; }
+  .mc-room .mc-door { height: 52svh; }
+}
+
+/* ------------------------------------------------ wc5: index cards */
+.mc-cards .mc-run { --len: 310svh; }
+.mc-cards .mc-stage { --cw: min(40rem, 86vw); --chh: calc(var(--cw) * 0.6); perspective: 1700px; perspective-origin: 50% 0; }
+.mc-cards .mc-drawer { position: absolute; inset: 0; transform-style: preserve-3d; }
+.mc-cards .mc-pack { position: absolute; left: 50%; top: calc(var(--chh) + 22svh); width: var(--cw); height: var(--chh); margin-left: calc(var(--cw) / -2); transform-style: preserve-3d; }
+.mc-cards .mc-card { position: absolute; inset: 0; transform-origin: 50% 100%; transform-style: preserve-3d; will-change: transform, opacity; }
+.mc-cards .mc-card-in { position: absolute; inset: 0; display: flex; flex-direction: column; padding: 3.2% 4.5%; background: var(--paper); border: 1px solid var(--line); }
+.mc-cards .mc-card:not(.is-on) .mc-card-in { pointer-events: none; }
+.mc-cards .mc-card-in header { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding-bottom: 0.55rem; border-bottom: 1px solid color-mix(in oklch, var(--text) 60%, var(--bg)); }
+.mc-cards .mc-card-in h3 { margin: 0; font-family: var(--serif); font-weight: 400; font-size: clamp(1.2rem, 2.1vw, 1.75rem); line-height: 1.15; }
+.mc-cards .mc-card-in header .caps { flex: none; color: var(--text-2); font-size: 0.6875rem; }
+.mc-cards .mc-card-body { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); gap: 5%; padding-top: 4%; }
+.mc-cards .mc-card-photo { min-height: 0; }
+.mc-cards .mc-card-photo a { display: block; height: 100%; }
+.mc-cards .mc-card-photo img { width: 100%; height: 100%; object-fit: contain; object-position: center top; }
+.mc-cards .mc-card-lines { list-style: none; margin: 0; padding: 0; min-height: 0; overflow: hidden; }
+.mc-cards .mc-card-lines li { min-height: 1.9rem; padding: 0.42rem 0 0.3rem; border-bottom: 1px solid var(--line); font-size: var(--t-xs); line-height: 1.45; color: var(--text); }
+.mc-cards .mc-card-lines .mc-card-alt { color: var(--text-2); }
+.mc-cards .mc-card-lines a { color: var(--accent); }
+/* each card's tab stands above its top edge, at one of four places, so every name shows above the drawer */
+.mc-cards .mc-tab { position: absolute; bottom: 100%; left: calc(2% + var(--tab) * 24.5%); width: 23%; height: 1.75rem; padding: 0 0.5rem; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; background: var(--paper); border: 1px solid var(--line); border-bottom: 0; color: var(--text-2); font-size: 0.625rem; cursor: pointer; transition: color 400ms var(--out); }
+.mc-cards .mc-tab:hover, .mc-cards .mc-card.is-on .mc-tab { color: var(--text); }
+.mc-cards .mc-front-board { position: absolute; left: 50%; top: calc(var(--chh) + 22svh + 2.4rem); bottom: 0; width: calc(var(--cw) + 3rem); margin-left: calc(var(--cw) / -2 - 1.5rem); display: flex; justify-content: center; padding-top: 1.6rem; background: var(--band); border-top: 1px solid color-mix(in oklch, var(--text) 55%, var(--bg)); transform: translateZ(40px); }
+.mc-cards .mc-front-board span { align-self: flex-start; padding: 0.45rem 1.4rem; background: var(--paper); border: 1px solid var(--text-2); color: var(--text-2); }
+.mc-cards .mc-steps { position: absolute; z-index: 5; left: 0; right: 0; bottom: 4svh; gap: clamp(8rem, 24vw, 22rem); }
+:root:lang(zh-Hant) .mc-cards .mc-card-in h3 { font-weight: 500; }
+@media (max-width: 48rem) {
+  .mc-cards .mc-run { --len: 300svh; }
+  .mc-cards .mc-stage { --cw: 90vw; --chh: calc(var(--cw) * 0.82); }
+  .mc-cards .mc-card-in { padding: 4% 5%; }
+  .mc-cards .mc-card-body { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .mc-cards .mc-card-lines li { font-size: 0.75rem; padding: 0.3rem 0 0.22rem; }
+  .mc-cards .mc-tab { font-size: 0.5625rem; padding: 0 0.3rem; letter-spacing: 0.06em; }
+  .mc-cards .mc-steps { gap: 9rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mc-post .mc-pc-card > .mc-flip { transition: none; }
+  .mc-hz .mc-hz-photo figcaption, .mc-room .mc-label { transition: none; }
+}

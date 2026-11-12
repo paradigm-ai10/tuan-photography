@@ -1,0 +1,145 @@
+/* Home content, twenty versions, batch B: scroll and motion (tools/home_more_b.py, 2026-11-12). Five ways for the
+   scroll to move his photographs: wb1 the long wall, wb2 into the photograph, wb3 the pile, wb4 two directions,
+   wb5 the blind. Every class is mb-… and every rule sits under .mb, so nothing reaches the other versions. Built
+   from style.css's tokens only. more-b.js moves things (transform and opacity only); without it each stage stands
+   still in its first state. */
+
+.mb [data-i18n="hcLine"], .mb .hc-line { font-size: var(--t-2xl); }
+
+/* a place's label: the name in serif, where and when beneath in small type, always on paper */
+.mb .mb-label, .mb .mb-zoom__name, .mb .mb-pile__name, .mb .mb-two__names li, .mb .mb-blind__name { display: grid; gap: 0.2rem; }
+.mb .mb-label b, .mb .mb-zoom__name b, .mb .mb-pile__name b, .mb .mb-two__names b, .mb .mb-blind__name b { font-family: var(--serif); font-weight: 400; line-height: 1.22; color: var(--text); }
+.mb .mb-label span, .mb .mb-zoom__name span, .mb .mb-pile__name span, .mb .mb-two__names span, .mb .mb-blind__name span { color: var(--text-2); font-size: var(--t-xs); line-height: 1.35; }
+.mb .mb-label .caps, .mb .mb-zoom__name .caps, .mb .mb-pile__name .caps, .mb .mb-two__names .caps, .mb .mb-blind__name .caps { font-size: 0.6875rem; letter-spacing: 0.14em; }
+:root:lang(zh-Hant) .mb :is(.mb-label, .mb-zoom__name, .mb-pile__name, .mb-two__names, .mb-blind__name) b { font-weight: 500; }
+.mb a:focus-visible { outline-offset: 3px; }
+
+/* ---------------------------------------------------------------- wb1: the long wall */
+.mb-wall .mb-wall__run { position: relative; height: calc(100svh + 330svh); }
+.mb-wall .mb-wall__stage { position: sticky; top: 0; height: 100svh; overflow: hidden; }
+.mb-wall .mb-wall__track { --rail: 12; position: relative; display: flex; align-items: flex-start; gap: clamp(3.5rem, 7vw, 8rem); width: max-content; height: 100%; padding-inline: var(--edge) 14vw; }
+/* the picture rail: two hairlines, the profile of a moulding, the whole length of the wall */
+.mb-wall .mb-wall__rail { position: absolute; left: 0; right: 0; top: calc(var(--rail) * 1svh); height: 5px; border-top: 1px solid color-mix(in oklch, var(--text) 55%, var(--bg)); border-bottom: 1px solid var(--line); }
+.mb-wall .mb-wall__title { flex: none; width: min(30rem, 72vw); margin-top: calc((var(--rail) + 20) * 1svh); }
+.mb-wall .mb-wall__title .hc-line { text-align: left; }
+.mb-wall .mb-wall__title p { margin-top: var(--s-2); color: var(--text-2); max-width: 26ch; }
+.mb-wall .mb-wall__item { position: relative; flex: none; display: flex; align-items: flex-end; gap: 1.1rem; margin-top: calc((var(--rail) + var(--y)) * 1svh); }
+.mb-wall .mb-wall__photo { position: relative; display: block; flex: none; height: calc(var(--h) * 1.18svh); aspect-ratio: var(--ar); }
+.mb-wall .mb-wall__photo:hover { color: inherit; }
+.mb-wall .mb-wall__photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+/* two fine wires from the rail to the top of the frame */
+.mb-wall .mb-wall__photo::before, .mb-wall .mb-wall__photo::after { content: ""; position: absolute; bottom: 100%; width: 1px; height: calc(var(--y) * 1svh - 5px); background: color-mix(in oklch, var(--text) 38%, var(--bg)); }
+.mb-wall .mb-wall__photo::before { left: 16%; }
+.mb-wall .mb-wall__photo::after { right: 16%; }
+.mb-wall .mb-label { flex: none; width: 9.5rem; padding-bottom: 0.1rem; }
+.mb-wall .mb-label b { font-size: 1.05rem; }
+.mb-wall .mb-wall__end { flex: none; width: 1px; }
+
+@media (max-width: 48rem) {
+  .mb-wall .mb-wall__run { height: calc(100svh + 360svh); }
+  .mb-wall .mb-wall__track { --rail: 10; gap: 3rem; padding-right: 20vw; }
+  .mb-wall .mb-wall__item { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+  .mb-wall .mb-wall__photo { height: calc(var(--h) * 0.95svh); }
+  .mb-wall .mb-label { width: auto; max-width: 70vw; }
+}
+
+/* ---------------------------------------------------------------- wb2: into the photograph */
+.mb-zoom .mb-zoom__run { position: relative; height: calc(100svh + 5 * 62svh); }
+.mb-zoom .mb-zoom__stage { position: sticky; top: 0; height: 100svh; overflow: hidden; }
+.mb-zoom .mb-zoom__ph { --box: min(44svh, calc(60vw / var(--ar))); position: absolute; left: 50%; top: 44%; z-index: var(--i); height: var(--box); aspect-ratio: var(--ar); transform: translate(-50%, -50%); transform-origin: 50% 50%; opacity: 0; }
+.mb-zoom .mb-zoom__ph:first-of-type { opacity: 1; }
+.mb-zoom .mb-zoom__ph a { display: block; height: 100%; }
+.mb-zoom .mb-zoom__ph a:hover { color: inherit; }
+.mb-zoom .mb-zoom__ph img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.mb-zoom .mb-zoom__name { --box: min(44svh, calc(60vw / var(--ar))); position: absolute; left: var(--edge); right: var(--edge); top: calc(44% + var(--box) / 2 + 1.1rem); z-index: 20; justify-items: center; text-align: center; opacity: 0; pointer-events: none; }
+.mb-zoom .mb-zoom__name b { font-size: 1.3rem; }
+.mb-zoom .mb-zoom__name:first-of-type { opacity: 1; }
+
+/* ---------------------------------------------------------------- wb3: the pile */
+.mb-pile .mb-pile__run { position: relative; height: calc(100svh + 6 * 50svh); }
+.mb-pile .mb-pile__stage { position: sticky; top: 0; height: 100svh; overflow: hidden; }
+.mb-pile .mb-pile__heap { position: absolute; z-index: 2; inset: 6svh 0 21svh 0; }
+.mb-pile .mb-pile__print { position: absolute; left: 50%; top: 50%; z-index: var(--i); width: min(74vw, calc(64svh * var(--ar))); padding: clamp(5px, 0.55vw, 9px); background: var(--paper); border: 1px solid var(--line);
+  transform: translate(-50%, -50%) translate(calc(var(--dx) * 1px), calc(var(--dy) * 1px)) rotate(calc(var(--r) * 0.1deg)); }
+.mb-pile .mb-pile__print a { display: block; }
+.mb-pile .mb-pile__print a:hover { color: inherit; }
+.mb-pile .mb-pile__print img { display: block; width: 100%; height: auto; aspect-ratio: var(--ar); object-fit: cover; }
+.mb-pile .mb-pile__names { position: absolute; z-index: 1; left: var(--edge); right: var(--edge); bottom: 5svh; height: 9svh; }
+.mb-pile .mb-pile__name { position: absolute; inset: 0; justify-items: center; align-content: start; text-align: center; opacity: 0; translate: 0 0.6rem; transition: opacity 260ms linear, translate 260ms var(--out); }
+.mb-pile .mb-pile__name.is-on { opacity: 1; translate: 0 0; transition: opacity 600ms var(--out) 160ms, translate 700ms var(--out) 160ms; }
+.mb-pile .mb-pile__name b { font-size: clamp(1.35rem, 1.1rem + 0.8vw, 1.85rem); }
+
+@media (max-width: 48rem) {
+  .mb-pile .mb-pile__heap { inset: 12svh 0 30svh 0; }
+  .mb-pile .mb-pile__print { width: min(84vw, calc(56svh * var(--ar))); }
+  .mb-pile .mb-pile__names { bottom: 12svh; height: 13svh; }
+}
+
+/* ---------------------------------------------------------------- wb4: two directions */
+.mb-two .mb-two__run { position: relative; height: calc(100svh + 300svh); }
+.mb-two .mb-two__stage { --gap: clamp(0.75rem, 1.6vw, 1.5rem); --nh: 6.4rem; position: sticky; top: 0; height: 100svh; overflow: hidden; display: grid; grid-template-columns: minmax(0, 1fr) clamp(8.5rem, 13vw, 12.5rem) minmax(0, 1fr); grid-template-rows: 100%; column-gap: clamp(1rem, 2.2vw, 2.25rem); padding-inline: var(--edge); }
+.mb-two .mb-two__col { position: relative; min-width: 0; }
+.mb-two .mb-two__track { display: flex; flex-direction: column; gap: var(--gap); }
+.mb-two .mb-two__ph a { display: block; }
+.mb-two .mb-two__ph a:hover { color: inherit; }
+.mb-two .mb-two__ph img { display: block; width: 100%; height: auto; aspect-ratio: var(--ar); }
+.mb-two .mb-two__col--right .mb-two__track { transform: translateY(calc(-100% + 100svh)); }
+.mb-two .mb-two__gutter { position: relative; height: 100%; }
+.mb-two .mb-two__rule { position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: color-mix(in oklch, var(--text) 70%, var(--bg)); }
+.mb-two .mb-two__names { position: absolute; left: 0; right: 0; height: var(--nh); overflow: hidden; }
+.mb-two .mb-two__names ol { list-style: none; margin: 0; padding: 0; }
+.mb-two .mb-two__names li { height: var(--nh); align-content: end; padding-bottom: 0.7rem; }
+.mb-two .mb-two__names--left { bottom: 50%; }
+.mb-two .mb-two__names--right { top: 50%; text-align: right; }
+.mb-two .mb-two__names--right li { align-content: start; justify-items: end; padding: 0.7rem 0 0; }
+.mb-two .mb-two__names b { font-size: 1.1rem; }
+
+@media (max-width: 48rem) {
+  .mb-two .mb-two__stage { --nh: 6rem; grid-template-columns: minmax(0, 1fr) 5.75rem minmax(0, 1fr); column-gap: 0.6rem; }
+  .mb-two .mb-two__names b { font-size: 0.875rem; line-height: 1.2; }
+  .mb-two .mb-two__names span { font-size: 0.6875rem; }
+  .mb-two .mb-two__names .caps { font-size: 0.5625rem; letter-spacing: 0.1em; }
+}
+
+/* ---------------------------------------------------------------- wb5: the blind */
+.mb-blind .mb-blind__run { position: relative; height: calc(100svh + 7 * 46svh); }
+.mb-blind .mb-blind__stage { --fw: min(62vw, calc(72svh * 1.5)); position: sticky; top: 0; height: 100svh; overflow: hidden; display: grid; grid-template-columns: minmax(0, 1fr) var(--fw); grid-template-rows: auto auto; grid-template-areas: "list frame" ". names"; column-gap: clamp(2rem, 5vw, 6rem); row-gap: 1.25rem; align-content: center; padding-inline: var(--edge); }
+.mb-blind .mb-blind__list { grid-area: list; align-self: center; list-style: none; margin: 0; padding: 0; display: grid; gap: 0.15rem; justify-items: start; }
+.mb-blind .mb-blind__list button { position: relative; padding: 0.45rem 0 0.45rem 0; border: 0; background: none; cursor: pointer; font-family: var(--sans); font-size: 0.6875rem; letter-spacing: 0.14em; text-transform: uppercase; color: color-mix(in oklch, var(--text-2) 55%, var(--bg)); text-align: left; transition: color 400ms var(--out), translate 500ms var(--out); }
+.mb-blind .mb-blind__list button::before { content: ""; position: absolute; left: -2.1rem; top: 50%; width: 1.5rem; height: 1px; background: var(--text); transform: scaleX(0); transform-origin: left center; transition: transform 500ms var(--out); }
+.mb-blind .mb-blind__list button.is-on { color: var(--text); translate: 2.1rem 0; }
+.mb-blind .mb-blind__list button.is-on::before { transform: scaleX(1); }
+.mb-blind .mb-blind__list button:hover { color: var(--text); }
+:root:lang(zh-Hant) .mb-blind .mb-blind__list button { font-size: 0.875rem; letter-spacing: 0.1em; }
+.mb-blind .mb-blind__frame { grid-area: frame; position: relative; width: var(--fw); aspect-ratio: 3 / 2; perspective: 2200px; }
+.mb-blind .mb-blind__ph { position: absolute; inset: 0; opacity: 0; pointer-events: none; }
+.mb-blind .mb-blind__ph.is-under { opacity: 1; }
+.mb-blind .mb-blind__ph.is-on { pointer-events: auto; z-index: 4; }
+.mb-blind .mb-blind__ph a { display: block; height: 100%; }
+.mb-blind .mb-blind__ph a:hover { color: inherit; }
+.mb-blind .mb-blind__ph img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.mb-blind .mb-blind__slats { position: absolute; inset: 0; z-index: 3; pointer-events: none; transform-style: preserve-3d; }
+.mb-blind .mb-blind__slat { position: absolute; left: 0; right: 0; top: calc(var(--i) * 100% / var(--n)); height: calc(100% / var(--n)); transform-style: preserve-3d; }
+.mb-blind .mb-blind__face { position: absolute; inset: 0; overflow: hidden; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.mb-blind .mb-blind__face img { position: absolute; left: 0; top: calc(var(--i) * -100%); width: 100%; max-width: none; height: calc(var(--n) * 100%); object-fit: cover; }
+.mb-blind .mb-blind__face--back { transform: rotateX(180deg); }
+/* the light falls off a slat as it tilts away: a veil of ink, its opacity set by the angle */
+.mb-blind .mb-blind__face::after { content: ""; position: absolute; inset: 0; background: var(--text); opacity: var(--shade, 0); }
+.mb-blind .mb-blind__names { grid-area: names; position: relative; height: 5.5rem; }
+.mb-blind .mb-blind__name { position: absolute; inset: 0; align-content: start; opacity: 0; translate: 0 0.5rem; transition: opacity 240ms linear, translate 240ms var(--out); }
+.mb-blind .mb-blind__name.is-on { opacity: 1; translate: 0 0; transition: opacity 600ms var(--out) 120ms, translate 700ms var(--out) 120ms; }
+.mb-blind .mb-blind__name b { font-size: clamp(1.4rem, 1.1rem + 0.9vw, 2rem); }
+
+@media (max-width: 48rem) {
+  .mb-blind .mb-blind__stage { --fw: calc(100vw - 2 * var(--edge)); grid-template-columns: minmax(0, 1fr); grid-template-areas: "frame" "names" "list"; row-gap: 1rem; align-content: center; }
+  .mb-blind .mb-blind__list { display: flex; flex-wrap: wrap; gap: 0 1.1rem; }
+  .mb-blind .mb-blind__list button { padding: 0.4rem 0; border-bottom: 1px solid transparent; }
+  .mb-blind .mb-blind__list button::before { display: none; }
+  .mb-blind .mb-blind__list button.is-on { translate: none; border-bottom-color: var(--text); }
+  .mb-blind .mb-blind__names { height: 5rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mb-pile .mb-pile__name, .mb-blind .mb-blind__name, .mb-blind .mb-blind__list button, .mb-blind .mb-blind__list button::before { transition: none; }
+  .mb-blind .mb-blind__slats { display: none; }
+}

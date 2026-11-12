@@ -68,6 +68,38 @@
     "en": "Every place in view, the photographs travel sideways (reviewed with Impeccable's critique)",
     "zh": "所有地方都看得到，照片往旁邊走（用 Impeccable 的評審檢查過）"
    }
+  },
+  {
+   "id": "twenty-a",
+   "built": "2026-11-12T18:45",
+   "title": {
+    "en": "Twenty: type and places",
+    "zh": "二十個：字和地方"
+   }
+  },
+  {
+   "id": "twenty-b",
+   "built": "2026-11-12T18:45",
+   "title": {
+    "en": "Twenty: scroll and motion",
+    "zh": "二十個：捲動和動態"
+   }
+  },
+  {
+   "id": "twenty-c",
+   "built": "2026-11-12T18:45",
+   "title": {
+    "en": "Twenty: print and object",
+    "zh": "二十個：印刷品和物件"
+   }
+  },
+  {
+   "id": "twenty-d",
+   "built": "2026-11-12T18:45",
+   "title": {
+    "en": "Twenty: the unexpected",
+    "zh": "二十個：意想不到的"
+   }
   }
  ],
  "items": [
@@ -456,6 +488,306 @@
    "still": {
     "wait": 5000
    }
+  },
+  {
+   "href": "wa1.html",
+   "group": "twenty-a",
+   "title": {
+    "en": "The timetable",
+    "zh": "時刻表"
+   },
+   "desc": {
+    "en": "Your places set like a quiet departures board: place, country and when in fine ruled columns, latest first. The row you point at turns over like a flap and its photograph drops in, whole, beside the board.",
+    "zh": "你去過的地方排成像安靜的火車時刻表：地點、國家、時間，細線分欄，最新的在上面。游標指到哪一列，那一列像翻牌一樣翻過來，照片完整地出現在旁邊。"
+   },
+   "still": {
+    "wait": 5000
+   }
+  },
+  {
+   "href": "wa2.html",
+   "group": "twenty-a",
+   "title": {
+    "en": "The contact sheet",
+    "zh": "印樣"
+   },
+   "desc": {
+    "en": "24 small frames on a ruled contact sheet with tiny names. A grease-pencil box follows your pointer, and a large proof beside the sheet shows that frame.",
+    "zh": "一張印樣上 24 個小格，每格下面一行小字。游標移到哪格，就有一個像蠟筆畫的框圈住它，旁邊放大那一張。"
+   },
+   "still": {
+    "wait": 5000
+   }
+  },
+  {
+   "href": "wa3.html",
+   "group": "twenty-a",
+   "title": {
+    "en": "The gazetteer",
+    "zh": "地名索引"
+   },
+   "desc": {
+    "en": "Every place, A to Z, in three columns of small serif type with dotted leaders to the year, like the index of an atlas, with seven photographs set into the columns like plates in a reference book.",
+    "zh": "每一個地方從 A 到 Z 排成三欄小字，點線連到年份，像地圖集後面的索引；七張照片像書裡的插圖一樣嵌在欄中間。"
+   },
+   "still": {
+    "wait": 5000
+   }
+  },
+  {
+   "href": "wa4.html",
+   "group": "twenty-a",
+   "title": {
+    "en": "The sentence",
+    "zh": "一句話"
+   },
+   "desc": {
+    "en": "One long first-person sentence through thirteen true places, each with its small photograph in the line. Reading down the sentence is reading your travels; pointing at a photograph lifts it larger.",
+    "zh": "一整句很長的話，第一人稱，經過十三個真的地方，每個地名旁邊有一張小照片。往下讀這句話就是讀你的旅程；游標指到照片會放大。"
+   },
+   "still": {
+    "wait": 5000
+   }
+  },
+  {
+   "href": "wa5.html",
+   "group": "twenty-a",
+   "title": {
+    "en": "The day in light",
+    "zh": "一天的光"
+   },
+   "desc": {
+    "en": "Fifteen photographs grouped by the light they show, morning to night. The paper warms, then dims, as the day passes, and a small list at the side marks the hour.",
+    "zh": "十五張照片照它們的光分組，從早上到晚上。往下捲，紙的顏色先變暖、再變暗，旁邊一個小清單標出現在是什麼時候。"
+   },
+   "still": {
+    "wait": 5000
+   }
+  },
+  {
+   "href": "wb1.html",
+   "group": "twenty-b",
+   "title": {
+    "en": "The long wall",
+    "zh": "一面長長的牆"
+   },
+   "desc": {
+    "en": "Scrolling down walks you sideways along a gallery wall: ten photographs hang on fine wires from a thin rail at different heights and sizes, each with a small label beside it.",
+    "zh": "往下捲就像沿著一面展覽牆往旁邊走：十張照片用細線掛在一條細軌上，高低大小不一，每張旁邊一張小標籤。"
+   },
+   "still": {
+    "wait": 5000
+   }
+  },
+  {
+   "href": "wb2.html",
+   "group": "twenty-b",
+   "title": {
+    "en": "Into the photograph",
+    "zh": "走進照片裡"
+   },
+   "desc": {
+    "en": "A small photograph with its name beneath grows until it fills the window, and the next one is already small in its middle. Six places, starting with Queensboro Plaza.",
+    "zh": "一張小照片和下面的名字慢慢放大到佔滿畫面，而下一張已經小小地出現在它中間。六個地方，從皇后區廣場開始。"
+   },
+   "still": {
+    "wait": 5000
+   }
+  },
+  {
+   "href": "wb3.html",
+   "group": "twenty-b",
+   "title": {
+    "en": "The pile",
+    "zh": "一疊照片"
+   },
+   "desc": {
+    "en": "Seven prints with thin paper edges slide up and settle on a pile, each a little off the last; the name of the top print sits beneath.",
+    "zh": "七張有白邊的照片一張張滑上來疊在一起，每張稍微歪一點；最上面那張的名字寫在下面。"
+   },
+   "still": {
+    "wait": 5000
+   }
+  },
+  {
+   "href": "wb4.html",
+   "group": "twenty-b",
+   "title": {
+    "en": "Two directions",
+    "zh": "兩個方向"
+   },
+   "desc": {
+    "en": "Split screen: the left column of photographs rises while the right one falls. In the gutter between them a fine rule carries the two names crossing in the middle.",
+    "zh": "左右兩半：左邊的照片往上走、右邊的往下走。中間一條細線，兩個地名在中間交錯。"
+   },
+   "still": {
+    "wait": 5000
+   }
+  },
+  {
+   "href": "wb5.html",
+   "group": "twenty-b",
+   "title": {
+    "en": "The blind",
+    "zh": "百葉窗"
+   },
+   "desc": {
+    "en": "Each photograph turns away in slats like a Venetian blind to show the next one. All eight places are listed small at the side and can be clicked.",
+    "zh": "每張照片像百葉窗一樣一條條轉開，露出下一張。八個地方小小地列在旁邊，可以點。"
+   },
+   "still": {
+    "wait": 5000
+   }
+  },
+  {
+   "href": "wc1.html",
+   "group": "twenty-c",
+   "title": {
+    "en": "The photobook",
+    "zh": "攝影集"
+   },
+   "desc": {
+    "en": "An open photobook: a photograph on one page and, opposite, its place, country, date and a short line. Scrolling turns the pages.",
+    "zh": "一本打開的攝影集：一頁是照片，對面是地點、國家、日期和一句話。往下捲就翻頁。"
+   },
+   "still": {
+    "wait": 5000
+   }
+  },
+  {
+   "href": "wc2.html",
+   "group": "twenty-c",
+   "title": {
+    "en": "Postcards",
+    "zh": "明信片"
+   },
+   "desc": {
+    "en": "Twelve postcards on a ledge travel sideways. Each arrives showing its back (place, country, date, stamp box, postmark) and turns to its photograph at the centre.",
+    "zh": "十二張明信片放在架子上往旁邊走。每張先是背面（地點、國家、日期、郵票框、郵戳），走到中間翻過來變成照片。"
+   },
+   "still": {
+    "wait": 5000
+   }
+  },
+  {
+   "href": "wc3.html",
+   "group": "twenty-c",
+   "title": {
+    "en": "One horizon",
+    "zh": "同一條地平線"
+   },
+   "desc": {
+    "en": "Twelve wide photographs at different sizes, placed so their horizons sit on one fine line that runs across the paper and travels sideways.",
+    "zh": "十二張橫的照片大小不一，排成它們的地平線都落在同一條細線上，這條線橫過整頁，往旁邊走。"
+   },
+   "still": {
+    "wait": 5000
+   }
+  },
+  {
+   "href": "wc4.html",
+   "group": "twenty-c",
+   "title": {
+    "en": "The exhibition room",
+    "zh": "展覽室"
+   },
+   "desc": {
+    "en": "A gallery wall with a floor line and four country rooms joined by doorways. Framed photographs hang with caption cards beside them; scrolling walks along the wall.",
+    "zh": "一面展覽牆，有地板線，四個國家的展間用門口連起來。照片裱框掛著，旁邊有說明卡；往下捲就沿著牆走。"
+   },
+   "still": {
+    "wait": 5000
+   }
+  },
+  {
+   "href": "wc5.html",
+   "group": "twenty-c",
+   "title": {
+    "en": "Index cards",
+    "zh": "索引卡"
+   },
+   "desc": {
+    "en": "A drawer of cards with every place's tab showing. Scrolling, Previous and Next, or a tab pulls a card up with its photograph and place.",
+    "zh": "一個抽屜裡的卡片，每個地方的標籤都露出來。往下捲、按上一張下一張、或點標籤，就抽出一張卡，上面有照片和地點。"
+   },
+   "still": {
+    "wait": 5000
+   }
+  },
+  {
+   "href": "wd1.html",
+   "group": "twenty-d",
+   "title": {
+    "en": "By colour",
+    "zh": "依顏色排列"
+   },
+   "desc": {
+    "en": "All 93 photographs as small untrimmed prints in even rows, running from warm to cool by their own colour. Pointing at one shows it larger beside the field with its name.",
+    "zh": "全部 93 張照片排成整齊的小照片，照它們自己的顏色從暖到冷排。游標指到一張，旁邊就放大並寫上名字。"
+   },
+   "still": {
+    "wait": 5000
+   }
+  },
+  {
+   "href": "wd2.html",
+   "group": "twenty-d",
+   "title": {
+    "en": "The trail",
+    "zh": "照片的足跡"
+   },
+   "desc": {
+    "en": "A calm paper field. Moving the pointer leaves a slow trail of photographs that fade; when the hand rests, the last one stays with its name beneath. On a phone, each tap lays one down.",
+    "zh": "一片安靜的紙。移動游標會留下一串慢慢消失的照片；手停下來，最後一張留著，下面寫名字。手機上點一下放一張。"
+   },
+   "still": {
+    "wait": 5000
+   }
+  },
+  {
+   "href": "wd3.html",
+   "group": "twenty-d",
+   "title": {
+    "en": "One photograph, closer",
+    "zh": "一張照片，靠近一點看"
+   },
+   "desc": {
+    "en": "Queensboro Plaza, then Bunkers del Carmel. Scrolling moves the frame into three details of each photograph with a short true line beside, then pulls back to the whole.",
+    "zh": "先是皇后區廣場，再來是 Bunkers del Carmel。往下捲，畫面移進每張照片的三個細節，旁邊一句話，最後再拉回整張。"
+   },
+   "still": {
+    "wait": 5000
+   }
+  },
+  {
+   "href": "wd4.html",
+   "group": "twenty-d",
+   "title": {
+    "en": "The map line",
+    "zh": "地圖上的一條線"
+   },
+   "desc": {
+    "en": "A thin hand-drawn line map. Scrolling travels a dotted route through thirteen places, with each place's photograph whole beside the map.",
+    "zh": "一張細線手繪感的地圖。往下捲，沿著一條點線經過十三個地方，旁邊是那個地方完整的照片。"
+   },
+   "still": {
+    "wait": 5000
+   }
+  },
+  {
+   "href": "wd5.html",
+   "group": "twenty-d",
+   "title": {
+    "en": "Matched pairs",
+    "zh": "成對的照片"
+   },
+   "desc": {
+    "en": "Six pairs that share a colour or shape (two reflections, two trains, two domes, two reds); their inner edges fade into each other, and scrolling crossfades to the next pair.",
+    "zh": "六對顏色或形狀相似的照片（兩個倒影、兩列火車、兩個圓頂、兩種紅），中間的邊互相淡入，往下捲換下一對。"
+   },
+   "still": {
+    "wait": 5000
+   }
   }
  ],
  "tags": [
@@ -533,16 +865,50 @@
  "words": {},
  "ask": {
   "ids": [
-   "v-across-lines",
-   "v-across-list",
-   "v-across-strip"
+   "wa1",
+   "wa2",
+   "wa3",
+   "wa4",
+   "wa5",
+   "wb1",
+   "wb2",
+   "wb3",
+   "wb4",
+   "wb5",
+   "wc1",
+   "wc2",
+   "wc3",
+   "wc4",
+   "wc5",
+   "wd1",
+   "wd2",
+   "wd3",
+   "wd4",
+   "wd5"
   ]
  },
  "round": {
   "ids": [
-   "v-across-lines",
-   "v-across-list",
-   "v-across-strip"
+   "wa1",
+   "wa2",
+   "wa3",
+   "wa4",
+   "wa5",
+   "wb1",
+   "wb2",
+   "wb3",
+   "wb4",
+   "wb5",
+   "wc1",
+   "wc2",
+   "wc3",
+   "wc4",
+   "wc5",
+   "wd1",
+   "wd2",
+   "wd3",
+   "wd4",
+   "wd5"
   ]
  }
 }
