@@ -1,8 +1,9 @@
-/* The home page (2026-11-12): the loading screen, the opening, the two languages, the photographs rising into view.
+/* The home page's opening (2026-11-12): the loading screen, the wall of photographs, and the film it lands on.
+   The page itself is the site's own (js/main.js); this script only plays the way in.
 
-   The opening is his pick from the home redesign rounds (number 9 of the last one, "the wall, in one move", on
-   black; the trial versions stay in design 2/new/home-redesign). The name TUAN photography arrives on a black
-   ground and goes. Then one five-second move of 25 cards in five columns, the outer two half off the screen:
+   His pick from the home redesign rounds (number 9 of the last one, "the wall, in one move", on black; the trial
+   versions stay in design 2/new/home-redesign). The name TUAN photography arrives on a black ground and goes. Then
+   one five-second move of 25 cards in five columns, the outer two half off the screen:
      · columns 1, 3 and 5 come up from below, 2 and 4 come down from above, half a row out of step (a brick wall);
      · within a column the cards start twelve card-heights apart and close to a narrow gap, so they streak past
        singly at first and gather: cubic-bezier(.8, 0, .1, 1) over the first 3.25 s;
@@ -24,31 +25,6 @@
   'use strict';
   const html = document.documentElement;
   const wait = (ms) => new Promise((r) => setTimeout(r, ms));
-
-  // the two languages, following the site's own choice (js/main.js on the other pages: the same key, the same default)
-  const words = document.querySelectorAll('[data-lang]');
-  function setLang(l) {
-    const zh = l === 'zh';
-    html.lang = zh ? 'zh-Hant' : 'en';
-    document.title = (zh ? html.dataset.titleZh : html.dataset.titleEn) || document.title;
-    document.querySelectorAll('[data-alt-en]').forEach((im) => { im.alt = zh ? im.dataset.altZh : im.dataset.altEn; });
-    document.querySelectorAll('[data-label-en]').forEach((el) => el.setAttribute('aria-label', zh ? el.dataset.labelZh : el.dataset.labelEn));
-    words.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.lang === l)));
-  }
-  let saved = null;
-  try { saved = localStorage.getItem('tlap-lang'); } catch (e) { /* private window */ }
-  setLang(saved || ((navigator.language || '').toLowerCase().startsWith('zh') ? 'zh' : 'en'));
-  words.forEach((b) => b.addEventListener('click', () => {
-    setLang(b.dataset.lang);
-    try { localStorage.setItem('tlap-lang', b.dataset.lang); } catch (e) { /* private window */ }
-  }));
-
-  // photographs and sentences rise into place as they come into view
-  html.classList.add('hr-js');
-  const io = new IntersectionObserver((es) => es.forEach((e) => {
-    if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
-  }), { rootMargin: '0px 0px -10% 0px' });
-  document.querySelectorAll('.hr-in').forEach((el) => io.observe(el));
 
   const screen = document.querySelector('.hr-load');
   const video = document.querySelector('.hr-open video');

@@ -4,31 +4,32 @@
 
 ## 接下來 Next up (2026-11-12)
 
-**The home page is the redesigned one, live since 2026-11-12** (his words: "i think im taking 9", then "yeah sure,
-change it to this 9 and commit push"). Opening 9 of the last round (`camille-smooth-night`: the wall in one move, on
-black) plays once per visit and lands on the Barcelona film; under it the two colour blocks, the photographs and the
-three ways in. Before it: tag `before-home-redesign-live-2026-11-12`.
-- Live files: `build_home()` in `tools/build.py` (markup, `HOME_WALL`, `HOME_SCENES`), `design 1/css/home.css`,
-  `design 1/js/home.js` (the opening, cut down to that one version), `design 1/media/` (the film). The live files are
-  their own now: the trial copies in `design 2/new/home-redesign/` (`flock.js`, `home.js`, `home.css`) no longer feed
-  the site, so a note on the live opening is fixed in `design 1/`, and a new trial version is still built beside the
-  old ones on the review list.
-- `?opening` in the address plays the opening again (http://localhost:8642/?opening).
-- No longer on the home page: the line "Travel like a photographer." and its buttons, the photograph windows, the wall
-  of rows, the timed Guides cards. `shelf()`, `timed_cards()`, `cover()`, `window()` in `tools/build.py` and their
-  styles are kept, unused, in case he wants one back.
-- A page for friends (five versions, 5 to 9): https://claude.ai/artifact/Dek81J9SRPEQsve9wGgzRC , rebuilt by
+**The home page is the old one, with the new opening in front** (live since 2026-11-12). He chose only the way in:
+opening 9 of the last round (`camille-smooth-night`: his logo on black, the wall in one move) ending on the Barcelona
+film, which now fills the first screen where the opening photograph was. Everything under the film is the home page
+as it was (the line and buttons, the windows, the wall, the Guides cards). His words: "what I'm actually deciding is
+the landing page version ... The homepage hasn't been designed yet, so keep it as the old one. Only keep the videos
+from the very start through the Barcelona set."
+- **What went wrong first:** Claude put the whole redesigned page live with the opening. He had picked an opening,
+  not a home page. That state is at the tag `home-redesign-whole-page-live-2026-11-12`; the page before any of it at
+  `before-home-redesign-live-2026-11-12`.
+- Live files: `home_opening()`, `home_film()`, `build_home()` in `tools/build.py` (`HOME_WALL`, `HOME_SCENES`),
+  `design 1/css/opening.css`, `design 1/js/opening.js` (the opening cut down to that one version), `design 1/media/`.
+  The trial copies in `design 2/new/home-redesign/` do not feed the site.
+- `?opening` in the address plays the opening again (http://localhost:8642/?opening); it plays once per visit.
+- The home page itself is still to be designed. None of the page bodies from the redesign rounds is approved.
+- A page for friends (versions 5 to 9): https://claude.ai/artifact/Dek81J9SRPEQsve9wGgzRC , rebuilt by
   `tools/share_openings.py`. The review list keeps all versions; 9 is marked Main.
 - His standing rules for this work: a note on a version gets a NEW version beside it; every candidate in white and
   black (the list's "Side by side, playing" row, manifest `pairs`); read his whole review, "Anything else" included.
-First move next time: ask how the live opening feels on his own screen and phone, and whether anything from the old
-home page (the Guides cards most of all) should come back under the film.
+First move next time: ask how the opening feels on his own screen and phone, and whether the old opening photograph
+(Aoraki) should stay somewhere on the page now that the film has its screen.
 
 ## 現在狀態 Where things stand
 
 - **Design 1 on localhost:8642 is the site.** Its Journey tab is `design 2/new/journey.html` (`/journey/`
-  forwards there). Since 2026-11-12 the live home page is the redesigned one: his logo on black, the wall of
-  photographs in one move (opening 9), the Barcelona film, the blocks, the three ways in.
+  forwards there). Since 2026-11-12 the live home page opens with his logo on black, the wall of
+  photographs in one move (opening 9) and the Barcelona film on the first screen; the page under it is the old one.
 - **Home opening, where it stands (2026-11-09).** Everything drawn or brushed is over (40 to 49 crossed out).
   He wants photographs arriving and the home page landing on the Barcelona film. From the fifteen "photographs
   arrive" versions (after Mathilde de Chiara) he scored **mosaic 4** (the wall of photographs that becomes the
@@ -67,8 +68,8 @@ Open http://localhost:8642/journey/new/home-redesign/ and read his scores on 58 
 `python3 tools/read_reviews.py ideas/reviews/home-redesign.json --manifest "design 2/new/home-redesign/review-manifest.json" --since 2026-11-09`.
 Remove the ones he scores 1 (his rule), refine the ones he likes: the nine are the `luxe-*` configs in
 `flock.js` (`Object.assign(V, …)` near the end), each a `layout`, `enter`, `hold`, `leave`;
-`tools/home_redesign.py` (`FLOCKS`) writes the pages. When he picks one, it goes on the live home page through
-`tools/build.py`'s `loader()` (the live loading screen is `design 1/js/loader.js`).
+`tools/home_redesign.py` (`FLOCKS`) writes the pages. (He picked on 2026-11-12: it is live through `home_opening()` in
+`tools/build.py` and `design 1/js/opening.js`.)
 
 ## 等你決定 Waiting on you
 

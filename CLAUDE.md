@@ -20,16 +20,21 @@ whole new site, three directions on `/next/`: Relief, Glass block, Orrery) were 
 `design5-dropped-2026-11-05` (earlier: `before-design4-2026-11-02`, `before-design5-2026-11-02`,
 `glass-block-dropped-2026-11-04`). Do not propose them again.
 
-## The home page is the redesigned one (his call, 2026-11-12)
+## The home page: only the way in was chosen (his call, 2026-11-12)
 
-After the home redesign rounds (2026-11-05 to 2026-11-12) he chose opening 9 of the last round ("i think im taking 9",
-then "change it to this 9"): his logo on black, a wall of his photographs sliding in while the view closes on the
-middle one, which is the short film of Barcelona the page lands on; under the film two colour blocks with photographs,
-and Gallery, Journey, Guides as three large words. It is `build_home()` in `tools/build.py`, `design 1/css/home.css`,
-`design 1/js/home.js` and `design 1/media/`; once per visit, `?opening` plays it again. The page before it is at the
-tag `before-home-redesign-live-2026-11-12`. The trial versions and his review list stay in
-`design 2/new/home-redesign/` and no longer feed the site: fix the live page in `design 1/`, build new trials beside
-the old ones. The black ground is the opening's alone. `DESIGN.md` → Home page has the details.
+From the home redesign rounds (2026-11-05 to 2026-11-12) he chose the **opening** only, number 9 of the last round:
+his logo on black, a wall of his photographs sliding in while the view closes on the middle one, which is the short
+film of Barcelona. His words: "what I'm actually deciding is the landing page version, transitioning from the
+photography one to the actual homepage. The homepage hasn't been designed yet, so keep it as the old one. Only keep
+the videos from the very start through the Barcelona set." So the home page is the old one (2026-10-16) with the
+opening in front and the film on its first screen, where the opening photograph was. **The page under the film has not
+been redesigned and none of the redesign rounds' page bodies is approved**: never replace it because an opening was
+picked. Files: `home_opening()`, `home_film()` and `build_home()` in `tools/build.py`, `design 1/css/opening.css`,
+`design 1/js/opening.js`, `design 1/media/`; once per visit, `?opening` plays it again. Tags:
+`before-home-redesign-live-2026-11-12` (the page before), `home-redesign-whole-page-live-2026-11-12` (the whole
+redesigned page, live for a few hours by Claude's mistake). The trial versions and his review list stay in
+`design 2/new/home-redesign/` and do not feed the site. The black ground is the opening's alone. `DESIGN.md` → Home
+opening has the details.
 
 ## The brief (owner-decided — these win over any generic guidance)
 

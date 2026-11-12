@@ -1,0 +1,75 @@
+/* The home page's opening and the film it lands on (2026-11-12). Only the home page loads this file, after
+   style.css; js/opening.js moves it. The page under the film is the site's own (style.css): this file styles the
+   loading screen, the wall of photographs and the film's first screen, nothing else.
+   His choice from the home redesign rounds (number 9 of the last one, "the wall, in one move", on black); the
+   trial versions stay in design 2/new/home-redesign.
+   <html> carries the state: hr-loading while the opening plays, hr-full when the line under the name is full,
+   hr-arrive as the wall starts, hr-markgone as the name goes, hr-out when the film fills the window, hr-shown
+   when the page's own film is playing. */
+
+/* ---------------- the loading screen: his logo (1C) on black, the line under the name filling as the page loads.
+   The black ground is the opening's alone (his choice, 2026-11-12; the one exception to light only besides the
+   Gallery's Dark word): the page beneath stays light, and the film covers the black before this screen goes. */
+.hr-load { --night: oklch(18.5% 0.003 60); --on-night: oklch(96% 0.008 82); --mark: "Cormorant Garamond", Georgia, serif; display: none; }
+html.hr-loading { overflow: hidden; }
+html.hr-loading .hr-load { position: fixed; inset: 0; z-index: 20; display: block; cursor: pointer; }
+html.hr-out .hr-load { pointer-events: none; }
+.hr-load__paper { position: absolute; inset: 0; background: var(--night); }
+.hr-load__mark { position: absolute; inset: 0; z-index: 2; display: grid; grid-template-columns: max-content; grid-template-rows: 1fr auto 1fr;
+  justify-content: center; color: var(--on-night); will-change: transform; }
+html.hr-markgone .hr-load__mark, html.hr-out .hr-load__mark { opacity: 0; transition: opacity 0.9s ease; }   /* the name goes before the first card shows */
+.hr-load__name, .hr-load__sub { display: flex; line-height: 1; }
+.hr-load__name span, .hr-load__sub span { display: inline-block; opacity: 0; }   /* the letters carry the fade-in, not the word */
+.hr-load__name { align-self: end; margin-bottom: clamp(0.6rem, 0.4rem + 0.6vw, 0.95rem);
+  font: 300 clamp(2.4rem, 0.9rem + 5.5vw, 5.5rem)/1 var(--mark); letter-spacing: 0.28em; }
+.hr-load__name span:last-child { margin-right: -0.28em; }
+.hr-load__line { height: 1px; background: var(--on-night); transform-origin: left center; transform: scaleX(var(--p, 0)); }
+.hr-load__sub { align-self: start; justify-content: space-between; margin-top: clamp(0.55rem, 0.35rem + 0.5vw, 0.85rem);
+  font: 500 clamp(0.75rem, 0.6rem + 0.5vw, 1.05rem)/1 var(--mark); text-transform: uppercase; color: color-mix(in oklch, var(--on-night) 70%, transparent); }
+/* his note, 2026-11-11: "all of the TUAN comes too fast, slower TUAN". The letters rise slowly and well apart,
+   PHOTOGRAPHY follows later; js/opening.js draws the line in 1.4 s and waits for all of it. */
+html.hr-full .hr-load__name span { animation: hr-rise 1.4s var(--out) both; animation-delay: calc(var(--i, 0) * 170ms); }
+html.hr-full .hr-load__sub span { animation: hr-fade 1.4s ease 0.9s both; }
+@keyframes hr-rise { from { opacity: 0; transform: translateY(0.12em); } to { opacity: 1; transform: none; } }
+@keyframes hr-fade { from { opacity: 0; } to { opacity: 1; } }
+
+/* ---------------- the wall: js/opening.js lays the cards out and moves them. The middle card is the film, small and
+   alive, and it grows to the whole window, where the page lands ---------------- */
+.hr-flock { position: absolute; inset: 0; z-index: 1; overflow: hidden; will-change: transform; }
+.hr-tile { position: absolute; overflow: hidden; background: color-mix(in oklch, var(--on-night) 8%, var(--night)); opacity: 0; transform-origin: center; will-change: transform; }
+.hr-tile img, .hr-tile video { display: block; width: 100%; height: 100%; object-fit: cover; }
+.hr-flock__ride { position: absolute; left: 0; top: 0; will-change: transform; }   /* one card's column slide, a layer of its own */
+@media (prefers-reduced-motion: reduce) { .hr-flock { display: none; } }
+
+/* ---------------- the film: the first screen of the page, where the opening photograph was. It fills the window and
+   stays in place while the page, one leaf of paper, is drawn up over it (.leaf in style.css) ---------------- */
+.hr-open { position: relative; z-index: 0; height: 100svh; min-height: 30rem; overflow: hidden; background: var(--slate); color: var(--paper); }
+.hr-open video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* a soft shade at the top, under the bar, and along the foot, under the captions */
+.hr-open::before, .hr-open::after { content: ""; position: absolute; z-index: 1; left: 0; right: 0; pointer-events: none; opacity: 0; transition: opacity 1s ease 0.5s; }
+.hr-open::before { top: 0; height: 12rem; background: linear-gradient(to bottom, oklch(20% 0.02 60 / 0.42), oklch(20% 0.02 60 / 0)); }
+.hr-open::after { bottom: 0; height: 15rem; background: linear-gradient(to top, color-mix(in oklch, var(--text) 50%, transparent), transparent); }
+html.hr-shown .hr-open::before, html.hr-shown .hr-open::after { opacity: 1; }
+@media (prefers-reduced-motion: no-preference) {
+  .hr-open { position: sticky; top: 0; }
+  @supports (animation-timeline: scroll()) {
+    .hr-open { animation: drift linear both; animation-timeline: scroll(root block); animation-range: 0 100vh; }   /* rising slowly as the page comes over it, as the opening photograph did */
+  }
+}
+
+/* a caption for each scene of the film, shown while its scene plays: the place, and where and when */
+.hr-cap { position: absolute; z-index: 2; left: 16px; right: 16px; bottom: clamp(2rem, 1.2rem + 3vw, 3.75rem); margin: 0;
+  display: grid; justify-items: center; pointer-events: none; opacity: 0; transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.6s; }
+html.hr-shown .hr-cap { opacity: 1; }
+.hr-cap__one { grid-area: 1 / 1; display: grid; justify-items: center; gap: 0.5rem; text-align: center; opacity: 0; transform: translateY(0.4rem);
+  transition: opacity 0.9s ease, transform 1.2s var(--out); text-shadow: 0 1px 16px color-mix(in oklch, var(--text) 55%, transparent); }
+.hr-cap__one.is-on { opacity: 1; transform: none; }
+.hr-cap__one b { font: 300 clamp(1.5rem, 1.1rem + 1.3vw, 2.3rem)/1.15 "Cormorant Garamond", "Noto Serif TC", Georgia, serif; }
+html[lang="zh-Hant"] .hr-cap__one b { font-weight: 500; }
+.hr-cap__one small { font-size: var(--t-xs); }
+/* the captions carry both languages; the page's language shows one */
+html[lang="en"] .hr-cap [lang="zh-Hant"], html[lang="zh-Hant"] .hr-cap [lang="en"] { display: none; }
+
+/* the top bar waits under the opening and comes in over the film as it ends */
+.top { transition: opacity 1s ease 0.5s; }
+html.hr-loading:not(.hr-out) .top { opacity: 0; }

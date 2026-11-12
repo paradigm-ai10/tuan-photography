@@ -278,10 +278,10 @@ def window(sid, root, en, zh):
 
 # ------------------------------------------------------------------ page frame
 
-def head(title, desc, root, attrs="", extra=""):
-    """attrs: more attributes for <html>; extra: more lines for the <head> (the home page's own stylesheet)."""
+def head(title, desc, root, extra=""):
+    """extra: more lines for the <head> (the home page's opening has its own stylesheet)."""
     return f"""<!DOCTYPE html>
-<html lang="en" data-root="{root}"{attrs}>
+<html lang="en" data-root="{root}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -365,7 +365,7 @@ window.pageI18n = {page};
 """
 
 
-def write(path, title, zh_title, desc, current, body, en, zh, over=False, foot=True, scripts=(), first=""):
+def write(path, title, zh_title, desc, current, body, en, zh, over=False, foot=True, scripts=(), first="", head_extra=""):
     root = "../" * (len(Path(path).parts) - 1)
     en["docTitle"], zh["docTitle"] = title, zh_title
     for k in list(en):
@@ -383,7 +383,7 @@ def write(path, title, zh_title, desc, current, body, en, zh, over=False, foot=T
     body = re.sub(r'aria-label="[^"]*" data-i18n-aria="([^"]+)"',
                   lambda m: f'aria-label="{e(en[m.group(1)])}" data-i18n-aria="{m.group(1)}"', body)
     used = list(dict.fromkeys(re.findall(r'data-slide="([^"]+)"', body)))
-    out = head(title, desc, root) + first + header(root, current, over) + '<main id="main" tabindex="-1">\n' + body + "\n</main>\n" \
+    out = head(title, desc, root, head_extra) + first + header(root, current, over) + '<main id="main" tabindex="-1">\n' + body + "\n</main>\n" \
         + footer(root, used, en, zh, foot, scripts)
     (OUT / path).write_text(out, encoding="utf-8")
     print("  wrote", path)
@@ -552,12 +552,15 @@ def timed_cards(root, en, zh):
 # ------------------------------------------------------------------ pages
 
 # ------------------------------------------------------------------ the home page
-# Since 2026-11-12 the home page is the one from the home redesign rounds (design 2/new/home-redesign, his review
-# list): the TUAN photography loading screen, a wall of his photographs that slides in while the view closes on the
-# middle one ("the wall, in one move", on black: number 9 of the last round, his pick), and that middle one is the
-# short film of Barcelona the page opens on. Under the film: two thoughts on flat blocks of the earth colours with
-# photographs set into them, and the three ways in. Its styles are css/home.css and its script js/home.js; the page
-# before it is at the tag before-home-redesign-live-2026-11-12.
+# The home page itself is the one of 2026-10-16 (experiment home-impeccable); it has not been redesigned. What was
+# chosen in the home redesign rounds is only the way in (his words, 2026-11-12: "what I'm actually deciding is the
+# landing page version, transitioning from the photography one to the actual homepage. The homepage hasn't been
+# designed yet, so keep it as the old one. Only keep the videos from the very start through the Barcelona set."):
+# the TUAN photography loading screen on black, a wall of his photographs sliding in while the view closes on the
+# middle one (number 9 of the last round, "the wall, in one move"), and that middle one is the short film of
+# Barcelona, which now fills the first screen where the opening photograph was. Styles css/opening.css, script
+# js/opening.js. Tags: before-home-redesign-live-2026-11-12 (the page with the opening photograph and the old loading
+# screen), home-redesign-whole-page-live-2026-11-12 (a few hours with the whole redesigned page live, by mistake).
 HOME_WALL = ["matterhorn-lake", "queensboro-train", "fuji-lake", "roys-peak", "sapa-terraces", "tekapo-stars", "aurora",
              "golden-gate-fog", "dumbo-bridge", "otaru-canal", "kifune", "gordes", "calanque", "zermatt-dusk", "hoi-an-gate",
              "peak-night", "neuschwanstein", "bunkers", "aoraki", "tekapo-church", "fuji-shinkansen", "sapa-valley",
@@ -571,91 +574,110 @@ HOME_SCENES = [
     (6.5, 8.6, ("The wheel on Tibidabo", "提比達波的摩天輪")),
     (9.5, 11.7, ("Inside the Sagrada Família", "聖家堂裡面")),
 ]
-HOME_DOORS = [
-    ("gallery.html", "Gallery", "作品集", "Every photograph.", "所有的照片。"),
-    ("journey/", "Journey", "旅程", "Every trip, along its route.", "每一趟旅程，沿著路線看。"),
-    ("guides.html", "Guides", "攻略", "Where to stand and when, place by place.", "每個地方，站在哪裡、什麼時候去。"),
-]
 
 
 def both(en, zh):
-    """One string in both languages; css/home.css shows the one the page is in."""
+    """One string in both languages, for the film's captions; css/opening.css shows the one the page is in."""
     return f'<span lang="en">{clean_en(en)}</span><span lang="zh-Hant">{clean_zh(zh)}</span>'
 
 
-def home_mark(cls):
-    """The logo, 1C: TUAN, a line, PHOTOGRAPHY spread to TUAN's width."""
-    return (f'<span class="{cls}__name">TUAN</span><span class="{cls}__line"></span>'
-            f'<span class="{cls}__sub">{"".join(f"<span>{c}</span>" for c in "photography")}</span>')
-
-
-def home_fig(sid, cls="", sizes="(max-width: 48rem) 92vw, 60vw"):
-    s = SLIDES[sid]
-    f = s["file"]
-    alt = s.get("alt", {})
-    return (f'<figure class="hr-fig hr-in {cls}"><a href="gallery.html">'
-            f'<img src="images/web/1280/{f}" srcset="images/web/640/{f} 640w, images/web/1280/{f} 1280w, images/web/{f} {max(s["w"], s["h"])}w" '
-            f'sizes="{sizes}" width="{s["w"]}" height="{s["h"]}" alt="{e(alt.get("en", ""))}" data-alt-en="{e(alt.get("en", ""))}" '
-            f'data-alt-zh="{e(alt.get("zh", ""))}" loading="lazy" decoding="async"></a>'
-            f'<figcaption><b>{both(e(s["place"]["en"]), e(s["place"]["zh"]))}</b>'
-            f'<span>{both(e(s["where"]["en"]), e(s["where"]["zh"]))}</span></figcaption></figure>')
-
-
-def build_home():
-    title_en = f"{SITE} - Landscape photographs and how each one was made"
-    title_zh = f"{SITE} - 風景攝影，以及每一張是怎麼拍的"
-    desc = ("Landscape photographs by 陳亮元 Thomas Chen, each with the account of how it was made: camera data, "
-            "where to stand, and the guide to the place.")
+def home_opening():
+    """The loading screen and the opening of the home page: his logo on black, then the wall of photographs with
+    the film as its middle card. The small script runs before anything is drawn, so the page never shows first:
+    once per visit, never under "reduce motion"; ?opening plays it again. js/opening.js plays it."""
     tuan = "".join(f'<span style="--i: {i}">{c}</span>' for i, c in enumerate("TUAN"))
     wall = "".join(f'<div class="hr-tile"><img data-src="images/web/640/{SLIDES[s]["file"]}" alt=""></div>' for s in HOME_WALL)
-    film_tile = '<div class="hr-tile hr-tile--film"><video muted playsinline loop preload="auto" data-src="media/barcelona.mp4"></video></div>'
-    # the loading screen and the opening. The small script runs before anything is drawn, so the page never shows
-    # first: once per visit, never under "reduce motion"; ?opening plays it again
-    opening = f"""<div class="hr-load" aria-hidden="true">
+    film = '<div class="hr-tile hr-tile--film"><video muted playsinline loop preload="auto" data-src="media/barcelona.mp4"></video></div>'
+    return f"""<div class="hr-load" aria-hidden="true">
   <div class="hr-load__paper"></div>
-  <div class="hr-flock">{wall}{film_tile}</div>
+  <div class="hr-flock">{wall}{film}</div>
   <div class="hr-load__mark"><span class="hr-load__name">{tuan}</span><span class="hr-load__line"></span><span class="hr-load__sub">{"".join(f"<span>{c}</span>" for c in "photography")}</span></div>
 </div>
 <script>(function () {{ var seen = null; try {{ seen = sessionStorage.getItem("tuan-opening"); }} catch (e) {{}} if ((!seen || /[?&]opening\\b/.test(location.search)) && !matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("hr-loading"); }})();</script>
 """
-    menu = "".join(f'<a class="caps" href="{href}">{both(en, zh)}</a>'
-                   for href, en, zh, _, _ in HOME_DOORS + [("about.html", "About", "關於我", "", "")])
-    top = f"""<header class="hr-top">
-  <a class="hr-mark" href="./" aria-label="tuan photography">{home_mark("hr-mark")}</a>
-  <nav class="hr-menu" aria-label="Menu" data-label-en="Menu" data-label-zh="選單">{menu}
-    <span class="hr-lang"><button class="caps" type="button" data-lang="en">EN</button><button class="caps" type="button" data-lang="zh">中文</button></span>
-  </nav>
-</header>"""
+
+
+def home_film(en, zh):
+    """The first screen of the home page: the film the opening lands on, a caption for each of its scenes."""
+    en["filmLabel"], zh["filmLabel"] = "A short film of Barcelona", "巴塞隆納的短片"
     caps = "".join(f'<span class="hr-cap__one" data-from="{a}" data-to="{b}"><b>{both(*name)}</b><small class="caps">{both(*HOME_SPAIN)}</small></span>'
                    for a, b, name in HOME_SCENES)
-    film = ('<section class="hr-open" aria-label="Barcelona" data-label-en="Barcelona" data-label-zh="巴塞隆納">'
+    return ('<section class="hr-open" aria-label="A short film of Barcelona" data-i18n-aria="filmLabel">'
             '<video muted loop playsinline preload="auto" poster="media/road-first.jpg" aria-hidden="true">'
             '<source src="media/barcelona.mp4" type="video/mp4"></video>'
-            f'<p class="hr-cap" data-cut="3.2" aria-hidden="true">{caps}</p></section>')
-    say1 = both("Landscape photographs by Thomas Chen.", "陳亮元的風景攝影。")
-    say2 = both("Open any one to see how it was made.", "點開任何一張，看它是怎麼拍的。")
-    body = "\n".join([
-        f'<section class="hr-block"><p class="hr-in">{say1}</p>{home_fig("sapa-terraces", sizes="(max-width: 48rem) 92vw, 22vw")}{home_fig("matterhorn-lake", sizes="(max-width: 48rem) 92vw, 22vw")}</section>',
-        '<div class="hr-paper">',
-        home_fig("fuji-lake", "hr-wide", "(max-width: 48rem) 92vw, 76rem"),
-        f'<div class="hr-pair">{home_fig("tekapo-stars", sizes="(max-width: 48rem) 66vw, 22vw")}{home_fig("roys-peak", sizes="(max-width: 48rem) 92vw, 54vw")}</div>',
-        "</div>",
-        f'<section class="hr-block hr-block--slate"><p class="hr-in">{say2}</p>{home_fig("golden-gate-fog", sizes="(max-width: 48rem) 92vw, 50vw")}</section>',
-    ])
-    doors = "".join(f'<li><a class="hr-door hr-in" href="{href}"><b>{both(en, zh)}</b><span>{both(den, dzh)}</span></a></li>'
-                    for href, en, zh, den, dzh in HOME_DOORS)
-    foot = f"""<footer class="hr-foot">
-  <span class="hr-mark" aria-hidden="true">{home_mark("hr-mark")}</span>
-  <a href="{IG["url"]}" target="_blank" rel="noopener">@{IG["handle"]}</a>
-  <small>{both("© 2026 tuan photography 陳亮元. All photographs are my own.", "© 2026 tuan photography 陳亮元。所有照片都是我自己拍的。")}</small>
-</footer>"""
-    attrs = (f' data-home="f" data-counts data-flock="wall" data-ground="dark" data-title-en="{e(title_en)}" data-title-zh="{e(title_zh)}"')
-    extra = f'  <meta name="color-scheme" content="light">\n  <link rel="stylesheet" href="css/home.css?v={STAMP}">\n'
-    out = (head(title_en, desc, "", attrs, extra) + opening + top + '\n<main id="main">\n' + film + '\n<div class="hr-leaf">\n' + body
-           + f'\n<nav class="hr-doors" aria-label="The way in" data-label-en="The way in" data-label-zh="三個入口"><ul>{doors}</ul></nav>\n'
-           + foot + f'\n</div>\n</main>\n<script src="js/home.js?v={STAMP}"></script>\n</body>\n</html>\n')
-    (OUT / "index.html").write_text(out, encoding="utf-8")
-    print("  wrote index.html")
+            f'<p class="hr-cap" aria-hidden="true">{caps}</p></section>')
+
+
+def build_home():
+    en, zh = {}, {}
+    root = ""
+    lead = DATA["lead"]
+    one = DATA["guides"][0] if len(DATA["guides"]) == 1 else None
+    en.update(heroLine="Travel like a photographer.",
+              heroSay='Landscape photographs by Thomas Chen <span class="nb">陳亮元</span>. Open any one to see how it was made.',
+              guidesCta="Read the guide" if one else "Read the guides",
+              workTitle="Photographs", workCta="See the gallery", guidesTitle="Guides",
+              moreText=(f"One guide is written so far, {one['title']['en']}. The other places have their photographs for now."
+                        if one else f"{len(DATA['guides'])} guides are written so far. The other places have their photographs for now."),
+              moreCta="See every place")
+    zh.update(heroLine='<span class="nb">像攝影師</span><span class="nb">一樣旅行。</span>',
+              heroSay="陳亮元的風景攝影。點開任何一張，看它是怎麼拍的。",
+              guidesCta="閱讀攻略",
+              workTitle="作品", workCta="看全部作品", guidesTitle="攻略",
+              moreText=(f"目前寫好的攻略只有{one['title']['zh']}一篇，其他地方暫時只有照片。"
+                        if one else f"目前寫好的攻略有 {len(DATA['guides'])} 篇，其他地方暫時只有照片。"),
+              moreCta="看所有地方")
+    leads = {g["lead"] for g in DATA["guides"]}
+    # the home page shows a dozen, one from each country in turn; the gallery shows them all.
+    # No photograph is shown twice on the page: the guides' photographs are left to the cards.
+    windows = DATA.get("windows", [])
+    cards = {b.get("photo") if b.get("cover") == lead else b.get("cover") or b.get("photo") for b in DATA["shelf"]}
+    seen, others = set(), []
+    for x in DATA["slides"]:
+        if x["id"] in (lead, *leads, *windows, *cards) or x["country"] in seen:
+            continue
+        seen.add(x["country"])
+        others.append(x["id"])
+    others = others[:12]
+    # the windows are dealt out between the sections, so a photograph is behind the page all the way down
+    panes = [window(sid, root, en, zh) for sid in windows] + ["", "", ""]
+    body = f"""{home_film(en, zh)}
+
+<div class="leaf">
+<section class="wrap intro arrive">
+  <h1 class="rise" style="--i: 0" data-i18n-html="heroLine">Travel like a photographer.</h1>
+  <p class="rise" style="--i: 1" data-i18n-html="heroSay">{en['heroSay']}</p>
+  <div class="intro__acts rise" style="--i: 2">
+    <a class="btn" href="{IG['url']}" target="_blank" rel="noopener" data-i18n="followCta">Follow on Instagram</a>
+    <a class="btn btn--line" href="{one['href'] if one else '#guides-h'}" data-i18n="guidesCta">{e(en['guidesCta'])}</a>
+  </div>
+</section>
+
+{panes[0]}
+
+<section class="wrap part" aria-labelledby="work-h">
+  <div class="part__head"><h2 id="work-h" data-i18n="workTitle">Photographs</h2></div>
+  {wall(others, root, en, zh)}
+  <p class="part__more"><a class="btn btn--line" href="gallery.html" data-i18n="workCta">See the gallery</a></p>
+</section>
+
+{panes[1]}
+
+<div class="band">
+  <section class="wrap part" aria-labelledby="guides-h">
+    <div class="part__head"><h2 id="guides-h" data-i18n="guidesTitle">Guides</h2></div>
+    {timed_cards(root, en, zh)}
+    <p class="after"><span data-i18n="moreText">{e(en['moreText'])}</span> <a href="{root}guides.html" data-i18n="moreCta">See every place</a></p>
+  </section>
+</div>
+
+{panes[2]}
+</div>"""
+    write("index.html", f"{SITE} - Landscape photographs and how each one was made",
+          f"{SITE} - 風景攝影，以及每一張是怎麼拍的",
+          "Landscape photographs by 陳亮元 Thomas Chen, each with the account of how it was made: camera data, where to stand, and the guide to the place.",
+          None, body, en, zh, over=True, scripts=("opening.js",), first=home_opening(),
+          head_extra=f'  <link rel="stylesheet" href="css/opening.css?v={STAMP}">\n')
 
 
 def build_gallery():
