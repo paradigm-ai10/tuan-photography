@@ -1,0 +1,7 @@
+/* The Spain Collection trial, eleventh pass (2026-11-12). His note on w-big: "appear fade slower a little bit".
+   Loaded after spain-big.css by w-slow only (black only). The photographs and the film fade in over 2.5 s instead of
+   1.8 s (still all at once), and the film waits until they are whole before it grows (spain-true.js: 2 s, was 1.3). */
+html.sp-in:not(.sp-still)[data-sp-slow] .sp__p, html.sp-in:not(.sp-still)[data-sp-slow] .sp__film { animation-duration: 2.5s; }
+/* the arrival curve of the earlier passes puts most of the fade in its first few tenths of a second, so a longer
+   duration alone barely shows; here the fade runs evenly (CSS ease), so it is visibly slower: about half in by 0.7 s */
+html.sp-in:not(.sp-still)[data-sp-slow] .sp__p, html.sp-in:not(.sp-still)[data-sp-slow] .sp__film { animation-timing-function: ease; }

@@ -58,11 +58,29 @@ VERSIONS = [   # (file, ground, kind, title en, title zh)
     ("w-together-night", "night", "together", "Round your name, flush, all appearing at once (black)", "圍著你的名字，貼齊邊緣，同時出現（黑底）"),
     # tenth pass, his note on w-together: "pics bigger"
     ("w-big-night", "night", "big", "Round your name, larger photographs (black)", "圍著你的名字，照片大一點（黑底）"),
+    # eleventh pass, his note on w-big: "appear fade slower a little bit"
+    ("w-slow-night", "night", "slow", "Round your name, larger, a slower fade (black)", "圍著你的名字，照片大、淡入慢一點（黑底）"),
 ]
 
 # the live opening with his note on its timing (less waiting after the name), as a trial page beside the live one
 WALL = [("w-wall-quick-night", "night", "The wall, quicker after the name (black)", "照片牆，名字之後快一點（黑底）"),
         ("w-wall-quick", "day", "The wall, quicker after the name (white)", "照片牆，名字之後快一點（白底）")]
+
+
+# each kind of version is the one before it plus one layer (a stylesheet, a mark on <html>); "" is the first pass,
+# "true" the second, and from "mark" on each adds its own. LAYERS[kind] is every layer up to and including kind.
+_STEPS = [("true", "spain-true.css", "true"), ("mark", "spain-mark.css", "mark"), ("hold", "spain-hold.css", "hold"),
+          ("play", "spain-play.css", "play"), ("near", "spain-near.css", "near"), ("edge", "spain-edge.css", "edge"),
+          ("flush", "spain-flush.css", "flush"), ("together", "spain-together.css", "together"), ("big", "spain-big.css", "big"),
+          ("slow", "spain-slow.css", "slow")]
+_SKIP = {"flush": {"edge"}, "together": {"edge"}, "big": {"edge"}, "slow": {"edge"}}   # flush and on replace edge, not add to it
+LAYERS = {}
+for _i, (_k, _c, _a) in enumerate(_STEPS):
+    LAYERS[_k] = [s for s in _STEPS[:_i + 1] if s[0] not in _SKIP.get(_k, set())]
+
+
+def has(kind, layer):
+    return any(s[0] == layer for s in LAYERS.get(kind, []))
 
 
 def letters(text, lang, key):
@@ -83,9 +101,9 @@ def first_screen(kind=""):
         logo = ('<div class="sp-words"><p class="sp-mark" role="img" aria-label="tuan photography"><span class="sp-mark__name">'
                 + "".join(f"<span>{c}</span>" for c in "TUAN") + '</span><span class="sp-mark__line"></span><span class="sp-mark__sub">'
                 + "".join(f"<span>{c}</span>" for c in "photography") + "</span></p></div>")
-        say = logo if kind in ("mark", "hold", "play", "near", "edge", "flush", "together", "big") else (f'<div class="sp-words"><div class="sp-say"><h1><span lang="en">{SAY[0]}</span><span lang="zh-Hant">{SAY[1]}</span></h1>'
+        say = logo if has(kind, "mark") else (f'<div class="sp-words"><div class="sp-say"><h1><span lang="en">{SAY[0]}</span><span lang="zh-Hant">{SAY[1]}</span></h1>'
                f'<a class="btn" href="{ACT[0]}">{B.both(*ACT[1:])}</a></div></div>')
-        over = "" if kind in ("hold", "play", "near", "edge", "flush", "together", "big") else f'<div class="sp__veil"></div><p class="sp-title">{title}</p>'
+        over = "" if has(kind, "hold") else f'<div class="sp__veil"></div><p class="sp-title">{title}</p>'
         return (f'<section class="sp" aria-label="{B.e(en["filmLabel"])}" data-i18n-aria="filmLabel">{photos}'
                 f'<div class="sp__film" style="--i: 5">{video}{over}{caps}</div>{say}</section>\n'
                 '<div class="sp-run" aria-hidden="true"></div>')
@@ -108,9 +126,9 @@ def build():
     base = page
     for name, ground, kind, t_en, t_zh in VERSIONS:
         page = rel(re.sub(r'<section class="hr-open".*?</section>', lambda m: first_screen(kind), base, count=1, flags=re.S))
-        css = "".join(f'  <link rel="stylesheet" href="{f}?v={B.STAMP}">\n' for f in (["spain.css"] + (["spain-true.css"] if kind else []) + (["spain-mark.css"] if kind in ("mark", "hold", "play", "near", "edge", "flush", "together", "big") else []) + (["spain-hold.css"] if kind in ("hold", "play", "near", "edge", "flush", "together", "big") else []) + (["spain-play.css"] if kind in ("play", "near", "edge", "flush", "together", "big") else []) + (["spain-near.css"] if kind in ("near", "edge", "flush", "together", "big") else []) + (["spain-edge.css"] if kind == "edge" else []) + (["spain-flush.css"] if kind in ("flush", "together", "big") else []) + (["spain-together.css"] if kind in ("together", "big") else []) + (["spain-big.css"] if kind == "big" else [])))
+        css = "".join(f'  <link rel="stylesheet" href="{f}?v={B.STAMP}">\n' for f in ["spain.css"] + [s[1] for s in LAYERS.get(kind, [])])
         js = "spain-true.js" if kind else "spain.js"
-        mark = (' data-sp-kind="true"' + (" data-sp-mark" if kind in ("mark", "hold", "play", "near", "edge", "flush", "together", "big") else "") + (" data-sp-hold" if kind in ("hold", "play", "near", "edge", "flush", "together", "big") else "") + (" data-sp-play" if kind in ("play", "near", "edge", "flush", "together", "big") else "") + (" data-sp-near" if kind in ("near", "edge", "flush", "together", "big") else "") + (" data-sp-edge" if kind == "edge" else "") + (" data-sp-flush" if kind in ("flush", "together", "big") else "") + (" data-sp-together" if kind in ("together", "big") else "") + (" data-sp-big" if kind == "big" else "")) if kind else ""
+        mark = "".join(' data-sp-kind="true"' if s[2] == "true" else f' data-sp-{s[2]}' for s in LAYERS.get(kind, []))
         html = page.replace('<html lang="en" data-root="">', f'<html lang="en" data-root="{UP}" data-sp="{ground}"{mark}>', 1)
         assert html != page
         html = re.sub(r"<title>.*?</title>", f"<title>{B.e(t_en)} {B.e(t_zh)} · tuan photography 陳亮元</title>", html, count=1)

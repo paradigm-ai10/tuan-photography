@@ -260,6 +260,14 @@
         "en": "Round your name: larger photographs",
         "zh": "圍著你的名字：照片大一點"
       }
+    },
+    {
+      "id": "spain-1112k",
+      "built": "2026-11-12T20:20",
+      "title": {
+        "en": "Round your name: larger, a slower fade",
+        "zh": "圍著你的名字：照片大、淡入慢一點"
+      }
     }
   ],
   "items": [
@@ -1993,6 +2001,21 @@
       "still": {
         "wait": 6000
       }
+    },
+    {
+      "href": "w-slow-night.html",
+      "group": "spain-1112k",
+      "title": {
+        "en": "Round your name, larger, a slower fade (black)",
+        "zh": "圍著你的名字，照片大、淡入慢一點（黑底）"
+      },
+      "desc": {
+        "en": "Your note on 4: 'appear fade slower a little bit'. The same as 4, with the photographs and the film fading in evenly and more slowly, still all at once: half visible at about 0.75 s and whole by about 2.2 s (in 4: half at 0.2 s, whole by about 1 s). The film waits 2 s instead of 1.3 s before it grows, so the photographs are whole first; it lands about 0.7 s later.",
+        "zh": "你對 4 的筆記：「appear fade slower a little bit」。跟 4 一樣，照片和影片淡入得更平均、更慢，仍然同時出現：大約 0.75 秒到一半，大約 2.2 秒完整（4 是 0.2 秒到一半、大約 1 秒完整）。影片長大前等 2 秒（之前 1.3 秒），讓照片先完整出現；整體大約晚 0.7 秒落定。"
+      },
+      "still": {
+        "wait": 6500
+      }
     }
   ],
   "tags": [
@@ -2070,15 +2093,15 @@
   "words": {},
   "ask": {
     "ids": [
-      "w-big-night"
+      "w-slow-night"
     ]
   },
   "round": {
     "ids": [
       "c-flock-camille-smooth-night",
       "w-wall-quick-night",
-      "w-together-night",
-      "w-big-night"
+      "w-big-night",
+      "w-slow-night"
     ]
   },
   "pairs": [

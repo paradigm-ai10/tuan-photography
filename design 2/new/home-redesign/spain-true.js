@@ -131,7 +131,7 @@
     const open = () => { if (screen) screen.remove(); html.classList.add('sp-in'); html.classList.remove('hr-loading', 'hr-full', 'sp-out'); };
     if (still || !screen || html.hasAttribute('data-sp-mark')) open();   // w-mark: the name is the page's own, so nothing fades, the photographs open round it
     else { html.classList.add('sp-out'); setTimeout(open, 600); }
-    if (play && !still) { html.classList.add('sp-playing'); timer = setTimeout(grow, near ? 1300 : 2200); }   // the photographs open, a moment, then the film grows   // the name goes first (hers: 0.6 s), then the first screen opens
+    if (play && !still) { html.classList.add('sp-playing'); timer = setTimeout(grow, near ? (html.hasAttribute('data-sp-slow') ? 2000 : 1300) : 2200); }   // w-slow: the slower fade finishes first   // the photographs open, a moment, then the film grows   // the name goes first (hers: 0.6 s), then the first screen opens
   }
   if (!playing || !screen) { arrive(true); land(); return; }
   const skip = () => { arrive(false); land(); };
