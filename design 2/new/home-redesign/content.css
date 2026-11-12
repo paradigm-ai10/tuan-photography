@@ -1,0 +1,87 @@
+/* Trial versions of the home page's content, under the film and the Aoraki photograph (tools/home_content.py,
+   2026-11-12). Loaded after design 1's style.css and opening.css, and built only from that stylesheet's tokens:
+   no colour, face or size is set here that the site does not already have. Classes are hc-…; nothing in design 1
+   uses them until he picks a version. */
+
+.hc-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* a leaf of paper carrying one thing */
+.hc-leaf { display: grid; place-items: center; align-content: center; min-height: 52svh; padding: clamp(5rem, 14vh, 9rem) var(--edge); text-align: center; }
+.hc-leaf--line { min-height: 60svh; }
+.hc-line { font-size: var(--t-2xl); }
+.hc-say { margin-top: var(--s-3); color: var(--text-2); }
+
+/* one way in: the tab's name is the link */
+.hc-way { display: grid; justify-items: center; gap: var(--s-3); }
+.hc-way a { font-family: var(--serif); font-size: clamp(3.25rem, 1.6rem + 7.4vw, 6rem); line-height: 1; letter-spacing: 0.005em; color: var(--accent); text-decoration-color: transparent; text-decoration-thickness: 1px; text-underline-offset: 0.16em; }
+.hc-way a:hover { text-decoration-color: currentColor; }
+.hc-way span { color: var(--text-2); max-width: 34ch; }
+:root:lang(zh-Hant) .hc-way a { font-weight: 500; letter-spacing: 0.04em; }
+
+/* A: a window onto a photograph kept whole (an upright one), on the stone ground, its name beneath it */
+.hc-hold { position: relative; height: 100svh; min-height: 34rem; max-height: 75rem; clip-path: inset(0); background: var(--band); }
+.hc-hold a { display: block; height: 100%; }
+.hc-hold a:hover { color: inherit; }
+.hc-hold a:focus-visible { outline-offset: -4px; }
+.hc-hold img { position: fixed; top: 9vh; left: 50%; width: auto; max-width: 92vw; height: 76vh; height: 76lvh; translate: -50% 0; object-fit: contain; }
+.hc-hold figcaption { position: fixed; top: calc(85vh + 0.9rem); top: calc(85lvh + 0.9rem); left: var(--edge); right: var(--edge); display: flex; justify-content: center; align-items: baseline; gap: 0.2rem 1rem; flex-wrap: wrap; pointer-events: none; }
+.hc-hold figcaption b { font-family: var(--serif); font-weight: 400; font-size: 1.15rem; line-height: 1.25; }
+.hc-hold figcaption span { color: var(--text-2); font-size: var(--t-xs); }
+
+/* B: the index of places */
+.hc-index { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); column-gap: var(--col-gap); align-items: start; padding-block: var(--s-6); }
+.hc-index .hc-line { font-size: var(--t-xl); text-align: left; margin-bottom: var(--s-5); }
+.hc-names { list-style: none; padding: 0; }
+.hc-names a { display: grid; justify-items: start; gap: 0.35rem; padding-block: 0.5em; text-decoration: none; }
+.hc-names b { font-family: var(--serif); font-weight: 400; font-size: var(--t-2xl); line-height: 1.06; letter-spacing: 0.005em; color: color-mix(in oklch, var(--text) 58%, var(--bg)); transition: color 500ms var(--out); }
+.hc-names span { color: var(--text-2); font-size: var(--t-xs); opacity: 0; transition: opacity 500ms var(--out); }
+.hc-names a.is-on b { color: var(--text); }
+.hc-names a.is-on span { opacity: 1; }
+.hc-names a:hover b { color: var(--accent); }
+:root:lang(zh-Hant) .hc-names b { font-weight: 500; }
+.hc-onward { display: flex; flex-wrap: wrap; gap: 0.75rem 2.25rem; margin-top: var(--s-5); padding-top: var(--s-3); border-top: 1px solid var(--line); }
+.hc-onward a { color: var(--accent); padding-block: 0.4rem; text-decoration-color: transparent; }
+.hc-onward a:hover { text-decoration-color: currentColor; }
+.hc-frame { position: sticky; top: 9vh; height: 82vh; }
+/* the one leaving goes first and quickly, the one arriving follows: two photographs of different shapes are never seen through each other */
+.hc-print { position: absolute; inset: 0; opacity: 0; pointer-events: none; transition: opacity 220ms linear; }
+.hc-print.is-on { opacity: 1; pointer-events: auto; transition: opacity 650ms var(--out) 200ms; }
+.hc-print a { display: grid; place-items: center; height: 100%; }
+.hc-print img { width: auto; height: auto; max-width: 100%; max-height: 82vh; }
+
+/* C: pairs, each hung differently */
+.hc-pair { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); align-content: center; min-height: 100svh; padding-block: clamp(4rem, 12vh, 8rem); }
+.hc-pair .piece { translate: 0 var(--lag, 0px); }
+.hc-pair--mirror .hc-one { grid-column: 1 / 8; }
+.hc-pair--mirror .hc-two { grid-column: 9 / 13; margin-top: 24vh; }
+.hc-pair--rails .hc-one { grid-column: 2 / 6; }
+.hc-pair--rails .hc-two { grid-column: 7 / 13; align-self: end; }
+.hc-pair--lights .hc-one { grid-column: 1 / 8; }
+.hc-pair--lights .hc-two { grid-column: 9 / 13; margin-top: 10vh; }
+.hc-pair--tiers .hc-one { grid-column: 3 / 7; }
+.hc-pair--tiers .hc-two { grid-column: 7 / 11; margin-top: 16vh; }
+.hc-ways { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-5) var(--col-gap); padding-block: var(--s-6); border-top: 1px solid var(--line); text-align: center; }
+.hc-ways .hc-way a { font-size: var(--t-2xl); }
+
+@media (max-width: 56rem) {
+  .hc-index { grid-template-columns: minmax(0, 1fr); padding-top: 0; }
+  .hc-frame { order: -1; top: 0; z-index: 2; height: 46svh; padding-block: 1rem 0.75rem; background: var(--bg); }
+  .hc-print { inset: 1rem 0 0.75rem; }
+  .hc-print img { max-height: calc(46svh - 1.75rem); }
+  .hc-index__text { padding-top: var(--s-4); }
+  .hc-names span { opacity: 1; }
+}
+@media (max-width: 48rem) {
+  .hc-pair { grid-template-columns: minmax(0, 1fr); row-gap: var(--s-4); min-height: 0; padding-block: var(--s-5); }
+  .hc-pair .hc-one, .hc-pair .hc-two { grid-column: 1; margin-top: 0; }
+  .hc-pair .hc-two { width: 76%; margin-left: auto; }
+  .hc-pair--rails .hc-one, .hc-pair--tiers .hc-one { width: 76%; }
+  .hc-pair--tiers .hc-two { width: 62%; }
+  .hc-ways { grid-template-columns: minmax(0, 1fr); }
+  .hc-hold img { height: 70vh; height: 70lvh; top: 11vh; }
+  .hc-hold figcaption { top: calc(81vh + 0.75rem); top: calc(81lvh + 0.75rem); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hc-pair .piece { translate: none; }
+  .hc-print, .hc-names b, .hc-names span { transition: none; }
+}

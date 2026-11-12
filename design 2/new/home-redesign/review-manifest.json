@@ -44,6 +44,14 @@
     "en": "Fifth round: the live site's layering, taken further",
     "zh": "第五輪：把正式網站的層疊捲動做得更多"
    }
+  },
+  {
+   "id": "content1",
+   "built": "2026-11-12T11:27",
+   "title": {
+    "en": "Home content, round one: three structures, on the real page",
+    "zh": "首頁內容第一輪：三種結構，接在正式首頁上"
+   }
   }
  ],
  "items": [
@@ -282,6 +290,51 @@
    "still": {
     "wait": 2500
    }
+  },
+  {
+   "href": "v-stays.html",
+   "group": "content1",
+   "title": {
+    "en": "The photograph stays, the paper passes",
+    "zh": "照片不動，紙從上面經過"
+   },
+   "desc": {
+    "en": "Mostly photograph. Under Aoraki, four photographs stay where they are, the Queensboro train and the Milky Way kept whole on stone, the Matterhorn and Barcelona filling the window. Between them a short leaf of paper passes with one thing on it: the line, then Gallery, Journey, Guides, one at a time. No wall, no cards, no buttons.",
+    "zh": "幾乎都是照片。Aoraki 之後，四張照片停在原地：皇后區列車和蒂卡波銀河完整地掛在石色底上，馬特洪峰和巴塞隆納佔滿畫面。中間經過一小張紙，上面只有一樣東西：那句話，然後作品集、旅程、攻略，一次一個。沒有照片牆、沒有卡片、沒有按鈕。"
+   },
+   "still": {
+    "wait": 5000
+   }
+  },
+  {
+   "href": "v-index.html",
+   "group": "content1",
+   "title": {
+    "en": "The index of places",
+    "zh": "地方的索引"
+   },
+   "desc": {
+    "en": "The page is a list of twelve places in large type. The photograph of the place you are reading stays beside the list, whole, and changes as you scroll or point; the name takes you to that place. Three small words at the end lead to every place, every photograph, every trip.",
+    "zh": "整頁是十二個地名的大字清單。你讀到哪個地方，它的照片就完整地停在旁邊，隨著捲動或游標換一張；點地名就去那個地方。最後三個小字帶你去所有地方、所有照片、每一趟旅行。"
+   },
+   "still": {
+    "wait": 5000
+   }
+  },
+  {
+   "href": "v-pairs.html",
+   "group": "content1",
+   "title": {
+    "en": "Pairs: a landscape and a city",
+    "zh": "一對一對：一張風景，一張城市"
+   },
+   "desc": {
+    "en": "Your two subjects hung side by side because they rhyme: Mount Fuji and Lower Manhattan in their reflections, the Queensboro train and the bullet train under Fuji, the lights of Hong Kong and of Zermatt, the terraces of Sa Pa and the stalls of Mong Kok. One pair to a screen, each hung differently, every photograph whole. Gallery, Journey and Guides close it as three words.",
+    "zh": "你拍的兩種題材因為呼應而掛在一起：倒影裡的富士山和下曼哈頓、皇后區列車和富士山下的新幹線、香港和策馬特的燈火、沙壩的梯田和旺角的攤位。一個畫面一對，每一對掛法不同，每張都完整。最後是作品集、旅程、攻略三個字。"
+   },
+   "still": {
+    "wait": 5000
+   }
   }
  ],
  "tags": [
@@ -359,18 +412,16 @@
  "words": {},
  "ask": {
   "ids": [
-   "r-windows",
-   "s-prints-over",
-   "u-layered",
-   "l-current-words"
+   "v-stays",
+   "v-index",
+   "v-pairs"
   ]
  },
  "round": {
   "ids": [
-   "r-windows",
-   "s-prints-over",
-   "u-layered",
-   "l-current-words"
+   "v-stays",
+   "v-index",
+   "v-pairs"
   ]
  }
 }
