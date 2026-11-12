@@ -253,14 +253,15 @@ def shot(sid, root, en, zh):
     return piece(sid, root, en, zh, "(max-width: 50rem) 92vw, 50rem", anchor=True, flex=True, data=True)
 
 
-def cover(sid, root, en, zh):
-    """The opening photograph of the home page: the whole window, nothing written across it."""
+def cover(sid, root, en, zh, first=True):
+    """The opening photograph of the home page: the whole window, nothing written across it.
+    first=False: it is the second screen, under the film, so it neither settles on arrival nor loads ahead of the film."""
     s = SLIDES[sid]
     strings(s, en, zh)
     en[f"sw_{sid}"], zh[f"sw_{sid}"] = s["where"]["en"], s["where"]["zh"]
     # the photograph is cropped to the window's height, so on a tall narrow screen it is wider than the window
     sizes = "max(100vw, " + str(round(100 * s["w"] / s["h"])) + "vh)"
-    return (f'<figure class="cover arrive"><a {opens(sid, root, en, zh)}>{img(s, root, sizes, first=True)}</a>'
+    return (f'<figure class="cover{" arrive" if first else ""}"><a {opens(sid, root, en, zh)}>{img(s, root, sizes, first=first, soon=not first)}</a>'
             f'<figcaption><b data-i18n="sp_{sid}">{e(s["place"]["en"])}</b>'
             f'<span data-i18n="sw_{sid}">{e(s["where"]["en"])}</span></figcaption></figure>')
 
@@ -558,7 +559,8 @@ def timed_cards(root, en, zh):
 # designed yet, so keep it as the old one. Only keep the videos from the very start through the Barcelona set."):
 # the TUAN photography loading screen on black, a wall of his photographs sliding in while the view closes on the
 # middle one (number 9 of the last round, "the wall, in one move"), and that middle one is the short film of
-# Barcelona, which now fills the first screen where the opening photograph was. Styles css/opening.css, script
+# Barcelona, which now fills the first screen; the opening photograph follows it as the second (his word, the same
+# day: "Yes, bring it back"). Styles css/opening.css, script
 # js/opening.js. Tags: before-home-redesign-live-2026-11-12 (the page with the opening photograph and the old loading
 # screen), home-redesign-whole-page-live-2026-11-12 (a few hours with the whole redesigned page live, by mistake).
 HOME_WALL = ["matterhorn-lake", "queensboro-train", "fuji-lake", "roys-peak", "sapa-terraces", "tekapo-stars", "aurora",
@@ -642,6 +644,8 @@ def build_home():
     # the windows are dealt out between the sections, so a photograph is behind the page all the way down
     panes = [window(sid, root, en, zh) for sid in windows] + ["", "", ""]
     body = f"""{home_film(en, zh)}
+
+{cover(lead, root, en, zh, first=False)}
 
 <div class="leaf">
 <section class="wrap intro arrive">

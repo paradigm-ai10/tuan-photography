@@ -6,8 +6,8 @@
 
 **The home page is the old one, with the new opening in front** (live since 2026-11-12). He chose only the way in:
 opening 9 of the last round (`camille-smooth-night`: his logo on black, the wall in one move) ending on the Barcelona
-film, which now fills the first screen where the opening photograph was. Everything under the film is the home page
-as it was (the line and buttons, the windows, the wall, the Guides cards). His words: "what I'm actually deciding is
+film, which now fills the first screen; the Aoraki opening photograph follows as the second ("Yes, bring it back").
+Everything under them is the home page as it was (the line and buttons, the windows, the wall, the Guides cards). His words: "what I'm actually deciding is
 the landing page version ... The homepage hasn't been designed yet, so keep it as the old one. Only keep the videos
 from the very start through the Barcelona set."
 - **What went wrong first:** Claude put the whole redesigned page live with the opening. He had picked an opening,
@@ -22,8 +22,9 @@ from the very start through the Barcelona set."
   `tools/share_openings.py`. The review list keeps all versions; 9 is marked Main.
 - His standing rules for this work: a note on a version gets a NEW version beside it; every candidate in white and
   black (the list's "Side by side, playing" row, manifest `pairs`); read his whole review, "Anything else" included.
-First move next time: ask how the opening feels on his own screen and phone, and whether the old opening photograph
-(Aoraki) should stay somewhere on the page now that the film has its screen.
+- Two sessions for Home (his ask, 2026-11-12): this one is the landing page (the opening); a second one, started
+  from it, is for the home page's content, still to be designed.
+First move next time: ask how the opening feels on his own screen and phone.
 
 ## 現在狀態 Where things stand
 

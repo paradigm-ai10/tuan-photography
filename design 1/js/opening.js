@@ -61,6 +61,17 @@
     if (video) { if (!easing) video.playbackRate = 1; video.play().catch(() => {}); }
     if (playing) { try { sessionStorage.setItem('tuan-opening', '1'); } catch (e) { /* private window: it plays again next time */ } }
   }
+  // the film rests while the page covers it, and plays again when the visitor comes back up to it
+  if (video) {
+    const film = video.closest('.hr-open');
+    let covered = false;
+    addEventListener('scroll', () => {
+      const now = scrollY >= film.offsetHeight;
+      if (now === covered || !done) return;
+      covered = now;
+      if (covered) video.pause(); else video.play().catch(() => {});
+    }, { passive: true });
+  }
   if (!playing || !screen) { finish(); return; }
   screen.addEventListener('click', finish);
   document.addEventListener('keydown', (e) => { if (!done && !e.metaKey && !e.ctrlKey && !e.altKey) finish(); });

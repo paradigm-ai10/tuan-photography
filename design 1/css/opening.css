@@ -57,6 +57,10 @@ html.hr-shown .hr-open::before, html.hr-shown .hr-open::after { opacity: 1; }
   }
 }
 
+/* the opening photograph follows as the second screen: it comes up over the film and holds in its turn while the
+   page is drawn over it, so its own slow rise (style.css) starts a screen later */
+.hr-open ~ .cover { animation-range: 100vh 200vh; }
+
 /* a caption for each scene of the film, shown while its scene plays: the place, and where and when */
 .hr-cap { position: absolute; z-index: 2; left: 16px; right: 16px; bottom: clamp(2rem, 1.2rem + 3vw, 3.75rem); margin: 0;
   display: grid; justify-items: center; pointer-events: none; opacity: 0; transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.6s; }

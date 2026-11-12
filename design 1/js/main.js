@@ -112,10 +112,12 @@ menuBtn?.addEventListener('click', () => {
 });
 
 /* The opening photograph stays in place under the page. When the keyboard reaches it
-   from further down, go back up so what has focus can be seen. */
+   from further down, go back up to it so what has focus can be seen (on the home page it
+   is the second screen, under the film). */
 const coverLink = document.querySelector('.cover a');
 coverLink?.addEventListener('focus', () => {
-  if (coverLink.matches(':focus-visible')) window.scrollTo(0, 0);
+  const before = coverLink.closest('.cover').previousElementSibling;
+  if (coverLink.matches(':focus-visible')) window.scrollTo(0, before ? before.offsetHeight : 0);
 });
 
 /* A window part way down the page: its photograph is fixed to the screen, and drifts

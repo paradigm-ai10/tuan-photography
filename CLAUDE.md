@@ -27,7 +27,7 @@ his logo on black, a wall of his photographs sliding in while the view closes on
 film of Barcelona. His words: "what I'm actually deciding is the landing page version, transitioning from the
 photography one to the actual homepage. The homepage hasn't been designed yet, so keep it as the old one. Only keep
 the videos from the very start through the Barcelona set." So the home page is the old one (2026-10-16) with the
-opening in front and the film on its first screen, where the opening photograph was. **The page under the film has not
+opening in front, the film on its first screen and the opening photograph (Aoraki) as the second. **The page under the film has not
 been redesigned and none of the redesign rounds' page bodies is approved**: never replace it because an opening was
 picked. Files: `home_opening()`, `home_film()` and `build_home()` in `tools/build.py`, `design 1/css/opening.css`,
 `design 1/js/opening.js`, `design 1/media/`; once per visit, `?opening` plays it again. Tags:
