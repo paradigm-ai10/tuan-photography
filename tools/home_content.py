@@ -267,27 +267,36 @@ VERSIONS = [   # (file, the body, title en, title zh)
 ]
 
 
-def build():
+def write_version(name, body_of, t_en, t_zh, css=(), js=()):
+    """Write one trial page: the live home page (top bar, film, Aoraki, footer, viewer, language switch) with body_of's
+    page between Aoraki and the footer. css and js: extra files in design 2/new/home-redesign/, loaded after
+    content.css and content.js. The other batches of versions (tools/home_more_*.py) use this too."""
     lead = B.DATA["lead"]
     with tempfile.TemporaryDirectory() as tmp:
         site, B.OUT = B.OUT, Path(tmp)
         try:
-            for name, body_of, t_en, t_zh in VERSIONS:
-                en, zh = {}, {}
-                body = f'{B.home_film(en, zh)}\n\n{B.cover(lead, "", en, zh, first=False)}\n\n{body_of(en, zh)}'
-                B.write("index.html", f"{t_en} · home content", f"{t_zh} · 首頁內容", "A trial version of the home page's content.",
-                        None, body, en, zh, over=True, scripts=("opening.js",),
-                        head_extra=f'  <link rel="stylesheet" href="css/opening.css?v={B.STAMP}">\n')
-                html = rel((Path(tmp) / "index.html").read_text(encoding="utf-8"))
-                html = html.replace('<html lang="en" data-root="">', f'<html lang="en" data-root="{UP}" data-hc="{name}">', 1)
-                html = html.replace("</head>", f'  <link rel="stylesheet" href="content.css?v={B.STAMP}">\n  <meta name="robots" content="noindex">\n</head>', 1)
-                html = html.replace("</body>", f'<script src="content.js?v={B.STAMP}"></script>\n<link rel="stylesheet" href="review-kit/bar.css">\n'
-                                    '<script src="review-kit/words.js"></script>\n<script src="review-kit/store.js"></script>\n'
-                                    '<script src="review-kit/bar.js" data-name="home-redesign"></script>\n</body>', 1)
-                (OUT / f"{name}.html").write_text(html, encoding="utf-8")
-                print("wrote", f"design 2/new/home-redesign/{name}.html")
+            en, zh = {}, {}
+            body = f'{B.home_film(en, zh)}\n\n{B.cover(lead, "", en, zh, first=False)}\n\n{body_of(en, zh)}'
+            B.write("index.html", f"{t_en} · home content", f"{t_zh} · 首頁內容", "A trial version of the home page's content.",
+                    None, body, en, zh, over=True, scripts=("opening.js",),
+                    head_extra=f'  <link rel="stylesheet" href="css/opening.css?v={B.STAMP}">\n')
+            html = rel((Path(tmp) / "index.html").read_text(encoding="utf-8"))
         finally:
             B.OUT = site
+    html = html.replace('<html lang="en" data-root="">', f'<html lang="en" data-root="{UP}" data-hc="{name}">', 1)
+    links = "".join(f'  <link rel="stylesheet" href="{c}?v={B.STAMP}">\n' for c in ("content.css", *css))
+    html = html.replace("</head>", f'{links}  <meta name="robots" content="noindex">\n</head>', 1)
+    scripts = "".join(f'<script src="{j}?v={B.STAMP}"></script>\n' for j in ("content.js", *js))
+    html = html.replace("</body>", f'{scripts}<link rel="stylesheet" href="review-kit/bar.css">\n'
+                        '<script src="review-kit/words.js"></script>\n<script src="review-kit/store.js"></script>\n'
+                        '<script src="review-kit/bar.js" data-name="home-redesign"></script>\n</body>', 1)
+    (OUT / f"{name}.html").write_text(html, encoding="utf-8")
+    print("wrote", f"design 2/new/home-redesign/{name}.html")
+
+
+def build():
+    for name, body_of, t_en, t_zh in VERSIONS:
+        write_version(name, body_of, t_en, t_zh)
 
 
 if __name__ == "__main__":
