@@ -219,6 +219,40 @@ def fine(en, zh):
     return index(en, zh).replace('class="leaf hc-b"', 'class="leaf hc-b hc-b--fine"', 1)
 
 
+# ---------------------------------------------------------------- the index, travelling sideways (2026-11-12)
+# His words on the four stagings: he wants what the first index had, every place in view while the photographs
+# change ("I can see how many places I have been to, I can see other places"), and he likes the one line of names
+# because the scroll turns from vertical to horizontal. So three versions where every place stays on screen and the
+# photographs travel sideways as one strip, following the scroll (content.js eases the strip toward the scroll).
+
+def across(kind, en, zh):
+    figs, names, jump = [], [], []
+    for i, (sid, name, href) in enumerate(PLACES):
+        x = B.SLIDES[sid]
+        B.strings(x, en, zh)
+        date = B.COUNTRIES[x["country"]]["date"]["en"]
+        en[f"hcP_{sid}"], zh[f"hcP_{sid}"] = name
+        en[f"hyW_{sid}"], zh[f"hyW_{sid}"] = f'{x["where"]["en"]}, {date}', f'{x["where"]["zh"]}，{date}'
+        on = " is-on" if i == 0 else ""
+        figs.append(f'<figure class="hy-photo{on}"><a {B.opens(sid, "", en, zh)}>{B.img(x, "", "(max-width: 48rem) 88vw, 60vw", soon=True)}</a>'
+                    f'<figcaption><b data-i18n="sp_{sid}">{e(x["place"]["en"])}</b><span data-i18n="hyW_{sid}">{e(en[f"hyW_{sid}"])}</span></figcaption></figure>')
+        names.append(f'<li><a class="hy-name{on}" href="{href}" data-i18n="hcP_{sid}">{e(name[0])}</a></li>')
+        jump.append(f'<li><button type="button" class="caps{on}" data-i18n="hcP_{sid}">{e(name[0])}</button></li>')
+    ways = "".join(way(*w[:2], en, zh, *w[2:]) for w in WAYS)
+    en["hxPlaces"], zh["hxPlaces"] = "Places", "地方"
+    index_row = f'\n    <ol class="hy-index">{"".join(jump)}</ol>' if kind == "lines" else ""
+    return f"""<div class="leaf hy" data-hy="{kind}">
+<section class="hc-leaf hc-leaf--line">{line(en, zh)}</section>
+<section class="hy-run" aria-label="Places" data-i18n-aria="hxPlaces">
+  <div class="hy-stage">
+    <ol class="hy-names">{"".join(names)}</ol>
+    <div class="hy-view"><div class="hy-track">{"".join(figs)}</div></div>{index_row}
+  </div>
+</section>
+<nav class="wrap hc-ways" aria-label="Site">{ways}</nav>
+</div>"""
+
+
 VERSIONS = [   # (file, the body, title en, title zh)
     ("v-stays", stays, "The photograph stays, the paper passes", "照片不動，紙從上面經過"),
     ("v-index", index, "The index of places", "地方的索引"),
@@ -227,6 +261,9 @@ VERSIONS = [   # (file, the body, title en, title zh)
     ("v-index-window", lambda en, zh: stage("window", en, zh, wide=True), "The index, the whole window", "索引：整個畫面"),
     ("v-index-line", lambda en, zh: stage("line", en, zh), "The index, one line of names", "索引：一行地名"),
     ("v-index-fine", fine, "The index, ruled and uncovered", "索引：加上細線，照片揭開"),
+    ("v-across-list", lambda en, zh: across("list", en, zh), "Every place in view, the photographs travel sideways", "所有地方都看得到，照片往旁邊走"),
+    ("v-across-strip", lambda en, zh: across("strip", en, zh), "A strip of photographs over the list of places", "一長條照片，下面是所有地方"),
+    ("v-across-lines", lambda en, zh: across("lines", en, zh), "Two lines travelling: the names and the photographs", "兩行一起走：地名和照片"),
 ]
 
 

@@ -137,6 +137,71 @@
   .hx-photo img, .hc-b--fine .hc-print img { scale: 1; }
 }
 
+/* The index travelling sideways (hy): every place stays on screen; the photographs are one strip that the scroll
+   moves sideways (content.js sets the strip's transform, eased toward the scroll). Three stagings, by data-hy. */
+.hy-run { position: relative; height: calc(100svh + 11 * 44svh); }
+.hy-stage { position: sticky; top: 0; height: 100svh; overflow: hidden; }
+.hy-view { position: absolute; overflow: hidden; }
+.hy-track { display: flex; align-items: flex-start; gap: 4vw; width: max-content; }
+.hy-photo { flex: none; width: min-content; opacity: 0.86; transition: opacity 700ms var(--out); }
+.hy-photo.is-on { opacity: 1; }
+.hy-photo a { display: block; }
+.hy-photo a:hover { color: inherit; }
+.hy-photo img { display: block; height: var(--h); width: auto; max-width: 88vw; object-fit: contain; }
+.hy-photo figcaption { display: flex; flex-direction: column; gap: 0.25rem; margin-top: 0.85rem; opacity: 0; transition: opacity 500ms var(--out); }
+.hy-photo.is-on figcaption { opacity: 1; }
+.hy-photo figcaption b { font-family: var(--serif); font-weight: 400; font-size: 1.1rem; line-height: 1.25; }
+.hy-photo figcaption span { color: var(--text-2); font-size: 0.6875rem; letter-spacing: 0.14em; text-transform: uppercase; }
+.hy-names { position: absolute; list-style: none; margin: 0; padding: 0; font-family: var(--serif); }
+.hy-name { display: inline-block; text-decoration: none; color: color-mix(in oklch, var(--text) 26%, var(--bg)); transition: color 500ms var(--out), translate 500ms var(--out); }
+.hy-name.is-on { color: var(--text); }
+.hy-name:hover { color: var(--accent); }
+:root:lang(zh-Hant) .hy-names { font-weight: 500; }
+
+/* every place in a column on the left; the strip runs off the right edge */
+[data-hy="list"] .hy-names { left: var(--edge); top: 50%; translate: 0 -50%; width: 32%; font-size: min(4.1svh, 2.9vw); line-height: 1.5; letter-spacing: -0.01em; }
+[data-hy="list"] .hy-name { transform-origin: left center; transition: color 500ms var(--out), scale 600ms var(--out); }
+[data-hy="list"] .hy-name.is-on { scale: 1.55; }   /* the place being shown stands out of the column by size, not only by ink */
+[data-hy="list"] li:has(.is-on) { padding-block: 0.42em; }
+[data-hy="list"] li { transition: padding 600ms var(--out); }
+[data-hy="list"] .hy-view { --h: 68svh; left: 38%; right: 0; top: 11svh; padding-left: var(--s-4); border-left: 1px solid var(--line); }
+
+/* the strip across the whole window; every place in rows beneath it */
+[data-hy="strip"] .hy-view { --h: 62svh; left: 0; right: 0; top: 7svh; }
+[data-hy="strip"] .hy-names { left: var(--edge); right: var(--edge); bottom: 5svh; display: flex; flex-wrap: nowrap; justify-content: space-between; gap: 1em; font-size: clamp(1rem, 1.45vw, 1.5rem); line-height: 1.25; white-space: nowrap; }
+[data-hy="strip"] .hy-name { padding-bottom: 0.35em; border-bottom: 1px solid transparent; transition: color 500ms var(--out), border-color 500ms var(--out); }
+[data-hy="strip"] .hy-name.is-on { border-bottom-color: var(--text); }
+
+/* two lines: the names very large above, the photographs beneath, both travelling; every place small along the foot */
+[data-hy="lines"] .hy-names { top: 7svh; left: 0; display: flex; flex-wrap: nowrap; align-items: baseline; gap: 0.6em; width: max-content; font-size: clamp(2.75rem, 5.6vw, 6rem); line-height: 1.05; letter-spacing: -0.015em; white-space: nowrap; }
+[data-hy="lines"] .hy-name { color: color-mix(in oklch, var(--text) 14%, var(--bg)); }
+[data-hy="lines"] .hy-name.is-on { color: var(--text); }
+[data-hy="lines"] .hy-view { --h: 56svh; left: 0; right: 0; top: 23svh; }
+[data-hy="lines"] .hy-photo figcaption b { display: none; }   /* the place is already named above; only its line stays */
+.hy-index { position: absolute; left: var(--edge); right: var(--edge); bottom: 4svh; display: flex; flex-wrap: wrap; justify-content: center; gap: 0.2rem 1.6rem; list-style: none; margin: 0; padding: 0; }
+.hy-index button { padding: 0.45rem 0 0.35rem; border: 0; border-bottom: 1px solid transparent; background: none; cursor: pointer; font-size: 0.75rem; color: var(--text-2); transition: color 400ms var(--out), border-color 400ms var(--out); }
+.hy-index button.is-on { color: var(--text); border-bottom-color: var(--text); }
+.hy-index button:hover { color: var(--text); }
+
+@media (max-width: 48rem) {
+  .hy-run { height: calc(100svh + 11 * 38svh); }
+  .hy-track { gap: 6vw; align-items: center; }
+  .hy-photo img { height: auto; width: auto; max-height: var(--h); max-width: 88vw; }
+  [data-hy="list"] .hy-view { --h: 40svh; left: var(--edge); top: 8svh; padding-left: 0; border-left: 0; }
+  [data-hy="list"] .hy-name.is-on { scale: 1; }
+  [data-hy="list"] li:has(.is-on) { padding-block: 0; }
+  [data-hy="list"] .hy-names { top: auto; bottom: 5svh; translate: none; width: auto; right: var(--edge); columns: 2; column-gap: 1.5rem; font-size: 1.4rem; line-height: 1.5; }
+  [data-hy="list"] .hy-name.is-on { translate: none; }
+  [data-hy="strip"] .hy-view { --h: 42svh; top: 8svh; }
+  [data-hy="strip"] .hy-names { flex-wrap: wrap; justify-content: flex-start; font-size: 1.25rem; gap: 0.1em 1.1em; }
+  [data-hy="lines"] .hy-names { top: 11svh; font-size: 11.5vw; }
+  [data-hy="lines"] .hy-view { --h: 40svh; top: 27svh; }
+  .hy-index { justify-content: flex-start; gap: 0 1.1rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hy-photo, .hy-photo figcaption, .hy-name { transition: none; }
+}
+
 /* C: pairs, each hung differently */
 .hc-pair { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); align-content: center; min-height: 100svh; padding-block: clamp(4rem, 12vh, 8rem); }
 .hc-pair .piece { translate: 0 var(--lag, 0px); }

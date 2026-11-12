@@ -60,6 +60,14 @@
     "en": "The index of places, four ways that move (top-design and animate skills)",
     "zh": "地方的索引：四種會動的做法（用 top-design 和 animate 技能）"
    }
+  },
+  {
+   "id": "content3",
+   "built": "2026-11-12T13:55",
+   "title": {
+    "en": "Every place in view, the photographs travel sideways (reviewed with Impeccable's critique)",
+    "zh": "所有地方都看得到，照片往旁邊走（用 Impeccable 的評審檢查過）"
+   }
   }
  ],
  "items": [
@@ -403,6 +411,51 @@
    "still": {
     "wait": 5000
    }
+  },
+  {
+   "href": "v-across-lines.html",
+   "group": "content3",
+   "title": {
+    "en": "Two lines travelling: the names and the photographs",
+    "zh": "兩行一起走：地名和照片"
+   },
+   "desc": {
+    "en": "From the one-line version you liked. Scrolling down turns into travel sideways: the place names are one line across the top and the photographs one strip beneath, moving at different speeds. It rests on each place so the photograph is whole when you stop. Every place is also listed small along the foot; click one to go there. The reviewer judged this the strongest of the three.",
+    "zh": "從你喜歡的「一行地名」做的。往下捲變成往旁邊走：上面一行地名、下面一長條照片，兩行速度不同。每個地方會停一下，手停下來時照片是完整的。所有地方也小小地列在最下面，點一個就跳過去。評審認為這是三個裡最強的。"
+   },
+   "still": {
+    "wait": 5000
+   }
+  },
+  {
+   "href": "v-across-list.html",
+   "group": "content3",
+   "title": {
+    "en": "Every place in view, the photographs travel sideways",
+    "zh": "所有地方都看得到，照片往旁邊走"
+   },
+   "desc": {
+    "en": "Your original index with sideways travel. Every place is a column on the left, so you see at once how many places there are; the one being shown grows larger. The photographs run as one strip off the right edge and move sideways as you scroll down.",
+    "zh": "原本的索引加上往旁邊走。所有地方排成左邊一欄，一眼看到去過幾個地方；正在看的那個會變大。照片排成一長條從右邊延伸出去，往下捲時往旁邊移動。"
+   },
+   "still": {
+    "wait": 5000
+   }
+  },
+  {
+   "href": "v-across-strip.html",
+   "group": "content3",
+   "title": {
+    "en": "A strip of photographs over the list of places",
+    "zh": "一長條照片，下面是所有地方"
+   },
+   "desc": {
+    "en": "The photographs as one wide strip across the whole window, travelling sideways as you scroll. Every place is one row of names beneath it, the current one underlined.",
+    "zh": "照片排成一長條橫跨整個畫面，往下捲時往旁邊走。所有地方排成下面一行，正在看的那個畫底線。"
+   },
+   "still": {
+    "wait": 5000
+   }
   }
  ],
  "tags": [
@@ -480,18 +533,16 @@
  "words": {},
  "ask": {
   "ids": [
-   "v-index-stage",
-   "v-index-window",
-   "v-index-line",
-   "v-index-fine"
+   "v-across-lines",
+   "v-across-list",
+   "v-across-strip"
   ]
  },
  "round": {
   "ids": [
-   "v-index-stage",
-   "v-index-window",
-   "v-index-line",
-   "v-index-fine"
+   "v-across-lines",
+   "v-across-list",
+   "v-across-strip"
   ]
  }
 }
