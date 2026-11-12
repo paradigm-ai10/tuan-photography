@@ -212,6 +212,14 @@
         "en": "After spaincollection.com, fourth: the film waits for your scroll, the old captions on top",
         "zh": "參考 spaincollection.com 第四次：影片等你開始捲才播，舊的字幕放到上面"
       }
+    },
+    {
+      "id": "spain-1112e",
+      "built": "2026-11-12T13:35",
+      "title": {
+        "en": "Your two finalists, both playing by themselves",
+        "zh": "你在選的兩個，都改成自己播"
+      }
     }
   ],
   "items": [
@@ -1795,6 +1803,36 @@
       "still": {
         "wait": 9000
       }
+    },
+    {
+      "href": "w-play-night.html",
+      "group": "spain-1112e",
+      "title": {
+        "en": "Round your name, it plays by itself (black)",
+        "zh": "圍著你的名字，自己播（黑底）"
+      },
+      "desc": {
+        "en": "Your note: 'make both of it animation not scrolling'. This is the old 9 with nothing tied to the scroll: your name arrives and stays, the photographs open round it, and after a moment the film grows to the whole window by itself (3 seconds) while the photographs leave. The film starts as it begins to grow, with the old captions at its top. About 9.5 seconds in all, like 1. A click, a key or a scroll lands it at once; then the page scrolls on from the film exactly as the live one does.",
+        "zh": "你的筆記：「make both of it animation not scrolling」。這是原本的 9，但不再跟著捲動：你的名字出現並留著，照片在周圍打開，停一下之後影片自己長到整個畫面（3 秒），照片離開。影片開始長大時才開始播，舊的字幕在影片上方。全長大約 9.5 秒，跟 1 差不多。點一下、按鍵或捲動會直接跳到結尾；之後頁面跟正式網站一樣，從影片往下捲。"
+      },
+      "still": {
+        "wait": 6500
+      }
+    },
+    {
+      "href": "w-play.html",
+      "group": "spain-1112e",
+      "title": {
+        "en": "Round your name, it plays by itself (white)",
+        "zh": "圍著你的名字，自己播（白底）"
+      },
+      "desc": {
+        "en": "The same as 2 on white.",
+        "zh": "跟 2 一樣，白底。"
+      },
+      "still": {
+        "wait": 6500
+      }
     }
   ],
   "tags": [
@@ -1872,21 +1910,15 @@
   "words": {},
   "ask": {
     "ids": [
-      "w-hold",
-      "w-hold-night"
+      "w-play-night",
+      "w-play"
     ]
   },
   "round": {
     "ids": [
       "c-flock-camille-smooth-night",
-      "w-frame",
-      "w-frame-night",
-      "w-true",
-      "w-true-night",
-      "w-mark",
-      "w-mark-night",
-      "w-hold",
-      "w-hold-night"
+      "w-play-night",
+      "w-play"
     ]
   },
   "pairs": [
@@ -1968,6 +2000,16 @@
       "label": {
         "en": "The film waits for the scroll",
         "zh": "影片等你捲才開始"
+      }
+    },
+    {
+      "ids": [
+        "w-play",
+        "w-play-night"
+      ],
+      "label": {
+        "en": "Plays by itself",
+        "zh": "自己播"
       }
     }
   ]

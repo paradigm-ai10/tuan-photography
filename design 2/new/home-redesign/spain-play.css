@@ -1,0 +1,18 @@
+/* The Spain Collection trial, fifth pass (2026-11-12). His words, choosing between the live opening and w-hold-night:
+   "make both of it animation not scrolling". Loaded last by the w-play pages only; spain-true.js plays it.
+
+   The same first screen and the same move, but it plays by itself: the name arrives and stays, the photographs open
+   round it, and after a moment the film grows to the whole window while the photographs leave (three seconds, the
+   curve of the live opening's zoom). The film starts as it begins to grow. The page cannot be scrolled until it has
+   landed; a click, a key or the first turn of the wheel or swipe lands it at once. Then the page is as the live one:
+   the film on the first screen, the opening photograph coming over it. */
+html.sp-playing { overflow: hidden; scrollbar-gutter: stable; }
+[data-sp-play] .sp-run { display: none; }
+[data-sp-play] .sp ~ .cover { animation-range: 100vh 200vh; }
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: scroll()) {
+    [data-sp-play] .sp { animation-range: 0 100vh; }
+    [data-sp-play] .sp__film video { animation-range: 0 100vh; }
+  }
+}
+@media (prefers-reduced-motion: reduce) { [data-sp-play] .sp ~ .cover { animation-range: 0 100vh; } }

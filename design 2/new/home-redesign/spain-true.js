@@ -80,17 +80,18 @@
     draw();
     if (p !== to) requestAnimationFrame(step); else running = false;
   }
+  // w-play: the move plays by itself, so the scroll conducts nothing; the page scrolls on from the film as the live one does
+  const play = html.hasAttribute('data-sp-play') && !reduce;
   function follow() {
-    to = Math.max(0, Math.min(1, scrollY / H));
-    if (scrollY > 1) start();
-    if (!running && to !== p) { running = true; last = performance.now(); requestAnimationFrame(step); }
-    const under = scrollY >= 2 * H;   // the opening photograph has covered the film: it rests
+    if (!play) { to = Math.max(0, Math.min(1, scrollY / H)); if (scrollY > 1) start(); }
+    if (!play && !running && to !== p) { running = true; last = performance.now(); requestAnimationFrame(step); }
+    const under = scrollY >= (play ? 1 : 2) * H;   // the opening photograph has covered the film: it rests
     if (under !== covered) { covered = under; if (covered) video.pause(); else if (started) video.play().catch(() => {}); }
   }
   if (!reduce) {
     addEventListener('scroll', follow, { passive: true });
     addEventListener('resize', () => { W = innerWidth; H = stage.offsetHeight; follow(); draw(); });
-    to = p = Math.max(0, Math.min(1, scrollY / H));
+    to = p = play ? 0 : Math.max(0, Math.min(1, scrollY / H));
     draw();
   } else {
     html.classList.add('hr-shown');
@@ -98,18 +99,43 @@
   }
 
   /* ---------------- the name, then the first screen ---------------- */
+  /* w-play: the film grows by itself, each part one animation handed to the browser (the same two ends the scroll
+     draws, so the picture is the same), three seconds on the curve of the live opening's zoom */
+  let landed = !play, grown = [], timer = 0;
+  function land() {
+    if (landed) return;
+    landed = true;
+    clearTimeout(timer);
+    p = to = 1; draw();
+    grown.forEach((a) => a.cancel());
+    start();
+    html.classList.remove('sp-playing');
+  }
+  function grow() {
+    if (landed) return;
+    const parts = [film, video, words, ...photos];
+    p = 0; draw(); const from = parts.map((el) => el.style.transform);
+    p = 1; draw(); const end = parts.map((el) => el.style.transform);
+    p = 0; draw();
+    start();
+    grown = parts.map((el, k) => el.animate([{ transform: from[k] }, { transform: end[k] }], { duration: 3000, easing: 'cubic-bezier(0.72, 0, 0.11, 1)', fill: 'both' }));
+    Promise.all(grown.map((a) => a.finished)).then(land, () => {});
+  }
+
   function arrive(still) {
     if (done) return;
     done = true;
     if (still) html.classList.add('sp-still');
     const open = () => { if (screen) screen.remove(); html.classList.add('sp-in'); html.classList.remove('hr-loading', 'hr-full', 'sp-out'); };
     if (still || !screen || html.hasAttribute('data-sp-mark')) open();   // w-mark: the name is the page's own, so nothing fades, the photographs open round it
-    else { html.classList.add('sp-out'); setTimeout(open, 600); }   // the name goes first (hers: 0.6 s), then the first screen opens
+    else { html.classList.add('sp-out'); setTimeout(open, 600); }
+    if (play && !still) { html.classList.add('sp-playing'); timer = setTimeout(grow, 2200); }   // the photographs open, a moment, then the film grows   // the name goes first (hers: 0.6 s), then the first screen opens
   }
-  if (!playing || !screen) { arrive(true); return; }
-  const skip = () => arrive(false);
+  if (!playing || !screen) { arrive(true); land(); return; }
+  const skip = () => { arrive(false); land(); };
   screen.addEventListener('click', skip);
-  document.addEventListener('keydown', (e) => { if (!done && !e.metaKey && !e.ctrlKey && !e.altKey) skip(); });
+  if (play) stage.addEventListener('click', () => { if (!landed) skip(); });
+  document.addEventListener('keydown', (e) => { if ((!done || !landed) && !e.metaKey && !e.ctrlKey && !e.altKey) skip(); });
   ['wheel', 'touchmove'].forEach((type) => addEventListener(type, skip, { passive: true, once: true }));
 
   const FILL = 1400;
