@@ -252,6 +252,14 @@
         "en": "Round your name: flush, all the photographs appearing at once",
         "zh": "圍著你的名字：貼齊邊緣，照片同時出現"
       }
+    },
+    {
+      "id": "spain-1112j",
+      "built": "2026-11-12T20:14",
+      "title": {
+        "en": "Round your name: larger photographs",
+        "zh": "圍著你的名字：照片大一點"
+      }
     }
   ],
   "items": [
@@ -1970,6 +1978,21 @@
       "still": {
         "wait": 6000
       }
+    },
+    {
+      "href": "w-big-night.html",
+      "group": "spain-1112j",
+      "title": {
+        "en": "Round your name, larger photographs (black)",
+        "zh": "圍著你的名字，照片大一點（黑底）"
+      },
+      "desc": {
+        "en": "Your note on 4: 'pics bigger'. The same as 4 (symmetric, flush, all appearing at once) with every photograph larger: the four side photographs about a third larger (much wider, starting just under the top bar so the name in it does not sit on one), the top photograph and the small film about 20% larger.",
+        "zh": "你對 4 的筆記：「pics bigger」。跟 4 一樣（對稱、貼齊邊緣、同時出現），每張照片都放大：兩側四張大約大三分之一（寬很多，從上方選單列下面開始，讓選單的名字不會壓在照片上），上面的照片和下面的小影片大約大 20%。"
+      },
+      "still": {
+        "wait": 6000
+      }
     }
   ],
   "tags": [
@@ -2047,15 +2070,15 @@
   "words": {},
   "ask": {
     "ids": [
-      "w-together-night"
+      "w-big-night"
     ]
   },
   "round": {
     "ids": [
       "c-flock-camille-smooth-night",
       "w-wall-quick-night",
-      "w-flush-night",
-      "w-together-night"
+      "w-together-night",
+      "w-big-night"
     ]
   },
   "pairs": [

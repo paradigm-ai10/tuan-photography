@@ -1,0 +1,14 @@
+/* The Spain Collection trial, tenth pass (2026-11-12). His note on w-together: "pics bigger". Loaded after
+   spain-together.css by w-big only (black only). The same frame, symmetric and flush, all appearing at once, with
+   every photograph larger: the four uprights 21% of the window's width by 38% of its height (were 15% by 25% of the
+   width), 10% from the top and the foot, just under the bar; the top photograph and the small film 34% of the window each way (were 28%). */
+[data-sp-big] .sp .sp__film { --sp-small: 0.34; }
+[data-sp-big] .sp .sp__p--1 { left: 33vw; width: 34vw; height: 34svh; }
+[data-sp-big] .sp .sp__p--0, [data-sp-big] .sp .sp__p--2, [data-sp-big] .sp .sp__p--3, [data-sp-big] .sp .sp__p--4 { width: 21vw; height: 38svh; }
+[data-sp-big] .sp .sp__p--0, [data-sp-big] .sp .sp__p--2 { top: 10svh; }   /* just under the bar, so the name in it does not sit on a photograph */
+[data-sp-big] .sp .sp__p--3, [data-sp-big] .sp .sp__p--4 { bottom: 10svh; }
+@media (max-width: 43.75rem) {
+  [data-sp-big] .sp .sp__p--0, [data-sp-big] .sp .sp__p--2, [data-sp-big] .sp .sp__p--3, [data-sp-big] .sp .sp__p--4 { width: 30vw; height: 44vw; }
+  [data-sp-big] .sp .sp__p--0, [data-sp-big] .sp .sp__p--2 { top: 22svh; }
+  [data-sp-big] .sp .sp__p--3, [data-sp-big] .sp .sp__p--4 { bottom: 22svh; }
+}
