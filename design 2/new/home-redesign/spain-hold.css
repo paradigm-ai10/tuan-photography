@@ -1,0 +1,13 @@
+/* The Spain Collection trial, fourth pass (2026-11-12). His words: "I want a video to start moving once I started the
+   scrolling. Because sometimes when I started scrolling, the first video already gone, and I don't like the new
+   caption of video. I like the old ones ... move it on to the top of the video, the caption, but make it the old ones."
+   Loaded last by the w-hold pages only (after spain.css, spain-true.css, spain-mark.css); spain-true.js holds the film.
+
+   The film waits on its first frame and starts when the visitor starts to scroll. The large title is gone; the old
+   captions are back (the scene's name over "Barcelona, July 2026"), now at the top of the film: the film grows from
+   its foot, so its top is the part in view first. They show from the moment the film starts. */
+[data-sp-hold] .sp__veil { display: none; }
+[data-sp-hold] .sp__film::before { opacity: 1; height: 46%; background: linear-gradient(to bottom, oklch(20% 0.02 60 / 0.6), oklch(20% 0.02 60 / 0)); }   /* the shade under the captions, there from the start */
+[data-sp-hold] .hr-cap { display: grid; top: 15%; bottom: auto; opacity: 0; transition: opacity 0.7s ease; }
+html.sp-go[data-sp-hold] .hr-cap { opacity: 1; }
+@media (max-width: 43.75rem) { [data-sp-hold] .hr-cap { top: 13%; } }

@@ -204,6 +204,14 @@
         "en": "After spaincollection.com, third: your name in the middle",
         "zh": "參考 spaincollection.com 第三次：中間放你的名字"
       }
+    },
+    {
+      "id": "spain-1112d",
+      "built": "2026-11-12T13:24",
+      "title": {
+        "en": "After spaincollection.com, fourth: the film waits for your scroll, the old captions on top",
+        "zh": "參考 spaincollection.com 第四次：影片等你開始捲才播，舊的字幕放到上面"
+      }
     }
   ],
   "items": [
@@ -1757,6 +1765,36 @@
       "still": {
         "wait": 9000
       }
+    },
+    {
+      "href": "w-hold.html",
+      "group": "spain-1112d",
+      "title": {
+        "en": "Your name, the film waits for the scroll (white)",
+        "zh": "你的名字，影片等你捲才開始（白底）"
+      },
+      "desc": {
+        "en": "From your notes on 5. The film now waits on its first frame and starts the moment you start to scroll, so the first scene is never already gone. The large 'Barcelona / July 2026' title is removed and the old captions are back (the scene's name over 'Barcelona, July 2026'), moved to the top of the film, which is the part you see first as it grows. The film is no longer dimmed.",
+        "zh": "照你對 5 的筆記。影片現在停在第一格，你一開始捲才開始播，所以第一段不會已經播完。大的「Barcelona / July 2026」標題拿掉，換回舊的字幕（場景名稱加「巴塞隆納，2026 年 7 月」），移到影片上方，也就是影片長大時最先看到的地方。影片不再壓暗。"
+      },
+      "still": {
+        "wait": 9000
+      }
+    },
+    {
+      "href": "w-hold-night.html",
+      "group": "spain-1112d",
+      "title": {
+        "en": "Your name, the film waits for the scroll (black)",
+        "zh": "你的名字，影片等你捲才開始（黑底）"
+      },
+      "desc": {
+        "en": "The same as 7 on black.",
+        "zh": "跟 7 一樣，黑底。"
+      },
+      "still": {
+        "wait": 9000
+      }
     }
   ],
   "tags": [
@@ -1834,8 +1872,8 @@
   "words": {},
   "ask": {
     "ids": [
-      "w-mark",
-      "w-mark-night"
+      "w-hold",
+      "w-hold-night"
     ]
   },
   "round": {
@@ -1845,7 +1883,9 @@
       "w-true",
       "w-true-night",
       "w-mark",
-      "w-mark-night"
+      "w-mark-night",
+      "w-hold",
+      "w-hold-night"
     ]
   },
   "pairs": [
@@ -1917,6 +1957,16 @@
       "label": {
         "en": "Round your name",
         "zh": "圍著你的名字"
+      }
+    },
+    {
+      "ids": [
+        "w-hold",
+        "w-hold-night"
+      ],
+      "label": {
+        "en": "The film waits for the scroll",
+        "zh": "影片等你捲才開始"
       }
     }
   ]

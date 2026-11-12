@@ -27,7 +27,7 @@
   const words = document.querySelector('.sp-words');
   const title = film.querySelector('.sp-title');
   // each language's letters, in order: the page shows one language, and each arrives over the same stretch
-  const sets = [...title.querySelectorAll('[data-set]')].reduce((m, el) => { (m[el.dataset.set] = m[el.dataset.set] || []).push(...el.querySelectorAll('.sp-ch')); return m; }, {});
+  const sets = [...(title ? title.querySelectorAll('[data-set]') : [])].reduce((m, el) => { (m[el.dataset.set] = m[el.dataset.set] || []).push(...el.querySelectorAll('.sp-ch')); return m; }, {});
   const back = (t) => { const c = 2 * 1.525; return t < 0.5 ? (Math.pow(2 * t, 2) * ((c + 1) * 2 * t - c)) / 2 : (Math.pow(2 * t - 2, 2) * ((c + 1) * (t * 2 - 2) + c) + 2) / 2; };
   const day = html.dataset.sp === 'day';
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -40,7 +40,11 @@
     const t = video.currentTime;
     caps.forEach((c) => c.classList.toggle('is-on', t >= Number(c.dataset.from) && t < Number(c.dataset.to)));
   });
-  video.play().catch(() => {});
+  // w-hold: the film waits on its first frame and starts when the visitor starts to scroll, so its first scene is not missed
+  const hold = html.hasAttribute('data-sp-hold') && !reduce;
+  let started = !hold;
+  const start = () => { if (started) return; started = true; html.classList.add('sp-go'); video.play().catch(() => {}); };
+  if (hold) video.pause(); else { html.classList.add('sp-go'); video.play().catch(() => {}); }
 
   /* ---------------- the scroll conducts the first screen ---------------- */
   const SIDE = [-1, 0, 1, -1, 1];   // which way each photograph leaves: left, straight up, right
@@ -60,7 +64,7 @@
         ch.style.transform = `translateY(${(-20 * (1 - e)).toFixed(2)}%) scaleX(${(0.7 + 0.3 * e).toFixed(4)})`;
       });
     });
-    title.style.setProperty('--rule', Math.max(0, Math.min(1, (p - 0.64) / o)).toFixed(3));
+    if (title) title.style.setProperty('--rule', Math.max(0, Math.min(1, (p - 0.64) / o)).toFixed(3));
     photos.forEach((el, k) => { el.style.transform = `translate3d(${(SIDE[k] * p * 0.5 * W).toFixed(2)}px, ${(-p * H).toFixed(2)}px, 0)`; });
     const now = p > 0.985;
     if (now !== full) {
@@ -78,9 +82,10 @@
   }
   function follow() {
     to = Math.max(0, Math.min(1, scrollY / H));
+    if (scrollY > 1) start();
     if (!running && to !== p) { running = true; last = performance.now(); requestAnimationFrame(step); }
     const under = scrollY >= 2 * H;   // the opening photograph has covered the film: it rests
-    if (under !== covered) { covered = under; if (covered) video.pause(); else video.play().catch(() => {}); }
+    if (under !== covered) { covered = under; if (covered) video.pause(); else if (started) video.play().catch(() => {}); }
   }
   if (!reduce) {
     addEventListener('scroll', follow, { passive: true });

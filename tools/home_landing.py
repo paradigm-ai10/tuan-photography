@@ -37,6 +37,10 @@ VERSIONS = [   # (file, ground, kind, title en, title zh)
     # where the sentence was, at its loading-screen size and place, so the name stays and the photographs open round it
     ("w-mark", "day", "mark", "Round your name (white)", "圍著你的名字（白底）"),
     ("w-mark-night", "night", "mark", "Round your name (black)", "圍著你的名字（黑底）"),
+    # fourth pass, his words: the film should start when he starts to scroll (its first scene was already gone), and
+    # the old captions back in place of the large title, at the top of the film, which is the part in view first
+    ("w-hold", "day", "hold", "Round your name, the film waits for the scroll (white)", "圍著你的名字，影片等你捲才開始（白底）"),
+    ("w-hold-night", "night", "hold", "Round your name, the film waits for the scroll (black)", "圍著你的名字，影片等你捲才開始（黑底）"),
 ]
 
 
@@ -58,10 +62,11 @@ def first_screen(kind=""):
         logo = ('<div class="sp-words"><p class="sp-mark" role="img" aria-label="tuan photography"><span class="sp-mark__name">'
                 + "".join(f"<span>{c}</span>" for c in "TUAN") + '</span><span class="sp-mark__line"></span><span class="sp-mark__sub">'
                 + "".join(f"<span>{c}</span>" for c in "photography") + "</span></p></div>")
-        say = logo if kind == "mark" else (f'<div class="sp-words"><div class="sp-say"><h1><span lang="en">{SAY[0]}</span><span lang="zh-Hant">{SAY[1]}</span></h1>'
+        say = logo if kind in ("mark", "hold") else (f'<div class="sp-words"><div class="sp-say"><h1><span lang="en">{SAY[0]}</span><span lang="zh-Hant">{SAY[1]}</span></h1>'
                f'<a class="btn" href="{ACT[0]}">{B.both(*ACT[1:])}</a></div></div>')
+        over = "" if kind == "hold" else f'<div class="sp__veil"></div><p class="sp-title">{title}</p>'
         return (f'<section class="sp" aria-label="{B.e(en["filmLabel"])}" data-i18n-aria="filmLabel">{photos}'
-                f'<div class="sp__film" style="--i: 5">{video}<div class="sp__veil"></div><p class="sp-title">{title}</p>{caps}</div>{say}</section>\n'
+                f'<div class="sp__film" style="--i: 5">{video}{over}{caps}</div>{say}</section>\n'
                 '<div class="sp-run" aria-hidden="true"></div>')
     return (f'<section class="sp" aria-label="{B.e(en["filmLabel"])}" data-i18n-aria="filmLabel">{photos}'
             f'<div class="sp__film" style="--i: 5">{video}{caps}</div></section>\n'
@@ -82,9 +87,9 @@ def build():
     base = page
     for name, ground, kind, t_en, t_zh in VERSIONS:
         page = rel(re.sub(r'<section class="hr-open".*?</section>', lambda m: first_screen(kind), base, count=1, flags=re.S))
-        css = "".join(f'  <link rel="stylesheet" href="{f}?v={B.STAMP}">\n' for f in (["spain.css"] + (["spain-true.css"] if kind else []) + (["spain-mark.css"] if kind == "mark" else [])))
+        css = "".join(f'  <link rel="stylesheet" href="{f}?v={B.STAMP}">\n' for f in (["spain.css"] + (["spain-true.css"] if kind else []) + (["spain-mark.css"] if kind in ("mark", "hold") else []) + (["spain-hold.css"] if kind == "hold" else [])))
         js = "spain-true.js" if kind else "spain.js"
-        mark = (' data-sp-kind="true"' + (" data-sp-mark" if kind == "mark" else "")) if kind else ""
+        mark = (' data-sp-kind="true"' + (" data-sp-mark" if kind in ("mark", "hold") else "") + (" data-sp-hold" if kind == "hold" else "")) if kind else ""
         html = page.replace('<html lang="en" data-root="">', f'<html lang="en" data-root="{UP}" data-sp="{ground}"{mark}>', 1)
         assert html != page
         html = re.sub(r"<title>.*?</title>", f"<title>{B.e(t_en)} {B.e(t_zh)} · tuan photography 陳亮元</title>", html, count=1)
