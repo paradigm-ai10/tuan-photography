@@ -196,6 +196,14 @@
         "en": "After spaincollection.com, second pass: compared with the original frame by frame",
         "zh": "參考 spaincollection.com 第二次：跟原版一格一格對過"
       }
+    },
+    {
+      "id": "spain-1112c",
+      "built": "2026-11-12T13:18",
+      "title": {
+        "en": "After spaincollection.com, third: your name in the middle",
+        "zh": "參考 spaincollection.com 第三次：中間放你的名字"
+      }
     }
   ],
   "items": [
@@ -1719,6 +1727,36 @@
       "still": {
         "wait": 9500
       }
+    },
+    {
+      "href": "w-mark.html",
+      "group": "spain-1112c",
+      "title": {
+        "en": "Round your name (white)",
+        "zh": "圍著你的名字（白底）"
+      },
+      "desc": {
+        "en": "Your note: 'putting the Tuan Photography as the mid caption'. The same as 3, with TUAN PHOTOGRAPHY in the middle in place of the sentence and button. Because it is the same logo at the same place as on the loading screen, the name now arrives once and stays: nothing fades, the photographs open round it. Scrolling carries it away as the film grows.",
+        "zh": "你的筆記：「putting the Tuan Photography as the mid caption」。跟 3 一樣，中間的那句話和按鈕換成 TUAN PHOTOGRAPHY。因為它跟載入畫面是同一個 logo、同一個位置，名字出現一次就留在那裡：不用淡出，照片直接在它周圍打開。往下捲，它跟著離開，影片長大。"
+      },
+      "still": {
+        "wait": 9000
+      }
+    },
+    {
+      "href": "w-mark-night.html",
+      "group": "spain-1112c",
+      "title": {
+        "en": "Round your name (black)",
+        "zh": "圍著你的名字（黑底）"
+      },
+      "desc": {
+        "en": "The same as 5 on black, the name in white.",
+        "zh": "跟 5 一樣，黑底，名字是白色。"
+      },
+      "still": {
+        "wait": 9000
+      }
     }
   ],
   "tags": [
@@ -1796,8 +1834,8 @@
   "words": {},
   "ask": {
     "ids": [
-      "w-true",
-      "w-true-night"
+      "w-mark",
+      "w-mark-night"
     ]
   },
   "round": {
@@ -1805,7 +1843,9 @@
       "w-frame",
       "w-frame-night",
       "w-true",
-      "w-true-night"
+      "w-true-night",
+      "w-mark",
+      "w-mark-night"
     ]
   },
   "pairs": [
@@ -1867,6 +1907,16 @@
       "label": {
         "en": "Closer to the original",
         "zh": "更像原版"
+      }
+    },
+    {
+      "ids": [
+        "w-mark",
+        "w-mark-night"
+      ],
+      "label": {
+        "en": "Round your name",
+        "zh": "圍著你的名字"
       }
     }
   ]

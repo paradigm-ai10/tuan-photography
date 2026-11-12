@@ -1,0 +1,13 @@
+/* The Spain Collection trial, third pass (2026-11-12): his word, "i feel like putting the Tuan Photography as the mid
+   caption". Loaded after spain.css and spain-true.css by the w-mark pages only. His logo stands in the middle where the
+   sentence was, at the size and place it has on the loading screen, so the name that arrives while the page loads
+   simply stays and the photographs open round it. No sentence, no button. */
+.sp-mark { --mark: "Cormorant Garamond", Georgia, serif; position: absolute; inset: 0; margin: 0; display: grid; grid-template-columns: max-content;
+  grid-template-rows: 1fr auto 1fr; justify-content: center; color: var(--ink); }
+.sp-mark__name, .sp-mark__sub { display: flex; line-height: 1; }
+.sp-mark__name { align-self: end; margin-bottom: clamp(0.6rem, 0.4rem + 0.6vw, 0.95rem);
+  font: 300 clamp(2.4rem, 0.9rem + 5.5vw, 5.5rem)/1 var(--mark); letter-spacing: 0.28em; }
+.sp-mark__name span:last-child { margin-right: -0.28em; }
+.sp-mark__line { height: 1px; background: currentColor; }
+.sp-mark__sub { align-self: start; justify-content: space-between; margin-top: clamp(0.55rem, 0.35rem + 0.5vw, 0.85rem);
+  font: 500 clamp(0.75rem, 0.6rem + 0.5vw, 1.05rem)/1 var(--mark); text-transform: uppercase; color: color-mix(in oklch, var(--ink) 70%, transparent); }

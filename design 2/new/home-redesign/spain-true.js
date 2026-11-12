@@ -98,7 +98,7 @@
     done = true;
     if (still) html.classList.add('sp-still');
     const open = () => { if (screen) screen.remove(); html.classList.add('sp-in'); html.classList.remove('hr-loading', 'hr-full', 'sp-out'); };
-    if (still || !screen) open();
+    if (still || !screen || html.hasAttribute('data-sp-mark')) open();   // w-mark: the name is the page's own, so nothing fades, the photographs open round it
     else { html.classList.add('sp-out'); setTimeout(open, 600); }   // the name goes first (hers: 0.6 s), then the first screen opens
   }
   if (!playing || !screen) { arrive(true); return; }
@@ -122,7 +122,7 @@
     await line.finished.catch(() => {});
     if (done) return;
     html.classList.add('hr-full');
-    await wait(3200);   // the name's own arrival, and a moment with it whole
+    await wait(html.hasAttribute('data-sp-mark') ? 2500 : 3200);   // the name's own arrival, and a moment with it whole (it stays, on w-mark)
     await Promise.all(imgs.map((im) => (im.decode ? im.decode().catch(() => {}) : null)));
     arrive(false);
   })();
