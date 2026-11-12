@@ -1979,20 +1979,15 @@
   "ask": {
     "ids": [
       "w-wall-quick-night",
-      "w-wall-quick",
-      "w-near-night",
-      "w-near"
+      "w-near-night"
     ]
   },
   "round": {
     "ids": [
       "c-flock-camille-smooth-night",
-      "w-play-night",
-      "w-play",
       "w-wall-quick-night",
-      "w-wall-quick",
-      "w-near-night",
-      "w-near"
+      "w-play-night",
+      "w-near-night"
     ]
   },
   "pairs": [
