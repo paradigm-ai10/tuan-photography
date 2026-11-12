@@ -29,7 +29,7 @@ html.hr-loading.sp-in .hr-load { opacity: 0; transition: opacity 0.6s cubic-bezi
 .sp__p--3 { left: 0; top: 45vw; width: 15vw; height: 25vw; }
 .sp__p--4 { right: 0; top: 45vw; width: 15vw; height: 25vw; }
 .sp__film { left: 0; bottom: -15vw; width: 100%; height: 100svh; overflow: hidden; background: var(--slate); color: var(--paper);
-  transform-origin: 50% 100%; transform: scale(0.4); }
+  transform-origin: 50% 100%; transform: scale(var(--sp-small, 0.4)); }   /* its small size: four tenths, unless a version sets --sp-small */
 .sp__film video { transform: scale(1.4); will-change: transform; }
 /* the film's own shades, under the bar and under the captions, once it fills the window */
 .sp__film::before, .sp__film::after { content: ""; position: absolute; z-index: 1; left: 0; right: 0; pointer-events: none; opacity: 0; transition: opacity 0.6s ease; }

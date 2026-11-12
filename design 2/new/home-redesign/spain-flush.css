@@ -1,0 +1,27 @@
+/* The Spain Collection trial, eighth pass (2026-11-12). His notes on w-edge: symmetric, yes, "but not all of the
+   pictures are shown in the frame", with a screenshot of spaincollection.com: there every photograph is whole and
+   sits flush against the edge of the window, no gap and nothing cut. Loaded after spain-near.css by w-flush only
+   (black only); the quicker waits of w-near stay.
+
+   Symmetric and flush. Top and foot mirror each other: the photograph at the top and the small film at the foot are
+   one size (28% of the window each way), touching the top and the foot. Left and right mirror each other: four
+   upright photographs of one size touching the sides, the upper pair as far from the top as the lower pair from
+   the foot. On a phone the top photograph sits under the bar, so the film rests the same distance above the foot. */
+[data-sp-flush] .sp .sp__film { --sp-small: 0.28; bottom: 0; }
+[data-sp-flush] .sp .sp__p--1 { left: 36vw; right: auto; top: 0; bottom: auto; width: 28vw; height: 28svh; }
+[data-sp-flush] .sp .sp__p--0, [data-sp-flush] .sp .sp__p--2, [data-sp-flush] .sp .sp__p--3, [data-sp-flush] .sp .sp__p--4 { width: 15vw; height: 25vw; }
+[data-sp-flush] .sp .sp__p--0 { left: 0; right: auto; top: 8svh; bottom: auto; }
+[data-sp-flush] .sp .sp__p--2 { left: auto; right: 0; top: 8svh; bottom: auto; }
+[data-sp-flush] .sp .sp__p--3 { left: 0; right: auto; top: auto; bottom: 8svh; }
+[data-sp-flush] .sp .sp__p--4 { left: auto; right: 0; top: auto; bottom: 8svh; }
+@media (max-width: 43.75rem) {
+  [data-sp-flush] .sp .sp__film { bottom: 4.5rem; }
+  [data-sp-flush] .sp .sp__p--1 { top: 4.5rem; }
+  [data-sp-flush] .sp .sp__p--0, [data-sp-flush] .sp .sp__p--2, [data-sp-flush] .sp .sp__p--3, [data-sp-flush] .sp .sp__p--4 { width: 24vw; height: 36vw; }
+  [data-sp-flush] .sp .sp__p--0 { left: 0; top: 26svh; }
+  [data-sp-flush] .sp .sp__p--2 { right: 0; top: 26svh; }
+  [data-sp-flush] .sp .sp__p--3 { left: 0; bottom: 26svh; }
+  [data-sp-flush] .sp .sp__p--4 { right: 0; bottom: 26svh; }
+}
+/* the photographs open from their trim in 1.8 s instead of 3, so they are whole and flush before the film grows */
+html.sp-in:not(.sp-still)[data-sp-flush] .sp__p, html.sp-in:not(.sp-still)[data-sp-flush] .sp__film { animation-duration: 1.8s; }

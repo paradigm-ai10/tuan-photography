@@ -1,0 +1,25 @@
+/* The Spain Collection trial, seventh pass (2026-11-12). His notes on w-near: "too inside, and not align, i want
+   symmetric dimension for top down, and left right. i dont want to see the edges of the one, at least some of the
+   portions of the pic should be outside of the display". Loaded after spain-near.css by w-edge only (black only, his
+   word the same evening); the quicker waits of w-near stay.
+
+   One symmetric frame round the name. Top and foot mirror each other: the photograph at the top is the same box as
+   the small film at the foot (40% of the window each way), each running 12% of the window's height past its edge, so
+   about 70% of each shows. Left and right mirror each other: four upright photographs, the same size, each running
+   30% of its width past the side, the upper pair as far from the top as the lower pair from the foot. */
+[data-sp-edge] .sp .sp__p--1 { left: 30vw; right: auto; top: -12svh; bottom: auto; width: 40vw; height: 40svh; }
+[data-sp-edge] .sp .sp__film { bottom: -12svh; }
+[data-sp-edge] .sp .sp__p--0, [data-sp-edge] .sp .sp__p--2, [data-sp-edge] .sp .sp__p--3, [data-sp-edge] .sp .sp__p--4 { width: 15vw; height: 25vw; }
+[data-sp-edge] .sp .sp__p--0 { left: -4.5vw; right: auto; top: 8svh; bottom: auto; }
+[data-sp-edge] .sp .sp__p--2 { left: auto; right: -4.5vw; top: 8svh; bottom: auto; }
+[data-sp-edge] .sp .sp__p--3 { left: -4.5vw; right: auto; top: auto; bottom: 8svh; }
+[data-sp-edge] .sp .sp__p--4 { left: auto; right: -4.5vw; top: auto; bottom: 8svh; }
+@media (max-width: 43.75rem) {
+  [data-sp-edge] .sp .sp__p--1 { top: -12svh; }
+  [data-sp-edge] .sp .sp__film { bottom: -12svh; }
+  [data-sp-edge] .sp .sp__p--0, [data-sp-edge] .sp .sp__p--2, [data-sp-edge] .sp .sp__p--3, [data-sp-edge] .sp .sp__p--4 { width: 24vw; height: 36vw; }
+  [data-sp-edge] .sp .sp__p--0 { left: -7vw; top: 26svh; }
+  [data-sp-edge] .sp .sp__p--2 { right: -7vw; top: 26svh; }
+  [data-sp-edge] .sp .sp__p--3 { left: -7vw; bottom: 26svh; }
+  [data-sp-edge] .sp .sp__p--4 { right: -7vw; bottom: 26svh; }
+}

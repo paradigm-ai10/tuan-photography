@@ -52,7 +52,8 @@
   const narrow = () => W < 700;
   function draw() {
     const rise = -parseFloat(getComputedStyle(film).bottom) || 0;   // how far below the foot the film hangs at first (15vw, 8svh on a phone, 6vw on w-near)
-    film.style.transform = `translate3d(0, ${(-p * rise).toFixed(2)}px, 0) scale(${(0.4 + 0.6 * p).toFixed(5)})`;
+    const s0 = parseFloat(getComputedStyle(film).getPropertyValue('--sp-small')) || 0.4;   // the film's small size (w-flush: 0.28)
+    film.style.transform = `translate3d(0, ${(-p * rise).toFixed(2)}px, 0) scale(${(s0 + (1 - s0) * p).toFixed(5)})`;
     video.style.transform = `scale(${(1.4 - 0.4 * p).toFixed(5)})`;
     words.style.transform = `translate3d(0, ${(-p * H).toFixed(2)}px, 0)`;
     const o = 0.18;

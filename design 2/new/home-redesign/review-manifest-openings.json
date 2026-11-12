@@ -228,6 +228,22 @@
         "en": "From your notes on both: photographs nearer, name centred, less waiting after the name",
         "zh": "照你對兩個的筆記：照片靠近、名字置中、名字之後少等一點"
       }
+    },
+    {
+      "id": "spain-1112g",
+      "built": "2026-11-12T19:56",
+      "title": {
+        "en": "Round your name: symmetric, running past the edges",
+        "zh": "圍著你的名字：對稱、超出邊緣"
+      }
+    },
+    {
+      "id": "spain-1112h",
+      "built": "2026-11-12T19:58",
+      "title": {
+        "en": "Round your name: symmetric, every photograph whole, flush to the edges",
+        "zh": "圍著你的名字：對稱、每張完整、貼齊邊緣"
+      }
     }
   ],
   "items": [
@@ -1901,6 +1917,36 @@
       "still": {
         "wait": 6000
       }
+    },
+    {
+      "href": "w-edge-night.html",
+      "group": "spain-1112g",
+      "title": {
+        "en": "Round your name, symmetric, past the edges (black)",
+        "zh": "圍著你的名字，對稱、超出邊緣（黑底）"
+      },
+      "desc": {
+        "en": "From your notes on 4: 'too inside, and not align, i want symmetric dimension for top down, and left right ... some of the portions of the pic should be outside of the display'. The photograph at the top and the small film at the foot are now the same size and mirror each other, each running past its edge so about 70% shows. The four upright photographs are one size, mirrored left to right and top to foot, each running about a third of its width past the side. The name stays centred; the quicker timing of 4 stays.",
+        "zh": "照你對 4 的筆記：「too inside, and not align, i want symmetric dimension for top down, and left right ... some of the portions of the pic should be outside of the display」。上面的照片和下面的小影片現在一樣大、上下對稱，各自超出邊緣，大約露出 70%。四張直的照片一樣大，左右、上下對稱，各自大約有三分之一超出側邊。名字維持置中，4 的快節奏也保留。"
+      },
+      "still": {
+        "wait": 6000
+      }
+    },
+    {
+      "href": "w-flush-night.html",
+      "group": "spain-1112h",
+      "title": {
+        "en": "Round your name, symmetric, flush to the edges (black)",
+        "zh": "圍著你的名字，對稱、貼齊邊緣（黑底）"
+      },
+      "desc": {
+        "en": "From your note on 4 ('symmetric, but not all of the pictures are shown in the frame') and the Spain Collection screenshot: every photograph is now whole and touches the edge of the window, as theirs do, nothing cut and no gap. The photograph at the top and the small film at the foot are one size, touching the top and the foot; the four upright photographs are one size, touching the sides, mirrored top to foot. The film starts a little smaller so the middle has room. The quicker timing stays.",
+        "zh": "照你對 4 的筆記（「symmetric, but not all of the pictures are shown in the frame」）和 Spain Collection 的截圖：每張照片現在都完整，貼齊視窗邊緣，跟他們一樣，沒有被切掉也沒有空隙。上面的照片和下面的小影片一樣大，分別貼齊上緣和下緣；四張直的照片一樣大，貼齊左右兩邊，上下對稱。影片一開始稍微小一點，讓中間有空間。快的節奏保留。"
+      },
+      "still": {
+        "wait": 6000
+      }
     }
   ],
   "tags": [
@@ -1978,16 +2024,15 @@
   "words": {},
   "ask": {
     "ids": [
-      "w-wall-quick-night",
-      "w-near-night"
+      "w-flush-night"
     ]
   },
   "round": {
     "ids": [
       "c-flock-camille-smooth-night",
       "w-wall-quick-night",
-      "w-play-night",
-      "w-near-night"
+      "w-edge-night",
+      "w-flush-night"
     ]
   },
   "pairs": [

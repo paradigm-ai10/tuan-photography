@@ -49,6 +49,11 @@ VERSIONS = [   # (file, ground, kind, title en, title zh)
     # less waiting after the name is up (spain-near.css)
     ("w-near", "day", "near", "Round your name, photographs nearer, quicker (white)", "圍著你的名字，照片靠近、快一點（白底）"),
     ("w-near-night", "night", "near", "Round your name, photographs nearer, quicker (black)", "圍著你的名字，照片靠近、快一點（黑底）"),
+    # seventh pass, his notes on w-near: symmetric top to foot and side to side, each photograph running past the
+    # screen's edge (spain-edge.css). Black only from here on, his word the same evening
+    ("w-edge-night", "night", "edge", "Round your name, symmetric, past the edges (black)", "圍著你的名字，對稱、超出邊緣（黑底）"),
+    # eighth pass, his note on w-edge with a screenshot of the original: every photograph whole, flush to the edge
+    ("w-flush-night", "night", "flush", "Round your name, symmetric, flush to the edges (black)", "圍著你的名字，對稱、貼齊邊緣（黑底）"),
 ]
 
 # the live opening with his note on its timing (less waiting after the name), as a trial page beside the live one
@@ -74,9 +79,9 @@ def first_screen(kind=""):
         logo = ('<div class="sp-words"><p class="sp-mark" role="img" aria-label="tuan photography"><span class="sp-mark__name">'
                 + "".join(f"<span>{c}</span>" for c in "TUAN") + '</span><span class="sp-mark__line"></span><span class="sp-mark__sub">'
                 + "".join(f"<span>{c}</span>" for c in "photography") + "</span></p></div>")
-        say = logo if kind in ("mark", "hold", "play", "near") else (f'<div class="sp-words"><div class="sp-say"><h1><span lang="en">{SAY[0]}</span><span lang="zh-Hant">{SAY[1]}</span></h1>'
+        say = logo if kind in ("mark", "hold", "play", "near", "edge", "flush") else (f'<div class="sp-words"><div class="sp-say"><h1><span lang="en">{SAY[0]}</span><span lang="zh-Hant">{SAY[1]}</span></h1>'
                f'<a class="btn" href="{ACT[0]}">{B.both(*ACT[1:])}</a></div></div>')
-        over = "" if kind in ("hold", "play", "near") else f'<div class="sp__veil"></div><p class="sp-title">{title}</p>'
+        over = "" if kind in ("hold", "play", "near", "edge", "flush") else f'<div class="sp__veil"></div><p class="sp-title">{title}</p>'
         return (f'<section class="sp" aria-label="{B.e(en["filmLabel"])}" data-i18n-aria="filmLabel">{photos}'
                 f'<div class="sp__film" style="--i: 5">{video}{over}{caps}</div>{say}</section>\n'
                 '<div class="sp-run" aria-hidden="true"></div>')
@@ -99,9 +104,9 @@ def build():
     base = page
     for name, ground, kind, t_en, t_zh in VERSIONS:
         page = rel(re.sub(r'<section class="hr-open".*?</section>', lambda m: first_screen(kind), base, count=1, flags=re.S))
-        css = "".join(f'  <link rel="stylesheet" href="{f}?v={B.STAMP}">\n' for f in (["spain.css"] + (["spain-true.css"] if kind else []) + (["spain-mark.css"] if kind in ("mark", "hold", "play", "near") else []) + (["spain-hold.css"] if kind in ("hold", "play", "near") else []) + (["spain-play.css"] if kind in ("play", "near") else []) + (["spain-near.css"] if kind == "near" else [])))
+        css = "".join(f'  <link rel="stylesheet" href="{f}?v={B.STAMP}">\n' for f in (["spain.css"] + (["spain-true.css"] if kind else []) + (["spain-mark.css"] if kind in ("mark", "hold", "play", "near", "edge", "flush") else []) + (["spain-hold.css"] if kind in ("hold", "play", "near", "edge", "flush") else []) + (["spain-play.css"] if kind in ("play", "near", "edge", "flush") else []) + (["spain-near.css"] if kind in ("near", "edge", "flush") else []) + (["spain-edge.css"] if kind == "edge" else []) + (["spain-flush.css"] if kind == "flush" else [])))
         js = "spain-true.js" if kind else "spain.js"
-        mark = (' data-sp-kind="true"' + (" data-sp-mark" if kind in ("mark", "hold", "play", "near") else "") + (" data-sp-hold" if kind in ("hold", "play", "near") else "") + (" data-sp-play" if kind in ("play", "near") else "") + (" data-sp-near" if kind == "near" else "")) if kind else ""
+        mark = (' data-sp-kind="true"' + (" data-sp-mark" if kind in ("mark", "hold", "play", "near", "edge", "flush") else "") + (" data-sp-hold" if kind in ("hold", "play", "near", "edge", "flush") else "") + (" data-sp-play" if kind in ("play", "near", "edge", "flush") else "") + (" data-sp-near" if kind in ("near", "edge", "flush") else "") + (" data-sp-edge" if kind == "edge" else "") + (" data-sp-flush" if kind == "flush" else "")) if kind else ""
         html = page.replace('<html lang="en" data-root="">', f'<html lang="en" data-root="{UP}" data-sp="{ground}"{mark}>', 1)
         assert html != page
         html = re.sub(r"<title>.*?</title>", f"<title>{B.e(t_en)} {B.e(t_zh)} · tuan photography 陳亮元</title>", html, count=1)
