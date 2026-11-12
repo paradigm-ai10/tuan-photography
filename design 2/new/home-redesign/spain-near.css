@@ -1,0 +1,26 @@
+/* The Spain Collection trial, sixth pass (2026-11-12). His notes on w-play: the photographs sat so close to the edges
+   that only about half of each showed ("I want a picture to be more obvious"), the name was not quite in the middle,
+   and the time between the whole name being up and what comes next was a little too long. Loaded last by the w-near
+   pages only; spain-true.js plays it (data-sp-near: the shorter waits).
+
+   The photographs come in from the edges so each shows whole, and the film at the foot shows three quarters of its
+   small self (it hangs 6vw below the foot instead of 15vw). The name is centred as a whole block, on the loading
+   screen and on the page alike, so it does not move when one gives way to the other: before, the line under TUAN
+   sat on the middle and the block as a whole stood about 37 px high. */
+[data-sp-near] .sp .sp__p--0 { left: 6vw; right: auto; top: 14svh; width: 15vw; height: 25vw; }
+[data-sp-near] .sp .sp__p--1 { left: 30vw; right: auto; top: 10svh; width: 40vw; height: 15vw; }
+[data-sp-near] .sp .sp__p--2 { left: auto; right: 6vw; top: 14svh; width: 15vw; height: 25vw; }
+[data-sp-near] .sp .sp__p--3 { left: 12vw; right: auto; top: 61svh; width: 13vw; height: 19vw; }
+[data-sp-near] .sp .sp__p--4 { left: auto; right: 12vw; top: 61svh; width: 13vw; height: 19vw; }
+[data-sp-near] .sp .sp__film { bottom: -6vw; }
+@media (max-width: 43.75rem) {
+  [data-sp-near] .sp .sp__p--0 { left: 5vw; top: 24svh; width: 24vw; height: 36vw; }
+  [data-sp-near] .sp .sp__p--1 { left: 30vw; top: 5.5rem; width: 40vw; height: 25vw; }
+  [data-sp-near] .sp .sp__p--2 { right: 5vw; top: 24svh; width: 24vw; height: 36vw; }
+  [data-sp-near] .sp .sp__p--3 { left: 5vw; top: 61svh; width: 24vw; height: 30vw; }
+  [data-sp-near] .sp .sp__p--4 { right: 5vw; top: 61svh; width: 24vw; height: 30vw; }
+  [data-sp-near] .sp .sp__film { bottom: -8svh; }
+}
+/* the name centred as one block, the same on the loading screen and on the page */
+[data-sp-near] .hr-load__mark, [data-sp-near] .sp-mark { grid-template-rows: auto auto auto; align-content: center; }
+[data-sp-near] .hr-load__name, [data-sp-near] .hr-load__sub, [data-sp-near] .sp-mark__name, [data-sp-near] .sp-mark__sub { align-self: auto; }

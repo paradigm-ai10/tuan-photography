@@ -1,0 +1,3 @@
+/* w-wall-quick on white: the live opening's black turned to the site's paper, for the white twin only */
+[data-wall="day"] .hr-load { --night: var(--paper); --on-night: var(--text); }
+html[data-wall="day"].hr-loading { background: var(--paper); }

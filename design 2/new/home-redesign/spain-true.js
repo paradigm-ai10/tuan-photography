@@ -51,7 +51,7 @@
   let W = innerWidth, H = stage.offsetHeight, p = 0, to = 0, last = 0, running = false, full = null, covered = false;
   const narrow = () => W < 700;
   function draw() {
-    const rise = narrow() ? 0.08 * H : 0.15 * W;   // how far below the foot the film hangs at first
+    const rise = -parseFloat(getComputedStyle(film).bottom) || 0;   // how far below the foot the film hangs at first (15vw, 8svh on a phone, 6vw on w-near)
     film.style.transform = `translate3d(0, ${(-p * rise).toFixed(2)}px, 0) scale(${(0.4 + 0.6 * p).toFixed(5)})`;
     video.style.transform = `scale(${(1.4 - 0.4 * p).toFixed(5)})`;
     words.style.transform = `translate3d(0, ${(-p * H).toFixed(2)}px, 0)`;
@@ -82,6 +82,7 @@
   }
   // w-play: the move plays by itself, so the scroll conducts nothing; the page scrolls on from the film as the live one does
   const play = html.hasAttribute('data-sp-play') && !reduce;
+  const near = html.hasAttribute('data-sp-near');   // w-near: shorter waits after the name (his note, 2026-11-12)
   function follow() {
     if (!play) { to = Math.max(0, Math.min(1, scrollY / H)); if (scrollY > 1) start(); }
     if (!play && !running && to !== p) { running = true; last = performance.now(); requestAnimationFrame(step); }
@@ -129,7 +130,7 @@
     const open = () => { if (screen) screen.remove(); html.classList.add('sp-in'); html.classList.remove('hr-loading', 'hr-full', 'sp-out'); };
     if (still || !screen || html.hasAttribute('data-sp-mark')) open();   // w-mark: the name is the page's own, so nothing fades, the photographs open round it
     else { html.classList.add('sp-out'); setTimeout(open, 600); }
-    if (play && !still) { html.classList.add('sp-playing'); timer = setTimeout(grow, 2200); }   // the photographs open, a moment, then the film grows   // the name goes first (hers: 0.6 s), then the first screen opens
+    if (play && !still) { html.classList.add('sp-playing'); timer = setTimeout(grow, near ? 1300 : 2200); }   // the photographs open, a moment, then the film grows   // the name goes first (hers: 0.6 s), then the first screen opens
   }
   if (!playing || !screen) { arrive(true); land(); return; }
   const skip = () => { arrive(false); land(); };
@@ -153,7 +154,8 @@
     await line.finished.catch(() => {});
     if (done) return;
     html.classList.add('hr-full');
-    await wait(html.hasAttribute('data-sp-mark') ? 2500 : 3200);   // the name's own arrival, and a moment with it whole (it stays, on w-mark)
+    await wait(near ? 2300 : html.hasAttribute('data-sp-mark') ? 2500 : 3200);   // w-near: the photographs open as soon as the whole name is up (2.3 s)
+   // the name's own arrival, and a moment with it whole (it stays, on w-mark)
     await Promise.all(imgs.map((im) => (im.decode ? im.decode().catch(() => {}) : null)));
     arrive(false);
   })();

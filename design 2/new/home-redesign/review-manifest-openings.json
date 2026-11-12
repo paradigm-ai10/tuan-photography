@@ -220,6 +220,14 @@
         "en": "Your two finalists, both playing by themselves",
         "zh": "你在選的兩個，都改成自己播"
       }
+    },
+    {
+      "id": "spain-1112f",
+      "built": "2026-11-12T19:46",
+      "title": {
+        "en": "From your notes on both: photographs nearer, name centred, less waiting after the name",
+        "zh": "照你對兩個的筆記：照片靠近、名字置中、名字之後少等一點"
+      }
     }
   ],
   "items": [
@@ -1833,6 +1841,66 @@
       "still": {
         "wait": 6500
       }
+    },
+    {
+      "href": "w-wall-quick-night.html",
+      "group": "spain-1112f",
+      "title": {
+        "en": "The wall, quicker after the name (black)",
+        "zh": "照片牆，名字之後快一點（黑底）"
+      },
+      "desc": {
+        "en": "The live opening (1) with only your timing note: once TUAN PHOTOGRAPHY is whole, the wall now starts about 0.8 s sooner (the name was held about 0.9 s after it was complete; now about 0.1 s). Everything else is the live page, exactly.",
+        "zh": "正式的開場（1），只改你說的時間：TUAN PHOTOGRAPHY 出現完整之後，照片牆早大約 0.8 秒開始（原本名字完整後還停大約 0.9 秒，現在大約 0.1 秒）。其他跟正式網站完全一樣。"
+      },
+      "still": {
+        "wait": 6000
+      }
+    },
+    {
+      "href": "w-wall-quick.html",
+      "group": "spain-1112f",
+      "title": {
+        "en": "The wall, quicker after the name (white)",
+        "zh": "照片牆，名字之後快一點（白底）"
+      },
+      "desc": {
+        "en": "The same on white.",
+        "zh": "一樣，白底。"
+      },
+      "still": {
+        "wait": 6000
+      }
+    },
+    {
+      "href": "w-near-night.html",
+      "group": "spain-1112f",
+      "title": {
+        "en": "Round your name, photographs nearer, quicker (black)",
+        "zh": "圍著你的名字，照片靠近、快一點（黑底）"
+      },
+      "desc": {
+        "en": "From your notes on 2 (round your name, black). The five photographs come in from the edges so each one shows whole (some showed only half), and the small film at the foot shows three quarters instead of under half. TUAN PHOTOGRAPHY is centred as a whole: before, the line under TUAN sat on the middle, so the name stood about 37 px high. Less waiting: the photographs open as soon as the name is whole, and the film starts growing 1.3 s later instead of 2.2 s. It lands at about 8.6 s instead of 9.7.",
+        "zh": "照你對 2（圍著你的名字，黑底）的筆記。五張照片從邊緣往內移，每一張都看得到完整的（之前有的只看到一半），下面的小影片露出四分之三，之前不到一半。TUAN PHOTOGRAPHY 整個置中：之前是 TUAN 下面那條線在正中間，所以名字整體偏高大約 37 px。少等一點：名字完整後照片馬上打開，影片在 1.3 秒後開始長大，之前是 2.2 秒。大約 8.6 秒落定，之前是 9.7 秒。"
+      },
+      "still": {
+        "wait": 6000
+      }
+    },
+    {
+      "href": "w-near.html",
+      "group": "spain-1112f",
+      "title": {
+        "en": "Round your name, photographs nearer, quicker (white)",
+        "zh": "圍著你的名字，照片靠近、快一點（白底）"
+      },
+      "desc": {
+        "en": "The same on white.",
+        "zh": "一樣，白底。"
+      },
+      "still": {
+        "wait": 6000
+      }
     }
   ],
   "tags": [
@@ -1910,15 +1978,21 @@
   "words": {},
   "ask": {
     "ids": [
-      "w-play-night",
-      "w-play"
+      "w-wall-quick-night",
+      "w-wall-quick",
+      "w-near-night",
+      "w-near"
     ]
   },
   "round": {
     "ids": [
       "c-flock-camille-smooth-night",
       "w-play-night",
-      "w-play"
+      "w-play",
+      "w-wall-quick-night",
+      "w-wall-quick",
+      "w-near-night",
+      "w-near"
     ]
   },
   "pairs": [
@@ -2010,6 +2084,26 @@
       "label": {
         "en": "Plays by itself",
         "zh": "自己播"
+      }
+    },
+    {
+      "ids": [
+        "w-wall-quick",
+        "w-wall-quick-night"
+      ],
+      "label": {
+        "en": "The wall, quicker",
+        "zh": "照片牆，快一點"
+      }
+    },
+    {
+      "ids": [
+        "w-near",
+        "w-near-night"
+      ],
+      "label": {
+        "en": "Round your name, nearer",
+        "zh": "圍著你的名字，照片靠近"
       }
     }
   ]
