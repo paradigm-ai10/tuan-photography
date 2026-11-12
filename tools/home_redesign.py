@@ -273,6 +273,13 @@ def flock_tiles():
     return f'\n  <div class="hr-flock" aria-hidden="true">{tiles}{film}</div>'
 
 
+# The versions of the page under the film (rounds two to five). Since 2026-11-12 they are written without the old drawn
+# opening in front (his word: the landing is decided elsewhere, here only the content is judged); with no .hr-load on
+# the page home.js goes straight to the end state, the film playing.
+CONTENT = {"f-drawn-down", "g-pile", "h-journal", "i-beside", "j-windows", "k-three-words", "l-current-words", "m-chapters",
+           "n-covers", "o-light-table", "p-split", "q-doors-first", "r-windows", "s-prints-over", "u-layered"}
+
+
 def page(home, name, title_en, title_zh, opening, body, extra="", attrs="", way=None, foot_html=None, scripts=""):
     return f"""<!doctype html>
 <html lang="en" data-home="{home}"{attrs}>
@@ -287,7 +294,7 @@ def page(home, name, title_en, title_zh, opening, body, extra="", attrs="", way=
 <link rel="stylesheet" href="home.css">
 </head>
 <body>
-{loader(extra)}{top()}
+{'' if name in CONTENT else loader(extra)}{top()}
 <main>
 {opening}
 <div class="hr-leaf">
