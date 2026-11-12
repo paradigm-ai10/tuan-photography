@@ -244,6 +244,14 @@
         "en": "Round your name: symmetric, every photograph whole, flush to the edges",
         "zh": "圍著你的名字：對稱、每張完整、貼齊邊緣"
       }
+    },
+    {
+      "id": "spain-1112i",
+      "built": "2026-11-12T20:06",
+      "title": {
+        "en": "Round your name: flush, all the photographs appearing at once",
+        "zh": "圍著你的名字：貼齊邊緣，照片同時出現"
+      }
     }
   ],
   "items": [
@@ -1947,6 +1955,21 @@
       "still": {
         "wait": 6000
       }
+    },
+    {
+      "href": "w-together-night.html",
+      "group": "spain-1112i",
+      "title": {
+        "en": "Round your name, flush, all appearing at once (black)",
+        "zh": "圍著你的名字，貼齊邊緣，同時出現（黑底）"
+      },
+      "desc": {
+        "en": "From your note on 4: 'all of them are right, just i dont like the 出現 of the image, in the original ones, all of them appears at the same time'. The same as 4, but the five photographs and the small film now appear together on one beat, instead of one after another a tenth of a second apart.",
+        "zh": "照你對 4 的筆記：「all of them are right, just i dont like the 出現 of the image, in the original ones, all of them appears at the same time」。跟 4 一樣，但五張照片和下面的小影片現在同時出現，不再一張接一張、每張差十分之一秒。"
+      },
+      "still": {
+        "wait": 6000
+      }
     }
   ],
   "tags": [
@@ -2024,15 +2047,15 @@
   "words": {},
   "ask": {
     "ids": [
-      "w-flush-night"
+      "w-together-night"
     ]
   },
   "round": {
     "ids": [
       "c-flock-camille-smooth-night",
       "w-wall-quick-night",
-      "w-edge-night",
-      "w-flush-night"
+      "w-flush-night",
+      "w-together-night"
     ]
   },
   "pairs": [

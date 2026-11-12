@@ -1,0 +1,5 @@
+/* The Spain Collection trial, ninth pass (2026-11-12). His note on w-flush: "all of them are right, just i dont like
+   the 出現 of the image, in the original ones, all of them appears at the same time". Loaded after spain-flush.css by
+   w-together only (black only). The six (five photographs and the film) now open together, on one beat, with no
+   tenth of a second between them; the opening itself (from a 30 px trim, fading in) is unchanged. */
+html.sp-in:not(.sp-still)[data-sp-together] .sp__p, html.sp-in:not(.sp-still)[data-sp-together] .sp__film { animation-delay: 0s; }
