@@ -188,6 +188,14 @@
         "en": "After spaincollection.com: photographs round a sentence, the film grows as you scroll",
         "zh": "參考 spaincollection.com：照片圍著一句話，往下捲影片就長大"
       }
+    },
+    {
+      "id": "spain-1112b",
+      "built": "2026-11-12T12:07",
+      "title": {
+        "en": "After spaincollection.com, second pass: compared with the original frame by frame",
+        "zh": "參考 spaincollection.com 第二次：跟原版一格一格對過"
+      }
     }
   ],
   "items": [
@@ -1681,6 +1689,36 @@
       "still": {
         "wait": 9000
       }
+    },
+    {
+      "href": "w-true.html",
+      "group": "spain-1112b",
+      "title": {
+        "en": "Round a sentence, closer to the original (white)",
+        "zh": "圍著一句話，更像原版（白底）"
+      },
+      "desc": {
+        "en": "A new one beside 1 and 2. I photographed the original and 1 at the same fourteen moments and put them side by side; the places and sizes of the photographs and the film already matched to the pixel, so this fixes what did not: the sentence at their size, three lines with underlined links and a button; the sentence now glides with the photographs instead of moving on its own; a large title over the film whose letters arrive as you finish scrolling; the film slightly dimmed and going dark as it leaves, at their pace; your name gone before the screen opens. Scroll slowly.",
+        "zh": "放在 1、2 旁邊的新版本。我把原版和 1 在同樣的十四個時間點拍下來並排比對；照片和影片的位置、大小本來就一樣（到像素），所以這版修的是不一樣的地方：那句話改成他們的大小，三行、有底線的連結和一個按鈕；那句話現在跟照片一起滑動，不再自己動；影片上有大標題，捲到最後字母一個一個出現；影片稍微壓暗，離開時照他們的速度變暗；你的名字先消失，畫面才打開。請慢慢捲。"
+      },
+      "still": {
+        "wait": 9500
+      }
+    },
+    {
+      "href": "w-true-night.html",
+      "group": "spain-1112b",
+      "title": {
+        "en": "Round a sentence, closer to the original (black)",
+        "zh": "圍著一句話，更像原版（黑底）"
+      },
+      "desc": {
+        "en": "The same as 3 on the opening's black.",
+        "zh": "跟 3 一樣，用開場的黑底。"
+      },
+      "still": {
+        "wait": 9500
+      }
     }
   ],
   "tags": [
@@ -1758,14 +1796,16 @@
   "words": {},
   "ask": {
     "ids": [
-      "w-frame",
-      "w-frame-night"
+      "w-true",
+      "w-true-night"
     ]
   },
   "round": {
     "ids": [
       "w-frame",
-      "w-frame-night"
+      "w-frame-night",
+      "w-true",
+      "w-true-night"
     ]
   },
   "pairs": [
@@ -1817,6 +1857,16 @@
       "label": {
         "en": "Round a sentence",
         "zh": "圍著一句話"
+      }
+    },
+    {
+      "ids": [
+        "w-true",
+        "w-true-night"
+      ],
+      "label": {
+        "en": "Closer to the original",
+        "zh": "更像原版"
       }
     }
   ]

@@ -1,0 +1,60 @@
+/* The Spain Collection trial, second pass (2026-11-12): his word, "so that it really resembles the original, run
+   review iterations". Loaded after spain.css by the w-true pages only; spain-true.js moves it. What changed after the
+   original and w-frame were photographed side by side at the same moments (tools/home_landing.py has the list):
+   the sentence at her size, three lines with underlined links and a button; the sentence carried by the same
+   smoothed motion as the photographs; a large title over the film, its letters arriving with the last part of the
+   scroll; the film a little dimmed, as hers; the film leaving at a quarter of the scroll's pace and going dark;
+   the name gone before the first screen opens. */
+
+/* the sentence: hers is 4.167vw on a 60vw measure, its middle at 56% of the screen, a button under it */
+[data-sp-kind="true"] .sp-words { position: absolute; z-index: 1; inset: 0; height: auto; min-height: 0; margin: 0; padding: 0; display: block; will-change: transform; }
+.sp-say { position: absolute; left: 20vw; width: 60vw; top: 54%; transform: translateY(-50%); text-align: center; }
+[data-sp-kind="true"] .sp-words h1 { max-width: none; font-size: 4.167vw; line-height: 1.14; text-wrap: balance; }
+.sp-say a { pointer-events: auto; }
+.sp-say h1 a { color: inherit; text-decoration: underline; text-decoration-thickness: 0.045em; text-underline-offset: 0.16em; }
+.sp-say h1 a:hover { color: var(--link, var(--accent)); }
+.sp-say .btn { margin-top: 1.7vw; }
+[data-sp="night"] .sp-say .btn { color: var(--text); background: var(--ink); border-color: var(--ink); }
+html.hr-loading:not(.sp-in) .sp-say .btn { opacity: 0; }
+html.sp-in:not(.sp-still) .sp-say .btn { animation: sp-rise 1.6s var(--out) 0.4s both; }
+@media (max-width: 43.75rem) {
+  .sp-say { left: 17vw; width: 66vw; top: 53%; }
+  [data-sp-kind="true"] .sp-words h1 { font-size: min(5.9vw, 1.7rem); line-height: 1.25; }
+  .sp-say .btn { margin-top: 1rem; }
+  [data-sp-kind="true"] .sp__p--0, [data-sp-kind="true"] .sp__p--2 { top: 34vw; width: 22vw; height: 35vw; }   /* clear of the longer sentence */
+}
+
+/* the film: a little dimmed, and a large title at the left whose letters arrive with the last part of the scroll */
+[data-sp-kind="true"] .sp__film { background: oklch(12% 0.004 60); }
+.sp__veil { position: absolute; z-index: 1; inset: 0; background: oklch(12% 0.004 60); opacity: 0.3; pointer-events: none; }
+[data-sp-kind="true"] .hr-cap, [data-sp-kind="true"] .sp__film::after { display: none; }
+.sp-title { position: absolute; z-index: 2; left: 10vw; top: 50%; transform: translateY(-50%); margin: 0; pointer-events: none;
+  font: 400 6.667vw/1.04 var(--serif); color: var(--paper); }
+html[lang="zh-Hant"] .sp-title { font-weight: 500; letter-spacing: 0.04em; line-height: 1.2; }
+html[lang="en"] .sp-title [lang="zh-Hant"], html[lang="zh-Hant"] .sp-title [lang="en"] { display: none; }
+.sp-title__l { display: block; position: relative; }
+.sp-title__l--2 { margin-left: 7.5vw; }
+.sp-title__l--2::before { content: ""; position: absolute; left: -7.083vw; top: 54%; width: 5vw; height: max(1px, 0.14vw); background: currentColor;
+  transform: scaleX(var(--rule, 0)); transform-origin: 0 50%; }
+.sp-ch { display: inline-block; white-space: pre; opacity: 0; transform-origin: 50% 0; will-change: transform, opacity; }
+@media (max-width: 43.75rem) { .sp-title { left: 8vw; font-size: 12.2vw; } .sp-title__l--2 { margin-left: 13.9vw; } .sp-title__l--2::before { left: -13.9vw; width: 10vw; } }
+
+/* leaving: hers goes up at about a quarter of the scroll's pace while its picture goes dark and the next part comes over it */
+@keyframes sp-leave { to { transform: translateY(-26vh); } }
+@keyframes sp-dark { to { opacity: 0; } }
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: scroll()) {
+    [data-sp-kind="true"] .sp { animation-name: sp-leave; }
+    [data-sp-kind="true"] .sp__film video { animation: sp-dark linear both; animation-timeline: scroll(root block); animation-range: 100vh 200vh; }
+  }
+}
+
+/* the name goes first, then the first screen opens; the bar is there with it, as hers is */
+html.sp-out .hr-load { opacity: 0; transition: opacity 0.6s cubic-bezier(0.33, 1, 0.68, 1); pointer-events: none; }
+[data-sp-kind="true"] .top { transition: color 0.4s ease, opacity 0.6s ease; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sp-ch { opacity: 1; }
+  .sp-title__l--2::before { transform: none; }
+  [data-sp-kind="true"] .sp-words { position: absolute; height: max(100svh, 30rem); bottom: auto; }
+}
