@@ -162,10 +162,71 @@ def pairs(en, zh):
 </div>"""
 
 
+# ---------------------------------------------------------------- the index, taken further (2026-11-12)
+# He scored the index 2 ("looks plain or flat") but likes its concept and asked for variations made with skills.
+# What he has scored 5 elsewhere always moves with craft, so these are the index as one held stage the scroll
+# conducts: a place at a time, its name set very large, its photograph uncovered from its foot (the site's own
+# "uncover"), the list itself reduced to a small running index. From top-design (type as architecture, one
+# signature moment, clip-path reveals, asymmetry) and animate (purpose: spatial consistency and state; transform,
+# opacity and clip-path only; a strong ease-out; reduced motion). Eight places, a short hold: a long pinned scroll
+# is one of the things he has called overwhelming.
+
+STAGE = [   # (photograph, a wide one for the version that fills the window, name, where the name leads)
+    ("queensboro-train", "empire-state-sunset", ("New York", "紐約"), "countries/usa.html"),
+    ("matterhorn-lake", "matterhorn-lake", ("Zermatt", "策馬特"), "countries/switzerland.html"),
+    ("fuji-lake", "fuji-lake", ("Mount Fuji", "富士山"), "countries/japan.html"),
+    ("sapa-terraces", "sapa-valley", ("Sa Pa", "沙壩"), "countries/vietnam.html"),
+    ("tekapo-stars", "aurora", ("Lake Tekapo", "蒂卡波湖"), "countries/new-zealand.html"),
+    ("golden-gate-fog", "golden-gate-fog", ("San Francisco", "舊金山"), "countries/usa.html"),
+    ("peak-night", "peak-night", ("Hong Kong", "香港"), "countries/hong-kong.html"),
+    ("bunkers", "bunkers", ("Barcelona", "巴塞隆納"), "posts/barcelona.html"),
+]
+
+
+def stage(kind, en, zh, wide=False):
+    photos, names, run = [], [], []
+    for i, (tall, flat, name, href) in enumerate(STAGE):
+        sid = flat if wide else tall
+        x = B.SLIDES[sid]
+        B.strings(x, en, zh)
+        date = B.COUNTRIES[x["country"]]["date"]["en"]
+        en[f"hxN{i}"], zh[f"hxN{i}"] = name
+        en[f"hxW{i}"], zh[f"hxW{i}"] = f'{x["where"]["en"]}, {date}', f'{x["where"]["zh"]}，{date}'
+        on = " is-on" if i == 0 else ""
+        photos.append(f'<figure class="hx-photo{on}"><a {B.opens(sid, "", en, zh)}>'
+                      f'{B.img(x, "", "100vw" if wide else "(max-width: 48rem) 92vw, 56vw", soon=True)}</a></figure>')
+        names.append(f'<a class="hx-name{on}" href="{href}"><b data-i18n="hxN{i}">{e(name[0])}</b>'
+                     f'<span data-i18n="hxW{i}">{e(en[f"hxW{i}"])}</span></a>')
+        run.append(f'<li><button type="button" class="caps{on}" data-i18n="hxN{i}">{e(name[0])}</button></li>')
+    ways = "".join(way(*w[:2], en, zh, *w[2:]) for w in WAYS)
+    en["hxPlaces"], zh["hxPlaces"] = "Places", "地方"
+    return f"""<div class="leaf hx" data-hx="{kind}">
+<section class="hc-leaf hc-leaf--line">{line(en, zh)}</section>
+<section class="hx-run" aria-label="Places" data-i18n-aria="hxPlaces">
+  <div class="hx-stage">
+    <div class="hx-photos">{"".join(photos)}</div>
+    <div class="hx-names">{"".join(names)}</div>
+    <ol class="hx-index">{"".join(run)}</ol>
+  </div>
+</section>
+<nav class="wrap hc-ways" aria-label="Site">{ways}</nav>
+</div>"""
+
+
+def fine(en, zh):
+    """The first index, kept as a list you read down, but ruled, with the place set large and its line at the far
+    side of the rule, and the photograph uncovered from its foot instead of faded."""
+    return index(en, zh).replace('class="leaf hc-b"', 'class="leaf hc-b hc-b--fine"', 1)
+
+
 VERSIONS = [   # (file, the body, title en, title zh)
     ("v-stays", stays, "The photograph stays, the paper passes", "照片不動，紙從上面經過"),
     ("v-index", index, "The index of places", "地方的索引"),
     ("v-pairs", pairs, "Pairs: a landscape and a city", "一對一對：一張風景，一張城市"),
+    ("v-index-stage", lambda en, zh: stage("wipe", en, zh), "The index, a place at a time", "索引：一次一個地方"),
+    ("v-index-window", lambda en, zh: stage("window", en, zh, wide=True), "The index, the whole window", "索引：整個畫面"),
+    ("v-index-line", lambda en, zh: stage("line", en, zh), "The index, one line of names", "索引：一行地名"),
+    ("v-index-fine", fine, "The index, ruled and uncovered", "索引：加上細線，照片揭開"),
 ]
 
 

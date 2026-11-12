@@ -52,6 +52,14 @@
     "en": "Home content, round one: three structures, on the real page",
     "zh": "首頁內容第一輪：三種結構，接在正式首頁上"
    }
+  },
+  {
+   "id": "content2",
+   "built": "2026-11-12T13:29",
+   "title": {
+    "en": "The index of places, four ways that move (top-design and animate skills)",
+    "zh": "地方的索引：四種會動的做法（用 top-design 和 animate 技能）"
+   }
   }
  ],
  "items": [
@@ -335,6 +343,66 @@
    "still": {
     "wait": 5000
    }
+  },
+  {
+   "href": "v-index-stage.html",
+   "group": "content2",
+   "title": {
+    "en": "The index, a place at a time",
+    "zh": "索引：一次一個地方"
+   },
+   "desc": {
+    "en": "The list becomes one held screen. A place name set very large on the left, its photograph whole on the right. As you scroll, the next photograph is uncovered from its foot while the last one leaves along the same edge, and the name rises from under a line. The eight names sit small at the bottom; click one to go there.",
+    "zh": "清單變成一個停住的畫面。左邊是很大的地名，右邊是完整的照片。往下捲時，下一張照片從底部揭開、上一張沿同一條邊離開，地名從一條線底下升上來。八個地名小小地排在下面，點一個就跳過去。"
+   },
+   "still": {
+    "wait": 5000
+   }
+  },
+  {
+   "href": "v-index-window.html",
+   "group": "content2",
+   "title": {
+    "en": "The index, the whole window",
+    "zh": "索引：整個畫面"
+   },
+   "desc": {
+    "en": "The photograph fills the window edge to edge, above a band of paper that carries the place name and the eight small names. Scrolling uncovers the next photograph over the last. Nothing is written on the photograph. Wide photographs only, so New York is the Empire State at sunset here.",
+    "zh": "照片佔滿整個畫面，下面一道紙帶寫著地名和八個小地名。往下捲，下一張照片蓋過上一張揭開。照片上不寫字。這一版只用橫的照片，所以紐約是日落的帝國大廈。"
+   },
+   "still": {
+    "wait": 5000
+   }
+  },
+  {
+   "href": "v-index-line.html",
+   "group": "content2",
+   "title": {
+    "en": "The index, one line of names",
+    "zh": "索引：一行地名"
+   },
+   "desc": {
+    "en": "The eight names are one line of very large type across the top that travels sideways as you scroll; the one in the middle is in ink, its neighbours pale. Under it, the photograph of that place, whole, uncovered from its foot.",
+    "zh": "八個地名排成最上面一行很大的字，往下捲時整行往旁邊走；中間那個是深色，兩旁的很淡。下面是那個地方完整的照片，從底部揭開。"
+   },
+   "still": {
+    "wait": 5000
+   }
+  },
+  {
+   "href": "v-index-fine.html",
+   "group": "content2",
+   "title": {
+    "en": "The index, ruled and uncovered",
+    "zh": "索引：加上細線，照片揭開"
+   },
+   "desc": {
+    "en": "The version you scored 2, kept as a list you read down but finished: a hairline between rows, the place line in small capitals at the far side, the name stepping in as it becomes current, and a larger photograph that is uncovered from its foot instead of fading.",
+    "zh": "你打 2 分的那一版，還是一列往下讀的清單，但做得更細：每列之間一條細線，地點用小型大寫放在另一側，讀到的地名往內移一點，照片更大，而且是從底部揭開，不是淡入。"
+   },
+   "still": {
+    "wait": 5000
+   }
   }
  ],
  "tags": [
@@ -412,16 +480,18 @@
  "words": {},
  "ask": {
   "ids": [
-   "v-stays",
-   "v-index",
-   "v-pairs"
+   "v-index-stage",
+   "v-index-window",
+   "v-index-line",
+   "v-index-fine"
   ]
  },
  "round": {
   "ids": [
-   "v-stays",
-   "v-index",
-   "v-pairs"
+   "v-index-stage",
+   "v-index-window",
+   "v-index-line",
+   "v-index-fine"
   ]
  }
 }

@@ -49,6 +49,94 @@
 .hc-print a { display: grid; place-items: center; height: 100%; }
 .hc-print img { width: auto; height: auto; max-width: 100%; max-height: 82vh; }
 
+@media (min-width: 56.01rem) { .hc-b--fine .hc-index { grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); } }
+/* B, ruled and uncovered (hc-b--fine): the same list, each row under a hairline with its line at the far side;
+   the photograph is uncovered from its foot */
+.hc-b--fine .hc-names a { grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; column-gap: var(--s-3); padding-block: 0.62em 0.5em; border-top: 1px solid var(--line); }
+.hc-b--fine .hc-names li:last-child a { border-bottom: 1px solid var(--line); }
+.hc-b--fine .hc-names b { font-size: clamp(2.4rem, 4.6vw, 4.75rem); white-space: nowrap; line-height: 1; letter-spacing: -0.012em; color: color-mix(in oklch, var(--text) 34%, var(--bg)); transition: color 600ms var(--out), translate 600ms var(--out); }
+.hc-b--fine .hc-names a.is-on b { translate: 0.18em 0; }
+.hc-b--fine .hc-names span { opacity: 1; text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.6875rem; text-align: right; color: color-mix(in oklch, var(--text-2) 55%, var(--bg)); }
+.hc-b--fine .hc-names a.is-on span { color: var(--text-2); }
+.hc-b--fine .hc-onward { border-top: 0; }
+.hc-b--fine .hc-print { opacity: 1; clip-path: inset(100% 0 0 0); transition: none; }
+.hc-b--fine .hc-print.was { clip-path: inset(0 0 100% 0); z-index: 1; transition: clip-path 1100ms var(--out); }   /* the one leaving is uncovered away along the same edge */
+.hc-b--fine .hc-print.is-on { clip-path: inset(0); z-index: 2; transition: clip-path 1100ms var(--out); }
+.hc-b--fine .hc-print img { scale: 1.06; }
+.hc-b--fine .hc-print.is-on img { scale: 1; transition: scale 1600ms var(--out); }
+
+/* The index as a held stage (hx): one place at a time. The photograph of the place is uncovered from its foot over
+   the one before; the name comes up from under a line as the last one leaves upward; the list is a small running
+   index. Three stagings, set by data-hx. */
+.hx-run { position: relative; height: calc(100svh + 8 * 46svh); }
+.hx-stage { position: sticky; top: 0; height: 100svh; overflow: hidden; }
+.hx-photos { position: absolute; }
+.hx-photo { position: absolute; inset: 0; clip-path: inset(100% 0 0 0); }
+.hx-photo.was { clip-path: inset(0 0 100% 0); z-index: 1; transition: clip-path 1100ms var(--out); }   /* leaving along the same rising edge the next arrives on */
+.hx-photo.is-on { clip-path: inset(0); z-index: 2; transition: clip-path 1100ms var(--out); }
+.hx-photo a { display: block; height: 100%; }
+.hx-photo a:focus-visible { outline-offset: -4px; }
+.hx-photo img { width: 100%; height: 100%; object-fit: contain; scale: 1.06; }
+.hx-photo.is-on img { scale: 1; transition: scale 1600ms var(--out); }
+.hx-names { position: absolute; }
+.hx-name { position: absolute; inset: 0; display: grid; align-content: end; justify-items: start; gap: 0.9rem; text-decoration: none; overflow: hidden; pointer-events: none; }
+.hx-name.is-on { pointer-events: auto; }
+.hx-name b { display: block; font-family: var(--serif); font-weight: 400; line-height: 0.98; letter-spacing: -0.015em; translate: 0 115%; opacity: 0; }
+.hx-name.was b { translate: 0 -115%; opacity: 0; transition: translate 700ms var(--out), opacity 400ms linear; }
+.hx-name.is-on b { translate: 0 0; opacity: 1; transition: translate 900ms var(--out) 120ms, opacity 300ms linear 120ms; }
+.hx-name span { color: var(--text-2); font-size: var(--t-xs); letter-spacing: 0.14em; text-transform: uppercase; opacity: 0; }
+.hx-name.is-on span { opacity: 1; transition: opacity 600ms var(--out) 500ms; }
+.hx-name:hover b { color: var(--accent); }
+:root:lang(zh-Hant) .hx-name b { font-weight: 500; letter-spacing: 0.02em; line-height: 1.1; }
+.hx-index { position: absolute; display: flex; flex-wrap: wrap; gap: 0.2rem 1.5rem; list-style: none; padding: 0; margin: 0; }
+.hx-index button { padding: 0.5rem 0; border: 0; background: none; cursor: pointer; font-size: 0.6875rem; color: color-mix(in oklch, var(--text-2) 50%, var(--bg)); transition: color 400ms var(--out); }
+.hx-index button.is-on, .hx-index button:hover { color: var(--text); }
+
+/* a place at a time: the name on the left in two lines, the photograph whole on the right */
+[data-hx="wipe"] .hx-photos { top: 9svh; bottom: 9svh; right: var(--edge); width: 50%; }
+[data-hx="wipe"] .hx-photo img { object-position: right center; }
+[data-hx="wipe"] .hx-names { left: var(--edge); width: 40%; top: 14svh; bottom: 24svh; }
+[data-hx="wipe"] .hx-name b { font-size: clamp(3.2rem, 7.4vw, 8rem); max-width: 6.2em; }
+[data-hx="wipe"] .hx-index { left: var(--edge); bottom: 8svh; width: 38%; }
+
+/* the whole window: the photograph fills the window above a band of paper that carries the name */
+[data-hx="window"] .hx-photos { inset: 0 0 25svh 0; background: var(--slate); }
+[data-hx="window"] .hx-photo img { object-fit: cover; }
+[data-hx="window"] .hx-names { left: var(--edge); right: 46%; bottom: 0; height: 25svh; }
+[data-hx="window"] .hx-name { align-content: center; gap: 0.6rem; }
+[data-hx="window"] .hx-name b { font-size: clamp(2.6rem, 5.6vw, 5.75rem); white-space: nowrap; }
+[data-hx="window"] .hx-index { right: var(--edge); bottom: 0; height: 25svh; width: 40%; align-content: center; justify-content: flex-end; }
+
+/* one line of names: the names are one line of very large type that travels sideways; the photograph is whole beneath */
+[data-hx="line"] .hx-names { top: 9svh; left: 0; display: flex; align-items: baseline; gap: 0.7em; padding-inline: 50vw; font-size: clamp(3.5rem, 9.5vw, 10rem); transition: translate 1100ms var(--out); }
+[data-hx="line"] .hx-name { position: relative; inset: auto; overflow: visible; pointer-events: auto; gap: 0.5rem; justify-items: center; flex: none; }
+[data-hx="line"] .hx-name b { font-size: 1em; white-space: nowrap; translate: none; opacity: 1; color: color-mix(in oklch, var(--text) 16%, var(--bg)); transition: color 700ms var(--out); }
+[data-hx="line"] .hx-name.was b { translate: none; opacity: 1; }
+[data-hx="line"] .hx-name.is-on b { translate: none; color: var(--text); transition: color 700ms var(--out); }
+[data-hx="line"] .hx-photos { top: 36svh; bottom: 7svh; left: var(--edge); right: var(--edge); }
+[data-hx="line"] .hx-index { display: none; }
+
+@media (max-width: 48rem) {
+  .hx-run { height: calc(100svh + 8 * 40svh); }
+  [data-hx="wipe"] .hx-photos { top: 7svh; bottom: auto; height: 54svh; left: var(--edge); width: auto; }
+  [data-hx="wipe"] .hx-photo img { object-position: center; }
+  [data-hx="wipe"] .hx-names { width: auto; right: var(--edge); top: 63svh; bottom: 6svh; }
+  [data-hx="wipe"] .hx-name { align-content: start; }
+  [data-hx="wipe"] .hx-name b { font-size: clamp(3rem, 15vw, 5rem); }
+  [data-hx="wipe"] .hx-index, [data-hx="window"] .hx-index { display: none; }
+  [data-hx="window"] .hx-names { right: var(--edge); }
+  [data-hx="window"] .hx-name b { font-size: clamp(2.4rem, 11vw, 4rem); }
+  [data-hx="line"] .hx-names { top: 12svh; font-size: 17vw; }
+  [data-hx="line"] .hx-photos { top: 38svh; bottom: 10svh; }
+  .hc-b--fine .hc-names a { grid-template-columns: minmax(0, 1fr); }
+  .hc-b--fine .hc-names b { font-size: clamp(2.2rem, 10vw, 3.5rem); }
+  .hc-b--fine .hc-names span { text-align: left; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hx-photo, .hx-photo img, .hx-name b, .hx-name span, .hx-names, .hc-b--fine .hc-print, .hc-b--fine .hc-print img { transition: none !important; }
+  .hx-photo img, .hc-b--fine .hc-print img { scale: 1; }
+}
+
 /* C: pairs, each hung differently */
 .hc-pair { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); align-content: center; min-height: 100svh; padding-block: clamp(4rem, 12vh, 8rem); }
 .hc-pair .piece { translate: 0 var(--lag, 0px); }
