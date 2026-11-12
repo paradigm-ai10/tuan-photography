@@ -19,7 +19,7 @@
    files, so they stay sharp as they grow.
 
    Once per visit (sessionStorage, as the loading screen before it); never under "reduce motion"; a click or a key
-   skips to the end; ?opening in the address plays it again. The small script in the page decides before anything
+   or the first turn of the wheel or swipe skips to the end; ?opening in the address plays it again. The small script in the page decides before anything
    is drawn and marks <html class="hr-loading">. */
 (() => {
   'use strict';
@@ -75,6 +75,8 @@
   if (!playing || !screen) { finish(); return; }
   screen.addEventListener('click', finish);
   document.addEventListener('keydown', (e) => { if (!done && !e.metaKey && !e.ctrlKey && !e.altKey) finish(); });
+  // a visitor who starts to scroll wants the page: the first turn of the wheel or swipe skips too
+  ['wheel', 'touchmove'].forEach((type) => addEventListener(type, finish, { passive: true, once: true }));
 
   /* ---------------- the wall ---------------- */
   const layer = screen.querySelector('.hr-flock');
@@ -104,8 +106,6 @@
     // decode every photograph now, while the name is still up: one decoded on the frame it first shows drops that frame
     const decoded = Promise.all(photos.map((ph) => { const im = ph.querySelector('img'); return im.decode ? im.decode().catch(() => {}) : null; }));
     await wait(300); if (done) return;   // the whole name, alone, a moment longer
-    const mark = screen.querySelector('.hr-load__mark');
-    if (mark) mark.style.transition = 'opacity 1000ms ease';
     html.classList.add('hr-markgone');
     tv.playbackRate = 0.3; tv.play().catch(() => {});   // the film in its card, small, in slow motion
     await Promise.race([decoded, wait(600)]); if (done) return;
@@ -159,21 +159,20 @@
   const FILL = 1400;
   let face = false;
   document.fonts.load('300 1em "Cormorant Garamond"').then(() => { face = true; }, () => { face = true; });
-  function fill() {
-    return new Promise((res) => {
-      const t0 = performance.now();
-      let p = 0, last = 0;
-      const step = (now) => {
-        if (done) return;
-        const ok = now - t0 > 8000 || (face && ready());
-        p = Math.min(ok ? 1 : 0.85, p + (now - (last || now)) / FILL);
-        last = now;
-        screen.style.setProperty('--p', (1 - Math.pow(1 - p, 2)).toFixed(4));   // a number for the stylesheet
-        if (p < 1) requestAnimationFrame(step);
-        else { html.classList.add('hr-full'); res(); }
-      };
-      requestAnimationFrame(step);
-    });
+  // one animation the browser runs itself, so the line stays smooth while the photographs and the film arrive
+  async function fill() {
+    const t0 = performance.now();
+    const ok = () => performance.now() - t0 > 8000 || (face && ready());
+    const line = screen.querySelector('.hr-load__line').animate([{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }],
+      { duration: FILL, easing: 'cubic-bezier(0.5, 1, 0.89, 1)', fill: 'both' });
+    await wait(FILL * 0.61);   // where this curve reaches 85% of the line
+    if (!ok()) {
+      line.pause();
+      while (!ok() && !done) await wait(100);
+      line.play();
+    }
+    await line.finished.catch(() => {});
+    if (!done) html.classList.add('hr-full');
   }
 
   (async () => {

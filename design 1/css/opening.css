@@ -16,14 +16,14 @@ html.hr-loading .hr-load { position: fixed; inset: 0; z-index: 20; display: bloc
 html.hr-out .hr-load { pointer-events: none; }
 .hr-load__paper { position: absolute; inset: 0; background: var(--night); }
 .hr-load__mark { position: absolute; inset: 0; z-index: 2; display: grid; grid-template-columns: max-content; grid-template-rows: 1fr auto 1fr;
-  justify-content: center; color: var(--on-night); will-change: transform; }
-html.hr-markgone .hr-load__mark, html.hr-out .hr-load__mark { opacity: 0; transition: opacity 0.9s ease; }   /* the name goes before the first card shows */
+  justify-content: center; color: var(--on-night); }
+html.hr-markgone .hr-load__mark, html.hr-out .hr-load__mark { opacity: 0; transition: opacity 1s ease; }   /* the name goes before the first card shows */
 .hr-load__name, .hr-load__sub { display: flex; line-height: 1; }
 .hr-load__name span, .hr-load__sub span { display: inline-block; opacity: 0; }   /* the letters carry the fade-in, not the word */
 .hr-load__name { align-self: end; margin-bottom: clamp(0.6rem, 0.4rem + 0.6vw, 0.95rem);
   font: 300 clamp(2.4rem, 0.9rem + 5.5vw, 5.5rem)/1 var(--mark); letter-spacing: 0.28em; }
 .hr-load__name span:last-child { margin-right: -0.28em; }
-.hr-load__line { height: 1px; background: var(--on-night); transform-origin: left center; transform: scaleX(var(--p, 0)); }
+.hr-load__line { height: 1px; background: var(--on-night); transform-origin: left center; transform: scaleX(0); }   /* js/opening.js draws it, as one animation the browser runs */
 .hr-load__sub { align-self: start; justify-content: space-between; margin-top: clamp(0.55rem, 0.35rem + 0.5vw, 0.85rem);
   font: 500 clamp(0.75rem, 0.6rem + 0.5vw, 1.05rem)/1 var(--mark); text-transform: uppercase; color: color-mix(in oklch, var(--on-night) 70%, transparent); }
 /* his note, 2026-11-11: "all of the TUAN comes too fast, slower TUAN". The letters rise slowly and well apart,
@@ -35,7 +35,7 @@ html.hr-full .hr-load__sub span { animation: hr-fade 1.4s ease 0.9s both; }
 
 /* ---------------- the wall: js/opening.js lays the cards out and moves them. The middle card is the film, small and
    alive, and it grows to the whole window, where the page lands ---------------- */
-.hr-flock { position: absolute; inset: 0; z-index: 1; overflow: hidden; will-change: transform; }
+.hr-flock { position: absolute; inset: 0; z-index: 1; overflow: hidden; }
 .hr-tile { position: absolute; overflow: hidden; background: color-mix(in oklch, var(--on-night) 8%, var(--night)); opacity: 0; transform-origin: center; will-change: transform; }
 .hr-tile img, .hr-tile video { display: block; width: 100%; height: 100%; object-fit: cover; }
 .hr-flock__ride { position: absolute; left: 0; top: 0; will-change: transform; }   /* one card's column slide, a layer of its own */
