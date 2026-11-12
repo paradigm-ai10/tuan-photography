@@ -2000,7 +2000,8 @@
       },
       "still": {
         "wait": 6000
-      }
+      },
+      "keep": true
     },
     {
       "href": "w-slow-night.html",
@@ -2015,7 +2016,8 @@
       },
       "still": {
         "wait": 6500
-      }
+      },
+      "keep": true
     }
   ],
   "tags": [
@@ -2092,16 +2094,14 @@
   },
   "words": {},
   "ask": {
-    "ids": [
-      "w-slow-night"
-    ]
+    "ids": []
   },
   "round": {
     "ids": [
       "c-flock-camille-smooth-night",
-      "w-wall-quick-night",
+      "w-slow-night",
       "w-big-night",
-      "w-slow-night"
+      "w-wall-quick-night"
     ]
   },
   "pairs": [
