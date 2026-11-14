@@ -16,7 +16,12 @@
      ruler    every year from 2010 to 2026 as a tick on one rule, the empty years too, so the long gap shows
      prints   a small contact sheet: one of his photographs from each country, its name and year under it
      sentence one paragraph set as a caption: "Malaysia in 2010. The Netherlands in 2012. …", each name in
-              its own colour, deepened to read */
+              its own colour, deepened to read
+   He picked years and ruler (rejecting prints and sentence) and asked for them mixed, so three mixes:
+     rulerbig   the ruler, its years with travel set as large serif numerals, the empty ones small ticks
+     rulergap   the same, the empty years ticks without numbers, a pause on the rule
+     yearsrule  by year (the numeral above, the countries under it) hung on a rule down the left; the
+                years without travel one quiet stretch of the rule, "2016 to 2021" */
 (() => {
   'use strict';
   if (!('fpList' in document.body.dataset) || !window.FP) return;
@@ -70,7 +75,7 @@
         r.yr.textContent = KIND === 'index' ? String(r.c.first) : WORDS[l].yrs(r.c.years);
       });
     };
-  } else if (KIND === 'years' || KIND === 'ruler' || KIND === 'prints' || KIND === 'sentence') {
+  } else if (['years', 'ruler', 'rulerbig', 'rulergap', 'yearsrule', 'prints', 'sentence'].includes(KIND)) {
     const yearOf = (j) => +String(j.id).slice(0, 4);
     const groups = new Map();
     FP.journeys.forEach((j) => {
@@ -81,19 +86,31 @@
     });
     const ys = [...groups.keys()].filter((y) => groups.get(y).length).sort((a, b) => a - b);
     const dot = () => { const d = span('fp-list__dot'); d.setAttribute('aria-hidden', 'true'); return d; };
-    if (KIND === 'years' || KIND === 'ruler') {
+    const RULED = ['ruler', 'rulerbig', 'rulergap', 'yearsrule'].includes(KIND);
+    if (KIND === 'years' || RULED) {
       // years: each year a large serif numeral, its countries under it
       // ruler: every year from the first to the last as a tick on one rule, the empty years too, so the
       //        gap in the middle (2016 to 2021) shows as time passing; the countries beside their year
       const wrap = document.createElement('div');
       wrap.className = 'fp-list__ys';
       box.append(wrap);
-      const all = KIND === 'ruler' ? Array.from({ length: ys[ys.length - 1] - ys[0] + 1 }, (_, i) => ys[0] + i) : ys;
-      const rows = all.map((y) => {
-        const ids = groups.get(y) || [];
+      let all = RULED ? Array.from({ length: ys[ys.length - 1] - ys[0] + 1 }, (_, i) => ys[0] + i) : ys;
+      // (yearsrule) a run of years without travel becomes one quiet stretch of the rule, "2016 to 2021"
+      if (KIND === 'yearsrule') {
+        const out = [];
+        all.forEach((y) => {
+          const last = out[out.length - 1];
+          if (!(groups.get(y) || []).length && last && Array.isArray(last)) last.push(y);
+          else out.push((groups.get(y) || []).length ? y : [y]);
+        });
+        all = out;
+      }
+      const rows = all.map((yy) => {
+        const run = Array.isArray(yy), y = run ? yy[0] : yy;
+        const ids = run ? [] : groups.get(y) || [];
         const row = document.createElement('div');
-        row.className = `fp-list__yr${ids.length ? '' : ' is-empty'}`;
-        const n = span('fp-list__yn', String(y));
+        row.className = `fp-list__yr${ids.length ? '' : ' is-empty'}${run ? ' is-run' : ''}`;
+        const n = span('fp-list__yn', run && yy.length > 1 ? `${yy[0]}|${yy[yy.length - 1]}` : String(y));
         const cs = document.createElement('div'); cs.className = 'fp-list__ycs';
         const names = ids.map((id) => { const e = add(span('fp-list__yc'), id); e.append(dot(), span('fp-list__ycn')); cs.append(e); return e; });
         row.append(n, cs);
@@ -101,7 +118,11 @@
         if (ids.length) items.push({ el: n, ids, on: false }); else n.classList.add('is-in');
         return { ids, names };
       });
-      fill = () => rows.forEach(({ ids, names }) => names.forEach((e, i) => { e.lastChild.textContent = nameOf(byId.get(ids[i])); }));
+      const runs = [...wrap.querySelectorAll('.is-run .fp-list__yn')].map((n) => ({ n, a: n.textContent.split('|') }));
+      fill = () => {
+        rows.forEach(({ ids, names }) => names.forEach((e, i) => { e.lastChild.textContent = nameOf(byId.get(ids[i])); }));
+        runs.forEach(({ n, a }) => { n.textContent = a.length < 2 ? a[0] : lang() === 'zh' ? `${a[0]} 至 ${a[1]}` : `${a[0]} to ${a[1]}`; });
+      };
     } else if (KIND === 'prints') {
       // prints: a small contact sheet, one of his photographs from each country, its name and year under it
       const sheet = document.createElement('ol');

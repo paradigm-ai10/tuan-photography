@@ -68,30 +68,30 @@
 .fp-list--pacific .fp-list__these { font-size: 0.82rem; line-height: 1.4; }
 
 /* ---- the second four (2026-11-14) ---------------------------------------------------------------- */
-.fp-list--years .fp-list__head, .fp-list--ruler .fp-list__head, .fp-list--prints .fp-list__head, .fp-list--sentence .fp-list__head {
+:is(.fp-list--years, .fp-list--yearsrule) .fp-list__head, :is(.fp-list--ruler, .fp-list--rulerbig, .fp-list--rulergap) .fp-list__head, .fp-list--prints .fp-list__head, .fp-list--sentence .fp-list__head {
   font-size: 1.05rem; padding-bottom: 0.8rem; border-bottom: 1px solid var(--hair);
 }
 .fp-list__dot { display: inline-block; width: 0.42rem; height: 0.42rem; border-radius: 50%; background: var(--tone, var(--ink-3)); margin-right: 0.45rem; vertical-align: 0.12em; }
 .fp-list__yn, .fp-list__yc, .fp-list__print, .fp-list__s { opacity: 0; transition: opacity 0.8s var(--ease, ease), transform 0.8s var(--ease, ease); }
 
 /* years: a large numeral, the countries under it */
-.fp-list--years .fp-list__ys { display: grid; gap: 0.55rem; }
-.fp-list--years .fp-list__yn { display: block; font: 400 clamp(1.5rem, 1.1rem + 0.9vw, 2.1rem)/1 "Playfair Display", serif; letter-spacing: -0.01em; color: var(--ink); }
-.fp-list--years .fp-list__ycs { display: flex; flex-wrap: wrap; gap: 0.1rem 0.9rem; margin-top: 0.3rem; }
-.fp-list--years .fp-list__yc { font-size: 0.8rem; color: var(--ink); white-space: nowrap; }
+:is(.fp-list--years, .fp-list--yearsrule) .fp-list__ys { display: grid; gap: 0.55rem; }
+:is(.fp-list--years, .fp-list--yearsrule) .fp-list__yn { display: block; font: 400 clamp(1.5rem, 1.1rem + 0.9vw, 2.1rem)/1 "Playfair Display", serif; letter-spacing: -0.01em; color: var(--ink); }
+:is(.fp-list--years, .fp-list--yearsrule) .fp-list__ycs { display: flex; flex-wrap: wrap; gap: 0.1rem 0.9rem; margin-top: 0.3rem; }
+:is(.fp-list--years, .fp-list--yearsrule) .fp-list__yc { font-size: 0.8rem; color: var(--ink); white-space: nowrap; }
 
 /* ruler: one rule, a tick each year, the empty years short and pale */
-.fp-list--ruler .fp-list__ys { position: relative; display: grid; padding-left: 0.2rem; }
-.fp-list--ruler .fp-list__ys::before { content: ""; position: absolute; left: 3.15rem; top: 0.5rem; bottom: 0.5rem; border-left: 1px solid var(--ink-3); }
-.fp-list--ruler .fp-list__yr { display: grid; grid-template-columns: 2.5rem 1fr; column-gap: 1.3rem; align-items: baseline; padding-block: 0.32rem; position: relative; }
-.fp-list--ruler .fp-list__yr::before { content: ""; position: absolute; left: 2.65rem; top: calc(0.32rem + 0.55em); width: 0.55rem; border-top: 1px solid var(--ink-2); }
-.fp-list--ruler .fp-list__yr.is-empty { padding-block: 0.05rem; }
-.fp-list--ruler .fp-list__yr.is-empty::before { width: 0.3rem; left: 2.78rem; top: 0.45em; border-top-color: var(--ink-3); }
-.fp-list--ruler .fp-list__yn { font-size: 0.72rem; color: var(--ink-2); font-variant-numeric: tabular-nums; text-align: right; }
-.fp-list--ruler .fp-list__yr.is-empty .fp-list__yn { font-size: 0.6rem; color: var(--ink-3); line-height: 1.1; }
-.fp-list--ruler .fp-list__ycs { font: 400 0.9rem/1.45 "Playfair Display", "Noto Serif TC", serif; color: var(--ink); }
-.fp-list--ruler .fp-list__ycs { display: flex; flex-wrap: wrap; gap: 0 0.8rem; }
-.fp-list--ruler .fp-list__yc { white-space: nowrap; }
+:is(.fp-list--ruler, .fp-list--rulerbig, .fp-list--rulergap) .fp-list__ys { position: relative; display: grid; padding-left: 0.2rem; }
+:is(.fp-list--ruler, .fp-list--rulerbig, .fp-list--rulergap) .fp-list__ys::before { content: ""; position: absolute; left: 3.15rem; top: 0.5rem; bottom: 0.5rem; border-left: 1px solid var(--ink-3); }
+:is(.fp-list--ruler, .fp-list--rulerbig, .fp-list--rulergap) .fp-list__yr { display: grid; grid-template-columns: 2.5rem 1fr; column-gap: 1.3rem; align-items: baseline; padding-block: 0.32rem; position: relative; }
+:is(.fp-list--ruler, .fp-list--rulerbig, .fp-list--rulergap) .fp-list__yr::before { content: ""; position: absolute; left: 2.65rem; top: calc(0.32rem + 0.55em); width: 0.55rem; border-top: 1px solid var(--ink-2); }
+:is(.fp-list--ruler, .fp-list--rulerbig, .fp-list--rulergap) .fp-list__yr.is-empty { padding-block: 0.05rem; }
+:is(.fp-list--ruler, .fp-list--rulerbig, .fp-list--rulergap) .fp-list__yr.is-empty::before { width: 0.3rem; left: 2.78rem; top: 0.45em; border-top-color: var(--ink-3); }
+:is(.fp-list--ruler, .fp-list--rulerbig, .fp-list--rulergap) .fp-list__yn { font-size: 0.72rem; color: var(--ink-2); font-variant-numeric: tabular-nums; text-align: right; }
+:is(.fp-list--ruler, .fp-list--rulerbig, .fp-list--rulergap) .fp-list__yr.is-empty .fp-list__yn { font-size: 0.6rem; color: var(--ink-3); line-height: 1.1; }
+:is(.fp-list--ruler, .fp-list--rulerbig, .fp-list--rulergap) .fp-list__ycs { font: 400 0.9rem/1.45 "Playfair Display", "Noto Serif TC", serif; color: var(--ink); }
+:is(.fp-list--ruler, .fp-list--rulerbig, .fp-list--rulergap) .fp-list__ycs { display: flex; flex-wrap: wrap; gap: 0 0.8rem; }
+:is(.fp-list--ruler, .fp-list--rulerbig, .fp-list--rulergap) .fp-list__yc { white-space: nowrap; }
 
 /* prints: a contact sheet */
 .fp-list__prints { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.7rem 0.5rem; }
@@ -104,6 +104,30 @@
 .fp-list__para { margin: 0; font: 400 1.02rem/1.75 "Playfair Display", "Noto Serif TC", serif; color: var(--ink-2); max-width: 30ch; }
 .fp-list__sn { color: color-mix(in oklch, var(--tone, var(--ink)) 55%, var(--ink)); }
 :lang(zh-Hant) .fp-list__para { max-width: none; letter-spacing: 0.02em; }
+
+/* ---- the mixes of by year and the ruler (2026-11-14) ---------------------------------------------- */
+/* rulerbig, rulergap: the years with travel as large serif numerals on the rule */
+:is(.fp-list--rulerbig, .fp-list--rulergap) .fp-list__ys::before { left: 4.05rem; }
+:is(.fp-list--rulerbig, .fp-list--rulergap) .fp-list__yr { grid-template-columns: 3.4rem 1fr; padding-block: 0.4rem; align-items: center; }
+:is(.fp-list--rulerbig, .fp-list--rulergap) .fp-list__yr::before { left: 3.55rem; top: 50%; }
+:is(.fp-list--rulerbig, .fp-list--rulergap) .fp-list__yr:not(.is-empty) .fp-list__yn {
+  font: 400 1.55rem/1 "Playfair Display", serif; letter-spacing: -0.01em; color: var(--ink);
+}
+:is(.fp-list--rulerbig, .fp-list--rulergap) .fp-list__yr.is-empty::before { left: 3.7rem; top: 50%; }
+:is(.fp-list--rulerbig, .fp-list--rulergap) .fp-list__ycs { font-size: 0.88rem; }
+.fp-list--rulergap .fp-list__yr.is-empty { padding-block: 0.12rem; }
+.fp-list--rulergap .fp-list__yr.is-empty .fp-list__yn { visibility: hidden; font-size: 0.4rem; }
+
+/* yearsrule: by year, hung on a rule down the left; the years without travel one quiet stretch */
+.fp-list--yearsrule .fp-list__ys { position: relative; gap: 0.45rem; padding-left: 1.4rem; }
+.fp-list--yearsrule .fp-list__yr:not(.is-run) .fp-list__yn { font-size: clamp(1.3rem, 1rem + 0.6vw, 1.6rem); }
+.fp-list--yearsrule .fp-list__yr.is-run .fp-list__ycs { display: none; }
+.fp-list--yearsrule .fp-list__ys::before { content: ""; position: absolute; left: 0.2rem; top: 0.6rem; bottom: 0.3rem; border-left: 1px solid var(--ink-3); }
+.fp-list--yearsrule .fp-list__yr { position: relative; }
+.fp-list--yearsrule .fp-list__yr::before { content: ""; position: absolute; left: -1.2rem; top: 0.75rem; width: 0.6rem; border-top: 1px solid var(--ink-2); }
+.fp-list--yearsrule .fp-list__yr.is-run { padding-block: 0.3rem; }
+.fp-list--yearsrule .fp-list__yr.is-run::before { border-top: 0; top: 0.2rem; bottom: 0.2rem; width: 0; left: -1.2rem; border-left: 1px dotted var(--ink-3); background: var(--paper); box-shadow: 0 0 0 2px var(--paper); }
+.fp-list--yearsrule .fp-list__yr.is-run .fp-list__yn { font: 400 0.72rem/1.2 var(--f-text, "Geist", sans-serif); letter-spacing: 0.02em; color: var(--ink-3); }
 
 /* a phone, or a window too narrow for the column: the map as it was */
 .is-narrow .fp-list { display: none; }

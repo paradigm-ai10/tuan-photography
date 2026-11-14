@@ -2,6 +2,7 @@
   "name": "journey",
   "round": {
     "groups": [
+      "journey-fp-list-4",
       "journey-fp-list-3"
     ],
     "ids": [
@@ -87,6 +88,14 @@
       "title": {
         "en": "Your trips as one camera move",
         "zh": "旅程變成一段鏡頭"
+      }
+    },
+    {
+      "id": "journey-fp-list-4",
+      "built": "2026-11-14T16:56",
+      "title": {
+        "en": "Where I have been, by year on a ruler",
+        "zh": "去過的地方：年份加上尺"
       }
     },
     {
@@ -770,12 +779,13 @@
         "zh": "照片"
       },
       "desc": {
-        "en": "A small contact sheet: one of your photographs from each country, its name and first year under it, a line of its colour along the foot; a country without a photograph on the site yet shows its colour. Each name or picture comes up as its country colours in on the map. The rest is the live page's opening; on a phone it stays as the live page.",
-        "zh": "一張小小的印樣：每個國家一張你拍的照片，下面寫國名和第一次去的年份，底下一條它的顏色；網站上還沒有照片的國家就顯示它的顏色。地圖上哪個國家上色，它的名字或照片就跟著出現。其他是正式版的開場；手機上維持正式版。"
+        "en": "A small contact sheet: one of your photographs from each country, its name and first year under it, a line of its colour along the foot; a country without a photograph on the site yet shows its colour. Each name or picture comes up as its country colours in on the map. The rest is the live page's opening; on a phone it stays as the live page. Not using: you rejected it on 14 November.",
+        "zh": "一張小小的印樣：每個國家一張你拍的照片，下面寫國名和第一次去的年份，底下一條它的顏色；網站上還沒有照片的國家就顯示它的顏色。地圖上哪個國家上色，它的名字或照片就跟著出現。其他是正式版的開場；手機上維持正式版。不採用：11/14 你按了 Reject。"
       },
       "still": {
         "wait": 14000
-      }
+      },
+      "out": true
     },
     {
       "id": "journey-fp-list-sentence",
@@ -786,8 +796,57 @@
         "zh": "一段文字"
       },
       "desc": {
-        "en": "One paragraph set like a caption: Malaysia in 2010. The Netherlands in 2012. And so on, each name in its own colour, deepened so it reads. Each name or picture comes up as its country colours in on the map. The rest is the live page's opening; on a phone it stays as the live page.",
-        "zh": "一段像圖說的文字：2010 年馬來西亞。2012 年荷蘭。這樣一路寫下去，每個國名用它自己的顏色，加深一點才好讀。地圖上哪個國家上色，它的名字或照片就跟著出現。其他是正式版的開場；手機上維持正式版。"
+        "en": "One paragraph set like a caption: Malaysia in 2010. The Netherlands in 2012. And so on, each name in its own colour, deepened so it reads. Each name or picture comes up as its country colours in on the map. The rest is the live page's opening; on a phone it stays as the live page. Not using: you rejected it on 14 November.",
+        "zh": "一段像圖說的文字：2010 年馬來西亞。2012 年荷蘭。這樣一路寫下去，每個國名用它自己的顏色，加深一點才好讀。地圖上哪個國家上色，它的名字或照片就跟著出現。其他是正式版的開場；手機上維持正式版。不採用：11/14 你按了 Reject。"
+      },
+      "still": {
+        "wait": 14000
+      },
+      "out": true
+    },
+    {
+      "id": "journey-fp-list-rulerbig",
+      "href": "journey-fp-list-rulerbig.html",
+      "group": "journey-fp-list-4",
+      "title": {
+        "en": "Ruler, large years",
+        "zh": "尺，大年份"
+      },
+      "desc": {
+        "en": "The ruler with every year from 2010 to 2026; the years you travelled as large serif numbers, the others as small marks with small numbers, the countries beside their year. A mix of the two you picked, By year and A ruler of years. Each name still comes up as its country colours in on the map; on a phone it stays as the live page.",
+        "zh": "2010 到 2026 每一年都在尺上；有去旅行的年份是大大的襯線數字，沒去的是小刻度和小數字，國家寫在旁邊。把你挑的兩張「照年份」和「年份的尺」混在一起。地圖上哪個國家上色，名字一樣跟著出現；手機上維持正式版。"
+      },
+      "still": {
+        "wait": 14000
+      }
+    },
+    {
+      "id": "journey-fp-list-rulergap",
+      "href": "journey-fp-list-rulergap.html",
+      "group": "journey-fp-list-4",
+      "title": {
+        "en": "Ruler, a pause",
+        "zh": "尺，留白"
+      },
+      "desc": {
+        "en": "The same, but the years without travel are only small marks, no numbers, so the gap reads as a quiet pause on the line. A mix of the two you picked, By year and A ruler of years. Each name still comes up as its country colours in on the map; on a phone it stays as the live page.",
+        "zh": "一樣，但是沒去旅行的年份只有小刻度、不寫數字，那段空白像線上安靜的停頓。把你挑的兩張「照年份」和「年份的尺」混在一起。地圖上哪個國家上色，名字一樣跟著出現；手機上維持正式版。"
+      },
+      "still": {
+        "wait": 14000
+      }
+    },
+    {
+      "id": "journey-fp-list-yearsrule",
+      "href": "journey-fp-list-yearsrule.html",
+      "group": "journey-fp-list-4",
+      "title": {
+        "en": "By year, on a rule",
+        "zh": "照年份，掛在線上"
+      },
+      "desc": {
+        "en": "By year as you picked it (the large number, the countries under it), hung on a line down the left; the years without travel become one short dotted stretch, 2016 to 2021. A mix of the two you picked, By year and A ruler of years. Each name still comes up as its country colours in on the map; on a phone it stays as the live page.",
+        "zh": "照你挑的「照年份」（大數字，下面寫國家），掛在左邊一條線上；沒去旅行的年份縮成一小段點線，寫 2016 to 2021。把你挑的兩張「照年份」和「年份的尺」混在一起。地圖上哪個國家上色，名字一樣跟著出現；手機上維持正式版。"
       },
       "still": {
         "wait": 14000
@@ -1571,14 +1630,13 @@
   "words": {},
   "ask": {
     "ids": [
-      "journey-fp-list-years",
-      "journey-fp-list-ruler",
-      "journey-fp-list-prints",
-      "journey-fp-list-sentence"
+      "journey-fp-list-rulerbig",
+      "journey-fp-list-rulergap",
+      "journey-fp-list-yearsrule"
     ],
     "question": {
-      "en": "1 is the live page, now with the reading panel you picked (Clear glass, third pass). 2 to 5 are four new lists of where you have been beside the opening map: by year, a ruler of years, in prints, and in a sentence. Score each and mark anything still not right.",
-      "zh": "第 1 張是正式版，右邊面板已經換成你選的「清透玻璃，第三次」。第 2 到 5 張是開場地圖旁邊四種新的「去過的地方」：照年份、年份的尺、照片、一段文字。每張給分，哪裡還不對就標出來。"
+      "en": "1 is the live page. 2 to 4 mix the two you picked, By year and A ruler of years: large years on the ruler, the same with the empty years as a quiet pause, and By year hung on a line with the empty years as one short stretch. Score each and mark anything still not right.",
+      "zh": "第 1 張是正式版。第 2 到 4 張把你挑的「照年份」和「年份的尺」混在一起：尺上用大年份、空白年份只留小刻度、照年份掛在一條線上並把沒去的年份縮成一小段。每張給分，哪裡還不對就標出來。"
     }
   }
 }
