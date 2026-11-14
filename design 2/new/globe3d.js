@@ -939,6 +939,9 @@ async function footprintBase(world) {
       w.onerror = () => give(null);
       w.postMessage({ land: world.land, TW, TH, paper, water, ink });
     });
+    // kept as an ordinary canvas, not the worker's picture itself: a browser keeps a canvas's picture while
+    // the page is hidden, but may drop a picture made off the page (the globe then showed black, 2026-11-14)
+    if (big) { const cv = mk(TW, TH); cv.getContext('2d').drawImage(big, 0, 0); big.close(); big = cv; }
   }
   if (!big) {
     big = mk(TW, TH);
@@ -981,6 +984,10 @@ function fpPath(g) {
   let o = FPP.get(g);
   if (!o) { o = { p: new Path2D(fpSvg(g) || ''), b: fpSvg.bounds(g) }; FPP.set(g, o); }
   return o;
+}
+// whether a canvas still holds its picture: the paper near the top edge is never left empty
+function fpHolds(cv) {
+  try { return cv.getContext('2d').getImageData(cv.width >> 1, 4, 1, 1).data[3] > 0; } catch (e) { return true; }
 }
 function paintFootprint(c, path, world, visited, col, firstOf, y, hover) {
   c.drawImage(FPB.big, 0, 0);
@@ -2064,6 +2071,24 @@ window.JourneyMap = async function makeGlobe(svgEl) {
     tween(600, (k) => { if (id === painting) U.uMix.value = ease(k); });
   }
   repaint(false);
+  // (paint 'footprint') a browser may drop a canvas's picture while the page is hidden, or lose the drawing
+  // context altogether; when the page is shown again, a blank sheet is painted again from the start
+  async function heal() {
+    if (CFG.paint !== 'footprint' || document.hidden) return;
+    if (!FPB || !fpHolds(FPB.big)) { FPB = null; await footprintBase(world); }
+    if (fpHolds(canvases[0]) && fpHolds(canvases[1])) return;
+    for (const cv of canvases) paint(cv, isoFirst, year, hover);
+    for (const t of texes) t.needsUpdate = true;
+    U.uMix.value = 1;
+    kick();
+  }
+  if (CFG.paint === 'footprint') {
+    document.addEventListener('visibilitychange', heal);
+    addEventListener('pageshow', heal);
+    addEventListener('focus', heal);
+    for (const cv of canvases) cv.addEventListener('contextrestored', heal);
+    renderer.domElement.addEventListener('webglcontextrestored', () => setTimeout(heal, 0));
+  }
   // the second texture starts as the first, so the first crossfade has something to come from
   paint(canvases[1], isoFirst, year, hover); texes[1].needsUpdate = true;
   if (masks) { paint(masks[1], isoFirst, year, null, true); maskTex[1].needsUpdate = true; }
