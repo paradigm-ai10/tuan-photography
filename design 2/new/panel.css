@@ -3,10 +3,15 @@
 @media (min-width: 64rem) {
   /* shared: a calmer, slightly denser panel, the route opening only for the trip being read */
   [data-panel] .jr-panel { background: color-mix(in oklch, var(--paper) 72%, transparent); }
-  [data-panel] .jr-trip__route { display: block; max-height: 0; opacity: 0; overflow: hidden; transition: max-height 0.45s var(--ease), opacity 0.3s var(--ease), margin 0.45s var(--ease); }
+  /* (the animation review, 2026-11-14) the route opens at once and only its words fade in: animating its height
+     and margin pushed every trip below it about on each change of the trip being read, the page's most
+     frequent motion */
+  [data-panel] .jr-trip__route { display: block; max-height: 0; opacity: 0; overflow: hidden; transition: opacity 150ms var(--ease); }
   [data-panel] .jr-trip.is-reading .jr-trip__route { max-height: 6em; opacity: 1; }
   [data-panel] .jr-years:has(.is-reading) .jr-trip:not(.is-reading) { opacity: 0.5; }
-  [data-panel] .jr-trip__title { transition: font-size 0.45s var(--ease), color 0.2s var(--ease); }
+  /* the name of the trip being read takes its size at once (animating font-size laid the list out again on
+     every frame); only its colour eases */
+  [data-panel] .jr-trip__title { transition: color 150ms var(--ease); }
 
   /* ---- line: the trips hang on one line ----------------------------------------------------- */
   [data-panel="line"] .jr-years { position: relative; }
@@ -24,4 +29,9 @@
   [data-panel="line"] .jr-trip.is-reading::before { background: var(--route); border-color: var(--route); scale: 1.5; box-shadow: 0 0 0 4px color-mix(in oklch, var(--route) 22%, transparent); }
   [data-panel="line"] .jr-trip.is-reading .jr-trip__title { font-size: clamp(1.7rem, 1.3rem + 1vw, 2.3rem); }
   [data-panel="line"] .jr-trip.is-reading .jr-trip__route { margin-top: 0.3rem; }
+}
+
+/* reduced motion: the route and the name of the trip being read change without movement, a short fade only */
+@media (prefers-reduced-motion: reduce) {
+  [data-panel] .jr-trip__route, [data-panel] .jr-trip__title, [data-vary~="polish"] .vy-go { transition: opacity 150ms linear, color 150ms linear; }
 }

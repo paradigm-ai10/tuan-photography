@@ -16,7 +16,7 @@
   [data-vary~="polish"] .vy-go {
     display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 0; max-height: 0; opacity: 0; overflow: hidden;
     color: var(--link); font-size: 0.72rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase;
-    transition: max-height 0.45s var(--ease), opacity 0.3s var(--ease), margin 0.45s var(--ease);
+    transition: opacity 150ms var(--ease);   /* opens at once, only fades (the animation review, 2026-11-14) */
   }
   :lang(zh-Hant) [data-vary~="polish"] .vy-go { font-size: 0.82rem; letter-spacing: 0.2em; text-transform: none; }
   [data-vary~="polish"] .jr-trip.is-reading .vy-go { max-height: 2rem; opacity: 1; margin-top: 0.55rem; }

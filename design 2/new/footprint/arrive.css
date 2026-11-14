@@ -7,6 +7,8 @@
   --olive: oklch(56% 0.07 115);
   --slate: oklch(50% 0.04 240);
 }
+/* (the animation review, 2026-11-14) --fp-out is written every frame of the fade and read only by the stage */
+@property --fp-out { syntax: '<number>'; inherits: false; initial-value: 0; }
 .jr-fp {
   --f-name: "Playfair Display", "Noto Serif TC", serif;
   --bar: 0px;

@@ -72,7 +72,8 @@
   font-size: 1.05rem; padding-bottom: 0.8rem; border-bottom: 1px solid var(--hair);
 }
 .fp-list__dot { display: inline-block; width: 0.42rem; height: 0.42rem; border-radius: 50%; background: var(--tone, var(--ink-3)); margin-right: 0.45rem; vertical-align: 0.12em; }
-.fp-list__yn, .fp-list__yc, .fp-list__print, .fp-list__s { opacity: 0; transition: opacity 0.8s var(--ease, ease), transform 0.8s var(--ease, ease); }
+.fp-list__yn, .fp-list__yc, .fp-list__s { opacity: 0; transition: opacity 0.8s var(--ease, ease); }
+.fp-list__print { opacity: 0; transition: opacity 0.8s var(--ease, ease), transform 0.8s var(--ease, ease); }
 
 /* years: a large numeral, the countries under it */
 :is(.fp-list--years, .fp-list--yearsrule) .fp-list__ys { display: grid; gap: 0.55rem; }
