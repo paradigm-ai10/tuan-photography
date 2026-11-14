@@ -60,3 +60,33 @@
   body[data-luxe="mist"][data-panel="line"] .jr-trip.is-reading .jr-trip__title { font-size: clamp(2rem, 1.5rem + 1.1vw, 2.7rem); }
   body[data-luxe="mist"][data-panel="line"] .jr-year::before { border-left-color: color-mix(in oklch, var(--ink) 35%, transparent); }
 }
+
+/* ---- round eleven, second pass (2026-11-14, his notes on the three: "too transparent", the countries'
+   names "too big", and slower: "i scroll a little and a lot of countries pass by"). <body data-luxe2>
+   on the new pages, beside the first three: more paper in each pane, the names a size smaller, and each
+   trip given about a third of a screen, so a trip takes three times the scroll to pass ---------------- */
+@media (min-width: 64rem) {
+  body[data-luxe2][data-luxe="glass"] .jr-panel { background: color-mix(in oklch, var(--paper) 54%, transparent); backdrop-filter: blur(12px) saturate(1.02); -webkit-backdrop-filter: blur(12px) saturate(1.02); }
+  body[data-luxe2][data-luxe="cormorant"] .jr-panel { background: color-mix(in oklch, var(--paper) 50%, transparent); backdrop-filter: blur(16px) saturate(1.03); -webkit-backdrop-filter: blur(16px) saturate(1.03); }
+  body[data-luxe2][data-luxe="mist"] .jr-panel { background: color-mix(in oklch, var(--paper) 46%, transparent); backdrop-filter: blur(30px) saturate(1.08); -webkit-backdrop-filter: blur(30px) saturate(1.08); }
+
+  body[data-luxe2] .jr-trip__title { font-size: clamp(1.05rem, 0.95rem + 0.3vw, 1.25rem); }
+  body[data-luxe2][data-panel="line"] .jr-trip.is-reading .jr-trip__title { font-size: clamp(1.4rem, 1.2rem + 0.45vw, 1.7rem); }
+  body[data-luxe2][data-luxe="cormorant"] .jr-trip__title { font-size: clamp(1.2rem, 1.05rem + 0.35vw, 1.45rem); }
+  body[data-luxe2][data-luxe="cormorant"][data-panel="line"] .jr-trip.is-reading .jr-trip__title { font-weight: 500; font-size: clamp(1.65rem, 1.4rem + 0.55vw, 2rem); }
+  body[data-luxe2][data-panel="line"] .jr-year__n { font-size: 1.45rem; }
+
+  /* slower: each trip holds about a third of a screen, its name at the top of it */
+  body[data-luxe2][data-panel="line"] .jr-trip { min-height: 33svh; padding-block: 0.85rem; box-sizing: border-box; }
+  body[data-luxe2][data-panel="line"] .jr-trip::before { top: 1.45rem; }
+  body[data-luxe2][data-luxe="cormorant"][data-panel="line"] .jr-trip::before { top: 1.55rem; }
+}
+
+/* ---- the frontend-design review of the second pass (2026-11-14): the small words in tracked capitals
+   (the month, "Read the trip") were the one templated touch left; set as ordinary small words instead,
+   so the serif names carry the panel and the labels stay quiet ---------------------------------------- */
+@media (min-width: 64rem) {
+  body[data-luxe2] .jr-trip__when { text-transform: none; letter-spacing: 0.01em; font-size: 0.8rem; font-weight: 400; color: var(--ink-2); }
+  body[data-luxe2] .vy-go { text-transform: none; letter-spacing: 0.01em; font-size: 0.82rem; }
+  body[data-luxe2] .jr-trip__route { color: var(--ink); opacity: 0.78; line-height: 1.5; max-width: 52ch; }
+}

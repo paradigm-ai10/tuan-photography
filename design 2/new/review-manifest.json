@@ -2,6 +2,7 @@
   "name": "journey",
   "round": {
     "groups": [
+      "journey-panel-2",
       "journey-panel"
     ],
     "ids": [
@@ -87,6 +88,14 @@
       "title": {
         "en": "Your trips as one camera move",
         "zh": "旅程變成一段鏡頭"
+      }
+    },
+    {
+      "id": "journey-panel-2",
+      "built": "2026-11-14T16:15",
+      "title": {
+        "en": "The reading panel, second pass",
+        "zh": "右邊的旅程面板，第二次"
       }
     },
     {
@@ -568,6 +577,54 @@
       "desc": {
         "en": "Playfair Display, with the photograph behind blurred into a soft wash of its own colours and almost no paper in it. From your marks on the live page: the panel more see-through so your photograph shows, ending a seventh short of the right edge so the photograph runs on clear beside it, and the trip names, the years and the year under the globe in a serif instead of the plain sans. Everything else is the live page. On a phone it stays as the live page.",
         "zh": "Playfair Display 字，後面的照片糊成一片柔和的顏色，幾乎沒有紙色。照你在正式版上圈的地方改：面板更透明，讓後面的照片透出來；右邊留七分之一不蓋，照片直接露出來；旅程名稱、年份和地球下面的年份換成有襯線的字，不再是原本那種平平的字。其他都跟正式版一樣，手機上也維持正式版。"
+      },
+      "still": {
+        "wait": 14000
+      }
+    },
+    {
+      "id": "journey-panel-glass-2",
+      "href": "journey-panel-glass-2.html",
+      "group": "journey-panel-2",
+      "title": {
+        "en": "Clear glass, second pass",
+        "zh": "清透玻璃，第二次"
+      },
+      "desc": {
+        "en": "Playfair Display on a clearer pane, about half paper. From your notes on the first three: more paper in the pane so it is less see-through, the country names a size smaller, and each trip given about a third of a screen, so the trips pass three times slower as you scroll. After a design review, the small labels (the month, Read the trip) are ordinary small words instead of spaced capitals. The first three stay beside these.",
+        "zh": "Playfair Display 字，面板大約一半紙色。照你對前三張的意見改：面板多一點紙色、沒那麼透；國家名稱小一號；每一趟大約佔三分之一個畫面，捲動時旅程過得慢三倍。另外經過設計檢查，月份和「Read the trip」這些小字改成一般的小字，不再是空很開的大寫。前三張留在旁邊。"
+      },
+      "still": {
+        "wait": 14000
+      }
+    },
+    {
+      "id": "journey-panel-cormorant-2",
+      "href": "journey-panel-cormorant-2.html",
+      "group": "journey-panel-2",
+      "title": {
+        "en": "Cormorant, second pass",
+        "zh": "Cormorant 字，第二次"
+      },
+      "desc": {
+        "en": "Cormorant Garamond, your logo's face, on a half-paper veil. From your notes on the first three: more paper in the pane so it is less see-through, the country names a size smaller, and each trip given about a third of a screen, so the trips pass three times slower as you scroll. After a design review, the small labels (the month, Read the trip) are ordinary small words instead of spaced capitals. The first three stay beside these.",
+        "zh": "你 logo 的 Cormorant Garamond 字，底下大約一半紙色的紗。照你對前三張的意見改：面板多一點紙色、沒那麼透；國家名稱小一號；每一趟大約佔三分之一個畫面，捲動時旅程過得慢三倍。另外經過設計檢查，月份和「Read the trip」這些小字改成一般的小字，不再是空很開的大寫。前三張留在旁邊。"
+      },
+      "still": {
+        "wait": 14000
+      }
+    },
+    {
+      "id": "journey-panel-mist-2",
+      "href": "journey-panel-mist-2.html",
+      "group": "journey-panel-2",
+      "title": {
+        "en": "Mist, second pass",
+        "zh": "霧面，第二次"
+      },
+      "desc": {
+        "en": "Playfair Display, the photograph blurred to a soft wash with a little more paper in it. From your notes on the first three: more paper in the pane so it is less see-through, the country names a size smaller, and each trip given about a third of a screen, so the trips pass three times slower as you scroll. After a design review, the small labels (the month, Read the trip) are ordinary small words instead of spaced capitals. The first three stay beside these.",
+        "zh": "Playfair Display 字，後面的照片糊成一片柔和顏色，紙色多一點。照你對前三張的意見改：面板多一點紙色、沒那麼透；國家名稱小一號；每一趟大約佔三分之一個畫面，捲動時旅程過得慢三倍。另外經過設計檢查，月份和「Read the trip」這些小字改成一般的小字，不再是空很開的大寫。前三張留在旁邊。"
       },
       "still": {
         "wait": 14000
@@ -1303,13 +1360,13 @@
   "words": {},
   "ask": {
     "ids": [
-      "journey-panel-glass",
-      "journey-panel-cormorant",
-      "journey-panel-mist"
+      "journey-panel-glass-2",
+      "journey-panel-cormorant-2",
+      "journey-panel-mist-2"
     ],
     "question": {
-      "en": "1 is the live page. 2 to 4 change only the reading panel on the right, from your marks: more see-through, room kept on the right, and a serif for the names and years. Scroll past the globe into your trips, then score each and mark anything still not right.",
-      "zh": "第 1 張是正式版。第 2 到 4 張只改右邊的旅程面板，照你圈的地方：更透明、右邊留空、名稱和年份換成有襯線的字。捲過地球、往下看幾趟旅程，每張給分，哪裡還不對就標出來。"
+      "en": "1 is the live page. The three second passes: less see-through, smaller country names, and the trips passing three times slower. Scroll past the globe into your trips, then score each and mark anything still not right.",
+      "zh": "第 1 張是正式版。三張第二次的版本：沒那麼透明、國家名稱小一點、旅程捲過去慢三倍。捲過地球、往下看幾趟旅程，每張給分，哪裡還不對就標出來。"
     }
   }
 }
