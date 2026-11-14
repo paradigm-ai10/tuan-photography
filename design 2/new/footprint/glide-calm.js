@@ -64,7 +64,8 @@
   // the page's tempo: every time in the move stretched by it (1 is One breath out's, resting at about 3 s)
   const TEMPO = clamp(parseFloat(body.dataset.tempo) || 1.45, 1, 3);
   const STAY = body.dataset.zoom === 'none'; // the whole map from the start, the view never moving
-  const LIST = 'fpList' in body.dataset; // (data-fp-list) a list of where he went, and when, beside the map
+  // (data-fp-list) a list of where he went, and when, in a column beside the map (not the pacific form, set on it)
+  const LIST = 'fpList' in body.dataset && body.dataset.fpList !== 'pacific';
   const HOLD = 300 * TEMPO; // the landing: close in on Taiwan, home in clay, the numbers at 0
   const GLIDE = 2500 * TEMPO; // the one move out to the whole wall map
   const breath = bezier(0.35, 0, 0.12, 1); // under way at once, half the widening done by 0.75 s, a long soft landing

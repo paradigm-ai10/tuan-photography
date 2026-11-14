@@ -2,6 +2,7 @@
   "name": "journey",
   "round": {
     "groups": [
+      "journey-fp-list-2",
       "journey-fp-list",
       "journey-panel-3",
       "journey-panel-2",
@@ -90,6 +91,14 @@
       "title": {
         "en": "Your trips as one camera move",
         "zh": "旅程變成一段鏡頭"
+      }
+    },
+    {
+      "id": "journey-fp-list-2",
+      "built": "2026-11-14T16:34",
+      "title": {
+        "en": "Where I have been, quieter",
+        "zh": "去過的地方，更安靜的版本"
       }
     },
     {
@@ -659,6 +668,54 @@
       "desc": {
         "en": "The live page with a key down the right of the opening map: your countries oldest first, each with a swatch of its colour on the map, its name and the years you went. Each line comes up as its country colours in on the map, so the key fills in the same order the map does; the map is framed a little narrower to make room. On a phone it stays as the live page.",
         "zh": "正式版的開場地圖右邊加一欄：你去過的國家，從最早的開始，每一個有它在地圖上的顏色、名字和你去的年份。地圖上哪個國家上色，這一欄的那一行就同時出現，順序跟地圖一樣；地圖稍微窄一點讓出位置。手機上維持正式版。"
+      },
+      "still": {
+        "wait": 14000
+      }
+    },
+    {
+      "id": "journey-fp-list-ledger",
+      "href": "journey-fp-list-ledger.html",
+      "group": "journey-fp-list-2",
+      "title": {
+        "en": "Ledger",
+        "zh": "旅行帳本"
+      },
+      "desc": {
+        "en": "A column read as a travel ledger: each year, then the countries of that year as a line of serif text, each name drawn under with a fine stroke of its colour as it comes in. From your note that the first list was not high-end enough: no colour patches, no names breaking over two lines, and the colour carried more quietly. As before, each name comes up as its country colours in on the map. On a phone it stays as the live page.",
+        "zh": "右邊一欄像旅行帳本：每一年，後面接那一年去的國家，一行襯線字，每個名字出現時底下畫上一條它顏色的細線。照你說第一版不夠高級：拿掉色塊、名字不會斷成兩行、顏色放得更含蓄。和之前一樣，地圖上哪個國家上色，名字就跟著出現。手機上維持正式版。"
+      },
+      "still": {
+        "wait": 14000
+      }
+    },
+    {
+      "id": "journey-fp-list-index",
+      "href": "journey-fp-list-index.html",
+      "group": "journey-fp-list-2",
+      "title": {
+        "en": "Atlas index",
+        "zh": "地圖集索引"
+      },
+      "desc": {
+        "en": "A column set like the index at the back of an atlas: the names in alphabetical order, a dotted line to the year you first went, a small dot of its colour. From your note that the first list was not high-end enough: no colour patches, no names breaking over two lines, and the colour carried more quietly. As before, each name comes up as its country colours in on the map. On a phone it stays as the live page.",
+        "zh": "右邊一欄像地圖集最後面的索引：國名照字母排，一條點線連到你第一次去的那年，前面一個它顏色的小點。照你說第一版不夠高級：拿掉色塊、名字不會斷成兩行、顏色放得更含蓄。和之前一樣，地圖上哪個國家上色，名字就跟著出現。手機上維持正式版。"
+      },
+      "still": {
+        "wait": 14000
+      }
+    },
+    {
+      "id": "journey-fp-list-pacific",
+      "href": "journey-fp-list-pacific.html",
+      "group": "journey-fp-list-2",
+      "title": {
+        "en": "In the Pacific",
+        "zh": "寫在太平洋上"
+      },
+      "desc": {
+        "en": "No column: the map stays edge to edge, and the ledger is lettered into the open South Pacific as an old atlas's framed note, with a fine double line round it. From your note that the first list was not high-end enough: no colour patches, no names breaking over two lines, and the colour carried more quietly. As before, each name comes up as its country colours in on the map. On a phone it stays as the live page.",
+        "zh": "不加欄位：地圖維持滿版，帳本寫在南太平洋的空白處，像古地圖上框起來的說明，外面一圈細細的雙線。照你說第一版不夠高級：拿掉色塊、名字不會斷成兩行、顏色放得更含蓄。和之前一樣，地圖上哪個國家上色，名字就跟著出現。手機上維持正式版。"
       },
       "still": {
         "wait": 14000
@@ -1442,14 +1499,16 @@
   "words": {},
   "ask": {
     "ids": [
-      "journey-fp-list",
+      "journey-fp-list-ledger",
+      "journey-fp-list-index",
+      "journey-fp-list-pacific",
       "journey-panel-glass-3",
       "journey-panel-cormorant-3",
       "journey-panel-mist-3"
     ],
     "question": {
-      "en": "1 is the live page. 2 adds the list of where you have been, and when, beside the opening map, each line coming up in its colour as the map colours in. 3 to 5 are the panel's third pass: the old spacing, only the scrolling slower. Score each and mark anything still not right.",
-      "zh": "第 1 張是正式版。第 2 張在開場地圖右邊加上你去過的地方和年份，地圖上色時那一行跟著顏色出現。第 3 到 5 張是面板的第三次：距離恢復原本，只有捲動變慢。每張給分，哪裡還不對就標出來。"
+      "en": "1 is the live page. 2 to 4 are three quieter lists of where you have been beside the opening map: a ledger, an atlas index, and lettered into the Pacific. Each name still comes up as its country colours in. Score each and mark anything still not right.",
+      "zh": "第 1 張是正式版。第 2 到 4 張是開場地圖旁邊三種更安靜的「去過的地方」：帳本、地圖集索引、寫在太平洋上。地圖上色時名字一樣跟著出現。每張給分，哪裡還不對就標出來。"
     }
   }
 }
