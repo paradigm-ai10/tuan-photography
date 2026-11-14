@@ -1270,7 +1270,7 @@ void main() {
       me.lines.forEach((l, i) => spacedText(ctx, l, x - me.ws[i] / 2, y + i * me.lh, me.ls, true));
     });
     shows.forEach(({ m, me, L, lead, a }) => {
-      ctx.globalAlpha = a;
+      ctx.globalAlpha = a * weight(m.id);
       // a fine leader from the nearest edge of the lettering to the place, and a dot there
       if (lead) {
         const b = L.tight, mg = 2.5, [lx, ly] = lead;
@@ -1309,6 +1309,24 @@ void main() {
     drawMap(cur, t, dt);
     showCounts(t);
     if (FP.onDraw) FP.onDraw(t);
+  }
+
+  // (data-fp-list) pointing at a year or a country in the list beside the map (travel-list.js, FP.focus):
+  // those countries, their names and their flights stay; the rest step back, over about a fifth of a second
+  let focusSet = null, focusK = 0, focusWant = 0, focusAt = 0, focusRaf = 0;
+  const tripsOf = new Map(FP.journeys.map((j) => [j.id, j.countries]));
+  const weight = (id) => (focusSet && !focusSet.has(id) ? 1 - 0.78 * focusK : 1);
+  FP.focus = (ids) => {
+    if (ids && ids.length) { focusSet = new Set(ids); focusWant = 1; } else focusWant = 0;
+    if (!focusRaf) { focusAt = performance.now(); focusRaf = requestAnimationFrame(focusStep); }
+  };
+  function focusStep(now) {
+    const d = Math.min(64, now - focusAt); focusAt = now;
+    focusK = FP.reduced ? focusWant : focusK + (focusWant - focusK) * (1 - Math.exp(-d / 70));
+    if (Math.abs(focusWant - focusK) < 0.01) focusK = focusWant;
+    if (!focusK && !focusWant) focusSet = null;
+    if (!raf && started && P) draw(AT != null ? AT : STILL || resting ? P.END + 1 : performance.now() - t0, 1e6);
+    focusRaf = focusK !== focusWant ? requestAnimationFrame(focusStep) : 0;
   }
 
   function drawMap(c, t, dt) {
@@ -1350,8 +1368,10 @@ void main() {
       if (p <= 0 || !m.wash) return;
       if (Math.max(m.bU.x1 - m.bU.x0, m.bU.y1 - m.bU.y0) * s < 7) { dabs.push({ m, p }); return; }
       const src = p >= 1 || !m.bleed ? m.wash.cv : bleeding(m, p);
+      wctx.globalAlpha = weight(m.id);
       wctx.drawImage(src, m.wash.x, m.wash.y, m.wash.w, m.wash.h);
     });
+    wctx.globalAlpha = 1;
     if (tooth) {
       wctx.setTransform(DPR, 0, 0, DPR, 0, 0);
       wctx.globalCompositeOperation = 'destination-out';
@@ -1374,7 +1394,7 @@ void main() {
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
     dabs.forEach(({ m, p }) => {
       const x = ox + m.anchorU[0] * s, y = oy + m.anchorU[1] * s, r = clamp(3.2 * G.k, 2.6, 3.8);
-      ctx.globalAlpha = 0.85 * p; ctx.fillStyle = m.tone.css; ctx.globalCompositeOperation = 'multiply';
+      ctx.globalAlpha = 0.85 * p * weight(m.id); ctx.fillStyle = m.tone.css; ctx.globalCompositeOperation = 'multiply';
       ctx.beginPath(); ctx.arc(x, y, r * 0.92, 0, Math.PI * 2); ctx.fill();
       ctx.globalCompositeOperation = 'source-over';
       ctx.globalAlpha = p; ctx.lineWidth = 0.7; ctx.strokeStyle = INK;
@@ -1388,6 +1408,10 @@ void main() {
       const q = inOut(unit(t, a.t0, a.dur));
       if (q <= 0) return;
       ctx.globalAlpha = q < 1 ? 0.62 : lerp(0.62, 0.34, inOut(unit(t, a.t0 + a.dur, SETTLE)));
+      if (focusSet) {
+        const on = (tripsOf.get(a.f.journey) || []).some((id) => focusSet.has(id));
+        ctx.globalAlpha *= on ? 1 + 0.7 * focusK : 1 - 0.85 * focusK;
+      }
       const L = q * a.total;
       ctx.beginPath();
       ctx.moveTo(ox + a.pts[0][0] * s, oy + a.pts[0][1] * s);

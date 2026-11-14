@@ -232,6 +232,20 @@
       box.style.setProperty('--cy', `${y.toFixed(1)}px`);
     });
   }
+  // pointing at a year or a country (his note, 2026-11-14: "when my mouse move to it itll highlight that
+  // journey on the map on the left and make others dim"): those countries stay on the map (FP.focus in
+  // glide-calm.js) and in the list, the rest step back
+  const hit = new Map();
+  items.forEach((it) => { hit.set(it.el, it.ids || [it.id]); it.el.classList.add('fp-list__hot'); });
+  const focus = (el) => {
+    const ids = el ? hit.get(el) : null;
+    if (FP.focus) FP.focus(ids);
+    box.classList.toggle('is-focusing', !!ids);
+    items.forEach((it) => it.el.classList.toggle('is-focus', !!ids && (it.el === el || (it.id && ids.includes(it.id)) || (it.ids && it.ids.some((x) => ids.includes(x))))));
+  };
+  box.addEventListener('pointerover', (e) => { const el = e.target.closest('.fp-list__hot'); if (el && el.classList.contains('is-in')) focus(el); });
+  box.addEventListener('pointerout', (e) => { if (!box.contains(e.relatedTarget) || !(e.relatedTarget && e.relatedTarget.closest('.fp-list__hot'))) focus(null); });
+
   // each comes up as its country's wash begins on the map
   FP.onDraw = (t) => {
     items.forEach((it) => {

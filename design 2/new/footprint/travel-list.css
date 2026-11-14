@@ -129,6 +129,11 @@
 .fp-list--yearsrule .fp-list__yr.is-run::before { border-top: 0; top: 0.2rem; bottom: 0.2rem; width: 0; left: -1.2rem; border-left: 1px dotted var(--ink-3); background: var(--paper); box-shadow: 0 0 0 2px var(--paper); }
 .fp-list--yearsrule .fp-list__yr.is-run .fp-list__yn { font: 400 0.72rem/1.2 var(--f-text, "Geist", sans-serif); letter-spacing: 0.02em; color: var(--ink-3); }
 
+/* pointing at a year or a country: it and its own stay, the rest of the list steps back with the map */
+.fp-list__hot { cursor: default; }
+.fp-list.is-focusing .fp-list__hot.is-in:not(.is-focus) { opacity: 0.32; }
+.fp-list.is-focusing .fp-list__hot { transition: opacity 0.2s var(--ease, ease); }
+
 /* a phone, or a window too narrow for the column: the map as it was */
 .is-narrow .fp-list { display: none; }
 @media (prefers-reduced-motion: reduce) {
