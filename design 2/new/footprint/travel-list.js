@@ -10,7 +10,13 @@
      index    a column set as an atlas index: the names alphabetical, a dotted leader to the first year,
               a small dot of its colour; no swatches
      pacific  no column: the map edge to edge again, the ledger lettered into the open South Pacific as an
-              atlas cartouche, a fine double rule round it, its years in two columns */
+              atlas cartouche, a fine double rule round it, its years in two columns
+   He liked none of the four ("try some more", the same day), so four more, each in the column:
+     years    each year a large serif numeral, as large as the page's own numbers allow, its countries under it
+     ruler    every year from 2010 to 2026 as a tick on one rule, the empty years too, so the long gap shows
+     prints   a small contact sheet: one of his photographs from each country, its name and year under it
+     sentence one paragraph set as a caption: "Malaysia in 2010. The Netherlands in 2012. …", each name in
+              its own colour, deepened to read */
 (() => {
   'use strict';
   if (!('fpList' in document.body.dataset) || !window.FP) return;
@@ -64,6 +70,81 @@
         r.yr.textContent = KIND === 'index' ? String(r.c.first) : WORDS[l].yrs(r.c.years);
       });
     };
+  } else if (KIND === 'years' || KIND === 'ruler' || KIND === 'prints' || KIND === 'sentence') {
+    const yearOf = (j) => +String(j.id).slice(0, 4);
+    const groups = new Map();
+    FP.journeys.forEach((j) => {
+      const y = yearOf(j);
+      if (!groups.has(y)) groups.set(y, []);
+      const g = groups.get(y);
+      j.countries.forEach((id) => { if (byId.has(id) && !g.includes(id)) g.push(id); });
+    });
+    const ys = [...groups.keys()].filter((y) => groups.get(y).length).sort((a, b) => a - b);
+    const dot = () => { const d = span('fp-list__dot'); d.setAttribute('aria-hidden', 'true'); return d; };
+    if (KIND === 'years' || KIND === 'ruler') {
+      // years: each year a large serif numeral, its countries under it
+      // ruler: every year from the first to the last as a tick on one rule, the empty years too, so the
+      //        gap in the middle (2016 to 2021) shows as time passing; the countries beside their year
+      const wrap = document.createElement('div');
+      wrap.className = 'fp-list__ys';
+      box.append(wrap);
+      const all = KIND === 'ruler' ? Array.from({ length: ys[ys.length - 1] - ys[0] + 1 }, (_, i) => ys[0] + i) : ys;
+      const rows = all.map((y) => {
+        const ids = groups.get(y) || [];
+        const row = document.createElement('div');
+        row.className = `fp-list__yr${ids.length ? '' : ' is-empty'}`;
+        const n = span('fp-list__yn', String(y));
+        const cs = document.createElement('div'); cs.className = 'fp-list__ycs';
+        const names = ids.map((id) => { const e = add(span('fp-list__yc'), id); e.append(dot(), span('fp-list__ycn')); cs.append(e); return e; });
+        row.append(n, cs);
+        wrap.append(row);
+        if (ids.length) items.push({ el: n, ids, on: false }); else n.classList.add('is-in');
+        return { ids, names };
+      });
+      fill = () => rows.forEach(({ ids, names }) => names.forEach((e, i) => { e.lastChild.textContent = nameOf(byId.get(ids[i])); }));
+    } else if (KIND === 'prints') {
+      // prints: a small contact sheet, one of his photographs from each country, its name and year under it
+      const sheet = document.createElement('ol');
+      sheet.className = 'fp-list__prints';
+      box.append(sheet);
+      const S = FP.S || window.SITE;
+      const order = abroad.slice().sort((a, b) => a.first - b.first || a.last - b.last);
+      const cells = order.map((c) => {
+        const li = add(document.createElement('li'), c.id);
+        li.className = 'fp-list__print';
+        const sc = S && S.countries.find((x) => x.id === c.id);
+        const sl = sc && sc.photos.length && S.slides[sc.photos[0]];
+        const fr = span('fp-list__frame');
+        if (sl) { const im = new Image(); im.alt = ''; im.decoding = 'async'; im.src = `../images/web/640/${sl.file}`; fr.append(im); }
+        const cap = span('fp-list__cap');
+        li.append(fr, cap);
+        sheet.append(li);
+        return { c, cap };
+      });
+      fill = () => cells.forEach(({ c, cap }) => { cap.textContent = `${nameOf(c)} ${c.first}`; });
+    } else {
+      // sentence: one paragraph, set as a caption is: "Malaysia in 2010. The Netherlands in 2012. …"
+      const p = document.createElement('p');
+      p.className = 'fp-list__para';
+      box.append(p);
+      const order = abroad.slice().sort((a, b) => a.first - b.first || a.last - b.last);
+      const bits = order.map((c) => ({ c, el: add(span('fp-list__s'), c.id) }));
+      const the = (n) => (/^(United |Netherlands)/.test(n) ? `the ${n}` : n);
+      const cap1 = (t) => t.charAt(0).toUpperCase() + t.slice(1);
+      const andList = (a, l) => (l === 'zh' ? a.join('、') : a.length < 2 ? String(a[0]) : `${a.slice(0, -1).join(', ')} and ${a[a.length - 1]}`);
+      fill = () => {
+        const l = lang();
+        p.replaceChildren();
+        bits.forEach(({ c, el }, i) => {
+          el.replaceChildren();
+          const nm = span('fp-list__sn', l === 'zh' ? nameOf(c) : cap1(the(nameOf(c))));
+          if (l === 'zh') el.append(document.createTextNode(`${andList(c.years, l)} 年，`), nm, document.createTextNode('。'));
+          else el.append(nm, document.createTextNode(` in ${andList(c.years, l)}.`));
+          p.append(el);
+          if (i < bits.length - 1 && l !== 'zh') p.append(document.createTextNode(' '));
+        });
+      };
+    }
   } else {
     // ledger and pacific: a year, then that year's countries in the order he went
     const yearOf = (j) => +String(j.id).slice(0, 4);

@@ -67,8 +67,46 @@
 .fp-list--pacific .fp-list__y { font-size: 0.68rem; letter-spacing: 0.06em; }
 .fp-list--pacific .fp-list__these { font-size: 0.82rem; line-height: 1.4; }
 
+/* ---- the second four (2026-11-14) ---------------------------------------------------------------- */
+.fp-list--years .fp-list__head, .fp-list--ruler .fp-list__head, .fp-list--prints .fp-list__head, .fp-list--sentence .fp-list__head {
+  font-size: 1.05rem; padding-bottom: 0.8rem; border-bottom: 1px solid var(--hair);
+}
+.fp-list__dot { display: inline-block; width: 0.42rem; height: 0.42rem; border-radius: 50%; background: var(--tone, var(--ink-3)); margin-right: 0.45rem; vertical-align: 0.12em; }
+.fp-list__yn, .fp-list__yc, .fp-list__print, .fp-list__s { opacity: 0; transition: opacity 0.8s var(--ease, ease), transform 0.8s var(--ease, ease); }
+
+/* years: a large numeral, the countries under it */
+.fp-list--years .fp-list__ys { display: grid; gap: 0.55rem; }
+.fp-list--years .fp-list__yn { display: block; font: 400 clamp(1.5rem, 1.1rem + 0.9vw, 2.1rem)/1 "Playfair Display", serif; letter-spacing: -0.01em; color: var(--ink); }
+.fp-list--years .fp-list__ycs { display: flex; flex-wrap: wrap; gap: 0.1rem 0.9rem; margin-top: 0.3rem; }
+.fp-list--years .fp-list__yc { font-size: 0.8rem; color: var(--ink); white-space: nowrap; }
+
+/* ruler: one rule, a tick each year, the empty years short and pale */
+.fp-list--ruler .fp-list__ys { position: relative; display: grid; padding-left: 0.2rem; }
+.fp-list--ruler .fp-list__ys::before { content: ""; position: absolute; left: 3.15rem; top: 0.5rem; bottom: 0.5rem; border-left: 1px solid var(--ink-3); }
+.fp-list--ruler .fp-list__yr { display: grid; grid-template-columns: 2.5rem 1fr; column-gap: 1.3rem; align-items: baseline; padding-block: 0.32rem; position: relative; }
+.fp-list--ruler .fp-list__yr::before { content: ""; position: absolute; left: 2.65rem; top: calc(0.32rem + 0.55em); width: 0.55rem; border-top: 1px solid var(--ink-2); }
+.fp-list--ruler .fp-list__yr.is-empty { padding-block: 0.05rem; }
+.fp-list--ruler .fp-list__yr.is-empty::before { width: 0.3rem; left: 2.78rem; top: 0.45em; border-top-color: var(--ink-3); }
+.fp-list--ruler .fp-list__yn { font-size: 0.72rem; color: var(--ink-2); font-variant-numeric: tabular-nums; text-align: right; }
+.fp-list--ruler .fp-list__yr.is-empty .fp-list__yn { font-size: 0.6rem; color: var(--ink-3); line-height: 1.1; }
+.fp-list--ruler .fp-list__ycs { font: 400 0.9rem/1.45 "Playfair Display", "Noto Serif TC", serif; color: var(--ink); }
+.fp-list--ruler .fp-list__ycs { display: flex; flex-wrap: wrap; gap: 0 0.8rem; }
+.fp-list--ruler .fp-list__yc { white-space: nowrap; }
+
+/* prints: a contact sheet */
+.fp-list__prints { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.7rem 0.5rem; }
+.fp-list__print { display: grid; gap: 0.25rem; transform: translateY(0.2rem); }
+.fp-list__frame { display: block; aspect-ratio: 4 / 3; background: color-mix(in oklch, var(--tone, var(--paper-2)) 40%, var(--paper)); /* a country with no photograph on the site yet: its colour */ overflow: hidden; border-bottom: 2px solid var(--tone, var(--ink-3)); }
+.fp-list__frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.fp-list__cap { font-size: 0.62rem; line-height: 1.25; color: var(--ink-2); }
+
+/* sentence: one caption, each name in its own colour, deepened to read */
+.fp-list__para { margin: 0; font: 400 1.02rem/1.75 "Playfair Display", "Noto Serif TC", serif; color: var(--ink-2); max-width: 30ch; }
+.fp-list__sn { color: color-mix(in oklch, var(--tone, var(--ink)) 55%, var(--ink)); }
+:lang(zh-Hant) .fp-list__para { max-width: none; letter-spacing: 0.02em; }
+
 /* a phone, or a window too narrow for the column: the map as it was */
 .is-narrow .fp-list { display: none; }
 @media (prefers-reduced-motion: reduce) {
-  .fp-list__row, .fp-list__c, .fp-list__y { transition: opacity 0.3s; transform: none; }
+  .fp-list__row, .fp-list__c, .fp-list__y, .fp-list__yn, .fp-list__yc, .fp-list__print, .fp-list__s { transition: opacity 0.3s; transform: none; }
 }

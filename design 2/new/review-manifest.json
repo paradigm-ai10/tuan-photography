@@ -2,11 +2,7 @@
   "name": "journey",
   "round": {
     "groups": [
-      "journey-fp-list-2",
-      "journey-fp-list",
-      "journey-panel-3",
-      "journey-panel-2",
-      "journey-panel"
+      "journey-fp-list-3"
     ],
     "ids": [
       "journey"
@@ -91,6 +87,14 @@
       "title": {
         "en": "Your trips as one camera move",
         "zh": "旅程變成一段鏡頭"
+      }
+    },
+    {
+      "id": "journey-fp-list-3",
+      "built": "2026-11-14T16:44",
+      "title": {
+        "en": "Where I have been, four more",
+        "zh": "去過的地方，再四種"
       }
     },
     {
@@ -201,8 +205,8 @@
         "zh": "目前的正式版"
       },
       "desc": {
-        "en": "The Journey tab as it is now. Since 9 November the first screen is your footprint map (One breath out, slower still, which you gave 5): it zooms out from Taiwan while your countries colour in and the three numbers count up. On the first scroll the names and numbers lift away and the map itself curls into the globe, uncovering your newest trip's photograph under a light paper veil (Off a photograph, your pick of round nine), smoothed so it follows your scroll like a weighted sheet and never stalls; the trips on one line. The main one.",
-        "zh": "現在的旅程頁。11/9 起，一打開是你的足跡地圖（你給 5 分的「一口氣拉遠，再慢一點」）：從台灣拉遠，去過的國家一個個上色，三個數字往上跳。一往下捲，國名和數字淡掉，地圖本身捲成地球，底下露出你最近一趟旅行的照片，蓋一層淡淡的紙（第九輪你選的「掀開露出照片」），而且調順了：跟著你的捲動像一張有重量的紙，不會卡。所有旅程掛在一條線上。這是主要版本。"
+        "en": "The Journey tab as it is now. Since 9 November the first screen is your footprint map (One breath out, slower still, which you gave 5): it zooms out from Taiwan while your countries colour in and the three numbers count up. On the first scroll the names and numbers lift away and the map itself curls into the globe, uncovering your newest trip's photograph under a light paper veil (Off a photograph, your pick of round nine), smoothed so it follows your scroll like a weighted sheet and never stalls; the trips on one line. Since 14 November the reading panel is Clear glass, third pass (your pick): a clearer pane ending a seventh short of the right edge, serif names and years, the trips scrolling three times slower. The main one.",
+        "zh": "現在的旅程頁。11/9 起，一打開是你的足跡地圖（你給 5 分的「一口氣拉遠，再慢一點」）：從台灣拉遠，去過的國家一個個上色，三個數字往上跳。一往下捲，國名和數字淡掉，地圖本身捲成地球，底下露出你最近一趟旅行的照片，蓋一層淡淡的紙（第九輪你選的「掀開露出照片」），而且調順了：跟著你的捲動像一張有重量的紙，不會卡。所有旅程掛在一條線上。11/14 起右邊面板換成你選的「清透玻璃，第三次」：更清透、右邊留七分之一、名稱和年份用襯線字、旅程捲動慢三倍。這是主要版本。"
       },
       "still": {
         "wait": 20000
@@ -666,12 +670,13 @@
         "zh": "去過的地方"
       },
       "desc": {
-        "en": "The live page with a key down the right of the opening map: your countries oldest first, each with a swatch of its colour on the map, its name and the years you went. Each line comes up as its country colours in on the map, so the key fills in the same order the map does; the map is framed a little narrower to make room. On a phone it stays as the live page.",
-        "zh": "正式版的開場地圖右邊加一欄：你去過的國家，從最早的開始，每一個有它在地圖上的顏色、名字和你去的年份。地圖上哪個國家上色，這一欄的那一行就同時出現，順序跟地圖一樣；地圖稍微窄一點讓出位置。手機上維持正式版。"
+        "en": "The live page with a key down the right of the opening map: your countries oldest first, each with a swatch of its colour on the map, its name and the years you went. Each line comes up as its country colours in on the map, so the key fills in the same order the map does; the map is framed a little narrower to make room. On a phone it stays as the live page. Not using: on 14 November you liked none of these four.",
+        "zh": "正式版的開場地圖右邊加一欄：你去過的國家，從最早的開始，每一個有它在地圖上的顏色、名字和你去的年份。地圖上哪個國家上色，這一欄的那一行就同時出現，順序跟地圖一樣；地圖稍微窄一點讓出位置。手機上維持正式版。不採用：11/14 這四版你都不喜歡。"
       },
       "still": {
         "wait": 14000
-      }
+      },
+      "out": true
     },
     {
       "id": "journey-fp-list-ledger",
@@ -682,12 +687,13 @@
         "zh": "旅行帳本"
       },
       "desc": {
-        "en": "A column read as a travel ledger: each year, then the countries of that year as a line of serif text, each name drawn under with a fine stroke of its colour as it comes in. From your note that the first list was not high-end enough: no colour patches, no names breaking over two lines, and the colour carried more quietly. As before, each name comes up as its country colours in on the map. On a phone it stays as the live page.",
-        "zh": "右邊一欄像旅行帳本：每一年，後面接那一年去的國家，一行襯線字，每個名字出現時底下畫上一條它顏色的細線。照你說第一版不夠高級：拿掉色塊、名字不會斷成兩行、顏色放得更含蓄。和之前一樣，地圖上哪個國家上色，名字就跟著出現。手機上維持正式版。"
+        "en": "A column read as a travel ledger: each year, then the countries of that year as a line of serif text, each name drawn under with a fine stroke of its colour as it comes in. From your note that the first list was not high-end enough: no colour patches, no names breaking over two lines, and the colour carried more quietly. As before, each name comes up as its country colours in on the map. On a phone it stays as the live page. Not using: on 14 November you liked none of these four.",
+        "zh": "右邊一欄像旅行帳本：每一年，後面接那一年去的國家，一行襯線字，每個名字出現時底下畫上一條它顏色的細線。照你說第一版不夠高級：拿掉色塊、名字不會斷成兩行、顏色放得更含蓄。和之前一樣，地圖上哪個國家上色，名字就跟著出現。手機上維持正式版。不採用：11/14 這四版你都不喜歡。"
       },
       "still": {
         "wait": 14000
-      }
+      },
+      "out": true
     },
     {
       "id": "journey-fp-list-index",
@@ -698,12 +704,13 @@
         "zh": "地圖集索引"
       },
       "desc": {
-        "en": "A column set like the index at the back of an atlas: the names in alphabetical order, a dotted line to the year you first went, a small dot of its colour. From your note that the first list was not high-end enough: no colour patches, no names breaking over two lines, and the colour carried more quietly. As before, each name comes up as its country colours in on the map. On a phone it stays as the live page.",
-        "zh": "右邊一欄像地圖集最後面的索引：國名照字母排，一條點線連到你第一次去的那年，前面一個它顏色的小點。照你說第一版不夠高級：拿掉色塊、名字不會斷成兩行、顏色放得更含蓄。和之前一樣，地圖上哪個國家上色，名字就跟著出現。手機上維持正式版。"
+        "en": "A column set like the index at the back of an atlas: the names in alphabetical order, a dotted line to the year you first went, a small dot of its colour. From your note that the first list was not high-end enough: no colour patches, no names breaking over two lines, and the colour carried more quietly. As before, each name comes up as its country colours in on the map. On a phone it stays as the live page. Not using: on 14 November you liked none of these four.",
+        "zh": "右邊一欄像地圖集最後面的索引：國名照字母排，一條點線連到你第一次去的那年，前面一個它顏色的小點。照你說第一版不夠高級：拿掉色塊、名字不會斷成兩行、顏色放得更含蓄。和之前一樣，地圖上哪個國家上色，名字就跟著出現。手機上維持正式版。不採用：11/14 這四版你都不喜歡。"
       },
       "still": {
         "wait": 14000
-      }
+      },
+      "out": true
     },
     {
       "id": "journey-fp-list-pacific",
@@ -714,8 +721,73 @@
         "zh": "寫在太平洋上"
       },
       "desc": {
-        "en": "No column: the map stays edge to edge, and the ledger is lettered into the open South Pacific as an old atlas's framed note, with a fine double line round it. From your note that the first list was not high-end enough: no colour patches, no names breaking over two lines, and the colour carried more quietly. As before, each name comes up as its country colours in on the map. On a phone it stays as the live page.",
-        "zh": "不加欄位：地圖維持滿版，帳本寫在南太平洋的空白處，像古地圖上框起來的說明，外面一圈細細的雙線。照你說第一版不夠高級：拿掉色塊、名字不會斷成兩行、顏色放得更含蓄。和之前一樣，地圖上哪個國家上色，名字就跟著出現。手機上維持正式版。"
+        "en": "No column: the map stays edge to edge, and the ledger is lettered into the open South Pacific as an old atlas's framed note, with a fine double line round it. From your note that the first list was not high-end enough: no colour patches, no names breaking over two lines, and the colour carried more quietly. As before, each name comes up as its country colours in on the map. On a phone it stays as the live page. Not using: on 14 November you liked none of these four.",
+        "zh": "不加欄位：地圖維持滿版，帳本寫在南太平洋的空白處，像古地圖上框起來的說明，外面一圈細細的雙線。照你說第一版不夠高級：拿掉色塊、名字不會斷成兩行、顏色放得更含蓄。和之前一樣，地圖上哪個國家上色，名字就跟著出現。手機上維持正式版。不採用：11/14 這四版你都不喜歡。"
+      },
+      "still": {
+        "wait": 14000
+      },
+      "out": true
+    },
+    {
+      "id": "journey-fp-list-years",
+      "href": "journey-fp-list-years.html",
+      "group": "journey-fp-list-3",
+      "title": {
+        "en": "By year",
+        "zh": "照年份"
+      },
+      "desc": {
+        "en": "Each year a large serif numeral, its countries in small words under it, a dot of each one's colour. Each name or picture comes up as its country colours in on the map. The rest is the live page's opening; on a phone it stays as the live page.",
+        "zh": "每一年一個大大的襯線數字，下面小字寫那一年去的國家，前面一個它顏色的小點。地圖上哪個國家上色，它的名字或照片就跟著出現。其他是正式版的開場；手機上維持正式版。"
+      },
+      "still": {
+        "wait": 14000
+      }
+    },
+    {
+      "id": "journey-fp-list-ruler",
+      "href": "journey-fp-list-ruler.html",
+      "group": "journey-fp-list-3",
+      "title": {
+        "en": "A ruler of years",
+        "zh": "年份的尺"
+      },
+      "desc": {
+        "en": "Every year from 2010 to 2026 as a tick on one line, the empty years too, so the long gap from 2016 to 2021 shows as time passing; the countries beside their year. Each name or picture comes up as its country colours in on the map. The rest is the live page's opening; on a phone it stays as the live page.",
+        "zh": "2010 到 2026 每一年都是一條線上的刻度，沒去的年份也在，所以 2016 到 2021 那段空白看得出來時間過去了；國家寫在那一年旁邊。地圖上哪個國家上色，它的名字或照片就跟著出現。其他是正式版的開場；手機上維持正式版。"
+      },
+      "still": {
+        "wait": 14000
+      }
+    },
+    {
+      "id": "journey-fp-list-prints",
+      "href": "journey-fp-list-prints.html",
+      "group": "journey-fp-list-3",
+      "title": {
+        "en": "In prints",
+        "zh": "照片"
+      },
+      "desc": {
+        "en": "A small contact sheet: one of your photographs from each country, its name and first year under it, a line of its colour along the foot; a country without a photograph on the site yet shows its colour. Each name or picture comes up as its country colours in on the map. The rest is the live page's opening; on a phone it stays as the live page.",
+        "zh": "一張小小的印樣：每個國家一張你拍的照片，下面寫國名和第一次去的年份，底下一條它的顏色；網站上還沒有照片的國家就顯示它的顏色。地圖上哪個國家上色，它的名字或照片就跟著出現。其他是正式版的開場；手機上維持正式版。"
+      },
+      "still": {
+        "wait": 14000
+      }
+    },
+    {
+      "id": "journey-fp-list-sentence",
+      "href": "journey-fp-list-sentence.html",
+      "group": "journey-fp-list-3",
+      "title": {
+        "en": "In a sentence",
+        "zh": "一段文字"
+      },
+      "desc": {
+        "en": "One paragraph set like a caption: Malaysia in 2010. The Netherlands in 2012. And so on, each name in its own colour, deepened so it reads. Each name or picture comes up as its country colours in on the map. The rest is the live page's opening; on a phone it stays as the live page.",
+        "zh": "一段像圖說的文字：2010 年馬來西亞。2012 年荷蘭。這樣一路寫下去，每個國名用它自己的顏色，加深一點才好讀。地圖上哪個國家上色，它的名字或照片就跟著出現。其他是正式版的開場；手機上維持正式版。"
       },
       "still": {
         "wait": 14000
@@ -730,8 +802,8 @@
         "zh": "清透玻璃，第三次"
       },
       "desc": {
-        "en": "Playfair Display on a clearer pane. From your note on the second pass: the trips are back at their old spacing, and only the scrolling is slower: once the list reaches the reading line it moves at a third of your scroll, so each trip stays in front of you three times as long. Otherwise as the second pass (more paper, smaller names, quiet labels).",
-        "zh": "Playfair Display 字，清透的面板。照你對第二次的意見：旅程之間的距離恢復原本的樣子，只有捲動變慢：清單到了閱讀的位置後，只跟著你的捲動走三分之一，所以每一趟停在眼前的時間是三倍。其他跟第二次一樣（紙色多一點、名稱小一點、小字不大寫）。"
+        "en": "Playfair Display on a clearer pane. From your note on the second pass: the trips are back at their old spacing, and only the scrolling is slower: once the list reaches the reading line it moves at a third of your scroll, so each trip stays in front of you three times as long. Otherwise as the second pass (more paper, smaller names, quiet labels). Your pick: since 14 November it is the live page's panel.",
+        "zh": "Playfair Display 字，清透的面板。照你對第二次的意見：旅程之間的距離恢復原本的樣子，只有捲動變慢：清單到了閱讀的位置後，只跟著你的捲動走三分之一，所以每一趟停在眼前的時間是三倍。其他跟第二次一樣（紙色多一點、名稱小一點、小字不大寫）。你選了這張：11/14 起是正式版的面板。"
       },
       "still": {
         "wait": 14000
@@ -1499,16 +1571,14 @@
   "words": {},
   "ask": {
     "ids": [
-      "journey-fp-list-ledger",
-      "journey-fp-list-index",
-      "journey-fp-list-pacific",
-      "journey-panel-glass-3",
-      "journey-panel-cormorant-3",
-      "journey-panel-mist-3"
+      "journey-fp-list-years",
+      "journey-fp-list-ruler",
+      "journey-fp-list-prints",
+      "journey-fp-list-sentence"
     ],
     "question": {
-      "en": "1 is the live page. 2 to 4 are three quieter lists of where you have been beside the opening map: a ledger, an atlas index, and lettered into the Pacific. Each name still comes up as its country colours in. Score each and mark anything still not right.",
-      "zh": "第 1 張是正式版。第 2 到 4 張是開場地圖旁邊三種更安靜的「去過的地方」：帳本、地圖集索引、寫在太平洋上。地圖上色時名字一樣跟著出現。每張給分，哪裡還不對就標出來。"
+      "en": "1 is the live page, now with the reading panel you picked (Clear glass, third pass). 2 to 5 are four new lists of where you have been beside the opening map: by year, a ruler of years, in prints, and in a sentence. Score each and mark anything still not right.",
+      "zh": "第 1 張是正式版，右邊面板已經換成你選的「清透玻璃，第三次」。第 2 到 5 張是開場地圖旁邊四種新的「去過的地方」：照年份、年份的尺、照片、一段文字。每張給分，哪裡還不對就標出來。"
     }
   }
 }
