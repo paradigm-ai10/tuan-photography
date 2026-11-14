@@ -1,0 +1,62 @@
+/* The reading panel, three high-end versions (2026-11-14, his marks on the live page: "i dont like the font
+   of this, it doesn't provide an high end kind of feeling", the frosted panel too, the photograph behind
+   "even more transparent", and room kept on the right, the panel running from the middle to about six
+   sevenths of the window). <body data-luxe="…">, wide windows only; a phone keeps the live page.
+     glass      Playfair Display, a clear pane: little paper, a light blur, hairline edges
+     cormorant  Cormorant Garamond (his logo's face), light and large, on a thinner veil
+     mist       Playfair Display, the photograph blurred to a soft wash with almost no paper in it
+   Every version: the panel stops a seventh short of the right edge, so the photograph runs on clear
+   beside it; the years are numerals in the serif instead of black blocks. */
+
+@font-face { font-family: 'Cormorant Garamond'; font-style: normal; font-weight: 300; font-display: swap; src: url(../fonts/cormorant-garamond/cormorant-garamond-300-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'Cormorant Garamond'; font-style: normal; font-weight: 300; font-display: swap; src: url(../fonts/cormorant-garamond/cormorant-garamond-300-latin-ext.woff2) format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: 'Cormorant Garamond'; font-style: normal; font-weight: 500; font-display: swap; src: url(../fonts/cormorant-garamond/cormorant-garamond-500-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'Cormorant Garamond'; font-style: normal; font-weight: 500; font-display: swap; src: url(../fonts/cormorant-garamond/cormorant-garamond-500-latin-ext.woff2) format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+
+@media (min-width: 64rem) {
+  body[data-luxe] { --lx-right: calc(100vw / 7); --lx-serif: "Playfair Display", "Noto Serif TC", serif; }
+  body[data-luxe="cormorant"] { --lx-serif: "Cormorant Garamond", "Noto Serif TC", serif; }
+
+  /* the panel: from the globe's column to six sevenths of the window, the photograph clear beyond it */
+  body[data-luxe] .jr-panel { right: var(--lx-right); width: calc(100vw - var(--mapw) - var(--lx-right)); }
+  body[data-luxe] .jr-years, body[data-luxe] .jr-close { margin-right: var(--lx-right); padding-right: clamp(1.5rem, 3vw, 3rem); }
+
+  /* the names and the years in the serif */
+  body[data-luxe] .jr-trip__title { font-family: var(--lx-serif); font-weight: 400; letter-spacing: 0; line-height: 1.12; }
+  body[data-luxe] .jr-year__n { font-family: var(--lx-serif); }
+  /* the year at the foot of the globe's column in the same serif, so the two sides read as one page */
+  body[data-luxe] .jr-folio__year { font-family: var(--lx-serif); font-weight: 400; letter-spacing: -0.01em; }
+  body[data-luxe][data-panel="line"] .jr-year__n { background: none; color: var(--ink); font-size: 1.75rem; font-weight: 400; letter-spacing: 0; padding: 0 0.6rem 0 0; line-height: 1; }
+  body[data-luxe][data-panel="line"] .jr-year__head { align-items: center; }
+  body[data-luxe] .jr-trip__when { font-size: 0.68rem; letter-spacing: 0.22em; }
+  body[data-luxe] .jr-trip__route { font-size: 0.86rem; }
+  :lang(zh-Hant) body[data-luxe] .jr-trip__title { font-weight: 500; letter-spacing: 0.04em; }
+
+  /* ---- glass: a clear pane ---------------------------------------------------------------------- */
+  body[data-luxe="glass"] .jr-panel {
+    background: color-mix(in oklch, var(--paper) 30%, transparent);
+    backdrop-filter: blur(7px) saturate(1.02); -webkit-backdrop-filter: blur(7px) saturate(1.02);
+    border-inline: 1px solid color-mix(in oklch, var(--paper) 70%, transparent);
+  }
+  body[data-luxe="glass"] .jr-trip__title { font-size: clamp(1.25rem, 1.05rem + 0.5vw, 1.55rem); }
+  body[data-luxe="glass"][data-panel="line"] .jr-trip.is-reading .jr-trip__title { font-size: clamp(1.8rem, 1.35rem + 1vw, 2.4rem); }
+
+  /* ---- cormorant: light and large on a thinner veil -------------------------------------------- */
+  body[data-luxe="cormorant"] .jr-panel {
+    background: color-mix(in oklch, var(--paper) 22%, transparent);
+    backdrop-filter: blur(12px) saturate(1.04); -webkit-backdrop-filter: blur(12px) saturate(1.04);
+  }
+  body[data-luxe="cormorant"] .jr-trip__title { font-weight: 500; font-size: clamp(1.5rem, 1.25rem + 0.6vw, 1.9rem); line-height: 1.05; }
+  body[data-luxe="cormorant"][data-panel="line"] .jr-trip.is-reading .jr-trip__title { font-weight: 300; font-size: clamp(2.3rem, 1.7rem + 1.4vw, 3.1rem); }
+  body[data-luxe="cormorant"][data-panel="line"] .jr-year__n { font-size: 2.1rem; font-weight: 300; }
+  body[data-luxe="cormorant"][data-panel="line"] .jr-trip::before { top: 1.75rem; }
+
+  /* ---- mist: the photograph blurred to a soft wash, almost no paper in it ------------------------- */
+  body[data-luxe="mist"] .jr-panel {
+    background: color-mix(in oklch, var(--paper) 12%, transparent);
+    backdrop-filter: blur(26px) saturate(1.12) brightness(1.06); -webkit-backdrop-filter: blur(26px) saturate(1.12) brightness(1.06);
+  }
+  body[data-luxe="mist"] .jr-trip__title { font-size: clamp(1.3rem, 1.1rem + 0.5vw, 1.6rem); }
+  body[data-luxe="mist"][data-panel="line"] .jr-trip.is-reading .jr-trip__title { font-size: clamp(2rem, 1.5rem + 1.1vw, 2.7rem); }
+  body[data-luxe="mist"][data-panel="line"] .jr-year::before { border-left-color: color-mix(in oklch, var(--ink) 35%, transparent); }
+}

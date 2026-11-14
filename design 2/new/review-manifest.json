@@ -2,7 +2,7 @@
   "name": "journey",
   "round": {
     "groups": [
-      "journey-cam"
+      "journey-panel"
     ],
     "ids": [
       "journey"
@@ -87,6 +87,14 @@
       "title": {
         "en": "Your trips as one camera move",
         "zh": "旅程變成一段鏡頭"
+      }
+    },
+    {
+      "id": "journey-panel",
+      "built": "2026-11-14T16:07",
+      "title": {
+        "en": "The reading panel, high-end",
+        "zh": "右邊的旅程面板，高級感"
       }
     },
     {
@@ -516,6 +524,54 @@
         "wait": 14000
       },
       "out": true
+    },
+    {
+      "id": "journey-panel-glass",
+      "href": "journey-panel-glass.html",
+      "group": "journey-panel",
+      "title": {
+        "en": "Clear glass",
+        "zh": "清透玻璃"
+      },
+      "desc": {
+        "en": "Playfair Display (the site's own serif) on a clear pane: a little paper, a light blur, hairline edges. From your marks on the live page: the panel more see-through so your photograph shows, ending a seventh short of the right edge so the photograph runs on clear beside it, and the trip names, the years and the year under the globe in a serif instead of the plain sans. Everything else is the live page. On a phone it stays as the live page.",
+        "zh": "用網站本來的 Playfair Display 字，面板像一片清透的玻璃：一點點紙色、輕輕模糊、邊緣一條細線。照你在正式版上圈的地方改：面板更透明，讓後面的照片透出來；右邊留七分之一不蓋，照片直接露出來；旅程名稱、年份和地球下面的年份換成有襯線的字，不再是原本那種平平的字。其他都跟正式版一樣，手機上也維持正式版。"
+      },
+      "still": {
+        "wait": 14000
+      }
+    },
+    {
+      "id": "journey-panel-cormorant",
+      "href": "journey-panel-cormorant.html",
+      "group": "journey-panel",
+      "title": {
+        "en": "Cormorant",
+        "zh": "Cormorant 字"
+      },
+      "desc": {
+        "en": "Cormorant Garamond, the face of your logo, light and larger, on a thinner veil. From your marks on the live page: the panel more see-through so your photograph shows, ending a seventh short of the right edge so the photograph runs on clear beside it, and the trip names, the years and the year under the globe in a serif instead of the plain sans. Everything else is the live page. On a phone it stays as the live page.",
+        "zh": "用你 logo 的 Cormorant Garamond 字，細一點、大一點，底下的紗更薄。照你在正式版上圈的地方改：面板更透明，讓後面的照片透出來；右邊留七分之一不蓋，照片直接露出來；旅程名稱、年份和地球下面的年份換成有襯線的字，不再是原本那種平平的字。其他都跟正式版一樣，手機上也維持正式版。"
+      },
+      "still": {
+        "wait": 14000
+      }
+    },
+    {
+      "id": "journey-panel-mist",
+      "href": "journey-panel-mist.html",
+      "group": "journey-panel",
+      "title": {
+        "en": "Mist",
+        "zh": "霧面"
+      },
+      "desc": {
+        "en": "Playfair Display, with the photograph behind blurred into a soft wash of its own colours and almost no paper in it. From your marks on the live page: the panel more see-through so your photograph shows, ending a seventh short of the right edge so the photograph runs on clear beside it, and the trip names, the years and the year under the globe in a serif instead of the plain sans. Everything else is the live page. On a phone it stays as the live page.",
+        "zh": "Playfair Display 字，後面的照片糊成一片柔和的顏色，幾乎沒有紙色。照你在正式版上圈的地方改：面板更透明，讓後面的照片透出來；右邊留七分之一不蓋，照片直接露出來；旅程名稱、年份和地球下面的年份換成有襯線的字，不再是原本那種平平的字。其他都跟正式版一樣，手機上也維持正式版。"
+      },
+      "still": {
+        "wait": 14000
+      }
     },
     {
       "href": "footprint-scratch-passport.html",
@@ -1244,5 +1300,16 @@
     "--rv-label": "\"Geist\", \"Noto Sans TC\", sans-serif",
     "--rv-name": "\"Playfair Display\", \"Noto Serif TC\", serif"
   },
-  "words": {}
+  "words": {},
+  "ask": {
+    "ids": [
+      "journey-panel-glass",
+      "journey-panel-cormorant",
+      "journey-panel-mist"
+    ],
+    "question": {
+      "en": "1 is the live page. 2 to 4 change only the reading panel on the right, from your marks: more see-through, room kept on the right, and a serif for the names and years. Scroll past the globe into your trips, then score each and mark anything still not right.",
+      "zh": "第 1 張是正式版。第 2 到 4 張只改右邊的旅程面板，照你圈的地方：更透明、右邊留空、名稱和年份換成有襯線的字。捲過地球、往下看幾趟旅程，每張給分，哪裡還不對就標出來。"
+    }
+  }
 }
