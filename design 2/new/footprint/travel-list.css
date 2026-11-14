@@ -1,0 +1,24 @@
+/* The key beside the landing map (travel-list.js, <body data-fp-list>): his countries oldest first, each a
+   swatch of its colour on the map, its name and the years he went; a line comes up as its country colours in. */
+.fp-list {
+  position: absolute; top: 0; right: 0; bottom: 0; width: var(--fp-col, 0px); z-index: 3;
+  box-sizing: border-box; padding: clamp(5.5rem, 13vh, 8rem) clamp(1.25rem, 2.4vw, 2.5rem) 2rem;
+  border-left: 1px solid var(--hair); background: var(--paper);
+  display: flex; flex-direction: column; justify-content: center; gap: 1.1rem; overflow: hidden;
+}
+.fp-list[hidden] { display: none; }
+.fp-list__head { margin: 0; font: 400 1.3rem/1.2 "Playfair Display", "Noto Serif TC", serif; color: var(--ink); }
+.fp-list__rows { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.32rem; }
+.fp-list__row {
+  display: grid; grid-template-columns: 0.8rem 1fr auto; align-items: baseline; column-gap: 0.7rem;
+  opacity: 0; transform: translateY(0.25rem);
+  transition: opacity 0.7s var(--ease, ease), transform 0.7s var(--ease, ease);
+}
+.fp-list__row.is-in { opacity: 1; transform: none; }
+.fp-list__swatch { width: 0.8rem; height: 0.55rem; align-self: center; background: var(--tone, var(--paper-2)); opacity: 0.85; }
+.fp-list__name { font: 400 0.98rem/1.35 "Playfair Display", "Noto Serif TC", serif; color: var(--ink); }
+.fp-list__years { font-size: 0.78rem; color: var(--ink-2); font-variant-numeric: tabular-nums; white-space: nowrap; }
+:lang(zh-Hant) .fp-list__name { font-weight: 500; }
+/* a phone, or a window too narrow for the column: the map as it was */
+.is-narrow .fp-list { display: none; }
+@media (prefers-reduced-motion: reduce) { .fp-list__row { transition: opacity 0.3s; transform: none; } }

@@ -90,3 +90,12 @@
   body[data-luxe2] .vy-go { text-transform: none; letter-spacing: 0.01em; font-size: 0.82rem; }
   body[data-luxe2] .jr-trip__route { color: var(--ink); opacity: 0.78; line-height: 1.5; max-width: 52ch; }
 }
+
+/* ---- round eleven, third pass (2026-11-14, "I don't want the lines to split that far away. Only the
+   scrolling should get slower"): the second pass with the trips at their old spacing again, the list moved
+   at a third of the scroll's pace instead (panel-slow.js, <body data-slow>) ---------------------------- */
+@media (min-width: 64rem) {
+  body[data-luxe3][data-panel="line"] .jr-trip { min-height: 0; }
+  body[data-slow] .jr-years { transform: translateY(var(--slow, 0px)); }
+  body[data-slow] .jr-slow-room { height: var(--room, 0px); pointer-events: none; }
+}

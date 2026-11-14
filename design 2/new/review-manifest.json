@@ -2,6 +2,8 @@
   "name": "journey",
   "round": {
     "groups": [
+      "journey-fp-list",
+      "journey-panel-3",
       "journey-panel-2",
       "journey-panel"
     ],
@@ -88,6 +90,22 @@
       "title": {
         "en": "Your trips as one camera move",
         "zh": "旅程變成一段鏡頭"
+      }
+    },
+    {
+      "id": "journey-fp-list",
+      "built": "2026-11-14T16:27",
+      "title": {
+        "en": "Where I have been, beside the map",
+        "zh": "地圖旁邊：去過的地方和那一年"
+      }
+    },
+    {
+      "id": "journey-panel-3",
+      "built": "2026-11-14T16:27",
+      "title": {
+        "en": "The reading panel, third pass",
+        "zh": "右邊的旅程面板，第三次"
       }
     },
     {
@@ -625,6 +643,70 @@
       "desc": {
         "en": "Playfair Display, the photograph blurred to a soft wash with a little more paper in it. From your notes on the first three: more paper in the pane so it is less see-through, the country names a size smaller, and each trip given about a third of a screen, so the trips pass three times slower as you scroll. After a design review, the small labels (the month, Read the trip) are ordinary small words instead of spaced capitals. The first three stay beside these.",
         "zh": "Playfair Display 字，後面的照片糊成一片柔和顏色，紙色多一點。照你對前三張的意見改：面板多一點紙色、沒那麼透；國家名稱小一號；每一趟大約佔三分之一個畫面，捲動時旅程過得慢三倍。另外經過設計檢查，月份和「Read the trip」這些小字改成一般的小字，不再是空很開的大寫。前三張留在旁邊。"
+      },
+      "still": {
+        "wait": 14000
+      }
+    },
+    {
+      "id": "journey-fp-list",
+      "href": "journey-fp-list.html",
+      "group": "journey-fp-list",
+      "title": {
+        "en": "Where I have been",
+        "zh": "去過的地方"
+      },
+      "desc": {
+        "en": "The live page with a key down the right of the opening map: your countries oldest first, each with a swatch of its colour on the map, its name and the years you went. Each line comes up as its country colours in on the map, so the key fills in the same order the map does; the map is framed a little narrower to make room. On a phone it stays as the live page.",
+        "zh": "正式版的開場地圖右邊加一欄：你去過的國家，從最早的開始，每一個有它在地圖上的顏色、名字和你去的年份。地圖上哪個國家上色，這一欄的那一行就同時出現，順序跟地圖一樣；地圖稍微窄一點讓出位置。手機上維持正式版。"
+      },
+      "still": {
+        "wait": 14000
+      }
+    },
+    {
+      "id": "journey-panel-glass-3",
+      "href": "journey-panel-glass-3.html",
+      "group": "journey-panel-3",
+      "title": {
+        "en": "Clear glass, third pass",
+        "zh": "清透玻璃，第三次"
+      },
+      "desc": {
+        "en": "Playfair Display on a clearer pane. From your note on the second pass: the trips are back at their old spacing, and only the scrolling is slower: once the list reaches the reading line it moves at a third of your scroll, so each trip stays in front of you three times as long. Otherwise as the second pass (more paper, smaller names, quiet labels).",
+        "zh": "Playfair Display 字，清透的面板。照你對第二次的意見：旅程之間的距離恢復原本的樣子，只有捲動變慢：清單到了閱讀的位置後，只跟著你的捲動走三分之一，所以每一趟停在眼前的時間是三倍。其他跟第二次一樣（紙色多一點、名稱小一點、小字不大寫）。"
+      },
+      "still": {
+        "wait": 14000
+      }
+    },
+    {
+      "id": "journey-panel-cormorant-3",
+      "href": "journey-panel-cormorant-3.html",
+      "group": "journey-panel-3",
+      "title": {
+        "en": "Cormorant, third pass",
+        "zh": "Cormorant 字，第三次"
+      },
+      "desc": {
+        "en": "Cormorant Garamond, your logo's face, on a half-paper veil. From your note on the second pass: the trips are back at their old spacing, and only the scrolling is slower: once the list reaches the reading line it moves at a third of your scroll, so each trip stays in front of you three times as long. Otherwise as the second pass (more paper, smaller names, quiet labels).",
+        "zh": "你 logo 的 Cormorant Garamond 字，大約一半紙色的紗。照你對第二次的意見：旅程之間的距離恢復原本的樣子，只有捲動變慢：清單到了閱讀的位置後，只跟著你的捲動走三分之一，所以每一趟停在眼前的時間是三倍。其他跟第二次一樣（紙色多一點、名稱小一點、小字不大寫）。"
+      },
+      "still": {
+        "wait": 14000
+      }
+    },
+    {
+      "id": "journey-panel-mist-3",
+      "href": "journey-panel-mist-3.html",
+      "group": "journey-panel-3",
+      "title": {
+        "en": "Mist, third pass",
+        "zh": "霧面，第三次"
+      },
+      "desc": {
+        "en": "Playfair Display over a soft wash of the photograph. From your note on the second pass: the trips are back at their old spacing, and only the scrolling is slower: once the list reaches the reading line it moves at a third of your scroll, so each trip stays in front of you three times as long. Otherwise as the second pass (more paper, smaller names, quiet labels).",
+        "zh": "Playfair Display 字，後面是照片糊成的柔和顏色。照你對第二次的意見：旅程之間的距離恢復原本的樣子，只有捲動變慢：清單到了閱讀的位置後，只跟著你的捲動走三分之一，所以每一趟停在眼前的時間是三倍。其他跟第二次一樣（紙色多一點、名稱小一點、小字不大寫）。"
       },
       "still": {
         "wait": 14000
@@ -1360,13 +1442,14 @@
   "words": {},
   "ask": {
     "ids": [
-      "journey-panel-glass-2",
-      "journey-panel-cormorant-2",
-      "journey-panel-mist-2"
+      "journey-fp-list",
+      "journey-panel-glass-3",
+      "journey-panel-cormorant-3",
+      "journey-panel-mist-3"
     ],
     "question": {
-      "en": "1 is the live page. The three second passes: less see-through, smaller country names, and the trips passing three times slower. Scroll past the globe into your trips, then score each and mark anything still not right.",
-      "zh": "第 1 張是正式版。三張第二次的版本：沒那麼透明、國家名稱小一點、旅程捲過去慢三倍。捲過地球、往下看幾趟旅程，每張給分，哪裡還不對就標出來。"
+      "en": "1 is the live page. 2 adds the list of where you have been, and when, beside the opening map, each line coming up in its colour as the map colours in. 3 to 5 are the panel's third pass: the old spacing, only the scrolling slower. Score each and mark anything still not right.",
+      "zh": "第 1 張是正式版。第 2 張在開場地圖右邊加上你去過的地方和年份，地圖上色時那一行跟著顏色出現。第 3 到 5 張是面板的第三次：距離恢復原本，只有捲動變慢。每張給分，哪裡還不對就標出來。"
     }
   }
 }

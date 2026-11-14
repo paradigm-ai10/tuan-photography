@@ -64,6 +64,7 @@
   // the page's tempo: every time in the move stretched by it (1 is One breath out's, resting at about 3 s)
   const TEMPO = clamp(parseFloat(body.dataset.tempo) || 1.45, 1, 3);
   const STAY = body.dataset.zoom === 'none'; // the whole map from the start, the view never moving
+  const LIST = 'fpList' in body.dataset; // (data-fp-list) a list of where he went, and when, beside the map
   const HOLD = 300 * TEMPO; // the landing: close in on Taiwan, home in clay, the numbers at 0
   const GLIDE = 2500 * TEMPO; // the one move out to the whole wall map
   const breath = bezier(0.35, 0, 0.12, 1); // under way at once, half the widening done by 0.75 s, a long soft landing
@@ -539,7 +540,10 @@
   // (s0) and the Arctic shores to New Zealand top to bottom. A window wider than that keeps the height
   // and shows more of the world at the sides; a taller one shows open sea under New Zealand, then more of
   // the north. The three numbers lie over the map's foot, sized for the window, not for a band.
-  function solveWide(w, h) {
+  function solveWide(wAll, h) {
+    // (data-fp-list) a column kept on the right for the list of where he went and when (travel-list.js);
+    // the map is framed in the rest
+    const colW = LIST ? clamp(wAll * 0.21, 260, 360) : 0, w = wAll - colW;
     const padL = clamp(w * 0.022, 14, 34), padR = clamp(w * 0.018, 12, 28);
     const s0 = (w - padL - padR) / (SPAN * DEG);
     const sMin = w / (2 * XR); // the whole way round, and no further
@@ -554,7 +558,7 @@
     const W0 = { x0, y0: gy(north), w: vw, h: vh };
     const F = { x: 0, y: 0, w, h };
     return {
-      w, h, sheetH: h, narrow: false, W0, rest: { ...W0 }, sf: s, F, north, bandPx: clamp(h * 0.165, 96, 180), slide: false,
+      w: wAll, colW, h, sheetH: h, narrow: false, W0, rest: { ...W0 }, sf: s, F, north, bandPx: clamp(h * 0.165, 96, 180), slide: false,
       k: clamp(w / 1380, 0.7, 1.15), sp: clamp(w / 1380, 0.66, 1.1),
     };
   }
@@ -612,7 +616,7 @@
   let boxes = [], tripBox = null, hintBox = null;
   function placeRow() {
     boxes = [];
-    const W = G.w, H = G.h;
+    const W = G.F.w, H = G.h;   // (the map's own width: on a wide window with the list, short of the column)
     if (G.narrow) {
       stats.forEach((st, i) => {
         const x = G.edge + i * (G.colW + G.colGap) + (G.colW - G.row.boxes[i].w) / 2, y = G.rowY;
@@ -1303,6 +1307,7 @@ void main() {
     drawSea(cur);
     drawMap(cur, t, dt);
     showCounts(t);
+    if (FP.onDraw) FP.onDraw(t);
   }
 
   function drawMap(c, t, dt) {
@@ -1550,6 +1555,9 @@ void main() {
     metrics.clear(); LBL.clear(); shown = {};
     plan();
     publish();
+    // (data-fp-list) when each of his countries colours in, and in what colour, for the list beside the map
+    FP.reveal = { col: G.colW || 0, at: new Map(MINE.map((m) => [m.id, m.tb])), tone: new Map(MINE.map((m) => [m.id, m.tone ? m.tone.css : null])) };
+    dispatchEvent(new Event('fp-plan'));
     // the work: the water fields, then each wash at the scale it is first seen; each with the moment it is needed
     const jobs = [];
     const needAt = (z) => { for (let t = HOLD; t <= P.viewEnd; t += 16) if (zOf(viewAt(t)) < z) return t; return P.viewEnd; };
