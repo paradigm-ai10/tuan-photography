@@ -241,7 +241,7 @@
     const ids = el ? hit.get(el) : null;
     if (FP.focus) FP.focus(ids);
     box.classList.toggle('is-focusing', !!ids);
-    items.forEach((it) => it.el.classList.toggle('is-focus', !!ids && (it.el === el || (it.id && ids.includes(it.id)) || (it.ids && it.ids.some((x) => ids.includes(x))))));
+    items.forEach((it) => it.el.classList.toggle('is-focus', !!ids && (it.el === el || (it.id ? ids.includes(it.id) : it.ids.some((x) => ids.includes(x))))));
   };
   box.addEventListener('pointerover', (e) => { const el = e.target.closest('.fp-list__hot'); if (el && el.classList.contains('is-in')) focus(el); });
   box.addEventListener('pointerout', (e) => { if (!box.contains(e.relatedTarget) || !(e.relatedTarget && e.relatedTarget.closest('.fp-list__hot'))) focus(null); });

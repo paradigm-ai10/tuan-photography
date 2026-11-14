@@ -1316,9 +1316,33 @@ void main() {
   let focusSet = null, focusK = 0, focusWant = 0, focusAt = 0, focusRaf = 0;
   const tripsOf = new Map(FP.journeys.map((j) => [j.id, j.countries]));
   const weight = (id) => (focusSet && !focusSet.has(id) ? 1 - 0.78 * focusK : 1);
+  // the country a flight lands in (the shape holding its end, or the nearest of his within 600 km)
+  const arcTo = (a) => {
+    if (a.toId !== undefined) return a.toId;
+    const pt = [a.f.to.lng, a.f.to.lat];
+    let id = null;
+    for (const m of MINE) if (m.feat && d3.geoContains(m.feat, pt)) { id = m.id; break; }
+    if (!id) {
+      let best = Infinity;
+      MINE.forEach((m) => { const d = FP.km([pt[1], pt[0]], m.c.ll); if (d < best) { best = d; id = m.id; } });
+      if (best > 600) id = null;
+    }
+    return (a.toId = id);
+  };
+  // (focus) a small plane flies each flight that lands in the countries pointed at, drawing its line as it goes
+  const FLY = 1500, FLY_FADE = 500;
+  let planes = [], planesEnd = 0;
   FP.focus = (ids) => {
-    if (ids && ids.length) { focusSet = new Set(ids); focusWant = 1; } else focusWant = 0;
-    if (!focusRaf) { focusAt = performance.now(); focusRaf = requestAnimationFrame(focusStep); }
+    const now = performance.now();
+    if (ids && ids.length) {
+      const key = ids.join(','), was = focusSet && focusWant ? [...focusSet].join(',') : '';
+      focusSet = new Set(ids); focusWant = 1;
+      if (key !== was) {
+        planes = ARCS.filter((a) => Number.isFinite(a.t0) && focusSet.has(arcTo(a))).map((a, i) => ({ a, t0: now + i * 140 }));
+        planesEnd = planes.length ? planes[planes.length - 1].t0 + FLY + FLY_FADE : 0;
+      }
+    } else { focusWant = 0; planes = []; planesEnd = 0; }
+    if (!focusRaf) { focusAt = now; focusRaf = requestAnimationFrame(focusStep); }
   };
   function focusStep(now) {
     const d = Math.min(64, now - focusAt); focusAt = now;
@@ -1326,7 +1350,7 @@ void main() {
     if (Math.abs(focusWant - focusK) < 0.01) focusK = focusWant;
     if (!focusK && !focusWant) focusSet = null;
     if (!raf && started && P) draw(AT != null ? AT : STILL || resting ? P.END + 1 : performance.now() - t0, 1e6);
-    focusRaf = focusK !== focusWant ? requestAnimationFrame(focusStep) : 0;
+    focusRaf = focusK !== focusWant || now < planesEnd ? requestAnimationFrame(focusStep) : 0;
   }
 
   function drawMap(c, t, dt) {
@@ -1401,6 +1425,36 @@ void main() {
       ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.stroke();
     });
 
+    // (focus) the countries pointed at lift off the sheet: a little larger, raised, a soft shadow under them
+    if (focusSet && focusK > 0) {
+      const PAPER = cssVar('--paper'), lift = 6 * focusK, grow = 1 + 0.04 * focusK;
+      MINE.forEach((m) => {
+        if (!focusSet.has(m.id) || !m.wash || !m.pathU) return;
+        if ((m.home ? 1 : spread(unit(t, m.tb, BLEED))) < 1) return;
+        const small = Math.max(m.bU.x1 - m.bU.x0, m.bU.y1 - m.bU.y0) * s < 7;
+        ctx.save();
+        ctx.shadowColor = `rgba(46, 36, 26, ${0.3 * focusK})`; ctx.shadowBlur = 16 * DPR * focusK; ctx.shadowOffsetY = 8 * DPR * focusK;
+        if (small) {
+          // a country too small to see: its dab grows and rises
+          ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+          const x = ox + m.anchorU[0] * s, y = oy + m.anchorU[1] * s - lift, r = clamp(3.2 * G.k, 2.6, 3.8) * (1 + 0.9 * focusK);
+          ctx.fillStyle = m.tone.css; ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+          ctx.shadowColor = 'transparent'; ctx.lineWidth = 0.8; ctx.strokeStyle = INK; ctx.stroke();
+        } else {
+          const cx = (m.bU.x0 + m.bU.x1) / 2, cy = (m.bU.y0 + m.bU.y1) / 2, S = s * grow;
+          ctx.setTransform(DPR * S, 0, 0, DPR * S, DPR * (ox + cx * s - cx * S), DPR * (oy + cy * s - cy * S - lift));
+          ctx.fillStyle = PAPER; ctx.fill(m.pathU);
+          ctx.shadowColor = 'transparent';
+          ctx.globalCompositeOperation = 'multiply';
+          ctx.drawImage(m.wash.cv, m.wash.x, m.wash.y, m.wash.w, m.wash.h);
+          ctx.globalCompositeOperation = 'source-over';
+          ctx.lineJoin = 'round'; ctx.strokeStyle = INK; ctx.lineWidth = 0.9 / S; ctx.stroke(m.pathU);
+        }
+        ctx.restore();
+      });
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    }
+
     // the flights: fine arcs at low strength, drawn like a pen, settling faint
     const ROUTE = cssVar('--route'), INK2 = cssVar('--ink-2');
     ctx.lineWidth = 0.8; ctx.strokeStyle = ROUTE; ctx.lineCap = 'round';
@@ -1423,6 +1477,41 @@ void main() {
       }
       ctx.stroke();
     });
+    // (focus) the planes: each line drawn firm behind its plane, the plane gone a moment after it lands
+    if (planes.length && focusSet) {
+      const now = performance.now();
+      planes.forEach(({ a, t0: p0 }) => {
+        const k = clamp((now - p0) / FLY, 0, 1);
+        if (now < p0) return;
+        const q = inOut(k), L = q * a.total;
+        let px = a.pts[0][0], py = a.pts[0][1], ang = 0;
+        ctx.globalAlpha = 0.95 * focusK; ctx.lineWidth = 1.6; ctx.strokeStyle = ROUTE;
+        ctx.beginPath(); ctx.moveTo(ox + px * s, oy + py * s);
+        for (let i = 1; i < a.pts.length; i++) {
+          const [x0, y0] = a.pts[i - 1], [x1, y1] = a.pts[i];
+          if (a.len[i] <= L) { ctx.lineTo(ox + x1 * s, oy + y1 * s); px = x1; py = y1; ang = Math.atan2(y1 - y0, x1 - x0); continue; }
+          const f = (L - a.len[i - 1]) / (a.len[i] - a.len[i - 1] || 1);
+          px = lerp(x0, x1, f); py = lerp(y0, y1, f); ang = Math.atan2(y1 - y0, x1 - x0);
+          ctx.lineTo(ox + px * s, oy + py * s);
+          break;
+        }
+        ctx.stroke();
+        const fade = 1 - clamp((now - p0 - FLY) / FLY_FADE, 0, 1);
+        if (fade <= 0) return;
+        ctx.save();
+        ctx.translate(ox + px * s, oy + py * s); ctx.rotate(ang);
+        const sc = clamp(1.35 * G.k, 1.1, 1.55); ctx.scale(sc, sc);
+        ctx.globalAlpha = fade * focusK; ctx.fillStyle = INK; ctx.strokeStyle = cssVar('--paper'); ctx.lineWidth = 1.4;
+        ctx.beginPath();
+        ctx.moveTo(8, 0); ctx.lineTo(3, -1.1); ctx.lineTo(-0.5, -7); ctx.lineTo(-2.4, -7); ctx.lineTo(-0.6, -1.2);
+        ctx.lineTo(-5, -1.1); ctx.lineTo(-6.6, -3.4); ctx.lineTo(-7.6, -3.4); ctx.lineTo(-6.6, 0);
+        ctx.lineTo(-7.6, 3.4); ctx.lineTo(-6.6, 3.4); ctx.lineTo(-5, 1.1); ctx.lineTo(-0.6, 1.2);
+        ctx.lineTo(-2.4, 7); ctx.lineTo(-0.5, 7); ctx.lineTo(3, 1.1); ctx.closePath();
+        ctx.stroke(); ctx.fill();
+        ctx.restore();
+      });
+      ctx.globalAlpha = 1;
+    }
     ctx.fillStyle = INK2;
     DOTS.forEach((d) => {
       const a = inOut(unit(t, d.t, 400));

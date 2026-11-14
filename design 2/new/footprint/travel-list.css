@@ -132,7 +132,15 @@
 /* pointing at a year or a country: it and its own stay, the rest of the list steps back with the map */
 .fp-list__hot { cursor: default; }
 .fp-list.is-focusing .fp-list__hot.is-in:not(.is-focus) { opacity: 0.32; }
-.fp-list.is-focusing .fp-list__hot { transition: opacity 0.2s var(--ease, ease); }
+.fp-list.is-focusing .fp-list__hot { transition: opacity 0.2s var(--ease, ease), background-color 0.2s var(--ease, ease), color 0.2s var(--ease, ease); }
+/* (2026-11-14, "明顯一點") the line pointed at, and the countries of a year pointed at, marked as with a
+   highlighter in their own colour; the year itself in ink, a size up */
+.fp-list.is-focusing .fp-list__hot.is-focus[style*="--tone"] {
+  background-color: color-mix(in oklch, var(--tone) 34%, transparent); box-shadow: 0 0 0 0.18rem color-mix(in oklch, var(--tone) 34%, transparent);
+  color: var(--ink);
+}
+.fp-list.is-focusing .fp-list__yn.is-focus { color: var(--ink); text-shadow: 0 0 0.01px var(--ink); }
+.fp-list.is-focusing .fp-list__hot.is-focus .fp-list__dot { background: var(--ink); }
 
 /* a phone, or a window too narrow for the column: the map as it was */
 .is-narrow .fp-list { display: none; }
