@@ -112,11 +112,26 @@
         row.className = `fp-list__yr${ids.length ? '' : ' is-empty'}${run ? ' is-run' : ''}`;
         const n = span('fp-list__yn', run && yy.length > 1 ? `${yy[0]}|${yy[yy.length - 1]}` : String(y));
         const cs = document.createElement('div'); cs.className = 'fp-list__ycs';
-        const names = ids.map((id) => { const e = add(span('fp-list__yc'), id); items[items.length - 1].year = y; e.append(dot(), span('fp-list__ycn')); cs.append(e); return e; });
+        // (his note, 2026-11-14: "同一個旅程的要放在一起") each trip of the year on its own line, its countries
+        // in the order he went; the trip is what is pointed at, so its flights can be flown in order
+        const trips = run ? [] : FP.journeys.filter((j) => yearOf(j) === y)
+          .map((j) => ({ j, tids: [...new Set(j.countries.filter((id) => byId.has(id)))] })).filter((t) => t.tids.length);
+        const names = [], nids = [];
+        trips.forEach(({ j, tids }) => {
+          const tr = span('fp-list__trip');
+          tids.forEach((id) => {
+            const e = add(span('fp-list__yc'), id);
+            Object.assign(items[items.length - 1], { year: y, part: true });
+            e.append(dot(), span('fp-list__ycn'));
+            tr.append(e); names.push(e); nids.push(id);
+          });
+          cs.append(tr);
+          items.push({ el: tr, ids: tids, year: y, jids: [j.id], on: false });
+        });
         row.append(n, cs);
         wrap.append(row);
-        if (ids.length) items.push({ el: n, ids, year: y, on: false }); else n.classList.add('is-in');
-        return { ids, names };
+        if (ids.length) items.push({ el: n, ids, year: y, jids: trips.map((t) => t.j.id), whole: true, on: false }); else n.classList.add('is-in');
+        return { ids: nids, names };
       });
       const runs = [...wrap.querySelectorAll('.is-run .fp-list__yn')].map((n) => ({ n, a: n.textContent.split('|') }));
       fill = () => {
@@ -236,18 +251,21 @@
   // journey on the map on the left and make others dim"): those countries stay on the map (FP.focus in
   // glide-calm.js) and in the list, the rest step back
   const hit = new Map();
-  items.forEach((it) => { hit.set(it.el, it.ids || [it.id]); it.el.classList.add('fp-list__hot'); });
+  items.forEach((it) => { if (it.part) return; hit.set(it.el, it.ids || [it.id]); it.el.classList.add('fp-list__hot'); });
   const byEl = new Map(items.map((it) => [it.el, it]));
   const focus = (el) => {
     const ids = el ? hit.get(el) : null, me = el && byEl.get(el), year = me && me.year != null ? me.year : null;
-    if (FP.focus) FP.focus(ids, year);
+    if (FP.focus) FP.focus(ids, year, me && me.jids);
     box.classList.toggle('is-focusing', !!ids);
     // (a list by year) only that year: the line pointed at and its year, or a year and its own lines,
     // never the same country in another year (his note, 2026-11-14)
     items.forEach((it) => {
       let on = false;
+      if (it.part) return;
       if (ids) {
-        if (year != null && it.year != null) on = it.el === el || it.year === year && (me.ids ? true : !it.id);
+        // a trip: it and its year; a year: it and all its trips
+        if (me.jids) on = it.el === el || (it.year === year && (me.whole || it.whole));
+        else if (year != null && it.year != null) on = it.el === el || it.year === year && (me.ids ? true : !it.id);
         else on = it.el === el || (it.id ? ids.includes(it.id) : it.ids.some((x) => ids.includes(x)));
       }
       it.el.classList.toggle('is-focus', on);

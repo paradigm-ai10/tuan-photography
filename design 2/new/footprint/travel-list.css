@@ -161,6 +161,12 @@
 [data-fp-mark="size"] .fp-list.is-focusing .fp-list__hot.is-focus .fp-list__ycn { transform: scale(1.14); }
 [data-fp-mark="size"] .fp-list.is-focusing .fp-list__yn.is-focus { transform: scale(1.08); transform-origin: right center; display: inline-block; }
 
+/* each trip of a year on its own line, its countries in the order he went (2026-11-14) */
+.fp-list__ycs:has(.fp-list__trip) { display: flex; flex-direction: column; gap: 0.18rem; }
+.fp-list__trip { display: flex; flex-wrap: wrap; gap: 0 0.8rem; }
+[data-fp-mark="size"] .fp-list.is-focusing .fp-list__trip.is-focus .fp-list__ycn { transform: scale(1.14); }
+.fp-list__trip .fp-list__yc + .fp-list__yc { margin-left: -0.1rem; }
+
 /* a phone, or a window too narrow for the column: the map as it was */
 .is-narrow .fp-list { display: none; }
 @media (prefers-reduced-motion: reduce) {

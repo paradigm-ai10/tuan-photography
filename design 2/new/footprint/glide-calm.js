@@ -1338,20 +1338,33 @@ void main() {
     return (a.toId = id);
   };
   // (focus) a small plane flies each flight that lands in the countries pointed at, drawing its line as it goes
-  const FLY = 1500, FLY_FADE = 500;
+  const FLY_FADE = 600;
   let planes = [], planesEnd = 0;
   // (year) only that year's trips: a country pointed at under 2015 flies only the 2015 flights there
-  let focusYear = null, focusKey = '';
+  // (trips, 2026-11-14: "照順序 ... 不用兩台飛機一起起飛 ... 然後要飛回台灣") a trip pointed at is flown as he
+  // flew it: one plane, leg after leg in order, home at the end; a stretch he went by land is a dotted line
+  let focusYear = null, focusKey = '', focusJ = null;
   const yearOfJ = (id) => +String(id).slice(0, 4);
-  const inYear = (a) => focusYear == null || yearOfJ(a.f.journey) === focusYear;
-  FP.focus = (ids, year) => {
+  const inYear = (a) => (focusJ ? focusJ.has(a.f.journey) : focusYear == null || yearOfJ(a.f.journey) === focusYear);
+  FP.focus = (ids, year, jids) => {
     const now = performance.now();
     if (ids && ids.length) {
-      const key = `${ids.join(',')}@${year ?? ''}`, was = focusWant ? focusKey : '';
+      const key = `${ids.join(',')}@${year ?? ''}@${(jids || []).join(',')}`, was = focusWant ? focusKey : '';
       focusSet = new Set(ids); focusWant = 1; focusYear = year ?? null; focusKey = key;
+      focusJ = jids && jids.length ? new Set(jids) : null;
       if (key !== was) {
-        planes = ARCS.filter((a) => Number.isFinite(a.t0) && inYear(a) && focusSet.has(arcTo(a))).map((a, i) => ({ a, t0: now + i * 140 }));
-        planesEnd = planes.length ? planes[planes.length - 1].t0 + FLY + FLY_FADE : 0;
+        const legs = focusJ
+          ? ARCS.filter((a) => Number.isFinite(a.t0) && focusJ.has(a.f.journey))
+          : ARCS.filter((a) => Number.isFinite(a.t0) && inYear(a) && focusSet.has(arcTo(a)));
+        const px = cur ? cur.s : 1;
+        let at = now;
+        planes = legs.map((a, i) => {
+          const dur = clamp(380 + a.total * px * 1.5, 620, 1500);
+          const p = { a, t0: at, dur, prev: i && legs[i - 1].f.journey === a.f.journey ? legs[i - 1] : null };
+          at += dur + 140;
+          return p;
+        });
+        planesEnd = planes.length ? at + FLY_FADE : 0;
       }
     } else { focusWant = 0; planes = []; planesEnd = 0; }
     if (!focusRaf) { focusAt = now; focusRaf = requestAnimationFrame(focusStep); }
@@ -1492,9 +1505,17 @@ void main() {
     // (focus) the planes: each line drawn firm behind its plane, the plane gone a moment after it lands
     if (planes.length && focusSet) {
       const now = performance.now();
-      planes.forEach(({ a, t0: p0 }) => {
-        const k = clamp((now - p0) / FLY, 0, 1);
+      planes.forEach(({ a, t0: p0, dur, prev }, idx) => {
+        const k = clamp((now - p0) / dur, 0, 1);
         if (now < p0) return;
+        // the stretch between the last leg's landing and this one's take-off, if he went it by land
+        if (prev) {
+          const e = prev.pts[prev.pts.length - 1], b0 = a.pts[0];
+          if (Math.hypot(e[0] - b0[0], e[1] - b0[1]) * s > 3) {
+            ctx.save(); ctx.globalAlpha = 0.8 * focusK; ctx.setLineDash([2, 3]); ctx.lineWidth = 1; ctx.strokeStyle = INK;
+            ctx.beginPath(); ctx.moveTo(ox + e[0] * s, oy + e[1] * s); ctx.lineTo(ox + b0[0] * s, oy + b0[1] * s); ctx.stroke(); ctx.restore();
+          }
+        }
         const q = inOut(k), L = q * a.total;
         let px = a.pts[0][0], py = a.pts[0][1], ang = 0;
         ctx.globalAlpha = 0.95 * focusK; ctx.lineWidth = 1.6; ctx.strokeStyle = ROUTE;
@@ -1508,7 +1529,9 @@ void main() {
           break;
         }
         ctx.stroke();
-        const fade = 1 - clamp((now - p0 - FLY) / FLY_FADE, 0, 1);
+        // one plane in the air: it shows on its own leg only, and lingers a moment after the last landing
+        const last = idx === planes.length - 1;
+        const fade = k < 1 ? 1 : last ? 1 - clamp((now - p0 - dur) / FLY_FADE, 0, 1) : 0;
         if (fade <= 0) return;
         ctx.save();
         ctx.translate(ox + px * s, oy + py * s); ctx.rotate(ang);

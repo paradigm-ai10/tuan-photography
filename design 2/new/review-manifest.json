@@ -222,8 +222,8 @@
         "zh": "目前的正式版"
       },
       "desc": {
-        "en": "The Journey tab as it is now. Since 9 November the first screen is your footprint map (One breath out, slower still, which you gave 5): it zooms out from Taiwan while your countries colour in and the three numbers count up. On the first scroll the names and numbers lift away and the map itself curls into the globe, uncovering your newest trip's photograph under a light paper veil (Off a photograph, your pick of round nine), smoothed so it follows your scroll like a weighted sheet and never stalls; the trips on one line. Since 14 November the reading panel is Clear glass, third pass (your pick): a clearer pane ending a seventh short of the right edge, serif names and years, the trips scrolling three times slower. The main one.",
-        "zh": "現在的旅程頁。11/9 起，一打開是你的足跡地圖（你給 5 分的「一口氣拉遠，再慢一點」）：從台灣拉遠，去過的國家一個個上色，三個數字往上跳。一往下捲，國名和數字淡掉，地圖本身捲成地球，底下露出你最近一趟旅行的照片，蓋一層淡淡的紙（第九輪你選的「掀開露出照片」），而且調順了：跟著你的捲動像一張有重量的紙，不會卡。所有旅程掛在一條線上。11/14 起右邊面板換成你選的「清透玻璃，第三次」：更清透、右邊留七分之一、名稱和年份用襯線字、旅程捲動慢三倍。這是主要版本。"
+        "en": "The Journey tab as it is now. Since 9 November the first screen is your footprint map (One breath out, slower still, which you gave 5): it zooms out from Taiwan while your countries colour in and the three numbers count up. On the first scroll the names and numbers lift away and the map itself curls into the globe, uncovering your newest trip's photograph under a light paper veil (Off a photograph, your pick of round nine), smoothed so it follows your scroll like a weighted sheet and never stalls; the trips on one line. Since 14 November the reading panel is Clear glass, third pass (your pick): a clearer pane ending a seventh short of the right edge, serif names and years, the trips scrolling three times slower. Since 14 November the opening map also has your list of where you have been beside it (Ruler, a pause, with A little larger when you point at a trip): each trip on its own line in the order you went; pointing at one lifts its countries and one plane flies it leg by leg and home. The main one.",
+        "zh": "現在的旅程頁。11/9 起，一打開是你的足跡地圖（你給 5 分的「一口氣拉遠，再慢一點」）：從台灣拉遠，去過的國家一個個上色，三個數字往上跳。一往下捲，國名和數字淡掉，地圖本身捲成地球，底下露出你最近一趟旅行的照片，蓋一層淡淡的紙（第九輪你選的「掀開露出照片」），而且調順了：跟著你的捲動像一張有重量的紙，不會卡。所有旅程掛在一條線上。11/14 起右邊面板換成你選的「清透玻璃，第三次」：更清透、右邊留七分之一、名稱和年份用襯線字、旅程捲動慢三倍。11/14 起開場地圖旁邊也有「去過的地方」（尺，留白；指到時放大一點）：每一趟一行、照去的順序；指到一趟，那幾個國家浮起來，一架飛機照順序一段一段飛，最後飛回台灣。這是主要版本。"
       },
       "still": {
         "wait": 20000
@@ -917,8 +917,8 @@
         "zh": "放大一點"
       },
       "desc": {
-        "en": "The name grows a little from its left edge, in full ink. Built on your pick, Ruler, a pause. Pointing at a country now shows only that year's trip (the United States under 2015 is only 2015, not your other times there), the country lifts off the map and a small plane flies that year's flights there; the rest of the list steps back. No colour in the list's highlight. With the list beside it, the map is framed so Europe's west is no longer cut at the left edge. On a phone it stays as the live page.",
-        "zh": "名字從左邊放大一點、全黑。用你選的「尺，留白」做的。指到一個國家，現在只會顯示那一年那一趟（2015 底下的美國就只有 2015，不會連其他幾次也亮）；地圖上那個國家浮起來，小飛機飛那一年的航線過去；清單其他行變淡。清單的標示不再用顏色。有清單時地圖重新取景，歐洲西邊不會再被左邊切掉。手機上維持正式版。"
+        "en": "The name grows a little from its left edge, in full ink. Built on your pick, Ruler, a pause. Pointing at a country now shows only that year's trip (the United States under 2015 is only 2015, not your other times there), the country lifts off the map and a small plane flies that year's flights there; the rest of the list steps back. No colour in the list's highlight. With the list beside it, the map is framed so Europe's west is no longer cut at the left edge. On a phone it stays as the live page. Your pick: since 14 November it is on the live page, each trip grouped in the order you went and flown leg by leg.",
+        "zh": "名字從左邊放大一點、全黑。用你選的「尺，留白」做的。指到一個國家，現在只會顯示那一年那一趟（2015 底下的美國就只有 2015，不會連其他幾次也亮）；地圖上那個國家浮起來，小飛機飛那一年的航線過去；清單其他行變淡。清單的標示不再用顏色。有清單時地圖重新取景，歐洲西邊不會再被左邊切掉。手機上維持正式版。你選了這張：11/14 起放上正式版，每一趟放在一起照順序，飛機一段一段飛。"
       },
       "still": {
         "wait": 14000
@@ -1702,14 +1702,11 @@
   "words": {},
   "ask": {
     "ids": [
-      "journey-fp-mark-bold",
-      "journey-fp-mark-rule",
-      "journey-fp-mark-pointer",
-      "journey-fp-mark-size"
+      "journey"
     ],
     "question": {
-      "en": "1 is the live page and 2 your pick, Ruler, a pause. 3 to 6 are four ways of marking the line you point at, without colour: bolder, a fine rule, the ruler pointing, a little larger. Pointing now shows only that year's trip, and Europe is no longer cut at the left. Point at a few years and countries on each, then score them.",
-      "zh": "第 1 張是正式版，第 2 張是你選的「尺，留白」。第 3 到 6 張是四種不用顏色的指到時的樣子：加粗、細線、尺上的刻度指過去、放大一點。現在指到只會亮那一年那一趟，歐洲左邊也不會被切掉。每張指幾個年份和國家看看，再給分。"
+      "en": "The live page now has your list beside the opening map, each trip together in the order you went. Point at a few trips and watch the plane fly them, then score it and mark anything still not right.",
+      "zh": "正式版的開場地圖旁邊現在有你的清單，每一趟放在一起、照順序。指幾趟看飛機照順序飛，再給分，哪裡還不對就標出來。"
     }
   }
 }
