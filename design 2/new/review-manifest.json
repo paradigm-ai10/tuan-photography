@@ -222,8 +222,8 @@
         "zh": "目前的正式版"
       },
       "desc": {
-        "en": "The Journey tab as it is now. Since 9 November the first screen is your footprint map (One breath out, slower still, which you gave 5): it zooms out from Taiwan while your countries colour in and the three numbers count up. On the first scroll the names and numbers lift away and the map itself curls into the globe, uncovering your newest trip's photograph under a light paper veil (Off a photograph, your pick of round nine), smoothed so it follows your scroll like a weighted sheet and never stalls; the trips on one line. Since 14 November the reading panel is Clear glass, third pass (your pick): a clearer pane ending a seventh short of the right edge, serif names and years, the trips scrolling three times slower. Since 14 November the opening map also has your list of where you have been beside it (Ruler, a pause, with A little larger when you point at a trip): each trip on its own line in the order you went; pointing at one lifts its countries and one plane flies it leg by leg and home. The main one.",
-        "zh": "現在的旅程頁。11/9 起，一打開是你的足跡地圖（你給 5 分的「一口氣拉遠，再慢一點」）：從台灣拉遠，去過的國家一個個上色，三個數字往上跳。一往下捲，國名和數字淡掉，地圖本身捲成地球，底下露出你最近一趟旅行的照片，蓋一層淡淡的紙（第九輪你選的「掀開露出照片」），而且調順了：跟著你的捲動像一張有重量的紙，不會卡。所有旅程掛在一條線上。11/14 起右邊面板換成你選的「清透玻璃，第三次」：更清透、右邊留七分之一、名稱和年份用襯線字、旅程捲動慢三倍。11/14 起開場地圖旁邊也有「去過的地方」（尺，留白；指到時放大一點）：每一趟一行、照去的順序；指到一趟，那幾個國家浮起來，一架飛機照順序一段一段飛，最後飛回台灣。這是主要版本。"
+        "en": "The Journey tab as it is now. Since 9 November the first screen is your footprint map (One breath out, slower still, which you gave 5): it zooms out from Taiwan while your countries colour in and the three numbers count up. On the first scroll the names and numbers lift away and the map itself curls into the globe, uncovering your newest trip's photograph under a light paper veil (Off a photograph, your pick of round nine), smoothed so it follows your scroll like a weighted sheet and never stalls; the trips on one line. Since 14 November the reading panel is Clear glass, third pass (your pick): a clearer pane ending a seventh short of the right edge, serif names and years, the trips scrolling three times slower. Since 14 November the opening map also has your list of where you have been beside it (Ruler, a pause): each trip on its own line in the order you went, each name coming up as its country colours in; it stays still when you point at it, and the map sits in the middle of its frame. The main one.",
+        "zh": "現在的旅程頁。11/9 起，一打開是你的足跡地圖（你給 5 分的「一口氣拉遠，再慢一點」）：從台灣拉遠，去過的國家一個個上色，三個數字往上跳。一往下捲，國名和數字淡掉，地圖本身捲成地球，底下露出你最近一趟旅行的照片，蓋一層淡淡的紙（第九輪你選的「掀開露出照片」），而且調順了：跟著你的捲動像一張有重量的紙，不會卡。所有旅程掛在一條線上。11/14 起右邊面板換成你選的「清透玻璃，第三次」：更清透、右邊留七分之一、名稱和年份用襯線字、旅程捲動慢三倍。11/14 起開場地圖旁邊也有「去過的地方」（尺，留白）：每一趟一行、照去的順序，國家上色時名字跟著出現；滑鼠指到不會有動畫，地圖放在畫面中間。這是主要版本。"
       },
       "still": {
         "wait": 20000
@@ -1705,8 +1705,8 @@
       "journey"
     ],
     "question": {
-      "en": "The live page now has your list beside the opening map, each trip together in the order you went. Point at a few trips and watch the plane fly them, then score it and mark anything still not right.",
-      "zh": "正式版的開場地圖旁邊現在有你的清單，每一趟放在一起、照順序。指幾趟看飛機照順序飛，再給分，哪裡還不對就標出來。"
+      "en": "The live page: the list beside the opening map now stays still when you point at it, and the map sits in the middle of its frame. Have a look and score it.",
+      "zh": "正式版：開場地圖旁的清單指到時不再有動畫，地圖也移到畫面中間。看看再給分。"
     }
   }
 }

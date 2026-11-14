@@ -252,6 +252,7 @@
   // glide-calm.js) and in the list, the rest step back
   const hit = new Map();
   items.forEach((it) => { if (it.part) return; hit.set(it.el, it.ids || [it.id]); it.el.classList.add('fp-list__hot'); });
+  if (!('fpMark' in document.body.dataset)) box.classList.add('is-still');
   const byEl = new Map(items.map((it) => [it.el, it]));
   const focus = (el) => {
     const ids = el ? hit.get(el) : null, me = el && byEl.get(el), year = me && me.year != null ? me.year : null;
@@ -273,8 +274,10 @@
       if (row && it.ids) row.classList.toggle('is-focus-row', on);
     });
   };
-  box.addEventListener('pointerover', (e) => { const el = e.target.closest('.fp-list__hot'); if (el && el.classList.contains('is-in')) focus(el); });
-  box.addEventListener('pointerout', (e) => { if (!box.contains(e.relatedTarget) || !(e.relatedTarget && e.relatedTarget.closest('.fp-list__hot'))) focus(null); });
+  // (on the live page, 2026-11-14) the list stays still: pointing at it does nothing; the pointing (the
+  // highlight, the lift, the plane) is kept for the versions that ask for it with <body data-fp-mark>
+  if ('fpMark' in document.body.dataset) box.addEventListener('pointerover', (e) => { const el = e.target.closest('.fp-list__hot'); if (el && el.classList.contains('is-in')) focus(el); });
+  if ('fpMark' in document.body.dataset) box.addEventListener('pointerout', (e) => { if (!box.contains(e.relatedTarget) || !(e.relatedTarget && e.relatedTarget.closest('.fp-list__hot'))) focus(null); });
 
   // each comes up as its country's wash begins on the map
   FP.onDraw = (t) => {

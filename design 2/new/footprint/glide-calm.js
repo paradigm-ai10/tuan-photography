@@ -564,7 +564,10 @@
     const vw = w / s, vh = h / s;
     const mid = ext ? (ext[0] + ext[1]) / 2 : 0;   // (with the list) the frame centred on his countries, not the sheet's middle
     const x0 = clamp(mid - ((padL + w - padR) / 2) / s, -XR, XR - vw);
-    const W0 = { x0, y0: gy(north), w: vw, h: vh };
+    // (with the list) when the frame is taller than his world from the far north to New Zealand's foot, the
+    // room is shared above and below, not all left under it (his note, 2026-11-14: squeezed at the top)
+    const room = LIST ? vh - (gy(SOUTH) - gy(north)) : 0;
+    const W0 = { x0, y0: gy(north) - (room > 0 ? room * 0.5 : 0), w: vw, h: vh };
     const F = { x: 0, y: 0, w, h };
     return {
       w: wAll, colW, h, sheetH: h, narrow: false, W0, rest: { ...W0 }, sf: s, F, north, bandPx: clamp(h * 0.165, 96, 180), slide: false,
