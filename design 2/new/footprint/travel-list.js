@@ -112,10 +112,10 @@
         row.className = `fp-list__yr${ids.length ? '' : ' is-empty'}${run ? ' is-run' : ''}`;
         const n = span('fp-list__yn', run && yy.length > 1 ? `${yy[0]}|${yy[yy.length - 1]}` : String(y));
         const cs = document.createElement('div'); cs.className = 'fp-list__ycs';
-        const names = ids.map((id) => { const e = add(span('fp-list__yc'), id); e.append(dot(), span('fp-list__ycn')); cs.append(e); return e; });
+        const names = ids.map((id) => { const e = add(span('fp-list__yc'), id); items[items.length - 1].year = y; e.append(dot(), span('fp-list__ycn')); cs.append(e); return e; });
         row.append(n, cs);
         wrap.append(row);
-        if (ids.length) items.push({ el: n, ids, on: false }); else n.classList.add('is-in');
+        if (ids.length) items.push({ el: n, ids, year: y, on: false }); else n.classList.add('is-in');
         return { ids, names };
       });
       const runs = [...wrap.querySelectorAll('.is-run .fp-list__yn')].map((n) => ({ n, a: n.textContent.split('|') }));
@@ -237,11 +237,23 @@
   // glide-calm.js) and in the list, the rest step back
   const hit = new Map();
   items.forEach((it) => { hit.set(it.el, it.ids || [it.id]); it.el.classList.add('fp-list__hot'); });
+  const byEl = new Map(items.map((it) => [it.el, it]));
   const focus = (el) => {
-    const ids = el ? hit.get(el) : null;
-    if (FP.focus) FP.focus(ids);
+    const ids = el ? hit.get(el) : null, me = el && byEl.get(el), year = me && me.year != null ? me.year : null;
+    if (FP.focus) FP.focus(ids, year);
     box.classList.toggle('is-focusing', !!ids);
-    items.forEach((it) => it.el.classList.toggle('is-focus', !!ids && (it.el === el || (it.id ? ids.includes(it.id) : it.ids.some((x) => ids.includes(x))))));
+    // (a list by year) only that year: the line pointed at and its year, or a year and its own lines,
+    // never the same country in another year (his note, 2026-11-14)
+    items.forEach((it) => {
+      let on = false;
+      if (ids) {
+        if (year != null && it.year != null) on = it.el === el || it.year === year && (me.ids ? true : !it.id);
+        else on = it.el === el || (it.id ? ids.includes(it.id) : it.ids.some((x) => ids.includes(x)));
+      }
+      it.el.classList.toggle('is-focus', on);
+      const row = it.el.closest('.fp-list__yr');
+      if (row && it.ids) row.classList.toggle('is-focus-row', on);
+    });
   };
   box.addEventListener('pointerover', (e) => { const el = e.target.closest('.fp-list__hot'); if (el && el.classList.contains('is-in')) focus(el); });
   box.addEventListener('pointerout', (e) => { if (!box.contains(e.relatedTarget) || !(e.relatedTarget && e.relatedTarget.closest('.fp-list__hot'))) focus(null); });

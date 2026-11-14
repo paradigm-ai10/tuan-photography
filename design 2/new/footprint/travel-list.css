@@ -133,14 +133,33 @@
 .fp-list__hot { cursor: default; }
 .fp-list.is-focusing .fp-list__hot.is-in:not(.is-focus) { opacity: 0.32; }
 .fp-list.is-focusing .fp-list__hot { transition: opacity 0.2s var(--ease, ease), background-color 0.2s var(--ease, ease), color 0.2s var(--ease, ease); }
-/* (2026-11-14, "明顯一點") the line pointed at, and the countries of a year pointed at, marked as with a
-   highlighter in their own colour; the year itself in ink, a size up */
-.fp-list.is-focusing .fp-list__hot.is-focus[style*="--tone"] {
-  background-color: color-mix(in oklch, var(--tone) 34%, transparent); box-shadow: 0 0 0 0.18rem color-mix(in oklch, var(--tone) 34%, transparent);
-  color: var(--ink);
+/* (2026-11-14) the line pointed at: no colour (his note: "probably don't use color ... make it bold, or
+   something that creates a high-end feeling"); in ink while the rest steps back, and in the versions,
+   <body data-fp-mark="…">:
+     bold     the name set heavier (a hair of ink round its letters)
+     rule     a fine ink rule draws in under the name
+     pointer  the ruler's tick for that year reaches out to the name, which steps forward to meet it
+     size     the name grows a little, from its left edge */
+.fp-list.is-focusing .fp-list__hot.is-focus, .fp-list.is-focusing .fp-list__yn.is-focus { color: var(--ink); }
+.fp-list.is-focusing .fp-list__hot.is-in:not(.is-focus) { opacity: 0.26; }
+.fp-list__yc, .fp-list__ycn { transition: transform 0.35s var(--ease, ease), -webkit-text-stroke-width 0.25s var(--ease, ease); }
+.fp-list__ycn { display: inline-block; position: relative; transform-origin: left center; }
+
+[data-fp-mark="bold"] .fp-list.is-focusing .fp-list__hot.is-focus .fp-list__ycn,
+[data-fp-mark="bold"] .fp-list.is-focusing .fp-list__yn.is-focus { -webkit-text-stroke: 0.45px currentColor; }
+
+[data-fp-mark="rule"] .fp-list__ycn::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -0.12em; border-bottom: 1px solid var(--ink);
+  transform: scaleX(0); transform-origin: left; transition: transform 0.45s var(--ease, ease);
 }
-.fp-list.is-focusing .fp-list__yn.is-focus { color: var(--ink); text-shadow: 0 0 0.01px var(--ink); }
-.fp-list.is-focusing .fp-list__hot.is-focus .fp-list__dot { background: var(--ink); }
+[data-fp-mark="rule"] .fp-list.is-focusing .fp-list__hot.is-focus .fp-list__ycn::after { transform: scaleX(1); }
+
+[data-fp-mark="pointer"] .fp-list__yr::before { transition: width 0.4s var(--ease, ease), border-color 0.3s; }
+[data-fp-mark="pointer"] .fp-list.is-focusing .fp-list__yr:has(.is-focus)::before { width: 1.45rem; border-top-color: var(--ink); }
+[data-fp-mark="pointer"] .fp-list.is-focusing .fp-list__hot.is-focus .fp-list__ycn { transform: translateX(0.45rem); }
+
+[data-fp-mark="size"] .fp-list.is-focusing .fp-list__hot.is-focus .fp-list__ycn { transform: scale(1.14); }
+[data-fp-mark="size"] .fp-list.is-focusing .fp-list__yn.is-focus { transform: scale(1.08); transform-origin: right center; display: inline-block; }
 
 /* a phone, or a window too narrow for the column: the map as it was */
 .is-narrow .fp-list { display: none; }

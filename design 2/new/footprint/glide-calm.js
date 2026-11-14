@@ -546,16 +546,24 @@
     // the map is framed in the rest
     const colW = LIST ? clamp(wAll * 0.21, 260, 360) : 0, w = wAll - colW;
     const padL = clamp(w * 0.022, 14, 34), padR = clamp(w * 0.018, 12, 28);
-    const s0 = (w - padL - padR) / (SPAN * DEG);
+    // (with the list) ten more degrees each side of his span, so Ireland, Portugal and the rest of Europe's
+    // west, and the American east coast, are not cut at the frame's edges (his note, 2026-11-14)
+    // his countries' own extent on the sheet, west to east, with that margin each side
+    const ext = LIST && MINE.length ? MINE.reduce((e, m) => [Math.min(e[0], m.bU.x0), Math.max(e[1], m.bU.x1)], [Infinity, -Infinity]) : null;
+    const spanU = ext ? ext[1] - ext[0] + 20 * DEG : SPAN * DEG;
+    const s0 = (w - padL - padR) / spanU;
     const sMin = w / (2 * XR); // the whole way round, and no further
     let north = NORTH;
     let s = Math.max(sMin, Math.min(s0, h / (gy(SOUTH) - gy(north))));
-    if (gy(north) + h / s > gy(FOOT_MIN)) { // taller than the sheet holds: more of the north, then nearer
+    // (with the list) a frame taller than the sheet holds keeps his whole span across: the open paper below
+    // the map simply runs on under the numbers, rather than the map growing until Europe is cut off
+    if (!LIST && gy(north) + h / s > gy(FOOT_MIN)) { // taller than the sheet holds: more of the north, then nearer
       north = Math.min(POLE, latOfY(gy(FOOT_MIN) - h / s));
       if (gy(north) + h / s > gy(FOOT_MIN)) s = h / (gy(FOOT_MIN) - gy(north));
     }
     const vw = w / s, vh = h / s;
-    const x0 = clamp(-((padL + w - padR) / 2) / s, -XR, XR - vw);
+    const mid = ext ? (ext[0] + ext[1]) / 2 : 0;   // (with the list) the frame centred on his countries, not the sheet's middle
+    const x0 = clamp(mid - ((padL + w - padR) / 2) / s, -XR, XR - vw);
     const W0 = { x0, y0: gy(north), w: vw, h: vh };
     const F = { x: 0, y: 0, w, h };
     return {
@@ -1332,13 +1340,17 @@ void main() {
   // (focus) a small plane flies each flight that lands in the countries pointed at, drawing its line as it goes
   const FLY = 1500, FLY_FADE = 500;
   let planes = [], planesEnd = 0;
-  FP.focus = (ids) => {
+  // (year) only that year's trips: a country pointed at under 2015 flies only the 2015 flights there
+  let focusYear = null, focusKey = '';
+  const yearOfJ = (id) => +String(id).slice(0, 4);
+  const inYear = (a) => focusYear == null || yearOfJ(a.f.journey) === focusYear;
+  FP.focus = (ids, year) => {
     const now = performance.now();
     if (ids && ids.length) {
-      const key = ids.join(','), was = focusSet && focusWant ? [...focusSet].join(',') : '';
-      focusSet = new Set(ids); focusWant = 1;
+      const key = `${ids.join(',')}@${year ?? ''}`, was = focusWant ? focusKey : '';
+      focusSet = new Set(ids); focusWant = 1; focusYear = year ?? null; focusKey = key;
       if (key !== was) {
-        planes = ARCS.filter((a) => Number.isFinite(a.t0) && focusSet.has(arcTo(a))).map((a, i) => ({ a, t0: now + i * 140 }));
+        planes = ARCS.filter((a) => Number.isFinite(a.t0) && inYear(a) && focusSet.has(arcTo(a))).map((a, i) => ({ a, t0: now + i * 140 }));
         planesEnd = planes.length ? planes[planes.length - 1].t0 + FLY + FLY_FADE : 0;
       }
     } else { focusWant = 0; planes = []; planesEnd = 0; }
@@ -1463,7 +1475,7 @@ void main() {
       if (q <= 0) return;
       ctx.globalAlpha = q < 1 ? 0.62 : lerp(0.62, 0.34, inOut(unit(t, a.t0 + a.dur, SETTLE)));
       if (focusSet) {
-        const on = (tripsOf.get(a.f.journey) || []).some((id) => focusSet.has(id));
+        const on = inYear(a) && (tripsOf.get(a.f.journey) || []).some((id) => focusSet.has(id));
         ctx.globalAlpha *= on ? 1 + 0.7 * focusK : 1 - 0.85 * focusK;
       }
       const L = q * a.total;

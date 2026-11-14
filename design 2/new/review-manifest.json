@@ -2,11 +2,11 @@
   "name": "journey",
   "round": {
     "groups": [
-      "journey-fp-list-4",
-      "journey-fp-list-3"
+      "journey-fp-mark"
     ],
     "ids": [
-      "journey"
+      "journey",
+      "journey-fp-list-rulergap"
     ]
   },
   "endpoint": "/__reviews/journey",
@@ -88,6 +88,14 @@
       "title": {
         "en": "Your trips as one camera move",
         "zh": "旅程變成一段鏡頭"
+      }
+    },
+    {
+      "id": "journey-fp-mark",
+      "built": "2026-11-14T18:06",
+      "title": {
+        "en": "The ruler, pointing at a trip",
+        "zh": "年份的尺：指到一趟旅程時"
       }
     },
     {
@@ -829,8 +837,8 @@
         "zh": "尺，留白"
       },
       "desc": {
-        "en": "The same, but the years without travel are only small marks, no numbers, so the gap reads as a quiet pause on the line. A mix of the two you picked, By year and A ruler of years. Each name still comes up as its country colours in on the map; on a phone it stays as the live page.",
-        "zh": "一樣，但是沒去旅行的年份只有小刻度、不寫數字，那段空白像線上安靜的停頓。把你挑的兩張「照年份」和「年份的尺」混在一起。地圖上哪個國家上色，名字一樣跟著出現；手機上維持正式版。"
+        "en": "The same, but the years without travel are only small marks, no numbers, so the gap reads as a quiet pause on the line. A mix of the two you picked, By year and A ruler of years. Each name still comes up as its country colours in on the map; on a phone it stays as the live page. Your pick (14 November): the four versions of pointing at it are built on this one.",
+        "zh": "一樣，但是沒去旅行的年份只有小刻度、不寫數字，那段空白像線上安靜的停頓。把你挑的兩張「照年份」和「年份的尺」混在一起。地圖上哪個國家上色，名字一樣跟著出現；手機上維持正式版。你選了這張（11/14）：下面四種指到時的樣子都用這張做。"
       },
       "still": {
         "wait": 14000
@@ -847,6 +855,70 @@
       "desc": {
         "en": "By year as you picked it (the large number, the countries under it), hung on a line down the left; the years without travel become one short dotted stretch, 2016 to 2021. A mix of the two you picked, By year and A ruler of years. Each name still comes up as its country colours in on the map; on a phone it stays as the live page.",
         "zh": "照你挑的「照年份」（大數字，下面寫國家），掛在左邊一條線上；沒去旅行的年份縮成一小段點線，寫 2016 to 2021。把你挑的兩張「照年份」和「年份的尺」混在一起。地圖上哪個國家上色，名字一樣跟著出現；手機上維持正式版。"
+      },
+      "still": {
+        "wait": 14000
+      }
+    },
+    {
+      "id": "journey-fp-mark-bold",
+      "href": "journey-fp-mark-bold.html",
+      "group": "journey-fp-mark",
+      "title": {
+        "en": "Bolder",
+        "zh": "加粗"
+      },
+      "desc": {
+        "en": "The name pointed at set heavier, in full ink. Built on your pick, Ruler, a pause. Pointing at a country now shows only that year's trip (the United States under 2015 is only 2015, not your other times there), the country lifts off the map and a small plane flies that year's flights there; the rest of the list steps back. No colour in the list's highlight. With the list beside it, the map is framed so Europe's west is no longer cut at the left edge. On a phone it stays as the live page.",
+        "zh": "指到的名字變粗、全黑。用你選的「尺，留白」做的。指到一個國家，現在只會顯示那一年那一趟（2015 底下的美國就只有 2015，不會連其他幾次也亮）；地圖上那個國家浮起來，小飛機飛那一年的航線過去；清單其他行變淡。清單的標示不再用顏色。有清單時地圖重新取景，歐洲西邊不會再被左邊切掉。手機上維持正式版。"
+      },
+      "still": {
+        "wait": 14000
+      }
+    },
+    {
+      "id": "journey-fp-mark-rule",
+      "href": "journey-fp-mark-rule.html",
+      "group": "journey-fp-mark",
+      "title": {
+        "en": "A fine rule",
+        "zh": "細線"
+      },
+      "desc": {
+        "en": "A fine ink line draws in under the name from its left. Built on your pick, Ruler, a pause. Pointing at a country now shows only that year's trip (the United States under 2015 is only 2015, not your other times there), the country lifts off the map and a small plane flies that year's flights there; the rest of the list steps back. No colour in the list's highlight. With the list beside it, the map is framed so Europe's west is no longer cut at the left edge. On a phone it stays as the live page.",
+        "zh": "名字下面從左邊畫出一條細細的黑線。用你選的「尺，留白」做的。指到一個國家，現在只會顯示那一年那一趟（2015 底下的美國就只有 2015，不會連其他幾次也亮）；地圖上那個國家浮起來，小飛機飛那一年的航線過去；清單其他行變淡。清單的標示不再用顏色。有清單時地圖重新取景，歐洲西邊不會再被左邊切掉。手機上維持正式版。"
+      },
+      "still": {
+        "wait": 14000
+      }
+    },
+    {
+      "id": "journey-fp-mark-pointer",
+      "href": "journey-fp-mark-pointer.html",
+      "group": "journey-fp-mark",
+      "title": {
+        "en": "The ruler points",
+        "zh": "尺上的刻度指過去"
+      },
+      "desc": {
+        "en": "The ruler's mark for that year reaches out to the name, which steps forward a little to meet it. Built on your pick, Ruler, a pause. Pointing at a country now shows only that year's trip (the United States under 2015 is only 2015, not your other times there), the country lifts off the map and a small plane flies that year's flights there; the rest of the list steps back. No colour in the list's highlight. With the list beside it, the map is framed so Europe's west is no longer cut at the left edge. On a phone it stays as the live page.",
+        "zh": "那一年在尺上的刻度伸出去指到名字，名字往前移一點迎上去。用你選的「尺，留白」做的。指到一個國家，現在只會顯示那一年那一趟（2015 底下的美國就只有 2015，不會連其他幾次也亮）；地圖上那個國家浮起來，小飛機飛那一年的航線過去；清單其他行變淡。清單的標示不再用顏色。有清單時地圖重新取景，歐洲西邊不會再被左邊切掉。手機上維持正式版。"
+      },
+      "still": {
+        "wait": 14000
+      }
+    },
+    {
+      "id": "journey-fp-mark-size",
+      "href": "journey-fp-mark-size.html",
+      "group": "journey-fp-mark",
+      "title": {
+        "en": "A little larger",
+        "zh": "放大一點"
+      },
+      "desc": {
+        "en": "The name grows a little from its left edge, in full ink. Built on your pick, Ruler, a pause. Pointing at a country now shows only that year's trip (the United States under 2015 is only 2015, not your other times there), the country lifts off the map and a small plane flies that year's flights there; the rest of the list steps back. No colour in the list's highlight. With the list beside it, the map is framed so Europe's west is no longer cut at the left edge. On a phone it stays as the live page.",
+        "zh": "名字從左邊放大一點、全黑。用你選的「尺，留白」做的。指到一個國家，現在只會顯示那一年那一趟（2015 底下的美國就只有 2015，不會連其他幾次也亮）；地圖上那個國家浮起來，小飛機飛那一年的航線過去；清單其他行變淡。清單的標示不再用顏色。有清單時地圖重新取景，歐洲西邊不會再被左邊切掉。手機上維持正式版。"
       },
       "still": {
         "wait": 14000
@@ -1630,13 +1702,14 @@
   "words": {},
   "ask": {
     "ids": [
-      "journey-fp-list-rulerbig",
-      "journey-fp-list-rulergap",
-      "journey-fp-list-yearsrule"
+      "journey-fp-mark-bold",
+      "journey-fp-mark-rule",
+      "journey-fp-mark-pointer",
+      "journey-fp-mark-size"
     ],
     "question": {
-      "en": "1 is the live page. 2 to 4 mix the two you picked, By year and A ruler of years: large years on the ruler, the same with the empty years as a quiet pause, and By year hung on a line with the empty years as one short stretch. Score each and mark anything still not right.",
-      "zh": "第 1 張是正式版。第 2 到 4 張把你挑的「照年份」和「年份的尺」混在一起：尺上用大年份、空白年份只留小刻度、照年份掛在一條線上並把沒去的年份縮成一小段。每張給分，哪裡還不對就標出來。"
+      "en": "1 is the live page and 2 your pick, Ruler, a pause. 3 to 6 are four ways of marking the line you point at, without colour: bolder, a fine rule, the ruler pointing, a little larger. Pointing now shows only that year's trip, and Europe is no longer cut at the left. Point at a few years and countries on each, then score them.",
+      "zh": "第 1 張是正式版，第 2 張是你選的「尺，留白」。第 3 到 6 張是四種不用顏色的指到時的樣子：加粗、細線、尺上的刻度指過去、放大一點。現在指到只會亮那一年那一趟，歐洲左邊也不會被切掉。每張指幾個年份和國家看看，再給分。"
     }
   }
 }
